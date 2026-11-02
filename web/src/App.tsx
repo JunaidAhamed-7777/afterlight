@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
 );
@@ -103,6 +103,11 @@ export default function App() {
     [follow, setFollow] = useState(false),
     [reset, setReset] = useState(0),
     [motionOff, setMotionOff] = useState(false);
+  const playbackClock = useRef(0);
+  const seekTime = (t: number) => {
+    playbackClock.current = t;
+    setTime(t);
+  };
   const prefersReduced = useReducedMotion(),
     reducedMotion = prefersReduced || motionOff;
   useEffect(() => {
@@ -144,7 +149,7 @@ export default function App() {
   useEffect(() => {
     setReplay(null);
     setPlaying(false);
-    setTime(0);
+    seekTime(0);
     setLoadError("");
     if (!selection) {
       setLoading(false);
@@ -176,12 +181,21 @@ export default function App() {
   useEffect(() => {
     if (!playing || !replay) return;
     let raf = 0,
-      last = performance.now();
+      last = performance.now(),
+      lastPublished = last;
     const tick = (now: number) => {
-      if (now - last >= 100) {
-        const dt = Math.min((now - last) / 1000, 0.25) * speed;
-        last = now;
-        setTime((t) => Math.min(t + dt, replay.duration_s));
+      const dt = Math.min((now - last) / 1000, 0.1) * speed;
+      last = now;
+      playbackClock.current = Math.min(
+        playbackClock.current + dt,
+        replay.duration_s,
+      );
+      if (
+        now - lastPublished >= 100 ||
+        playbackClock.current >= replay.duration_s
+      ) {
+        setTime(playbackClock.current);
+        lastPublished = now;
       }
       raf = requestAnimationFrame(tick);
     };
@@ -195,10 +209,6 @@ export default function App() {
     if (reducedMotion) setFollow(false);
   }, [reducedMotion]);
   const cityReplay = Boolean(replay && replay.scenario.network_kind === "city");
-  const frame =
-    replay && cityReplay ? frameAt(replay.worlds[world].frames, time) : null;
-  const baseline =
-    replay && cityReplay ? frameAt(replay.worlds.baseline.frames, time) : null;
   const available = catalog.filter(
     (x) => x.pickup_id === pickup && x.hospital_id === hospital,
   );
@@ -215,7 +225,7 @@ export default function App() {
     setSelection("");
     setReplay(null);
     setPlaying(false);
-    setTime(0);
+    seekTime(0);
   };
   const activeHospital = city?.hospitals.find((x) => x.id === hospital);
   const timelineMax = replay?.duration_s ?? 1;
@@ -520,8 +530,11 @@ export default function App() {
                 >
                   <CityView
                     city={city}
-                    frame={frame}
-                    ghostFrame={baseline}
+                    frames={cityReplay ? replay!.worlds[world].frames : []}
+                    baselineFrames={
+                      cityReplay ? replay!.worlds.baseline.frames : []
+                    }
+                    clock={playbackClock}
                     ghost={ghost}
                     ghostOpacity={ghostOpacity}
                     pickup={pickup}
@@ -598,7 +611,8 @@ export default function App() {
                 className="play-button"
                 disabled={!replay || loading}
                 onClick={() => {
-                  if (time >= timelineMax) setTime(0);
+                  if (time >= timelineMax) seekTime(0);
+                  else if (playing) setTime(playbackClock.current);
                   setPlaying(!playing);
                 }}
                 aria-label={playing ? "Pause recording" : "Play recording"}
@@ -611,7 +625,7 @@ export default function App() {
                 aria-label="Restart recording"
                 disabled={!replay}
                 onClick={() => {
-                  setTime(0);
+                  seekTime(0);
                   setPlaying(false);
                 }}
               >
@@ -637,7 +651,7 @@ export default function App() {
                   disabled={!replay}
                   onChange={(e) => {
                     setPlaying(false);
-                    setTime(Number(e.target.value));
+                    seekTime(Number(e.target.value));
                   }}
                 />
               </div>

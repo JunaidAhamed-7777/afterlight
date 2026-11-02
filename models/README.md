@@ -22,3 +22,13 @@ Reference: [scikit-learn DecisionTreeRegressor documentation](https://scikit-lea
 `models.analytical.choose_lead(observation)` is the runner adapter. Its `queue-lost-service-v1` surrogate starts from frozen ETA, subtracts possible queue discharge during lead minus yellow/all-red time, discounts service by observed downstream occupancy, and adds a triangular lost-service waiting-area surrogate per ordinary cycle. Defaults match the initial controller: 2 seconds/queued vehicle, 4 seconds yellow+all-red, 58-second ordinary cycle. This approximation ignores individual phase stage/min-green residual, actual clipped request schedules and future arrivals. It is a deliberately limited **prediction**, never measured ambulance travel or all-demand civilian delay. No claim that it is calibrated is made.
 
 Phase elapsed is retained as an observed model feature but not interpreted as green age: the actual stage may be yellow or all-red. Downstream occupancy is a fraction, not SUMO's raw percentage. Every candidate shares the same lagged observation. Changes to these formulas/configuration require a new pre-test freeze. Fitting checks the candidate `analytical_config_sha256` against `protocol.analytical_estimator` (`{version, config}`), and learned inference requires the same hash plus objective weight and frozen protocol hash. A model trained against another analytical baseline cannot silently be reused.
+
+## Optional Omen training entry point
+
+Only after actual pilot results support a study, a disjoint dataset exists, and the model/feature/objective/estimator protocol is frozen:
+
+```powershell
+.\.venv\Scripts\python.exe -m models --train-outcomes training-candidates.json --frozen-protocol frozen-protocol.json --output residual-tree.json
+```
+
+The input must contain all five fixed-lead rows for every training episode, including invalid/censored candidates. Fitting uses only finite targets but records excluded-label counts. `model_specification` requires `max_depth` and `min_samples_leaf`; feature entries require `name`, `unit`, `source`, and `sensor_lag_s`. The model is output to a new file only. This command does **not** access validation/test rows or prove ML benefit. Keep test execution under a separate explicit release gate.

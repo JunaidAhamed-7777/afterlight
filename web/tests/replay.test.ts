@@ -115,3 +115,50 @@ test("non-finite vehicle position rejected", () => {
   r.worlds.baseline.frames[0].vehicles[0].x = NaN;
   assert.throws(() => validateReplay(r), /invalid vehicle pose/);
 });
+
+test("pose interpolation keeps signal/count observations unchanged", async () => {
+  const { interpolatedFrame } = await import("../src/replay.ts");
+  const a = frame(0),
+    b = frame(1);
+  a.queue_count = 3;
+  a.signals = [{ id: "J1", state: "rG" }];
+  b.queue_count = 7;
+  b.signals = [{ id: "J1", state: "Gr" }];
+  b.vehicles[0].x = 110;
+  const result = interpolatedFrame([a, b], 0.5)!;
+  assert.equal(result.vehicles[0].x, 105);
+  assert.equal(result.queue_count, 3);
+  assert.deepEqual(result.signals, a.signals);
+  assert.equal(a.vehicles[0].x, 100);
+});
+test("interpolation uses shortest heading across north", async () => {
+  const { interpolatedFrame } = await import("../src/replay.ts");
+  const a = frame(0),
+    b = frame(1);
+  a.vehicles[0].angle_deg = 359;
+  b.vehicles[0].angle_deg = 1;
+  assert.equal(interpolatedFrame([a, b], 0.5)!.vehicles[0].angle_deg, 360);
+});
+test("new and departed vehicles have no invented lifecycle", async () => {
+  const { interpolatedFrame } = await import("../src/replay.ts");
+  const a = frame(0),
+    b = frame(1);
+  b.vehicles = [{ ...vehicle, id: "new" }];
+  const result = interpolatedFrame([a, b], 0.5)!;
+  assert.deepEqual(
+    result.vehicles.map((v) => v.id),
+    ["ambulance"],
+  );
+  assert.deepEqual(
+    interpolatedFrame([a, b], 1)!.vehicles.map((v) => v.id),
+    ["new"],
+  );
+  assert.equal(interpolatedFrame([a, b], 2), null);
+});
+test("teleport discontinuities are not animated as road travel", async () => {
+  const { interpolatedFrame } = await import("../src/replay.ts");
+  const a = frame(0),
+    b = frame(1);
+  b.vehicles[0].x = 900;
+  assert.equal(interpolatedFrame([a, b], 0.5)!.vehicles[0].x, 100);
+});

@@ -125,3 +125,42 @@ export const seconds = (value: unknown): string =>
   typeof value === "number" && Number.isFinite(value)
     ? `${value.toFixed(1)} s`
     : "Not available";
+
+/** Interpolate only display poses between adjacent real samples. Lifecycle and signals stay left-held. */
+export function interpolatedFrame(frames: Frame[], t: number): Frame | null {
+  const left = frameAt(frames, t);
+  if (!left || left.t === t) return left;
+  let low = 0,
+    high = frames.length - 1;
+  while (low < high) {
+    const mid = Math.floor((low + high) / 2);
+    if (frames[mid].t <= t) low = mid + 1;
+    else high = mid;
+  }
+  const right = frames[low];
+  if (!right || right.t <= left.t) return left;
+  const alpha = (t - left.t) / (right.t - left.t);
+  const next = new Map(right.vehicles.map((v) => [v.id, v]));
+  const vehicles = left.vehicles.map((v) => {
+    const n = next.get(v.id);
+    if (!n || n.type !== v.type) return v;
+    const distance = Math.hypot(n.x - v.x, n.y - v.y, n.z - v.z);
+    // Teleports/discontinuities remain jumps, never fabricated traversals.
+    if (
+      distance >
+      Math.max(v.speed_mps, n.speed_mps, 1) * (right.t - left.t) * 2 +
+        v.length_m * 2 +
+        5
+    )
+      return v;
+    const turn = ((n.angle_deg - v.angle_deg + 540) % 360) - 180;
+    return {
+      ...v,
+      x: v.x + (n.x - v.x) * alpha,
+      y: v.y + (n.y - v.y) * alpha,
+      z: v.z + (n.z - v.z) * alpha,
+      angle_deg: v.angle_deg + turn * alpha,
+    };
+  });
+  return { ...left, vehicles };
+}

@@ -97,6 +97,14 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
     analytical_config_sha256 = digest(protocol["analytical_estimator"])
     if any(row.get("analytical_config_sha256") != analytical_config_sha256 for row in train_rows):
         raise ValueError("candidate analytical estimator differs from frozen protocol")
+    for row in train_rows:
+        if row.get("source_commit") != protocol["source_commit"]:
+            raise ValueError("training run source commit differs from frozen protocol")
+        if row["horizon_s"] != protocol["horizon_s"] or row["drain_end_s"] != protocol["drain_end_s"]:
+            raise ValueError("training outcome window differs from frozen protocol")
+        required_lag = max(field["sensor_lag_s"] for field in protocol["feature_schema"])
+        if row["observation"]["sensor_lag_s"] < required_lag:
+            raise ValueError("training observation lag is shorter than frozen feature lag")
     specification = protocol["model_specification"]
     if specification.get("max_depth") != max_depth or specification.get("min_samples_leaf") != min_samples_leaf:
         raise ValueError("training hyperparameters differ from frozen protocol")
@@ -123,6 +131,7 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
              "excluded_infeasible_labels": len(train_rows) - len(labels),
              "training_groups": sorted({row["demand_group_id"] for row in train_rows}),
              "training_data_sha256": digest(train_rows), "sklearn_version": sklearn_version,
+             "source_commit": protocol["source_commit"],
              "parameters": {"max_depth": max_depth, "min_samples_leaf": min_samples_leaf, "random_state": 0},
              "nodes": [{"left": int(tree.children_left[i]), "right": int(tree.children_right[i]),
                         "feature": int(tree.feature[i]), "threshold": float(tree.threshold[i]),

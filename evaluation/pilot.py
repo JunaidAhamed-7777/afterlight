@@ -13,7 +13,7 @@ from pathlib import Path
 import platform
 import time
 from .protocol import digest, pilot_summary
-from .metrics import Accounting, finite
+from .metrics import Accounting, finite, excess_queue_area, verify_pair
 
 
 def prepare_plan(*, network: str = "fixture", seed_start: int = 1001, seeds_per_regime: int = 3) -> dict:
@@ -22,12 +22,14 @@ def prepare_plan(*, network: str = "fixture", seed_start: int = 1001, seeds_per_
     regimes = ("sparse", "moderate", "asymmetric", "heavy")
     cases = [{"id": f"{regime}-{seed_start + j * seeds_per_regime + i}", "regime": regime,
               "seed": seed_start + j * seeds_per_regime + i, "dispatch_s": 60.0,
-              "demand_end_s": 180.0, "horizon_s": 240.0, "drain_s": 360.0}
+              "demand_end_s": 180.0, "horizon_s": 240.0, "drain_s": 360.0,
+              "recovery_start_s": 60.0, "recovery_end_s": 600.0}
              for j, regime in enumerate(regimes) for i in range(seeds_per_regime)]
     plan = {"schema": "afterlight.pilot-plan.v1", "network": network, "split": "pilot", "cases": cases,
             "policies": [{"policy": "ordinary", "lead_s": None}, {"policy": "immediate", "lead_s": None},
                          *({"policy": "fixed", "lead_s": lead} for lead in (0, 5, 10, 20, 30))],
-            "step_s": .5, "sample_s": 5.0,
+            "step_s": .5, "sample_s": 5.0, "civilian_weight": 1.0, "useful_action_margin_s": 1.0,
+            "queue_scope": "all inserted active civilians with speed below 0.1 m/s; insertion backlog reported separately",
             "purpose": "Runtime, accounting, validity and actual candidate-diversity pilot; no held-out performance claim.",
             "candidate_budget_unfrozen": True,
             "infrastructure_retry_policy": "no automatic retry; retain failure and stop; rerun same plan into a new directory after diagnosis"}
@@ -46,6 +48,8 @@ def validate_plan(envelope: dict) -> dict:
         raise ValueError("pilot must retain ordinary, immediate and all five leads")
     if finite(plan["step_s"], "step_s") <= 0 or finite(plan["sample_s"], "sample_s") < plan["step_s"]:
         raise ValueError("invalid pilot time resolution")
+    finite(plan["civilian_weight"], "civilian_weight")
+    finite(plan["useful_action_margin_s"], "useful_action_margin_s")
     ids = set()
     if not plan["cases"] or len(plan["cases"]) > 80:
         raise ValueError("pilot must have 1–80 explicitly listed cases")
@@ -61,6 +65,8 @@ def validate_plan(envelope: dict) -> dict:
         drain = finite(case["drain_s"], "drain_s")
         if not 1 <= dispatch < demand_end <= horizon or drain <= 0:
             raise ValueError("pilot timing contract invalid")
+        if not 0 <= finite(case["recovery_start_s"], "recovery_start_s") < finite(case["recovery_end_s"], "recovery_end_s") <= horizon + drain:
+            raise ValueError("pilot common recovery window invalid")
     return plan
 
 
@@ -71,7 +77,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
     from sim.network import build_network, read_network, write_json
     from sim.demand import make_demand, save_demand
     from sim.run import run_world, source_commit
-    from models.analytical import estimate_candidates
+    from models.analytical import AnalyticalConfig, estimate_candidates
 
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / "pilot-plan.json", envelope)
@@ -96,6 +102,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                                  dispatch_s=case["dispatch_s"], demand_end_s=case["demand_end_s"])
             hashes = save_demand(demand, case_dir / "demand")
             scheduled = sum(v["id"] != "ambulance" for v in demand["vehicles"])
+            case_rows = []
             for policy in plan["policies"]:
                 name = policy["policy"] + (f"-{policy['lead_s']}" if policy["lead_s"] is not None else "")
                 world_dir = case_dir / name
@@ -110,7 +117,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                                       output=world_dir, horizon_s=case["horizon_s"], drain_s=case["drain_s"],
                                       step_s=plan["step_s"], sample_s=plan["sample_s"])
                     decision = world["decision"]
-                    estimates = estimate_candidates(decision["observation"])
+                    estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
                     row = {**identity, **world["metrics"], "request_plan": decision["request_plan"],
                            "observation": decision["observation"],
                            "analytical_config_sha256": digest({"version": estimates["version"], "config": estimates["config"]}),
@@ -129,13 +136,22 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                            "runtime_s": time.perf_counter() - call_start, "request_plan": None}
                 Accounting.from_mapping(row["accounting"])
                 rows.append(row)
+                case_rows.append(row)
                 write_json(output / "outcomes.json", rows)
                 if row["status"] == "infrastructure_error":
                     raise RuntimeError(f"Pilot stopped after infrastructure failure in {case['id']}/{name}; record retained, remaining worlds unattempted")
+            ordinary = next(row for row in case_rows if row["policy"] == "ordinary")
+            for row in case_rows:
+                verify_pair(row, ordinary)
+                row["recovery_excess_queue_area_vehicle_s"] = excess_queue_area(
+                    row["queue_samples"], ordinary["queue_samples"], case["recovery_start_s"], case["recovery_end_s"])
+                row["recovery_window_s"] = [case["recovery_start_s"], case["recovery_end_s"]]
+                row["queue_scope"] = plan["queue_scope"]
+            write_json(output / "outcomes.json", rows)
         manifest["status"] = "completed_with_infrastructure_failures" if any(r["status"] == "infrastructure_error" for r in rows) else "completed"
         # Schedules unavailable on infrastructure failures must not be counted
         # as a distinct null schedule.
-        report = pilot_summary(rows)
+        report = pilot_summary(rows, civilian_weight=plan["civilian_weight"], useful_action_margin_s=plan["useful_action_margin_s"])
         write_json(output / "pilot-summary.json", report)
         return report
     except Exception as error:

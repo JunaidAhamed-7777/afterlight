@@ -3,12 +3,14 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
 import type { City, Frame } from "./types.ts";
-import { vehiclePose } from "./replay.ts";
+import { VehicleLayer } from "./VehicleLayer.ts";
+import { interpolatedFrame, vehiclePose } from "./replay.ts";
 
 interface Props {
   city: City | null;
-  frame: Frame | null;
-  ghostFrame: Frame | null;
+  frames: Frame[];
+  baselineFrames: Frame[];
+  clock: { current: number };
   ghost: boolean;
   ghostOpacity: number;
   pickup: string;
@@ -114,16 +116,13 @@ export function CityView(props: Props) {
     selected.add(pickupMarker, hospitalMarker);
     pickupMarker.visible = false;
     hospitalMarker.visible = false;
-    const active = new THREE.Group(),
-      ghosts = new THREE.Group(),
+    const active = new VehicleLayer(),
+      ghosts = new VehicleLayer(true),
       signalGroup = new THREE.Group();
-    scene.add(active, ghosts, signalGroup);
+    scene.add(active.group, ghosts.group, signalGroup);
     const models = new Map<string, THREE.Group>();
-    const pools = new Map<string, THREE.Group>();
-    const ghostModels = new Map<string, THREE.Group>();
     const signals = new Map<string, THREE.Mesh>();
     const loader = new GLTFLoader();
-    const ownedMaterials = new Set<THREE.Material>();
     const load = async () => {
       try {
         const gltf = await loader.loadAsync(
@@ -186,72 +185,23 @@ export function CityView(props: Props) {
     let lastReset = current.current.reset,
       lastQuality = "",
       lastProps: Props | null = null,
-      lastModelsRevision = -1;
+      lastModelsRevision = -1,
+      lastTime = -1;
     let raf = 0;
-    const setVehicles = (
-      frame: Frame | null,
-      pool: Map<string, THREE.Group>,
-      parent: THREE.Group,
-      ghost: boolean,
-    ) => {
-      for (const o of pool.values()) o.visible = false;
-      for (const v of frame?.vehicles ?? []) {
-        if (ghost && v.type !== "ambulance" && v.id !== "ambulance") continue;
-        let o = pool.get(v.id);
-        const type =
-          v.type === "ambulance" || v.id === "ambulance"
-            ? "ambulance"
-            : models.has(v.type)
-              ? v.type
-              : "car";
-        if (!o) {
-          const template = models.get(type);
-          if (!template) continue;
-          o = new THREE.Group();
-          const model = template.clone(true);
-          if (ghost)
-            model.traverse((child) => {
-              if (child instanceof THREE.Mesh) {
-                const mats = (
-                  Array.isArray(child.material)
-                    ? child.material
-                    : [child.material]
-                ).map(() => {
-                  const m = new THREE.MeshBasicMaterial({
-                    color: 0x87d7ff,
-                    transparent: true,
-                    opacity: current.current.ghostOpacity,
-                    depthWrite: false,
-                  });
-                  ownedMaterials.add(m);
-                  return m;
-                });
-                child.material = Array.isArray(child.material) ? mats : mats[0];
-                child.renderOrder = 3;
-              }
-            });
-          o.add(model);
-          pool.set(v.id, o);
-          parent.add(o);
-        }
-        const [x, y, z, rotation] = vehiclePose(v);
-        o.position.set(x, y + 0.12, z);
-        o.rotation.y = rotation;
-        o.visible = true;
-        if (ghost)
-          o.traverse((child) => {
-            if (child instanceof THREE.Mesh)
-              for (const m of Array.isArray(child.material)
-                ? child.material
-                : [child.material])
-                m.opacity = current.current.ghostOpacity;
-          });
-      }
-    };
     const loop = () => {
       if (disposed) return;
       const p = current.current;
-      const changed = p !== lastProps || modelsRevision !== lastModelsRevision;
+      const changed =
+        p !== lastProps ||
+        modelsRevision !== lastModelsRevision ||
+        p.clock.current !== lastTime;
+      const frame = changed
+        ? interpolatedFrame(p.frames, p.clock.current)
+        : null;
+      const ghostFrame =
+        changed && p.ghost && p.world === "afterlight"
+          ? interpolatedFrame(p.baselineFrames, p.clock.current)
+          : null;
       if (changed) {
         dirty = true;
         if (lastReset !== p.reset) {
@@ -265,24 +215,8 @@ export function CityView(props: Props) {
           lastQuality = p.quality;
           resize();
         }
-        if (
-          p.frame !== lastProps?.frame ||
-          modelsRevision !== lastModelsRevision
-        )
-          setVehicles(p.frame, pools, active, false);
-        if (
-          p.ghostFrame !== lastProps?.ghostFrame ||
-          p.ghost !== lastProps?.ghost ||
-          p.world !== lastProps?.world ||
-          p.ghostOpacity !== lastProps?.ghostOpacity ||
-          modelsRevision !== lastModelsRevision
-        )
-          setVehicles(
-            p.ghost && p.world === "afterlight" ? p.ghostFrame : null,
-            ghostModels,
-            ghosts,
-            true,
-          );
+        active.update(frame?.vehicles ?? [], models);
+        ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
         const point = p.city?.pickups.find((x) => x.id === p.pickup)?.position;
         pickupMarker.visible = Boolean(point);
         if (point)
@@ -293,7 +227,7 @@ export function CityView(props: Props) {
         hospitalMarker.visible = Boolean(hp);
         if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
         for (const s of signals.values()) s.visible = false;
-        for (const signal of p.frame?.signals ?? []) {
+        for (const signal of frame?.signals ?? []) {
           const n = p.city?.nodes.find((n) => n.id === signal.id);
           if (!n) continue;
           let dot = signals.get(signal.id);
@@ -316,7 +250,7 @@ export function CityView(props: Props) {
             camera.zoom = 4;
             camera.updateProjectionMatrix();
           }
-          const ambulance = p.frame?.vehicles.find(
+          const ambulance = frame?.vehicles.find(
             (v) => v.type === "ambulance" || v.id === "ambulance",
           );
           if (ambulance) {
@@ -328,6 +262,7 @@ export function CityView(props: Props) {
         }
         lastProps = p;
         lastModelsRevision = modelsRevision;
+        lastTime = p.clock.current;
       }
       controls.update();
       if (dirty) {
@@ -343,9 +278,10 @@ export function CityView(props: Props) {
       observer.disconnect();
       controls.dispose();
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
+      active.dispose();
+      ghosts.dispose();
       disposeObject(scene);
       for (const model of models.values()) disposeObject(model);
-      for (const m of ownedMaterials) m.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
