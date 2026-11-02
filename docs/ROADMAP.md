@@ -1,23 +1,31 @@
-# AFTERLIGHT roadmap — issued after pass 3
+# AFTERLIGHT roadmap — implementation checkpoint
 
 All times **IST (UTC+05:30)**. Planning begins November 3, 2026 around 01:00. Target submission-ready November 4 at 16:00; organizer deadline November 4 at 20:00. These are bounded work allocations, not guarantees that unmeasured training/rendering will finish in a stated time. Actual pilot results determine scope cuts.
 
+## Current checkpoint — November 3, 02:30 IST
+
+The original asset pack is published and verified: 25 primary junctions plus 32 access/bend/terminal nodes, two hospitals, 100 curb anchors, nine GLBs (1,268,584 bytes). Graph reachability passes for all 200 pickup/hospital pairs; this is not SUMO or traffic validation. Preserve city glTF root transforms and the vehicle center/front-bumper convention. No simulation, viewer, model or benchmark result exists at this checkpoint.
+
+Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
+
 ## Critical path
 
-Correct simulator → complete accounting and diverse actions → frozen evaluation → real paired traces → truthful visual evidence → submission. Art production runs in parallel only after a shared geometry/time contract. A small valid study is mandatory; photorealism is not.
+Documentation checkpoint → three-junction legal scheduler and accounting → canonical full-city importer → genuine paired traces → truthful polished viewer → pilot → frozen evaluation. Frontend and simulation can proceed in parallel after this checkpoint; shared schemas and geometry remain authoritative. A small valid study is mandatory; photorealism is not.
 
-| Window | Work and ownership | Exit evidence / decision |
+| Window (IST) | Focus | Exit evidence / decision |
 |---|---|---|
-| Nov 3 01:00–03:00 | Simulation owner: pin dependencies, tiny three-junction correctness fixture, fixed route, shared phase scheduler. Visual owner: inspect Blender/MCP capability and one-junction export spike. | One ambulance completes with no shortcuts; original GLB loads in target renderer. If MCP blocked, record exact prerequisite and use authorized procedural Blender path, not a claim of MCP success. |
-| 03:00–06:00 | Simulation/evaluation: implement action/ETA contract, immediate/fixed/analytical baselines, full demand accounting and 12–20 episode pilot. Frontend: canonical trace adapter and geometry fixtures. | Runtime/I/O estimate, useful distinct schedules, no future-feature leakage, cardinal-heading/bumper/turn tests pass. Freeze feasible dataset size. |
-| 06:00–12:00 | Evaluation: generate train/validation, fit single residual tree and tune only on validation. Visual: expanded graph-aligned low-poly district, ambulance, instancing and shared-clock replay. | Fixed weight/tie-break/model/split manifest; viewer displays genuine traces and correct signals. If budget overruns, reduce output and episode count before dropping accounting/baselines. |
-| 12:00–16:00 | Evaluation: freeze and run held-out study. Integration: same renderer with local live and recorded adapters; graceful disconnect/fallback. | Paired raw outcomes, censoring/rejection report, no-ML ablation. Decide whether ML earns promotion or must be reported inconclusive/unsuccessful. |
-| 16:00–21:00 | Frontend/design: primary ghost overlay, optional paired inspection, aftermath reveal, decision inspector, accessible metrics and polished lighting. | Timings/metrics agree with exports; keyboard/reduced-motion/error states work; measured frame-time and file-size checks. |
-| 21:00–Nov 4 01:00 | Release: free static deploy if available; independent local reproduction; asset/license/source audit. | Logged-out public access or documented local-only fallback; no secrets; exact tested setup commands and figures in README. |
-| Nov 4 01:00–09:00 | Contingency/rest window and targeted correction of already identified failures. Avoid new scope. | Stable selected demo scenarios, complete evidence, no critical accounting or replay defects. |
-| 09:00–13:00 | Capture polished browser demo, concise narration/captions, screenshot/GIF and results table. | Video shows actual app, simulation label, method, ablation, civilian tradeoff and limitations. No fabricated outcomes. |
-| 13:00–16:00 | Submission checklist, link verification, team/rule confirmation, submit through authorized route. | Verified submission receipt/status, repository and demo links. Registration is not submission. |
-| 16:00–20:00 | Four-hour contingency only: correct broken links/artifacts and verify allowed updates. | Final accepted entry before deadline; preserve receipt. No risky redesign. |
+| Nov 3 02:30–03:00 | Publish this final document pass; pin replay, coordinate and simulation interfaces; begin implementation. | Remote documentation commit precedes application code. Preserve original assets; do not repeat completed art work. |
+| 03:00–04:30 | Python three-junction fixture, legal scheduler and demand accounting; React/Three.js original-asset city and accessible controls in parallel. | Omen executes fixture/unit checks; city root transform preserved; no invented moving traffic or benchmark values. |
+| 04:30–06:00 | Full-city conversion, paired-run exporter and local API; synchronized recorded viewer and fallback/error states. | Real independent-world traces, matching demand hashes and absolute time; canonical roads and route selection; Omen integration checks. |
+| 06:00–08:00 | Iterate on Omen failures, pilot runtime/action diversity, responsive/keyboard/ghost review and documentation. | Working tested vertical slice and honest readiness report at 08:00. Continue useful passes to this checkpoint; completion is not assumed. |
+| 08:00–12:00 | If pilot supports it: freeze practical train/validation budget and residual model; otherwise strengthen valid baseline/evidence. | Group-disjoint manifests, measured runtime, candidate diversity, frozen objective and feature schema. No dataset-size promise before pilot. |
+| 12:00–16:00 | Freeze evaluation and run untouched held-out study when feasible; publish genuine replay subset. | Failure/censoring accounting and strong fixed-lead/analytical comparison. ML may be inconclusive. |
+| 16:00–21:00 | Targeted product polish, evidence inspector, measured frame-time/accessibility checks. | Exact metrics/trace agreement and Omen visual evidence; no unsupported route claims. |
+| 21:00–Nov 4 01:00 | Static release preparation, independent reproduction, provenance/license audit. | Local-only fallback if free hosting is unavailable; deployment only when authorized. |
+| Nov 4 01:00–09:00 | Contingency and correction of known failures; no new scope. | Stable demo cases, complete evidence, no critical accounting/replay defects. |
+| 09:00–13:00 | Capture actual browser demo, captions, screenshots and results table. | Actual app, explicit mode, civilian tradeoff, limitations and real sample count. |
+| 13:00–16:00 | Submission-readiness checklist and owner review. | Repository/demo links, exact team/rules/license details; submission requires authorization. |
+| 16:00–20:00 | Four-hour contingency before organizer deadline. | Authorized corrections and verified receipt if submission is requested. |
 
 ## Parallel work boundaries
 
@@ -64,7 +72,7 @@ Blank fields are intentional pending work, not successful delivery claims.
 
 ## Post-three-pass scope revision — city, ghost and proper-product gate
 
-The expanded 20–25-intersection city, two hospitals/~100 pickups and baseline ghost were added after the original review. **Finish and publish this documentation revision before resuming Blender creation.** Keep the existing deadline; new scope does not extend time. Map and asset work can resume against one accepted graph after that gate.
+The expanded 20–25-intersection city, two hospitals/~100 pickups and baseline ghost were added after the original review. The documentation-first revision and original Blender asset work are complete. **Publish the implementation checkpoint before application code.** Keep the existing deadline; new scope does not extend time. Map and asset work can resume against one accepted graph after that gate.
 
 1. **Authoritative topology first:** graph IDs, roads, hospital access and pickup anchors; validate direction/connectivity. Existing three-junction fixture remains the first simulation test, not the final whole map.
 2. **Thin end-to-end spike:** graph → SUMO geometry → Blender GLB → renderer; cardinal/bumper fixtures; ordinary and AFTERLIGHT traces; render-only ghost with world-isolation tests.

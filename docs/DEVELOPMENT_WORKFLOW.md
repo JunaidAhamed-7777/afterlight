@@ -15,3 +15,7 @@ Per the project owner's instruction, commit and push very frequently: after each
 - Keep canonical assets and their manifests consistent after regeneration. Validate geometry, coordinates and exports independently of visual polish.
 
 Small commits are a recovery and review tool, not a numerical goal. Do not fabricate progress, create empty commits or rewrite published history to inflate activity.
+
+## Development and acceptance locations
+
+Implementation is performed on the cloud PC. At the owner's request, all tests, browser QA, benchmarks and training/experiment execution are performed on Omen in `C:\Github\afterlight`. Cloud build/compilation may support development but must not be presented as acceptance testing. Each checkpoint records its commit and exact local commands; pending checks remain explicitly unverified. Return local failures to the implementation owner, publish a focused fix, and rerun affected checks locally. Do not work around cloud WebGL restrictions or substitute synthetic evidence for a local result.

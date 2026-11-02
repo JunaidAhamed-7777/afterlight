@@ -92,6 +92,6 @@ Ghost position may overlap active-world vehicles or appear to pass an active-wor
 
 ### Graph integration details
 
-The topology worker's current draft proposes an approximately 1 km² irregular 5×5 primary-junction district with service roads; this is a draft, not a validated SUMO export. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
+The published canonical manifest defines an approximately 1 km² irregular 5×5 primary-junction district with service roads. Its graph/geometry checks pass; it is not yet a validated SUMO export. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
 
 Use deterministic pickup/hospital IDs and valid network curb anchors rather than arbitrary building centroids. With 100 pickups and two hospitals, validate reachability for the 200 potential origin/destination pairs, including permitted vehicle access and endpoint placement. This is a graph-connectivity target, **not 200 benchmarked traffic cases**. Persist route availability and manifest revision for UI selection; do not expose a visually plausible but disconnected route.

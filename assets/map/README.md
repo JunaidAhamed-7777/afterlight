@@ -1,6 +1,6 @@
 # Afterlight canonical city manifest
 
-Original deterministic procedural layout; no external map datasets, models, textures, or paid services. This directory is local staging, not a public repository publication.
+Original deterministic procedural layout; no external map datasets, models, textures, or paid services. This directory is the published canonical geometry source.
 
 ## Reproduce and validate
 
@@ -37,7 +37,7 @@ python validate_city.py
 
 The validator checks this graph and rectangular footprint geometry. It does **not** claim SUMO import, lane-level junction geometry, swept-path feasibility, signal-controller correctness, traffic dynamics, AI performance, or browser performance. `sumo` and `netconvert` were not available in this workspace. Before integration, import into SUMO, inspect lane connections and hospital maneuvers, and reconcile any required geometry change back into this source manifest before re-exporting art. No art/network divergence is accepted merely because both render.
 
-Static city targets: **<150,000 triangles** and **<10 MB GLB**. These are budgets, not measured export results; the Blender worker must report actual exported counts/bytes and visual QA.
+Static city targets: **<150,000 triangles** and **<10 MB GLB**. The published city export is 14,552 triangles; all nine GLBs total 1,268,584 bytes. These asset measurements do not establish dynamic browser performance.
 
 ## Documentation / evaluation impact
 

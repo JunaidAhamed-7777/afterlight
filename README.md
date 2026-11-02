@@ -2,7 +2,7 @@
 
 **Clear the ambulance’s path. Then clear the congestion left behind.**
 
-A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a planned 20–25-intersection city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
+A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
 > **Status: verified asset prototype; simulation and product implementation pending.** Original city and vehicle assets have been authored through a verified cloud Blender 4.3.2 MCP connection and checked. No completed simulator, trained model, measured traffic improvement or deployment is claimed. Browser WebGL rendering and frame times remain untested.
 
@@ -21,7 +21,7 @@ Emergency preemption itself is established work. Our intended distinction is the
 
 ## Intended deliverable
 
-- Python/SUMO experiment with a 20–25-intersection city target (25-node plan), two hospitals and approximately 100 pickup locations, with a three-intersection fixed-route correctness fixture.
+- Python/SUMO experiment with a 25-primary-junction canonical city, two hospitals and approximately 100 pickup locations, with a three-intersection fixed-route correctness fixture.
 - Learned timing selector compared with strong non-learned baselines on unseen whole scenarios.
 - Original low-poly Blender-authored city assets: multicolored cuboid buildings, simple cars/trucks/bikes and a more detailed stylized ambulance; React/Three.js experiment viewer.
 - Free static public replay viewer, plus local simulation and a compelling recorded demo.
@@ -50,7 +50,7 @@ ChatGPT assisted with research, architectural planning, documentation, critical 
 
 ## Expanded city and fair comparison
 
-The target map has 20–25 intersections (the working topology plan uses 25), two hospitals and approximately 100 pickup locations. These are a world/route-selection target, **not proof of 100 trained routes or city-wide model generalization**. The three-junction corridor remains the initial correctness fixture before city scaling. Traffic is seeded and randomized; whole demand realizations, seeds and appropriate route/regime groups are held out. Randomness alone does not establish freedom from overfitting.
+The published map has 25 primary junctions plus 32 access/bend/terminal nodes, two hospitals and 100 curb pickup anchors. These are a world/route-selection target, **not proof of 100 trained routes or city-wide model generalization**. The three-junction corridor remains the initial correctness fixture before city scaling. Traffic is seeded and randomized; whole demand realizations, seeds and appropriate route/regime groups are held out. Randomness alone does not establish freedom from overfitting.
 
 The ghost is a counterfactual overlay, not a second emergency vehicle in the active world. Its independent baseline queues/signals may differ, so apparent crossings through visible AFTERLIGHT cars or red lights must be explained with a label and optional separate-world view—not cosmetically corrected. See [the updated contracts](docs/ARCHITECTURE.md).
 
