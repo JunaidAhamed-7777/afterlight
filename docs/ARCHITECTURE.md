@@ -30,7 +30,7 @@ Candidate lead `L` is one of `{0, 5, 10, 20, 30}` seconds. For intersection `i`,
 
 A single depth-limited tree regressor is the initial model family: predict a scalar residual in the predeclared objective J (seconds-equivalent), not independent component residuals. ExtraTrees is a possible validation-stage alternative only if the simple tree is insufficient; not a prevalidated winner. Use validation to choose model/hyperparameters and fixed objective weights; freeze before test. Prefer interpretable features and a small model over adding neural depth for appearance.
 
-All priority variants use the same transition, release and recovery scheduler; ordinary fixed-time control has no special recovery. Otherwise a comparison could mistakenly credit learning for a different post-priority controller. Recovery initially follows a documented debt/queue-aware legal phase schedule with capped service starvation; no claim of guaranteed bounded waits under infeasible demand.
+All priority variants within each evaluated network use the same transition, release and recovery scheduler; ordinary fixed-time control has no special recovery. Otherwise a comparison could mistakenly credit learning for a different post-priority controller. Recovery initially follows a documented debt/queue-aware legal phase schedule with capped service starvation; no claim of guaranteed bounded waits under infeasible demand.
 
 ## Planned modules and ownership
 
@@ -73,3 +73,25 @@ Training label: `r(e,L) = J_SUMO(e,L) - J_analytical(x_e,L)`. Prediction: `J_hat
 Feature rows need source, unit, observation timestamp, sensor lag and inference availability. Arrival windows end no later than dispatch minus the declared lag. Forbid actual future passage, rollout queues/outcomes, seed IDs, demand-regime labels, future route departures and oracle action. Candidate rows share identical observed state; only candidate-specific analytical inputs differ.
 
 ETA uses current ambulance position, route geometry and observed queue estimates; freeze its exact formula during validation. Log request plan, actual request, legal priority-green onset, passage and release for each junction. Configure minimum green, yellow, all-red, maximum priority hold and release timeout explicitly before experiment generation.
+
+## Expanded-city contract (post-three-pass revision)
+
+The map target is 20–25 intersections, with a working 25-node authoritative graph, two hospitals and about 100 pickup anchors. A graph manifest owns node/edge geometry, lanes, junction IDs, hospital access and pickup IDs. SUMO and Blender both derive from it; no independently drawn frontend road network. Validate every offered pickup-to-hospital route for connectivity, drivable direction and endpoint placement before enabling it. A pickup anchor is a route point, not an additional junction.
+
+Maintain two scale tiers: (1) three-junction fixed-route correctness fixture and (2) the expanded city. Validate scheduling, route length, action diversity, transition timing and complete runtime on tier 2 before claiming the model works there. The original five-lead action and frozen ETA are corridor experiments; adapting them to variable-length routes requires a documented feature/action contract and newly appropriate held-out evaluation. Do not silently treat every city route as already covered by a three-junction model.
+
+## Ghost-ambulance world isolation
+
+Maintain separate `world_id=afterlight` and `world_id=baseline` simulations. Pre-generate the same exogenous traffic schedule, vehicle types/routes, dispatch and ambulance route for a paired run. AFTERLIGHT contains the solid ambulance and its own civilians/signals responding to AFTERLIGHT policy. Baseline has ordinary signals, its own civilians/queues and its own ambulance without AFTERLIGHT preemption. Policy effects can change insertion and queues; identical scheduled demand does not mean identical realized traffic.
+
+Primary rendering uses AFTERLIGHT traffic/signals plus its solid ambulance. The baseline ambulance pose becomes a translucent light-blue, gently emissive **render-only ghost**. Never add it as a vehicle, collider, detector input, TraCI object, priority request or signal trigger in the AFTERLIGHT simulator. Baseline traffic/signals remain separately available for inspection rather than blended into active truth.
+
+Both worlds use the same absolute simulated timestamp, origin and route scale. Do not normalize journey duration, speed up a losing trace or interpolate invented progress to make a race. A local live pair may advance with a synchronization barrier; if one world stalls, pause shared playback and label the state rather than presenting stale pose as live. Static replays use the same adapter/time contract.
+
+Ghost position may overlap active-world vehicles or appear to pass an active-world red light because its own world has different queues/signals. Show a permanent “Baseline ghost — separate world” label, ghost toggle and separate baseline inspection view. Never adjust its trajectory to avoid this visual discrepancy. Show actual elapsed/arrival times and censoring; distance gaps alone are not claimed seconds saved.
+
+### Graph integration details
+
+The topology worker's current draft proposes an approximately 1 km² irregular 5×5 primary-junction district with service roads; this is a draft, not a validated SUMO export. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
+
+Use deterministic pickup/hospital IDs and valid network curb anchors rather than arbitrary building centroids. With 100 pickups and two hospitals, validate reachability for the 200 potential origin/destination pairs, including permitted vehicle access and endpoint placement. This is a graph-connectivity target, **not 200 benchmarked traffic cases**. Persist route availability and manifest revision for UI selection; do not expose a visually plausible but disconnected route.

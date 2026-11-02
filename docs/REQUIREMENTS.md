@@ -32,10 +32,16 @@ The demo audience is a technical judge asking whether intelligent emergency prio
 
 ## Scope lock
 
-MVP: three intersections; one network; one fixed route; one ambulance; explicit dispatch instant; discrete clearance leads; shared legal signal scheduler; one policy decision at dispatch; paired full-run replays; deterministic recorded visualizations.
+Current target: 20–25 primary intersections (25-primary-junction topology under preparation, plus separately identified service/driveway nodes), two hospitals and approximately 100 pickup locations; original low-poly city with simple multicolored buildings and traffic archetypes; one detailed stylized ambulance. Keep a three-intersection fixed-route fixture for controller correctness before city scaling. First validated learning experiment may remain corridor-scoped; exposing map pickup selection does not prove learned arbitrary-route performance. One ambulance per independently simulated world, one dispatch decision, shared legal scheduler across priority variants and seeded paired demand remain constraints. A render-only baseline ghost overlays the active AFTERLIGHT world.
 
-Out of scope: real road control, multiple ambulance routing, arbitrary city import, reinforcement learning training, live sensor integration, cloud GPU inference, accounts, collaborative editing, map search, medical claims, paid APIs.
+Out of scope: real road control, multiple simultaneous emergency dispatches, arbitrary city import, reinforcement learning training, live sensor integration, cloud GPU inference, accounts, collaborative editing, map search, medical claims, paid APIs.
 
 ## Definition of impressive
 
 The visual signature is one synchronized city shown in two counterfactual outcomes, then an aftermath reveal. The scientific signature is an honest ablation explaining whether learning helps. A small, convincing experiment beats a large untestable command center. If the learned model loses, show that clearly and investigate; never cherry-pick a cinematic win and label it the overall result.
+
+## Post-review scope change
+
+The expanded map and ghost overlay were requested after the original three-pass review. They require new topology, route-connectivity, runtime and world-isolation checks; the earlier review is not evidence those expanded checks already passed. Approximately 100 pickups are planned valid route anchors, not 100 extra intersections. Exact IDs, hospital connections and pickup placement belong to the authoritative graph manifest, not independently invented frontend coordinates.
+
+Graph reachability acceptance targets all 200 possible pickup/hospital pairs, with deterministic curb-anchor IDs and valid vehicle permissions. Benchmark coverage is reported separately; a connected pair is not an evaluated scenario. The expanded district should feel roughly kilometer-scale while keeping primary intersections near 25; service-road geometry does not require hundreds of extra signal controllers.

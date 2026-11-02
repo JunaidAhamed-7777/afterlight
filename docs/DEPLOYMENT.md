@@ -20,3 +20,7 @@ The public viewer can switch among exported scenarios, scrub synchronized outcom
 - Submission URL and repository work from a logged-out browser.
 
 If hosting is blocked, local code plus a strong truthful demo remains the fallback because deployment is recommended rather than mandatory. Spend no money to rescue deployment. Final README must state what runs locally versus what the public URL actually does.
+
+## Expanded product capabilities
+
+Public static mode may expose the city, pickup/hospital catalog and only prerecorded combinations actually available, with clear unavailable states. It cannot run arbitrary randomized demand by pretending a new seed has been simulated. Local live mode is separate and advertises only implemented validated routes. Both share ghost/world-isolation semantics, error/retry behavior and accessible metrics. Preload the minimal map; lazy-load scenario traces and optional detail rather than shipping every pickup combination upfront. No new paid storage account is assumed.

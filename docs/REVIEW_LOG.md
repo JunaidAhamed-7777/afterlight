@@ -32,3 +32,11 @@ Completed after independent benchmark and Blender pipeline reviews. This is a do
 | MCP assumed installed or safe by name | Runtime unverified, third-party arbitrary-code boundary documented; no installation claimed. |
 
 Remaining unknowns are implementation measurements: SUMO runtime, useful action diversity, ML improvement, actual browser performance, installed Blender/MCP capability and final host availability. They are gates, not reasons to invent results. The [roadmap](ROADMAP.md) was written after these revisions and prioritizes closing those unknowns.
+
+## Post-three-pass user revision — expanded city and ghost (2 November, 19:43 UTC)
+
+The user expanded the world to 20–25 intersections, two hospitals and approximately 100 pickup locations; requested low-poly multicolored cuboid scenery/traffic with a detailed ambulance; and required a light-blue baseline ghost. This is a **new scope revision**, not something the original three-pass audit already validated.
+
+Updated the README, architecture, benchmarks, design, Blender pipeline, viewer, deployment and roadmap coherently. The ghost is render-only data from a separate ordinary baseline world, synchronized in absolute time; it has no AFTERLIGHT physics/control effects. Visible traffic/signals belong to AFTERLIGHT. Added overlap explanation, world toggle, group-held-out randomness limits, expanded-map runtime gates, graph-derived anchors, product error/accessibility states and concrete low-poly/rendering budgets. Three-junction correctness fixture retained. Documentation-first sequencing explicitly precedes renewed Blender production.
+
+No full-city learning, finished assets, performance measurements or anti-overfitting guarantee is asserted by this update. Those require implementation and evidence.

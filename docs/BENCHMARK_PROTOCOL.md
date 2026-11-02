@@ -2,7 +2,7 @@
 
 ## Experiment
 
-Use one three-intersection network and fixed ambulance route. Vary civilian arrival patterns, queue states, dispatch times and reproducible seeds. Keep full demand files and route permissions identical across policies. Replay each policy from `t=0`; do not assume save/load restores all RNG and route state.
+Use a three-intersection fixed-route correctness fixture first; scale to the planned 25-intersection city only after validity and runtime gates. Vary civilian arrival patterns, queue states, dispatch times and reproducible seeds. Keep full demand files and route permissions identical across policies. Replay each policy from `t=0`; do not assume save/load restores all RNG and route state.
 
 Primary experiment disables SUMO bluelight behavior. Its documented privileges can ignore red lights, alter surrounding traffic or introduce emergency teleport behavior, confounding the controller. Ambulance visuals do not confer simulator privileges. Record all collision, teleport and signal-constraint events. Safety assertions are simulator checks, not real-world certification.
 
@@ -10,7 +10,7 @@ Primary experiment disables SUMO bluelight behavior. Its documented privileges c
 
 1. Ordinary fixed-time signals.
 2. Actuated or max-pressure baseline, only if correctly implemented and described.
-3. Immediate priority: request all three intersections at dispatch, respecting legal transitions.
+3. Immediate priority: request all controlled route intersections at dispatch (three in the correctness fixture), respecting legal transitions.
 4. Best fixed lead chosen on validation from the same action set.
 5. Analytical candidate selector without learned residuals, sharing all other components.
 6. Learned residual selector.
@@ -62,3 +62,11 @@ The objective is defined once in [Architecture](ARCHITECTURE.md). Its horizon in
 Use identical predefined validity and completion rules for every policy. A policy-caused invalid run or failure to complete the common drain is ranked **infeasible**, behind feasible completed outcomes, with explicit failure count and reason; never assign an invented finite completion cost. Among infeasible outcomes report failure categories, common-horizon burden and backlog rather than claiming a comparable completed-trip objective. Infrastructure/tool failures are separately identified and retried under the same documented policy; they are not silently counted as traffic failures or erased.
 
 Finite residual regression labels exist only for completed, valid candidate outcomes. Keep infeasible candidate rows in the dataset manifest with validity status and no fabricated numeric target. Report how many labels lack a finite target and which episodes are affected. This means a regression-only selector may not predict feasibility: do not conceal that limitation or remove difficult episodes from test. If selected actions are infeasible, count those policy failures in the headline comparison before any conditional finite-cost analysis. Any additional feasibility model or constraint must be trained/calibrated without test access and applied consistently. Full-episode evaluation retains every held-out episode, including all-infeasible cases.
+
+## Expanded-city and ghost revision gates
+
+Seeded randomness creates reproducible variation, not proof against overfitting. Keep demand-realization groups disjoint; for city-level claims include declared held-out origin/destination or route families and demand regimes, not only new random numbers on an identical easy corridor. Do not claim generalization across every pickup/hospital combination unless sampled coverage supports it. Publish tested route count, route-length/junction distribution and failure counts alongside episode counts.
+
+The ghost must replay the ordinary baseline's actual trajectory from its independent simulation, not a synthetic speed curve. Unit/integration checks assert no ghost ID in AFTERLIGHT simulation vehicles/detectors/priority events, equal absolute timestamps, matching input hashes, and identical exported pose to the baseline trace. Traffic responds to the solid ambulance only in AFTERLIGHT; baseline has its own ordinary signal/traffic evolution. Apparent ghost/visible-traffic overlap is a rendering explanation issue, never a reason to alter benchmark trajectories.
+
+Re-run the complete runtime pilot on the expanded graph before carrying over dataset or latency estimates. Twenty-five intersections, longer routes and randomized traffic can change both simulation cost and feature distribution. The three-junction result is a fixture result until expanded evaluation passes. Freeze any new route-conditioned features or variable-length action semantics before that test; prior review does not validate new model scope.

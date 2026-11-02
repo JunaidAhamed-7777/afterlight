@@ -8,11 +8,11 @@ Correct simulator → complete accounting and diverse actions → frozen evaluat
 
 | Window | Work and ownership | Exit evidence / decision |
 |---|---|---|
-| Nov 3 01:00–03:00 | Simulation owner: pin dependencies, tiny three-junction network, fixed route, shared phase scheduler. Visual owner: inspect Blender/MCP capability and one-junction export spike. | One ambulance completes with no shortcuts; original GLB loads in target renderer. If MCP blocked, record exact prerequisite and use authorized procedural Blender path, not a claim of MCP success. |
+| Nov 3 01:00–03:00 | Simulation owner: pin dependencies, tiny three-junction correctness fixture, fixed route, shared phase scheduler. Visual owner: inspect Blender/MCP capability and one-junction export spike. | One ambulance completes with no shortcuts; original GLB loads in target renderer. If MCP blocked, record exact prerequisite and use authorized procedural Blender path, not a claim of MCP success. |
 | 03:00–06:00 | Simulation/evaluation: implement action/ETA contract, immediate/fixed/analytical baselines, full demand accounting and 12–20 episode pilot. Frontend: canonical trace adapter and geometry fixtures. | Runtime/I/O estimate, useful distinct schedules, no future-feature leakage, cardinal-heading/bumper/turn tests pass. Freeze feasible dataset size. |
-| 06:00–12:00 | Evaluation: generate train/validation, fit single residual tree and tune only on validation. Visual: modular twilight district, ambulance, instancing and shared-clock replay. | Fixed weight/tie-break/model/split manifest; viewer displays genuine traces and correct signals. If budget overruns, reduce output and episode count before dropping accounting/baselines. |
+| 06:00–12:00 | Evaluation: generate train/validation, fit single residual tree and tune only on validation. Visual: expanded graph-aligned low-poly district, ambulance, instancing and shared-clock replay. | Fixed weight/tie-break/model/split manifest; viewer displays genuine traces and correct signals. If budget overruns, reduce output and episode count before dropping accounting/baselines. |
 | 12:00–16:00 | Evaluation: freeze and run held-out study. Integration: same renderer with local live and recorded adapters; graceful disconnect/fallback. | Paired raw outcomes, censoring/rejection report, no-ML ablation. Decide whether ML earns promotion or must be reported inconclusive/unsuccessful. |
-| 16:00–21:00 | Frontend/design: paired views, aftermath reveal, decision inspector, accessible metrics and polished lighting. | Timings/metrics agree with exports; keyboard/reduced-motion/error states work; measured frame-time and file-size checks. |
+| 16:00–21:00 | Frontend/design: primary ghost overlay, optional paired inspection, aftermath reveal, decision inspector, accessible metrics and polished lighting. | Timings/metrics agree with exports; keyboard/reduced-motion/error states work; measured frame-time and file-size checks. |
 | 21:00–Nov 4 01:00 | Release: free static deploy if available; independent local reproduction; asset/license/source audit. | Logged-out public access or documented local-only fallback; no secrets; exact tested setup commands and figures in README. |
 | Nov 4 01:00–09:00 | Contingency/rest window and targeted correction of already identified failures. Avoid new scope. | Stable selected demo scenarios, complete evidence, no critical accounting or replay defects. |
 | 09:00–13:00 | Capture polished browser demo, concise narration/captions, screenshot/GIF and results table. | Video shows actual app, simulation label, method, ablation, civilian tradeoff and limitations. No fabricated outcomes. |
@@ -61,3 +61,17 @@ Never cut honest accounting, untouched test, input provenance, legal transitions
 - Submission timestamp and verified receipt:
 
 Blank fields are intentional pending work, not successful delivery claims.
+
+## Post-three-pass scope revision — city, ghost and proper-product gate
+
+The expanded 20–25-intersection city, two hospitals/~100 pickups and baseline ghost were added after the original review. **Finish and publish this documentation revision before resuming Blender creation.** Keep the existing deadline; new scope does not extend time. Map and asset work can resume against one accepted graph after that gate.
+
+1. **Authoritative topology first:** graph IDs, roads, hospital access and pickup anchors; validate direction/connectivity. Existing three-junction fixture remains the first simulation test, not the final whole map.
+2. **Thin end-to-end spike:** graph → SUMO geometry → Blender GLB → renderer; cardinal/bumper fixtures; ordinary and AFTERLIGHT traces; render-only ghost with world-isolation tests.
+3. **Expanded runtime gate:** pilot actual city rollouts and route lengths before committing the old dataset budget. If full-city ML is not feasible, expose the city honestly with validated corridors and mark unsupported runs; do not fake arbitrary-route intelligence.
+4. **Low-poly production:** cuboid color-varied buildings, simple cars/trucks/bikes, two hospital landmarks, detailed ambulance shared with the ghost. Instancing/LOD/material sharing before extra decorative detail.
+5. **Product gate:** searchable valid pickup/hospital selection, clear local-live/public-replay modes, loading/error/retry, disconnect handling, responsive controls, keyboard/reduced motion, results fallback and no stale metrics.
+6. **Performance gate:** measure worst demand and camera, per-file transfer, visible triangles/draw calls, frame-time p95 and memory stability. Optimize ghost overlay first; optional paired city is secondary.
+7. **Evidence gate:** group-held-out randomized scenarios, route coverage statement, actual baseline trajectory and unchanged timings. Randomness is not an anti-overfitting proof.
+
+Preserve a polished browser-recorded demo and truthful results. Cut city ornament, then unsupported route breadth and simultaneous duplicate rendering before cutting accounting or validity. “100 pickups available to select” must never be used as a substitute for 100 evaluated routes. New stages replace discretionary polish time in the existing schedule; they are not additional time after the deadline.

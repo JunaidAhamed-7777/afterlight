@@ -10,7 +10,7 @@ Review telemetry behavior against the pinned release. Upstream describes opt-in 
 
 ## Asset plan
 
-Author original procedural geometry: three-intersection road kit, lanes/stoplines, signals, restrained building silhouettes, civilian vehicle variants and one recognizable ambulance. Keep one metric scale. Organize collections by reusable object class; name origins and pivots predictably. Export camera-independent geometry, not a complete baked film masquerading as interaction.
+Author original procedural geometry: 20–25-intersection modular road kit with a three-junction test fixture, lanes/stoplines, signals, restrained building silhouettes, civilian vehicle variants and one recognizable ambulance. Keep one metric scale. Organize collections by reusable object class; name origins and pivots predictably. Export camera-independent geometry, not a complete baked film masquerading as interaction.
 
 GLB export uses applied transforms, sensible normals, simple PBR materials and small textures. Test one intersection and one vehicle in the web runtime before building the full city. Instances share geometry/materials. Bake complex procedural materials to supported textures when needed; do not expect Blender shader nodes or Cycles lighting to transfer directly to glTF.
 
@@ -19,7 +19,7 @@ GLB export uses applied transforms, sensible normals, simple PBR materials and s
 1. Verify available Blender version and MCP connection without changing security settings.
 2. Create a tiny metric-scale intersection and ambulance; save source `.blend` and generation script.
 3. Export a GLB; inspect bounds, axes, normals, material appearance and file size in the intended viewer.
-4. Establish reusable modular pieces; build only the three intersections needed by the experiment.
+4. Establish reusable modular pieces; assemble the authoritative city graph only after the three-junction fixture aligns.
 5. Map canonical simulator trajectories to assets; compare stopline and turning alignment.
 6. Add restrained lighting, route illumination, camera and afterglow queue visualization.
 7. Test lower-power rendering and reduced-motion/static fallbacks.
@@ -54,3 +54,19 @@ Initial targets: first scene transfer ≤5 MiB, essential 3D ≤10 MiB, each fil
 Run glTF validation and review warnings, then actual target-browser smoke tests; validator success alone does not guarantee appearance. Cold load, start/end seek, pause/resume, spawn/despawn, disconnection and asset-size checks are release gates.
 
 The bridge defaults to an unauthenticated localhost socket (documented port 9876) and can execute arbitrary Python. Loopback and reviewed scripts matter; optional safe mode is not a sandbox. No installation or code-level security audit has been performed. Do not enable external asset-generation integrations merely to achieve visual polish.
+
+## Expanded low-poly asset requirements and sequencing
+
+This final documentation revision precedes further Blender creation. Planned asset work resumes only after the revised contracts are accepted/published. Do not treat parallel planning as permission to race ahead with a different map.
+
+Create reusable cuboid building archetypes with vertex/instance color variation, simple car/truck/bike archetypes, two hospital landmarks and one more detailed stylized ambulance. The baseline ghost reuses the ambulance mesh with a dedicated cheap cyan translucent material; it is not a second separately authored high-cost model. Keep wheels and tiny fittings static unless they materially improve close-up readability. Never use protected emergency emblems by assumption.
+
+Proposed geometry budgets: building archetype 12–300 triangles; civilian car/truck/bike 100–600 each; ambulance 2,000–5,000; hospital landmark 500–2,000. These are asset targets to validate in export, not achieved counts. Share material palettes and mesh instances; avoid one unique texture/material per building. Use simple LOD meshes or hide small props at overview scale; retain signal/route meaning in every LOD. Static repeated scenery is batched by spatial zone, moving vehicles instanced with correct ID slots/bounds.
+
+Keep prior whole-scene ≤150k visible triangles, ≤100 draw calls for primary overlay and ≤180 optional paired-view targets. The full map may exceed them without LOD, so validate worst camera/demand rather than summing only archetype geometry. Prefer ghost overlay over duplicate whole-city rendering. Initial target GPU-resident geometry/textures ≤128 MiB on the test configuration, with estimated allocation documented and no leak across repeated scenario changes; available browser GPU memory is not universally observable. Record renderer counters plus process/device evidence, not an invented exact VRAM reading.
+
+Maintain initial scene ≤5 MiB transfer, essential 3D ≤10 MiB, individual file <20 MiB, p95 frame time ≤33ms on declared target hardware/resolution. Profile cold load, peak randomized demand, route selection, ghost toggling and multiple scenario switches. Reduce materials/textures/props before removing product functionality. No universal FPS or device compatibility claim until measured.
+
+### Dynamic traffic load budget
+
+Initial profiling workload: 300 simultaneously visible civilian vehicles plus the solid ambulance and one render-only ghost; stress at 600 if simulation demand produces that population. These are profiling targets, not achieved capacity or a cap on scientific demand. Use simple shared meshes/materials and instance transforms, with bikes/trucks represented by their own low-poly archetypes. Pool instances and update only active transforms, not rebuild meshes per frame. If the real worst-case population exceeds the target, profile that actual peak and report it. Do not silently delete simulator vehicles or thin benchmark demand to hit a rendering target. At overview scale, explicit aggregate/LOD traffic representations are allowed only if labeled and metrics retain every vehicle; normal view should preserve individual traffic when feasible.

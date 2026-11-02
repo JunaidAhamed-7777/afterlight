@@ -2,17 +2,18 @@
 
 **Clear the ambulance’s path. Then clear the congestion left behind.**
 
-A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies across a three-intersection corridor and makes both the ambulance benefit and civilian aftermath visible.
+A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a planned 20–25-intersection city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
-> **Status: documentation and design only.** No simulator implementation, trained model, measured improvement, deployment, or working Blender MCP connection is claimed here. All performance numbers below are targets or experimental definitions until backed by released runs.
+> **Status: documentation and design only.** City/asset work is being prepared separately; no completed simulator, trained model, measured improvement or deployment is claimed here. All performance numbers below are targets or experimental definitions until backed by released runs.
 
 ## Why Afterlight stands out
 
-A basic emergency-priority demo turns a light green and celebrates the ambulance arriving sooner. **AFTERLIGHT tells the harder, more impressive story: prepare the corridor before arrival, then reveal what that decision leaves behind.** Three intersections become an architectural miniature with two synchronized futures: the same external traffic demand, different signal decisions, and an aftermath you can inspect rather than take on trust.
+A basic emergency-priority demo turns a light green and celebrates the ambulance arriving sooner. **AFTERLIGHT tells the harder, more impressive story: prepare the corridor before arrival, then reveal what that decision leaves behind.** A compact city becomes an architectural miniature with two synchronized futures: the same external traffic demand, different signal decisions, and an aftermath you can inspect rather than take on trust.
 
 - **Predictive pre-clearance, not a cosmetic green wave.** A Python model is designed to learn where an analytical estimate is wrong and choose a clearance lead from observed conditions.
 - **The city matters after the ambulance passes.** Civilian queues, insertion backlog and recovery remain visible. A faster emergency journey is not automatically a better overall decision.
 - **Evidence built into the experience.** Paired traces, a no-learning ablation, a validation-tuned fixed lead and held-out scenarios are part of the product—not a results slide added at the end.
+- **A ghost that makes the counterfactual immediate.** A light-blue translucent baseline ambulance shares the same simulation clock but comes from a separate ordinary-signal world. Only the solid AFTERLIGHT ambulance affects the visible AFTERLIGHT traffic; the ghost never changes it.
 - **A distinctive visual instrument.** Original Blender-authored streets, a clearly readable ambulance and synchronized camera choreography make the experiment compelling without hiding its mechanics.
 - **A serious zero-paid-backend delivery plan.** The real simulator runs locally; a free public viewer exposes versioned experiment replays, provenance and results without pretending recorded data is live.
 
@@ -20,9 +21,9 @@ Emergency preemption itself is established work. Our intended distinction is the
 
 ## Intended deliverable
 
-- Python/SUMO experiment with three signalized intersections and one fixed ambulance route.
+- Python/SUMO experiment with a 20–25-intersection city target (25-node plan), two hospitals and approximately 100 pickup locations, with a three-intersection fixed-route correctness fixture.
 - Learned timing selector compared with strong non-learned baselines on unseen whole scenarios.
-- Original Blender-authored city assets and a React/Three.js experiment viewer.
+- Original low-poly Blender-authored city assets: multicolored cuboid buildings, simple cars/trucks/bikes and a more detailed stylized ambulance; React/Three.js experiment viewer.
 - Free static public replay viewer, plus local simulation and a compelling recorded demo.
 - Reproducible benchmark manifests, raw outcomes, honest limitations, and setup instructions.
 
@@ -46,3 +47,9 @@ Simulation research, not a real-world traffic control system. No safety certific
 ## AI-assistance disclosure
 
 ChatGPT assisted with research, architectural planning, documentation and critical review for this documentation stage. No implementation, trained model or generated Blender asset is claimed yet. Update this disclosure with actual implementation/asset tools and their roles as work proceeds; human review remains responsible for factual accuracy, licensing and submission compliance.
+
+## Expanded city and fair comparison
+
+The target map has 20–25 intersections (the working topology plan uses 25), two hospitals and approximately 100 pickup locations. These are a world/route-selection target, **not proof of 100 trained routes or city-wide model generalization**. The three-junction corridor remains the initial correctness fixture before city scaling. Traffic is seeded and randomized; whole demand realizations, seeds and appropriate route/regime groups are held out. Randomness alone does not establish freedom from overfitting.
+
+The ghost is a counterfactual overlay, not a second emergency vehicle in the active world. Its independent baseline queues/signals may differ, so apparent crossings through visible AFTERLIGHT cars or red lights must be explained with a label and optional separate-world view—not cosmetically corrected. See [the updated contracts](docs/ARCHITECTURE.md).
