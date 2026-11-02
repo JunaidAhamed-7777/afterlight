@@ -54,3 +54,18 @@ replacement for exact command logs, generated evidence or future reruns.
 - Official, lock-integrity-verified Windows dependency transfer artifacts are
   being prepared separately from application source. No tests or simulations
   were moved to the cloud.
+
+## 2026-11-02, `1312e865` cohort (reported 23:25 UTC)
+
+- **Passed:** 119 Python tests (API25 / simulation55 / evaluation39); one optional
+  synthetic ML test was skipped because its explicit opt-in and scikit-learn
+  prerequisites were not provided. Evaluation completed after an earlier tooling
+  interruption; the interruption itself was not a test failure.
+- **Frontend:** 44 tests passed; one failed with `ERR_MODULE_NOT_FOUND` for Three
+  because the dependency installation remains incomplete. This is not a complete
+  frontend pass. No product browser rendering or frame-time result exists yet.
+- No SUMO conversion, paired run, real replay, pilot, or held-out study ran.
+- Source-bound compiled application previews are being prepared to allow browser
+  QA independently of npm installation. They do not satisfy source-install/build
+  reproducibility or simulator acceptance gates. Browser test harnesses also need
+  the same safe default-flag exclusions used in the earlier capability check.

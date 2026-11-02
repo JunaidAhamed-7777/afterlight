@@ -38,7 +38,11 @@ def main() -> None:
     with sync_playwright() as p:
         browser = p.chromium.launch(
             channel=args.channel, headless=args.headless, chromium_sandbox=True,
-            ignore_default_args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+            ignore_default_args=[
+                "--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage",
+                "--enable-unsafe-swiftshader", "--unsafely-disable-devtools-self-xss-warnings",
+                "--disable-ipc-flooding-protection", "--disable-client-side-phishing-detection",
+            ],
         )
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
         page = context.new_page()

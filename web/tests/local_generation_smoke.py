@@ -34,14 +34,20 @@ def main() -> None:
     report = {"scope": "SYNTHETIC UI PROTOCOL TEST ONLY; no SUMO execution, traffic trace, or outcome measurement", "requests": requests, "status_reads": status_reads, "headless": args.headless}
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel=args.channel, headless=args.headless, chromium_sandbox=True,
-                                   ignore_default_args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"])
+        browser = p.chromium.launch(
+            channel=args.channel, headless=args.headless, chromium_sandbox=True,
+            ignore_default_args=[
+                "--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage",
+                "--enable-unsafe-swiftshader", "--unsafely-disable-devtools-self-xss-warnings",
+                "--disable-ipc-flooding-protection", "--disable-client-side-phishing-detection",
+            ],
+        )
         context = browser.new_context(viewport={"width": 1440, "height": 1000})
         page = context.new_page()
 
         def respond(route, status: int, value: dict) -> None:
             route.fulfill(status=status, content_type="application/json", body="" if status == 204 else json.dumps(value),
-                          headers={"Access-Control-Allow-Origin": args.base_url.rstrip("/"), "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS"})
+                          headers={"Access-Control-Allow-Origin": f"{parsed.scheme}://{parsed.netloc}", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Allow-Methods": "GET, POST, OPTIONS"})
 
         def api(route) -> None:
             request = route.request
