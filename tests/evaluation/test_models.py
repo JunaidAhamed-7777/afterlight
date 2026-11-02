@@ -48,12 +48,24 @@ class ModelContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             select_fixed_lead(rows, 1)
 
+    def test_fixed_lead_mean_avoids_sum_overflow(self):
+        rows = candidates()
+        second = candidates()
+        for row in second:
+            row["episode_id"] = "e2"
+        for row in rows + second:
+            row["ambulance_journey_s"] = 1e308
+            row["civilian_mean_excess_s"] = 0
+        report = select_fixed_lead(rows + second, 1)
+        self.assertEqual(report["scores"][0]["common_feasible_mean_j_s"], 1e308)
+
     def test_fixed_lead_compares_common_feasible_cohort(self):
         rows = candidates()
         second = candidates()
         for row in second:
             row["episode_id"] = "hard"
             row["demand_group_id"] = "g2"
+            row["demand_sha256"] = "d2"
             row["ambulance_journey_s"] = 1000 if row["lead_s"] == 0 else 40
         # Lead 30 fails the hard episode, so no lead may improve its conditional
         # mean by silently dropping that episode. All score means use easy e.

@@ -39,7 +39,7 @@ def estimate_candidates(observation: Mapping, config: AnalyticalConfig = Analyti
     feature_vector(observation, 0, 0, DEFAULT_FEATURES)
     x = observation["values"]
     count = x["route_junction_count"]
-    queue_delay = config.queue_headway_s * x["queue_sum_veh"]
+    queue_delay = finite(config.queue_headway_s * x["queue_sum_veh"], "analytical queue delay")
     freeflow = max(0.0, x["eta_remaining_s"] - queue_delay)
     occupancy = x["downstream_occupancy"]
     scores = []
@@ -47,7 +47,7 @@ def estimate_candidates(observation: Mapping, config: AnalyticalConfig = Analyti
         service_s = max(0.0, lead - config.transition_loss_s) * count * (1.0 - occupancy)
         predicted_ambulance = freeflow + max(0.0, queue_delay - service_s)
         predicted_civilian = config.civilian_cost_scale * count * lead * lead / (2.0 * config.ordinary_cycle_s) * (1.0 + occupancy)
-        scores.append({"lead_s": lead, "analytical_cost_s": predicted_ambulance + config.civilian_weight * predicted_civilian,
+        scores.append({"lead_s": lead, "analytical_cost_s": finite(predicted_ambulance + config.civilian_weight * predicted_civilian, "analytical objective result"),
                        "predicted_ambulance_s": predicted_ambulance, "predicted_civilian_delay_surrogate_s": predicted_civilian})
     return {"version": "queue-lost-service-v1", "config": asdict(config), "scores": scores,
             "uses_future_demand": False, "prediction_not_measurement": True,

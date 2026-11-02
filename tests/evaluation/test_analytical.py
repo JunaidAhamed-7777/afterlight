@@ -23,6 +23,12 @@ class AnalyticalTests(unittest.TestCase):
         self.assertGreaterEqual(full[-1]["predicted_ambulance_s"], empty[-1]["predicted_ambulance_s"])
         self.assertEqual(len(empty), 5)
 
+    def test_finite_observations_cannot_overflow_estimator(self):
+        observation = snapshot()
+        observation["values"]["queue_sum_veh"] = 1e308
+        with self.assertRaises(ValueError):
+            estimate_candidates(observation)
+
     def test_model_requires_protocol_and_matching_analytical_metadata(self):
         with self.assertRaises(ValueError):
             choose_lead(snapshot(), model={"model": {}, "sha256": "not-trained"})

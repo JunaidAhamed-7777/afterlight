@@ -26,6 +26,10 @@ def assign_groups(groups: Sequence[Mapping], *, salt: str, train_fraction: float
 def assert_disjoint(rows: Sequence[Mapping], assignments: Mapping[str, str] | None = None) -> dict[str, int]:
     seen: dict[str, str] = {}
     episodes: dict[str, tuple[str, str]] = {}
+    # A caller cannot evade grouping by relabeling an identical input hash.
+    # Full demand may change with ambulance dispatch; civilian-realization hashes
+    # (when supplied) additionally bind those dispatch variants together.
+    hash_owners: dict[tuple[str, str], tuple[str, str]] = {}
     for row in rows:
         gid, split = row["demand_group_id"], row["split"]
         if split not in {"train", "validation", "test", "pilot"}:
@@ -34,6 +38,15 @@ def assert_disjoint(rows: Sequence[Mapping], assignments: Mapping[str, str] | No
             raise ValueError(f"demand group leaks across splits: {gid}")
         if assignments is not None and assignments.get(gid) != split:
             raise ValueError(f"row differs from frozen assignment: {gid}")
+        for field in ("demand_sha256", "demand_manifest_sha256", "demand_realization_sha256", "civilian_realization_sha256"):
+            if field in row:
+                value = row[field]
+                if not isinstance(value, str) or not value:
+                    raise ValueError(f"invalid input identity: {field}")
+                identity = (field, value)
+                if identity in hash_owners and hash_owners[identity] != (gid, split):
+                    raise ValueError(f"identical {field} assigned different demand groups or splits")
+                hash_owners[identity] = (gid, split)
         seen[gid] = split
         if "episode_id" in row:
             eid = row["episode_id"]

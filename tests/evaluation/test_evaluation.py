@@ -32,9 +32,22 @@ class MetricsTests(unittest.TestCase):
         self.assertIsNone(objective(row, 1))
 
     def test_nonfinite_rejected(self):
-        for weight in (-1, float("nan"), float("inf"), True):
+        for weight in (-1, float("nan"), float("inf"), True, 10**1000):
             with self.assertRaises(ValueError):
                 objective(complete(), weight)
+
+    def test_finite_inputs_cannot_produce_infinite_objective_or_area(self):
+        row = complete()
+        row["civilian_mean_excess_s"] = 1e308
+        with self.assertRaises(ValueError):
+            objective(row, 1e308)
+        row["civilian_mean_excess_s"] = -1e308
+        with self.assertRaises(ValueError):
+            objective(row, 1e308)
+        priority = [{"t": 0, "queue_count": 1e308}, {"t": 1e308, "queue_count": 0}]
+        ordinary = [{"t": 0, "queue_count": 0}, {"t": 1e308, "queue_count": 0}]
+        with self.assertRaises(ValueError):
+            excess_queue_area(priority, ordinary, 0, 1e308)
 
     def test_common_window_irregular_queue_grids(self):
         p = [{"t": 0, "queue_count": 5}, {"t": 3, "queue_count": 1}, {"t": 10, "queue_count": 0}]
@@ -69,6 +82,21 @@ class SplitTests(unittest.TestCase):
         self.assertEqual(assert_disjoint(rows)["train"], 1)
         with self.assertRaises(ValueError):
             assert_disjoint(rows, {"g": "validation"})
+
+
+    def test_same_input_hash_cannot_be_relabelled_into_other_groups(self):
+        for field in ("demand_sha256", "demand_manifest_sha256", "demand_realization_sha256", "civilian_realization_sha256"):
+            rows = [{"demand_group_id": "g1", "split": "train", field: "same-real-input"},
+                    {"demand_group_id": "g2", "split": "test", field: "same-real-input"}]
+            with self.subTest(field=field):
+                with self.assertRaises(ValueError):
+                    assert_disjoint(rows)
+                rows[1]["split"] = "train"
+                with self.assertRaises(ValueError):
+                    assert_disjoint(rows)
+                rows[1]["demand_group_id"] = "g1"
+                self.assertEqual(assert_disjoint(rows)["train"], 1)
+
 
 
 class ProtocolTests(unittest.TestCase):

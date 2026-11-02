@@ -36,10 +36,10 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
                         "selected_status": chosen["status"], "comparator_status": reference["status"],
                         "selected_infeasible": cj is None, "comparator_infeasible": rj is None,
                         "selected_j_s": cj, "comparator_j_s": rj,
-                        "paired_delta_j_s": cj - rj if cj is not None and rj is not None else None,
-                        "conditional_regret_s": cj - min(feasible) if cj is not None and feasible else None,
-                        "civilian_delta_s": finite(chosen["civilian_mean_excess_s"], "civilian delay", nonnegative=False) -
-                            finite(reference["civilian_mean_excess_s"], "civilian delay", nonnegative=False)
+                        "paired_delta_j_s": finite(cj - rj, "paired objective delta", nonnegative=False) if cj is not None and rj is not None else None,
+                        "conditional_regret_s": finite(cj - min(feasible), "conditional regret", nonnegative=False) if cj is not None and feasible else None,
+                        "civilian_delta_s": finite(finite(chosen["civilian_mean_excess_s"], "civilian delay", nonnegative=False) -
+                            finite(reference["civilian_mean_excess_s"], "civilian delay", nonnegative=False), "civilian delta", nonnegative=False)
                             if cj is not None and rj is not None else None,
                         "all_candidates_infeasible": not feasible})
     finite_pairs = [r for r in records if r["paired_delta_j_s"] is not None]
@@ -56,7 +56,7 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
             "all_candidates_infeasible_episodes": sum(r["all_candidates_infeasible"] for r in records),
             "changed_action_rate": mean(r["selected_lead_s"] != r["comparator_lead_s"] for r in records),
             "paired_feasible_episodes": len(finite_pairs),
-            "conditional_mean_delta_j_s": mean(deltas) if deltas else None,
+            "conditional_mean_delta_j_s": finite(mean(deltas), "conditional mean objective delta", nonnegative=False) if deltas else None,
             "conditional_improved_fraction": mean(d < 0 for d in deltas) if deltas else None,
             "conditional_worsened_fraction": mean(d > 0 for d in deltas) if deltas else None,
             "conditional_civilian_harm_p95_s": p95,
@@ -85,7 +85,7 @@ def grouped_bootstrap_interval(records: Sequence[Mapping], *, field: str = "pair
     means = []
     for _ in range(resamples):
         sample = [v for _ in groups for v in grouped[rng.choice(groups)]]
-        means.append(mean(sample))
+        means.append(finite(mean(sample), "bootstrap mean", nonnegative=False))
     means.sort()
     low, high = means[int(.025 * (resamples - 1))], means[int(.975 * (resamples - 1))]
     return {"interval": [low, high], "level": .95, "method": "whole-demand-group percentile bootstrap",

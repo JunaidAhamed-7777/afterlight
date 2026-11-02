@@ -9,7 +9,10 @@ from typing import Mapping, Sequence
 def finite(value: object, name: str, *, nonnegative: bool = True) -> float:
     if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise ValueError(f"{name} must be a finite number")
-    result = float(value)
+    try:
+        result = float(value)
+    except OverflowError as error:
+        raise ValueError(f"{name} is outside finite float range") from error
     if not isfinite(result) or (nonnegative and result < 0):
         raise ValueError(f"invalid {name}: {value}")
     return result
@@ -58,9 +61,10 @@ def objective(outcome: Mapping, civilian_weight: float) -> float | None:
     if ambulance is None or civilian is None:
         return None
     # Excess journey time may be negative against a declared reference model.
-    return finite(ambulance, "ambulance_journey_s") + weight * finite(
+    result = finite(ambulance, "ambulance_journey_s") + weight * finite(
         civilian, "civilian_mean_excess_s", nonnegative=False
     )
+    return finite(result, "objective result", nonnegative=False)
 
 
 def _queue_series(samples: Sequence[Mapping], start: float, end: float) -> list[tuple[float, float]]:
@@ -91,7 +95,7 @@ def excess_queue_area(priority: Sequence[Mapping], ordinary: Sequence[Mapping], 
         while bi + 1 < len(b) and b[bi + 1][0] <= left:
             bi += 1
         area += max(0.0, p[pi][1] - b[bi][1]) * (right - left)
-    return area
+    return finite(area, "excess queue area result")
 
 
 def verify_pair(a: Mapping, b: Mapping) -> None:

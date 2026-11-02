@@ -97,7 +97,7 @@ def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, usef
         if not ranked:
             outcome_diversity[eid] = {"status": "all_candidates_infeasible"}
             continue
-        margin = ranked[1][0] - ranked[0][0] if len(ranked) > 1 else None
+        margin = finite(ranked[1][0] - ranked[0][0], "pilot runner-up margin") if len(ranked) > 1 else None
         distinct_schedule_count = len(schedules.get(eid, set()))
         useful = len(ranked) > 1 and margin > useful_action_margin_s and distinct_schedule_count > 1
         if useful:
@@ -108,7 +108,7 @@ def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, usef
     return {
         "rollouts": len(rows), "episodes": len({r["episode_id"] for r in rows}),
         "demand_groups": len({r["demand_group_id"] for r in rows}),
-        "runtime_total_s": sum(runtimes), "runtime_median_s": median(runtimes),
+        "runtime_total_s": finite(sum(runtimes), "total pilot runtime"), "runtime_median_s": median(runtimes),
         "runtime_max_s": max(runtimes),
         "effective_schedules_by_episode": {k: len(v) for k, v in sorted(schedules.items())},
         "status_counts": {status: sum(r["status"] == status for r in rows) for status in sorted({r["status"] for r in rows})},

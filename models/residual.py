@@ -6,6 +6,7 @@ Persistence is plain JSON, never executable pickle content.
 from __future__ import annotations
 from typing import Mapping, Sequence
 import struct
+from statistics import mean
 from evaluation.metrics import finite, objective
 from evaluation.protocol import digest
 from evaluation.splits import assert_disjoint
@@ -75,8 +76,8 @@ def select_fixed_lead(validation_rows: Sequence[Mapping], civilian_weight: float
     scores = []
     for lead in CANDIDATES:
         failures = sum(values[lead] is None for values in costs.values())
-        mean = sum(costs[eid][lead] for eid in common) / len(common) if common else None
-        scores.append({"lead_s": lead, "infeasible_count": failures, "common_feasible_mean_j_s": mean})
+        mean_cost = finite(mean(costs[eid][lead] for eid in common), "fixed-lead mean", nonnegative=False) if common else None
+        scores.append({"lead_s": lead, "infeasible_count": failures, "common_feasible_mean_j_s": mean_cost})
     best = min(scores, key=lambda s: (s["infeasible_count"], s["common_feasible_mean_j_s"] or 0, s["lead_s"]))
     return {"lead_s": best["lead_s"], "scores": scores, "common_feasible_episodes": len(common),
             "episodes": len(episodes), "conclusive": bool(common), "tie_break": "smallest_lead"}
@@ -116,7 +117,7 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
         actual = objective(row, civilian_weight)
         if actual is not None:
             features.append(vector)
-            labels.append(actual - row["analytical_cost_s"])
+            labels.append(finite(actual - row["analytical_cost_s"], "residual training label", nonnegative=False))
     if len(labels) < 2 * min_samples_leaf:
         raise ValueError("too few finite training labels; retain failures and report inconclusive")
     from sklearn import __version__ as sklearn_version
@@ -181,7 +182,7 @@ def choose_candidate(observation: Mapping, analytical_costs: Mapping[int, float]
         vector = feature_vector(observation, lead, cost, feature_names)
         residual = predict_residual(model, vector) if model is not None else 0.0
         scores.append({"lead_s": lead, "analytical_cost_s": cost, "predicted_residual_s": residual,
-                       "predicted_j_s": cost + residual})
+                       "predicted_j_s": finite(cost + residual, "predicted objective result", nonnegative=False)})
     chosen = min(scores, key=lambda row: (row["predicted_j_s"], row["lead_s"]))
     return {"lead_s": chosen["lead_s"], "scores": scores, "method": "residual_tree" if model else "analytical",
             "tie_break": "smallest_lead", "prediction_not_measurement": True}

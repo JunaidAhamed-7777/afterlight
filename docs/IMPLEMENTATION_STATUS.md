@@ -32,3 +32,10 @@ Do not infer success from these instructions. Record command, source commit,
 environment, output, pass/fail and untested scope after real execution.
 
 Official package source: https://pypi.org/project/eclipse-sumo/1.28.0/
+
+## Local acceptance evidence
+
+See [Omen validation log](validation/OMEN_LOG.md) for scoped actual results and
+known failures. A newer source commit does not inherit a prior test pass. The
+first real fixture/city run remains blocked until packaged SUMO executable
+discovery and local regression checks succeed.

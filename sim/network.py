@@ -8,6 +8,9 @@ import argparse
 import hashlib
 import heapq
 import json
+import importlib.metadata
+import os
+import sys
 from pathlib import Path
 import shutil
 import subprocess
@@ -92,21 +95,56 @@ def shortest_route(graph: dict, start_edge: str, destination_node: str) -> list[
     raise ValueError(f'No permitted route from {start_edge} to {destination_node}')
 
 
-def binary(name: str) -> str:
-    found = shutil.which(name)
-    if found:
-        return found
-    # eclipse-sumo wheels expose SUMO_HOME through the sumo package.
+def binary_candidates(name: str) -> list[Path]:
+    """Discover only the active interpreter's installed SUMO package/entrypoints."""
+    if name not in ('sumo','netconvert'):
+        raise ValueError('Unsupported SUMO executable')
+    suffixes = ('.exe','') if os.name == 'nt' else ('','.exe')
+    candidates = []
+    # Absolute venv Python invocation does not activate Scripts/bin on PATH.
+    # Wheel console launchers may live beside the interpreter instead of under
+    # the package SUMO_HOME. Prefer that interpreter-local installation.
+    for base in (Path(sys.executable).parent,Path(sys.prefix)/'Scripts',Path(sys.prefix)/'bin'):
+        candidates.extend(base/(name+suffix) for suffix in suffixes)
     try:
         import sumo
-        base = Path(sumo.SUMO_HOME)
-        for suffix in ('.exe', ''):
-            candidate = base / 'bin' / (name + suffix)
-            if candidate.is_file():
-                return str(candidate)
-    except (ImportError, AttributeError):
+        home = getattr(sumo,'SUMO_HOME',None)
+        if home:
+            for base in (Path(home)/'bin',Path(home)):
+                candidates.extend(base/(name+suffix) for suffix in suffixes)
+        if getattr(sumo,'__file__',None):
+            for base in (Path(sumo.__file__).parent/'bin',Path(sumo.__file__).parent):
+                candidates.extend(base/(name+suffix) for suffix in suffixes)
+    except ImportError:
         pass
-    raise RuntimeError(f'{name} is unavailable. Install the pinned eclipse-sumo package in the active venv.')
+    # Distribution RECORD is the supported exact inventory; no drive or home
+    # directory scan, guessed download, global install, or PATH modification.
+    try:
+        distribution = importlib.metadata.distribution('eclipse-sumo')
+        accepted = {name+suffix for suffix in suffixes}
+        for item in distribution.files or ():
+            if Path(str(item)).name.lower() in accepted:
+                candidates.append(Path(distribution.locate_file(item)))
+    except importlib.metadata.PackageNotFoundError:
+        pass
+    found = shutil.which(name)
+    if found:
+        candidates.append(Path(found))
+    return list(dict.fromkeys(path.resolve() for path in candidates))
+
+
+def binary(name: str) -> str:
+    candidates = binary_candidates(name)
+    for candidate in candidates:
+        if candidate.is_file():
+            return str(candidate)
+    try:
+        version = importlib.metadata.version('eclipse-sumo')
+    except importlib.metadata.PackageNotFoundError:
+        version = 'not installed in this interpreter'
+    raise RuntimeError(f'{name} unavailable for {sys.executable}; eclipse-sumo={version}. '
+                       'Install requirements-sim.txt with this same Python interpreter; '
+                       'run python -m sim.environment for scoped package diagnostics.')
 
 
 def build_network(kind: str, output: Path) -> dict:
@@ -145,10 +183,12 @@ def build_network(kind: str, output: Path) -> dict:
     (output/'netconvert.stderr.txt').write_text(completed.stderr, encoding='utf-8')
     if completed.returncode:
         raise RuntimeError(f'netconvert failed ({completed.returncode}): {completed.stderr}')
+    validate_imported_network(graph,read_network(output/'network.net.xml'))
     metadata = {'schema': 'afterlight.network.v1', 'kind': kind, 'network_sha256': hashlib.sha256(ET.canonicalize(from_file=output/'network.net.xml', strip_text=True, with_comments=False).encode()).hexdigest(),
                 'network_file_sha256': sha256(output/'network.net.xml'),
                 'network_hash_definition': 'canonical XML excluding generator timestamp/path comments and insignificant whitespace',
                 'graph_sha256': hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest(),
+                'canonical_map_sha256': sha256(ROOT/'assets/map/city_manifest.json') if kind == 'city' else None,
                 'command': command, 'netconvert_version': subprocess.check_output([binary('netconvert'), '--version'], text=True).splitlines()[0],
                 'coordinate_normalization': False, 'validation_status': 'generated_not_acceptance_tested'}
     write_json(output/'network-manifest.json', metadata)
@@ -159,7 +199,7 @@ def build_network(kind: str, output: Path) -> dict:
 def read_network(path: Path) -> dict:
     root = ET.parse(path).getroot()
     location = root.find('location')
-    if location is not None and location.get('netOffset', '0,0') not in ('0.00,0.00', '0,0'):
+    if location is not None and any(abs(float(v)) > 1e-8 for v in location.get('netOffset','0,0').split(',')):
         raise ValueError('SUMO changed the canonical coordinate origin')
     edges = {}
     lanes = {}
@@ -193,7 +233,26 @@ def read_network(path: Path) -> dict:
                 'outgoing_shape': lanes[f'{c.attrib["to"]}_{c.attrib["toLane"]}']['shape'],
                 'stop_line': lanes[f'{c.attrib["from"]}_{c.attrib["fromLane"]}']['shape'][-1],
                 'turn': c.get('dir'), 'via_lane': c.get('via')})
-    return {'edges': edges, 'signals': signals, 'lanes': lanes}
+    connections = [{'from_edge':c.attrib['from'],'to_edge':c.attrib['to']} for c in root.findall('connection')
+                   if c.attrib['from'] in edges and c.attrib['to'] in edges]
+    return {'edges': edges, 'signals': signals, 'lanes': lanes, 'connections':connections}
+
+
+def validate_imported_network(graph: dict, network: dict) -> None:
+    """Exact external graph identity and legal-transition coverage after conversion."""
+    if set(network['edges']) != {e['id'] for e in graph['edges']}:
+        raise ValueError('SUMO conversion changed canonical external edge IDs')
+    canonical = {(c['from_edge'],c['to_edge']) for c in graph['connections']}
+    actual = {(c['from_edge'],c['to_edge']) for c in network['connections']}
+    if canonical != actual:
+        missing, extra = sorted(canonical-actual),sorted(actual-canonical)
+        raise ValueError(f'SUMO transition mismatch: missing={missing}, extra={extra}')
+    for edge in graph['edges']:
+        imported = network['edges'][edge['id']]
+        if imported['from'] != edge['from_node'] or imported['to'] != edge['to_node']:
+            raise ValueError(f'Canonical endpoint changed for {edge["id"]}')
+        if imported['length_m'] <= 0 or imported['speed_mps'] <= 0:
+            raise ValueError(f'Invalid generated lane for {edge["id"]}')
 
 
 def main():

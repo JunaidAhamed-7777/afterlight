@@ -34,6 +34,13 @@ class ComparisonTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             paired_decision_report(candidates("test"), {}, {"e": 10}, civilian_weight=1)
 
+    def test_finite_objectives_cannot_overflow_paired_difference(self):
+        rows = candidates("test")
+        rows[0]["civilian_mean_excess_s"] = 1e308
+        rows[1]["civilian_mean_excess_s"] = -1e308
+        with self.assertRaises(ValueError):
+            paired_decision_report(rows, {"e": 0}, {"e": 5}, civilian_weight=1)
+
     def test_group_uncertainty_refuses_per_second_pseudoreplication(self):
         records = [{"demand_group_id": "same", "paired_delta_j_s": i} for i in range(100)]
         self.assertIsNone(grouped_bootstrap_interval(records)["interval"])
