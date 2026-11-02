@@ -1,0 +1,5 @@
+# OPTIONAL: install only after a valid pilot and frozen training/validation plan.
+# Official CPython 3.12 Windows x86-64 wheel available; never required for replay.
+-r requirements-sim.txt
+scikit-learn==1.7.2
+# Record resolved transitive versions with pip freeze in each experiment manifest.

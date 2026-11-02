@@ -9,6 +9,33 @@ from pathlib import Path
 from export.replay import validate_replay
 from sim.network import read_network, sha256, write_json
 from policies.scheduler import Timing
+from sim.accounting import Accounting, reconcile_tripinfo
+
+
+def audit_lifecycle(demand: dict, rows: list[dict], tripinfo_path: Path, metrics: dict) -> None:
+    """Cross-check published scalar metrics against retained raw SUMO lifecycle."""
+    scheduled={v['id']:v for v in demand['vehicles']}
+    if len(rows)!=len(scheduled) or {row['id'] for row in rows}!=set(scheduled):
+        raise ValueError('Lifecycle rows must cover every scheduled vehicle exactly once')
+    ledger=Accounting(scheduled)
+    for row in rows:
+        expected=scheduled[row['id']]
+        if row['scheduled_depart_s']!=expected['depart_s'] or row['reference_s']!=expected['reference_s'] or row['type']!=expected['type']:
+            raise ValueError('Lifecycle input/reference differs from hashed demand manifest')
+        if row['actual_depart_s'] is not None: ledger.inserted[row['id']]=row['actual_depart_s']
+        if row['arrival_s'] is not None: ledger.completed[row['id']]=row['arrival_s']
+    prior_departures,prior_arrivals=dict(ledger.inserted),dict(ledger.completed)
+    reasons=reconcile_tripinfo(ledger,tripinfo_path)
+    if reasons or ledger.inserted!=prior_departures or ledger.completed!=prior_arrivals:
+        raise ValueError(f'Lifecycle timestamps differ from raw SUMO tripinfo: {reasons}')
+    if ledger.counts()!=metrics['accounting']:
+        raise ValueError('Published counts differ from raw all-demand lifecycle')
+    journey=ledger.completed['ambulance']-demand['dispatch_s'] if 'ambulance' in ledger.completed else None
+    if journey!=metrics['ambulance_journey_s']:
+        raise ValueError('Published ambulance journey differs from raw arrival time')
+    expected_mean=ledger.completed_civilian_mean_excess() if metrics['status']=='completed' else None
+    if expected_mean!=metrics['civilian_mean_excess_s']:
+        raise ValueError('Published civilian mean differs from raw lifecycle/reference')
 
 
 def audit(directory: Path) -> dict:
@@ -21,6 +48,10 @@ def audit(directory: Path) -> dict:
     canonical_hash = hashlib.sha256(ET.canonicalize(from_file=net_path,strip_text=True,with_comments=False).encode()).hexdigest()
     if canonical_hash != replay['provenance']['network_sha256'] or sha256(net_path) != replay['provenance']['network_file_sha256']:
         raise ValueError('Retained network differs from provenance')
+    demand_path=directory/'demand/demand.json'
+    if sha256(demand_path)!=replay['provenance']['demand_manifest_sha256']:
+        raise ValueError('Retained demand manifest differs from provenance')
+    demand=json.loads(demand_path.read_text(encoding='utf-8'))
     timing = Timing()
     checks = []
     for name, world in replay['worlds'].items():
@@ -56,6 +87,8 @@ def audit(directory: Path) -> dict:
                 actual = next(s['state'] for s in frame['signals'] if s['id'] == junction)
                 if actual != expected:
                     raise ValueError(f'{name}/{junction}: frame/event signal mismatch at {frame["t"]}')
+        lifecycle=json.loads((directory/name/'lifecycle.json').read_text(encoding='utf-8'))
+        audit_lifecycle(demand,lifecycle,directory/name/'tripinfo.xml',world['metrics'])
         counts = world['metrics']['accounting']
         if counts['scheduled'] != counts['completed']+counts['running']+counts['not_inserted'] or counts['inserted'] != counts['completed']+counts['running']:
             raise ValueError(f'{name}: demand accounting does not reconcile')
@@ -65,7 +98,7 @@ def audit(directory: Path) -> dict:
             if event['kind'] == 'request_planned' and event['t'] < replay['scenario']['dispatch_s']:
                 raise ValueError(f'{name}: priority planned before dispatch')
         checks.append({'world':name,'signal_transition_and_frame_alignment':'passed',
-                       'demand_reconciliation':'passed','status':world['status']})
+                       'demand_reconciliation':'passed','raw_tripinfo_metric_agreement':'passed','status':world['status']})
     result = {'schema':'afterlight.audit.v1','run_id':replay['scenario']['id'],
               'replay_sha256':sha256(directory/'replay.json'),'checks':checks,
               'scope':'Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority'}

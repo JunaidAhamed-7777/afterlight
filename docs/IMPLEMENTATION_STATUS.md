@@ -13,9 +13,10 @@ Windows PC; cloud code review/build is not an acceptance result.
 - **Not yet executed:** unit tests, SUMO conversion/runs, product browser acceptance.
 - **Not yet available:** measured benchmark, trained model, real replay catalog.
 
-The API currently serves recordings only; generation requests explicitly fail as
-unimplemented rather than returning fictional progress. Subsequent checkpoints
-will wire the real runner and record actual Omen results.
+The initial API served recordings only. The optional local-generation adapter now
+connects to the real runner when explicitly enabled, with one active job, bounded
+inputs, real status and validated completed recordings. This source capability is
+pending Omen acceptance; it is not live streaming and does not invent progress.
 
 ## Omen commands — pending execution
 

@@ -30,6 +30,8 @@ Interpolate poses only, not outcomes; never retime either world or omit failed r
 Static `replays/catalog.json`: `schema: afterlight.catalog.v1`, `runs: []`, with
 rows `id`, `title`, `url`, `seed`, `pickup_id`, `hospital_id`, `policy`, `duration_s`.
 Only available real recordings appear. Local `GET /api/catalog` returns the same
-shape with `/api/runs/{id}` URLs. Initial loopback API exposes health and recordings;
-`POST` explicitly returns 501 until real generation is connected. Static mode
-must not offer generation. Local mode must not call stored files live simulation.
+shape with `/api/runs/{id}` URLs. Loopback API exposes health and recordings; generation is disabled by default.
+With explicit `--enable-generation`, POST /api/runs starts one real local paired
+SUMO job and GET /api/jobs/{id} reports its actual lifecycle. On completion it
+provides a validated recorded replay. This is local generation followed by playback,
+not live streaming. Static mode must not offer generation. See [API details](../api/README.md).

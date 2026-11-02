@@ -85,6 +85,12 @@ class HTTPTests(unittest.TestCase):
         self.thread.join(timeout=2)
         self.temp.cleanup()
 
+    def test_rejects_rebound_host(self):
+        request = Request(self.base + "/api/health", headers={"Host": "untrusted.example"})
+        with self.assertRaises(HTTPError) as caught:
+            urlopen(request, timeout=3)
+        self.assertEqual(caught.exception.code, 403)
+
     def test_health_and_empty_catalog(self):
         with urlopen(self.base + "/api/health", timeout=3) as response:
             data = json.load(response)
@@ -104,6 +110,51 @@ class HTTPTests(unittest.TestCase):
             urlopen(Request(self.base + "/api/runs", data=b"{}", method="POST"), timeout=3)
         self.assertEqual(caught.exception.code, 501)
         self.assertFalse(json.load(caught.exception)["generation_available"])
+
+
+class GenerationHTTPTests(unittest.TestCase):
+    def setUp(self):
+        class FakeJobs:
+            submitted = 0
+            def submit(self, body):
+                self.submitted += 1
+                return {"id": "unit-only", "status": "queued"}
+        self.jobs = FakeJobs()
+        self.temp = tempfile.TemporaryDirectory()
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(Path(self.temp.name), self.jobs))
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start()
+        self.base = f"http://127.0.0.1:{self.server.server_port}"
+
+    def tearDown(self):
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(timeout=2)
+        self.temp.cleanup()
+
+    def test_external_origin_cannot_start_job(self):
+        request = Request(self.base + "/api/runs", data=b"{}", method="POST",
+                          headers={"Content-Type": "application/json", "Origin": "https://untrusted.example"})
+        with self.assertRaises(HTTPError) as caught:
+            urlopen(request, timeout=3)
+        self.assertEqual(caught.exception.code, 403)
+        self.assertEqual(self.jobs.submitted, 0)
+
+    def test_local_json_request_gets_actual_job_identifier(self):
+        request = Request(self.base + "/api/runs", data=b"{}", method="POST",
+                          headers={"Content-Type": "application/json", "Origin": "http://127.0.0.1:5173"})
+        with urlopen(request, timeout=3) as response:
+            self.assertEqual(response.status, 202)
+            self.assertEqual(json.load(response)["id"], "unit-only")
+        self.assertEqual(self.jobs.submitted, 1)
+
+    def test_nonfinite_or_nonjson_body_rejected(self):
+        for body in (b'{"bad":Infinity}', b'not json'):
+            request = Request(self.base + "/api/runs", data=body, method="POST", headers={"Content-Type": "application/json"})
+            with self.assertRaises(HTTPError) as caught:
+                urlopen(request, timeout=3)
+            self.assertEqual(caught.exception.code, 400)
+        self.assertEqual(self.jobs.submitted, 0)
 
 
 if __name__ == "__main__":
