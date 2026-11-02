@@ -40,3 +40,9 @@ For an explicit local API library, set `VITE_API_BASE=http://127.0.0.1:8000` bef
 Root `DESIGN.md` is normative. `src/styles/tokens.css` maps its semantic colors, sans/mono roles, spacing unit and radius once; `app.css` and scene rendering consume this miniature-at-twilight direction. Native HTML selects/search/ranges/checks own keyboard behavior. `docs/VIEWER_AND_DEMO.md` owns interaction truth. No toast/modal/CRUD system is needed for this single read-only instrument. No remote fonts or stock assets.
 
 Impeccable launcher was unavailable in this checkout; context and references were read directly. Visual acceptance remains pending Omen captures, not self-certified from compilation.
+
+### Resilience and rendering checkpoint
+
+Catalog entries are validated before selection; recording URLs are confined to the configured library origin. Aborted requests cannot replace current errors or results. City-map errors have a separate retry. Baseline inspection labels its solid vehicle as baseline, never AFTERLIGHT. The 3D module loads separately from the accessible UI (about 208 KB raw UI / 601 KB raw renderer at this checkpoint). Paused, unchanged views do not redraw the GPU; vehicle pools update on changed recorded frames. These are implementation/build facts, not measured browser-performance claims. Mobile places the city before the full settings panel.
+
+The evidence panel formats scalar outcomes and each civilian lifecycle count separately, rather than dumping queue arrays into a cell. Nested provenance remains safely text-rendered. Recorded queue histories are charted with a shared absolute axis, distinguishing them from the predeclared recovery metric. Invalid/censored pairs retain an explicit warning. Playback UI updates are bounded to 10 Hz; React state updater functions are pure. Source is formatted for review. Smooth render-only pose interpolation remains a subsequent integration task, not a claim in this checkpoint.
