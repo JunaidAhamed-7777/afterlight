@@ -7,9 +7,13 @@ export const QueueChart = memo(function QueueChart({
   replay: Replay;
 }) {
   const worlds = ["afterlight", "baseline"] as const;
-  const maxQueue = Math.max(
+  const maxQueue = worlds.reduce(
+    (peak, world) =>
+      replay.worlds[world].frames.reduce(
+        (value, frame) => Math.max(value, frame.queue_count),
+        peak,
+      ),
     1,
-    ...worlds.flatMap((w) => replay.worlds[w].frames.map((f) => f.queue_count)),
   );
   const width = 680,
     height = 150,

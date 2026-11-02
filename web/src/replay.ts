@@ -52,6 +52,47 @@ export function validateReplay(value: unknown): Replay {
     throw new Error(
       "The recording has incomplete scenario or provenance evidence.",
     );
+  if (
+    r.scenario.route_edges !== undefined &&
+    (!Array.isArray(r.scenario.route_edges) ||
+      r.scenario.route_edges.some((id) => typeof id !== "string" || !id))
+  )
+    throw new Error("The recording has invalid route references.");
+  if (r.network_geometry !== undefined) {
+    const point = (p: unknown): p is number[] =>
+      Array.isArray(p) && p.length >= 2 && p.every(Number.isFinite);
+    const ids = new Set<string>();
+    if (!Array.isArray(r.network_geometry.signals))
+      throw new Error("The recording has invalid signal geometry.");
+    for (const signal of r.network_geometry.signals) {
+      if (
+        !signal.id ||
+        ids.has(signal.id) ||
+        !point(signal.position) ||
+        !Array.isArray(signal.links)
+      )
+        throw new Error("The recording has invalid signal geometry.");
+      ids.add(signal.id);
+      for (const link of signal.links) {
+        if (
+          !Number.isInteger(link.index) ||
+          link.index < 0 ||
+          !link.from_edge ||
+          !link.to_edge ||
+          !link.from_lane ||
+          !link.to_lane ||
+          !point(link.stop_line) ||
+          ![link.incoming_shape, link.outgoing_shape].every(
+            (shape) =>
+              Array.isArray(shape) && shape.length >= 2 && shape.every(point),
+          )
+        )
+          throw new Error(
+            "The recording has invalid controlled-link geometry.",
+          );
+      }
+    }
+  }
   for (const name of ["afterlight", "baseline"] as const) {
     const w = r.worlds?.[name];
     if (

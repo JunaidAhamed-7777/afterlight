@@ -162,3 +162,36 @@ test("teleport discontinuities are not animated as road travel", async () => {
   b.vehicles[0].x = 900;
   assert.equal(interpolatedFrame([a, b], 0.5)!.vehicles[0].x, 100);
 });
+
+test("malformed controlled-link geometry rejected before rendering", () => {
+  const r = recording();
+  r.network_geometry = {
+    signals: [
+      {
+        id: "J1",
+        position: [0, 0, 0],
+        links: [
+          {
+            index: 0,
+            from_edge: "a",
+            to_edge: "b",
+            from_lane: "a_0",
+            to_lane: "b_0",
+            incoming_shape: [
+              [0, 0],
+              [1, 0],
+            ],
+            outgoing_shape: [
+              [2, 0],
+              [NaN, 0],
+            ],
+            stop_line: [1, 0],
+            turn: "s",
+            via_lane: null,
+          },
+        ],
+      },
+    ],
+  };
+  assert.throws(() => validateReplay(r), /controlled-link geometry/);
+});

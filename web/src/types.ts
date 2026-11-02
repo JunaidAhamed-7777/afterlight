@@ -35,6 +35,7 @@ export interface Replay {
     pickup_id: string;
     hospital_id: string;
     dispatch_s: number;
+    route_edges?: string[];
   };
   coordinates: {
     source: string;
@@ -48,6 +49,7 @@ export interface Replay {
     demand_sha256: string;
     sumo_version: string;
   };
+  network_geometry?: { signals: SignalGeometry[] };
   duration_s: number;
   step_s: number;
   worlds: { afterlight: World; baseline: World };
@@ -62,7 +64,26 @@ export interface CatalogEntry {
   policy: string;
   duration_s: number;
 }
+export interface SignalLink {
+  index: number;
+  from_edge: string;
+  to_edge: string;
+  from_lane: string;
+  to_lane: string;
+  incoming_shape: number[][];
+  outgoing_shape: number[][];
+  stop_line: number[];
+  turn: string;
+  via_lane: string | null;
+}
+export interface SignalGeometry {
+  id: string;
+  position: number[];
+  links: SignalLink[];
+}
 export interface City {
+  schema: "afterlight.city.v1";
+  edges: Array<{ id: string; centerline: number[][] }>;
   nodes: Array<{ id: string; position: number[]; signalized: boolean }>;
   roads: Array<{ id: string; centerline: number[][]; width_m: number }>;
   pickups: Array<{

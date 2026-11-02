@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
-import type { City, Frame } from "./types.ts";
+import type { City, Frame, SignalGeometry } from "./types.ts";
+import { GeometryLayer } from "./GeometryLayer.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
 import { interpolatedFrame, vehiclePose } from "./replay.ts";
 
@@ -11,6 +12,8 @@ interface Props {
   frames: Frame[];
   baselineFrames: Frame[];
   clock: { current: number };
+  routeEdges: string[];
+  networkGeometry: SignalGeometry[];
   ghost: boolean;
   ghostOpacity: number;
   pickup: string;
@@ -121,6 +124,8 @@ export function CityView(props: Props) {
       signalGroup = new THREE.Group();
     scene.add(active.group, ghosts.group, signalGroup);
     const models = new Map<string, THREE.Group>();
+    const geometryLayer = new GeometryLayer();
+    scene.add(geometryLayer.group);
     const signals = new Map<string, THREE.Mesh>();
     const loader = new GLTFLoader();
     const load = async () => {
@@ -215,6 +220,13 @@ export function CityView(props: Props) {
           lastQuality = p.quality;
           resize();
         }
+        if (
+          p.city !== lastProps?.city ||
+          p.routeEdges !== lastProps?.routeEdges ||
+          p.networkGeometry !== lastProps?.networkGeometry
+        )
+          geometryLayer.setGeometry(p.city, p.routeEdges, p.networkGeometry);
+        geometryLayer.update(frame?.signals ?? []);
         active.update(frame?.vehicles ?? [], models);
         ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
         const point = p.city?.pickups.find((x) => x.id === p.pickup)?.position;
@@ -227,7 +239,9 @@ export function CityView(props: Props) {
         hospitalMarker.visible = Boolean(hp);
         if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
         for (const s of signals.values()) s.visible = false;
-        for (const signal of frame?.signals ?? []) {
+        for (const signal of p.networkGeometry.length
+          ? []
+          : (frame?.signals ?? [])) {
           const n = p.city?.nodes.find((n) => n.id === signal.id);
           if (!n) continue;
           let dot = signals.get(signal.id);
@@ -278,6 +292,7 @@ export function CityView(props: Props) {
       observer.disconnect();
       controls.dispose();
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
+      geometryLayer.dispose();
       active.dispose();
       ghosts.dispose();
       disposeObject(scene);

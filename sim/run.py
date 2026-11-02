@@ -24,6 +24,11 @@ from sim.accounting import Accounting, reconcile_tripinfo
 from export.replay import SCHEMA, save_replay
 from models.analytical import choose_lead
 from evaluation.protocol import digest
+from sim.identity import episode_identity, run_identity
+
+
+class OutputPathError(ValueError):
+    """Rejected pre-existing output; never write failure records into it."""
 
 
 def source_commit() -> str:
@@ -31,6 +36,20 @@ def source_commit() -> str:
         return subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     except (OSError, subprocess.CalledProcessError):
         return 'unavailable'
+
+
+def source_snapshot() -> dict:
+    """Record explicit project code identity without exporting local diff contents."""
+    files = {}
+    for directory in ('sim','policies','models','evaluation','export'):
+        for path in sorted((ROOT/directory).rglob('*.py')):
+            files[str(path.relative_to(ROOT)).replace('\\','/')] = sha256(path)
+    try:
+        dirty = bool(subprocess.check_output(['git','status','--porcelain','--','sim','policies','models','evaluation','export','assets/map/city_manifest.json'],cwd=ROOT,text=True).strip())
+    except (OSError,subprocess.CalledProcessError):
+        dirty = None
+    return {'source_commit':source_commit(),'source_dirty':dirty,'source_code_sha256':digest(files),
+            'source_files':files}
 
 
 def route_controls(route: list[str], network: dict) -> list[dict]:
@@ -287,9 +306,11 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
 
 def run_pair(args) -> dict:
     output = args.output.resolve()
-    if output.exists() and any(output.iterdir()):
-        raise ValueError('Output directory is nonempty; choose a new path to preserve prior evidence')
-    output.mkdir(parents=True, exist_ok=True)
+    try:
+        output.mkdir(parents=True, exist_ok=False)
+    except FileExistsError as exc:
+        raise OutputPathError('Output path already exists; choose a new path to preserve prior evidence') from exc
+    source = source_snapshot()
     network_dir = output/'network'
     network_manifest = build_network(args.network, network_dir)
     graph = json.loads((network_dir/'graph.json').read_text(encoding='utf-8'))
@@ -305,12 +326,14 @@ def run_pair(args) -> dict:
     for world_id, policy in [('baseline', 'ordinary'), ('afterlight', args.policy)]:
         worlds[world_id] = run_world(world_id=world_id, policy=policy, lead_s=args.lead,
                                     output=output/world_id, **common)
-    episode_inputs = {'network_sha256': network_manifest['network_sha256'], **hashes,
-                      'dispatch_s': args.dispatch, 'horizon_s': args.horizon, 'drain_s': args.drain,
-                      'step_s': args.step}
-    episode_id = f'{args.network}-{args.regime}-{args.seed}-' + digest(episode_inputs)[:16]
-    scenario_id = f'{episode_id}-{args.policy}-{args.lead}'
-    provenance = {'source_commit': source_commit(), 'network_sha256': network_manifest['network_sha256'],
+    if source_snapshot() != source:
+        raise RuntimeError('Project source changed during the pair; raw worlds retained, replay publication refused')
+    episode_id = episode_identity(network_kind=args.network,regime=args.regime,seed=args.seed,
+        network_sha256=network_manifest['network_sha256'],demand_sha256=hashes['demand_sha256'],
+        dispatch_s=args.dispatch,horizon_s=args.horizon,drain_s=args.drain,step_s=args.step)
+    scenario_id = run_identity(episode_id,args.policy,worlds['afterlight']['lead_s'])
+    provenance = {**source, 'network_sha256': network_manifest['network_sha256'],
+                  'canonical_map_sha256': network_manifest['canonical_map_sha256'],
                   'network_file_sha256': network_manifest['network_file_sha256'],
                   'network_hash_definition': network_manifest['network_hash_definition'],
                   **hashes, 'sumo_version': worlds['baseline']['sumo_version'],
@@ -331,7 +354,7 @@ def run_pair(args) -> dict:
     write_json(output/'replay-manifest.json', replay_metadata)
     scalar_rows = []
     for world in worlds.values():
-        scalar_rows.append({'episode_id': episode_id, 'run_id': f'{episode_id}-{world["policy"]}-{world["lead_s"]}', 'demand_group_id': hashes['demand_group_id'],
+        scalar_rows.append({'episode_id': episode_id, 'run_id': run_identity(episode_id,world['policy'],world['lead_s']), 'demand_group_id': hashes['demand_group_id'],
             'split': args.split, 'policy': world['policy'], 'lead_s': world['lead_s'],
             **world['metrics'], 'demand_sha256': hashes['demand_sha256'],
             'network_sha256': network_manifest['network_sha256'], 'source_commit': provenance['source_commit'],
@@ -363,10 +386,10 @@ def main():
     parser.add_argument('--hospital')
     parser.add_argument('--split', choices=('pilot','train','validation','test'), default='pilot')
     args = parser.parse_args()
-    if args.output.exists() and any(args.output.iterdir()):
-        raise SystemExit('Output directory is nonempty; choose a fresh path to preserve prior evidence')
     try:
         result = run_pair(args)
+    except OutputPathError as exc:
+        raise SystemExit(str(exc)) from exc
     except Exception as exc:
         args.output.mkdir(parents=True, exist_ok=True)
         write_json(args.output/'pair-failure.json', {'status':'infrastructure_error','reason':str(exc),

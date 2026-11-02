@@ -1120,3 +1120,17 @@ footer {
     margin-top: 5px;
   }
 }
+.decision-inspector p {
+  line-height: 1.7;
+  margin-top: 12px;
+}
+.decision-table {
+  max-height: 360px;
+  overflow: auto;
+  margin-top: 20px;
+}
+.decision-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--canvas);
+}

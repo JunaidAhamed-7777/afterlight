@@ -2,6 +2,9 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
 );
+import { CanvasBoundary } from "./CanvasBoundary.tsx";
+import { loadCanonicalCity, geometryMatches } from "./city.ts";
+import { DecisionInspector } from "./DecisionInspector.tsx";
 import { QueueChart } from "./QueueChart.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt, seconds, validateReplay } from "./replay.ts";
@@ -76,6 +79,7 @@ function Icon({
   );
 }
 export default function App() {
+  const [cityHash, setCityHash] = useState("");
   const [cityError, setCityError] = useState(""),
     [cityRetry, setCityRetry] = useState(0);
   const [city, setCity] = useState<City | null>(null),
@@ -113,9 +117,12 @@ export default function App() {
   useEffect(() => {
     const c = new AbortController();
     setCityError("");
-    json(`${base}assets/map/city_manifest.json`, c.signal)
-      .then((d) => {
-        if (!c.signal.aborted) setCity(d);
+    loadCanonicalCity(`${base}assets/map/city_manifest.json`, c.signal)
+      .then(({ city, sha256 }) => {
+        if (!c.signal.aborted) {
+          setCity(city);
+          setCityHash(sha256);
+        }
       })
       .catch(() => {
         if (!c.signal.aborted)
@@ -208,7 +215,11 @@ export default function App() {
   useEffect(() => {
     if (reducedMotion) setFollow(false);
   }, [reducedMotion]);
-  const cityReplay = Boolean(replay && replay.scenario.network_kind === "city");
+  const cityReplay = Boolean(
+    replay &&
+      replay.scenario.network_kind === "city" &&
+      geometryMatches(replay.provenance.canonical_map_sha256, cityHash),
+  );
   const available = catalog.filter(
     (x) => x.pickup_id === pickup && x.hospital_id === hospital,
   );
@@ -506,10 +517,15 @@ export default function App() {
             <div className="stage">
               {replay && !cityReplay ? (
                 <div className="fixture-view">
-                  <h2>Three-junction correctness fixture</h2>
+                  <h2>
+                    {replay.scenario.network_kind === "fixture"
+                      ? "Three-junction correctness fixture"
+                      : "City geometry is not verified"}
+                  </h2>
                   <p>
-                    This recording uses a different network. It is not overlaid
-                    on the city.
+                    {replay.scenario.network_kind === "fixture"
+                      ? "This recording uses a different network. It is not overlaid on the city."
+                      : "The recording’s canonical map fingerprint does not match the loaded city. Traffic overlay is disabled to avoid presenting the wrong roads."}
                   </p>
                   <p>
                     Inspect the genuine paired outcomes below. Full-city
@@ -521,31 +537,35 @@ export default function App() {
                   </div>
                 </div>
               ) : (
-                <Suspense
-                  fallback={
-                    <div className="canvas-status" role="status">
-                      Loading the 3D renderer…
-                    </div>
-                  }
-                >
-                  <CityView
-                    city={city}
-                    frames={cityReplay ? replay!.worlds[world].frames : []}
-                    baselineFrames={
-                      cityReplay ? replay!.worlds.baseline.frames : []
+                <CanvasBoundary>
+                  <Suspense
+                    fallback={
+                      <div className="canvas-status" role="status">
+                        Loading the 3D renderer…
+                      </div>
                     }
-                    clock={playbackClock}
-                    ghost={ghost}
-                    ghostOpacity={ghostOpacity}
-                    pickup={pickup}
-                    hospital={hospital}
-                    quality={quality}
-                    follow={follow}
-                    reducedMotion={reducedMotion}
-                    reset={reset}
-                    world={world}
-                  />
-                </Suspense>
+                  >
+                    <CityView
+                      city={city}
+                      frames={cityReplay ? replay!.worlds[world].frames : []}
+                      baselineFrames={
+                        cityReplay ? replay!.worlds.baseline.frames : []
+                      }
+                      clock={playbackClock}
+                      routeEdges={replay?.scenario.route_edges ?? []}
+                      networkGeometry={replay?.network_geometry?.signals ?? []}
+                      ghost={ghost}
+                      ghostOpacity={ghostOpacity}
+                      pickup={pickup}
+                      hospital={hospital}
+                      quality={quality}
+                      follow={follow}
+                      reducedMotion={reducedMotion}
+                      reset={reset}
+                      world={world}
+                    />
+                  </Suspense>
+                </CanvasBoundary>
               )}
               <div className="map-location">
                 <span>
@@ -760,12 +780,15 @@ export default function App() {
                 </p>
               )}
               <QueueChart replay={replay} />
+              <DecisionInspector replay={replay} />
               <details className="provenance">
                 <summary>Signal phase states at {time.toFixed(1)} s</summary>
                 <p>
                   Each character describes one controlled link, not an entire
-                  junction. Neutral map dots locate signalized junctions without
-                  implying an approach is green.
+                  junction. Movement arrows use the exported lane endpoints and
+                  exact controlled-link states. Mint is green, amber is yellow,
+                  salmon is red. A neutral marker is used when link geometry is
+                  unavailable.
                 </p>
                 <dl>
                   {(replay

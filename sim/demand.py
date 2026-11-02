@@ -87,7 +87,9 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
         for _ in range(100):
             start = rng.choice(candidates)
             if regime == 'asymmetric' and rng.random() < .7:
-                start = ambulance_route[0]
+                # Exogenous hotspot is graph-fixed, never conditioned on the
+                # selected ambulance origin/route or candidate action.
+                start = candidates[0]
             end = rng.choice(endpoints)
             try:
                 candidate = shortest_route(graph, start, end)
