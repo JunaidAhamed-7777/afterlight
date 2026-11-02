@@ -1,0 +1,12 @@
+# Deterministic source, JSON and compiled-preview bytes on every checkout.
+# Repository-scoped: do not change contributors' global core.autocrlf settings.
+* text=auto eol=lf
+*.glb binary
+*.blend binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.zip binary
+*.whl binary
+*.tgz binary

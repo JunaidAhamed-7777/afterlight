@@ -49,3 +49,24 @@ index as `local.html` and its direct JS/CSS alongside. Do not copy asset subfold
 or node_modules. Regenerate the manifest against the new committed source and
 retain runtime copyright notices. The two renderer chunks differ because their
 entry-module import bindings differ; both are necessary for these two builds.
+
+## Windows checkout line endings
+
+The repository now requires LF text through `.gitattributes`; binary assets stay
+binary. An existing checkout created with `core.autocrlf=true` may retain CRLF in
+unchanged files after fetching the attribute commit. Do not change global Git
+settings or weaken hash verification. After checking out the instructed preview
+cohort, use the explicit, targeted refresh:
+
+```powershell
+python scripts/refresh_preview_checkout.py --refresh-clean-checkout
+python scripts/serve_preview.py --verify-only
+python -m unittest discover -s tests/preview -v
+```
+
+The helper checks every manifest-listed text input is tracked and has no staged
+or unstaged content edits, then refreshes only those paths using the repository's
+attributes. If it refuses, preserve the edits and report the exact mismatch; do
+not reset the worktree or force through the preflight. Files outside those listed
+inputs are untouched. The manifest still checks exact SHA-256 bytes, including
+the original canonical map JSON and unchanged binary GLBs.
