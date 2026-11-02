@@ -1,0 +1,103 @@
+{
+  "schema": "afterlight.assets.v1",
+  "authoring": "Blender 4.3.2 through pinned Blender MCP",
+  "rights": "original geometry for repository owner; project license to be selected by owner",
+  "source_front_axis": "+Y",
+  "export_front_axis": "-Z",
+  "export_up_axis": "+Y",
+  "units": "meters",
+  "files": [
+    {
+      "file": "exports/ambulance.glb",
+      "bytes": 161212,
+      "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1",
+      "mesh_triangles": 2378,
+      "materials": 9,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/bike.glb",
+      "bytes": 18848,
+      "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236",
+      "mesh_triangles": 196,
+      "materials": 5,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/building_clay.glb",
+      "bytes": 3944,
+      "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb",
+      "mesh_triangles": 24,
+      "materials": 2,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/building_sage.glb",
+      "bytes": 3924,
+      "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd",
+      "mesh_triangles": 24,
+      "materials": 2,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/building_sand.glb",
+      "bytes": 3940,
+      "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e",
+      "mesh_triangles": 24,
+      "materials": 2,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/building_slate.glb",
+      "bytes": 3944,
+      "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56",
+      "mesh_triangles": 24,
+      "materials": 2,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/car.glb",
+      "bytes": 32596,
+      "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591",
+      "mesh_triangles": 412,
+      "materials": 5,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/city_static.glb",
+      "bytes": 1010792,
+      "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe",
+      "mesh_triangles": 14552,
+      "materials": 15,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    },
+    {
+      "file": "exports/truck.glb",
+      "bytes": 29384,
+      "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4",
+      "mesh_triangles": 368,
+      "materials": 6,
+      "textures": 0,
+      "source": "original procedural Blender geometry",
+      "external_assets": false
+    }
+  ],
+  "total_glb_bytes": 1268584,
+  "status": "asset exports; no simulated benchmark or browser performance claim"
+}

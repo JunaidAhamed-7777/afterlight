@@ -1,0 +1,172 @@
+[
+  {
+    "path": "PROVENANCE.md",
+    "bytes": 1385,
+    "sha256": "281359f0e7b3efe927a81c325677ccbe8407e7c4ae24cda4b1d10ea8b9da61f2"
+  },
+  {
+    "path": "README.md",
+    "bytes": 5350,
+    "sha256": "e4397e43ff248d52bb3f42913e4a044755e41255535ae2b2d412a1def065a0bd"
+  },
+  {
+    "path": "afterlight_assets.blend",
+    "bytes": 1090456,
+    "sha256": "8d1d8e8bdc4132829223bb91c0e1c0eb8e4329de8f09f65483be8da572ee1c8d"
+  },
+  {
+    "path": "afterlight_city.blend",
+    "bytes": 2739124,
+    "sha256": "4d7248908e4efd068b52046a1f3375e01bc843e974ddb67c9169c51b8021cced"
+  },
+  {
+    "path": "asset_manifest.json",
+    "bytes": 3282,
+    "sha256": "6e96b9b3cc9025428eb1a2756106563e43dfca32475782bb4f53d10232020660"
+  },
+  {
+    "path": "exports/ambulance.glb",
+    "bytes": 161212,
+    "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1"
+  },
+  {
+    "path": "exports/bike.glb",
+    "bytes": 18848,
+    "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236"
+  },
+  {
+    "path": "exports/building_clay.glb",
+    "bytes": 3944,
+    "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb"
+  },
+  {
+    "path": "exports/building_sage.glb",
+    "bytes": 3924,
+    "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd"
+  },
+  {
+    "path": "exports/building_sand.glb",
+    "bytes": 3940,
+    "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e"
+  },
+  {
+    "path": "exports/building_slate.glb",
+    "bytes": 3944,
+    "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56"
+  },
+  {
+    "path": "exports/car.glb",
+    "bytes": 32596,
+    "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591"
+  },
+  {
+    "path": "exports/city_instances.json",
+    "bytes": 61051,
+    "sha256": "2a51e8181a9dfdb8bab45a1614d729a247c227cce5951670fd7a26c85af7a9f5"
+  },
+  {
+    "path": "exports/city_static.glb",
+    "bytes": 1010792,
+    "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe"
+  },
+  {
+    "path": "exports/ghost_material.json",
+    "bytes": 676,
+    "sha256": "ab8898a9e8788f519f91a2890671d760b98c17d98c64871c67bf3a44513ae4b4"
+  },
+  {
+    "path": "exports/truck.glb",
+    "bytes": 29384,
+    "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4"
+  },
+  {
+    "path": "map/README.md",
+    "bytes": 6246,
+    "sha256": "61e8e2341d019e6635f3f1a686776d6841ddbc86aece9b313c01e94d80b8330c"
+  },
+  {
+    "path": "map/city_manifest.json",
+    "bytes": 280188,
+    "sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b"
+  },
+  {
+    "path": "map/generate_city.py",
+    "bytes": 7983,
+    "sha256": "d0a91c4c52908c05041027d8d14bdd3d74325fa1d90f114aa9b990d52ee9d2b5"
+  },
+  {
+    "path": "map/validate_city.py",
+    "bytes": 7646,
+    "sha256": "b073f34a3c2ba3e6e957be56ed2606bd2111c54bc7552e9937614610c6ee8be3"
+  },
+  {
+    "path": "map/validation_report.json",
+    "bytes": 3820,
+    "sha256": "d7061930f5f7bfe57aa604e4f6af977cfb224369820520b66ab2e6f01b0566c5"
+  },
+  {
+    "path": "previews/ambulance_front.png",
+    "bytes": 1373271,
+    "sha256": "dd925a0f30dc820d70ddfefe0e55b03eb296cba3236d6f0337377b5fa5c2d4bd"
+  },
+  {
+    "path": "previews/ambulance_ghost.png",
+    "bytes": 1094079,
+    "sha256": "e9de2154210678196a76c89a6e532c694447a7d6eb0caa45eb2d9af686a87ba3"
+  },
+  {
+    "path": "previews/ambulance_rear.png",
+    "bytes": 1038117,
+    "sha256": "ef49bd65b649d9366fac7f59f596a65a02797c207a45f18297edcdef751af15c"
+  },
+  {
+    "path": "previews/ambulance_side.png",
+    "bytes": 949880,
+    "sha256": "0b1795d995308bae2d100e92f6d8c779403735b81a9d9cf280329a0478438ba3"
+  },
+  {
+    "path": "previews/city_overview.png",
+    "bytes": 1596667,
+    "sha256": "1633cf1fcfdfe3d6ab6502c08e86ae5addb78eab3fc179e8c3950071c3908037"
+  },
+  {
+    "path": "qa/glb_audit.json",
+    "bytes": 26782,
+    "sha256": "0efae3ae99a3929d4ede9a40dc6cd9c68614ac07a283fdd0c420a373a09d0088"
+  },
+  {
+    "path": "qa/loader_results.json",
+    "bytes": 3129,
+    "sha256": "475dc80c4106171ca68c5fcbf5e7189380a88dcaf182e5b507bfacbd7ce3ec32"
+  },
+  {
+    "path": "qa/manifest_audit.json",
+    "bytes": 1607,
+    "sha256": "ddc8f65fe3fa27d96c948a427c0604f8b62e70dabcbec0449be944476aafb51d"
+  },
+  {
+    "path": "src/finish_vehicle_qa.py",
+    "bytes": 2342,
+    "sha256": "516d440c0b21237def7815fcf71061e9f9652cc41a2fb3fba6f3e9e7f3ca8905"
+  },
+  {
+    "path": "src/generate_assets.py",
+    "bytes": 10081,
+    "sha256": "613b3dae6df08bebce077c111e5343aa23d8ddc6ee71917f39fcb918764eeb0c"
+  },
+  {
+    "path": "src/generate_city.py",
+    "bytes": 5165,
+    "sha256": "4cf0ff05dd7e9891804a7c292072fa5cdf6c7455dd640a15ea48b92f9e39428e"
+  },
+  {
+    "path": "src/package_manifest.py",
+    "bytes": 1145,
+    "sha256": "449ea9e15d8ad97b23434a60649433180bf96059a7e015440b06471439917f4d"
+  },
+  {
+    "path": "src/polish_city_parks.py",
+    "bytes": 1970,
+    "sha256": "2c5740346718ee79068a8807d04bf87841995d3e4191c408e6a50de66eb942f9"
+  }
+]

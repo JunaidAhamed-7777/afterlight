@@ -40,3 +40,9 @@ The user expanded the world to 20–25 intersections, two hospitals and approxim
 Updated the README, architecture, benchmarks, design, Blender pipeline, viewer, deployment and roadmap coherently. The ghost is render-only data from a separate ordinary baseline world, synchronized in absolute time; it has no AFTERLIGHT physics/control effects. Visible traffic/signals belong to AFTERLIGHT. Added overlap explanation, world toggle, group-held-out randomness limits, expanded-map runtime gates, graph-derived anchors, product error/accessibility states and concrete low-poly/rendering budgets. Three-junction correctness fixture retained. Documentation-first sequencing explicitly precedes renewed Blender production.
 
 No full-city learning, finished assets, performance measurements or anti-overfitting guarantee is asserted by this update. Those require implementation and evidence.
+
+## Asset prototype milestone — 2 November 2026
+
+Verified the existing cloud Blender 4.3.2 MCP command roundtrip and created original procedural assets after the documentation-first revision. Nine GLBs total 1,268,584 bytes; city 14,552 triangles / 15 primitives, ambulance 2,378 / 9. Khronos validation reports zero errors/warnings for all nine. Native Blender previews were inspected; HTTP load and GLTFLoader parsing passed for 9/9. WebGL is disabled in the available cloud browser, so browser rendering, frame times, ghost compositing and dynamic traffic remain unverified. Canonical graph reachability checks are not SUMO validation. No simulator, learned-model, benchmark improvement or complete product is claimed.
+
+The clean original pack is published under `assets/`; this repository is the canonical source of truth. Source scenes, deterministic generators, map, previews and sanitized QA are included; runtime addons, caches, credentials and private UI captures are excluded. No project license is silently assigned.

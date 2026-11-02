@@ -1,0 +1,26 @@
+# Python and local tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# JavaScript build/cache dependencies
+node_modules/
+.next/
+dist/
+coverage/
+# Blender backups and local runtime
+*.blend1
+*.blend2
+*.blend@
+local-runtime/
+*.log
+# Credentials and machine configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store

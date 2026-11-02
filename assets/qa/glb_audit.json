@@ -1,0 +1,1144 @@
+{
+  "generated": "2026-11-02T20:11:05.853Z",
+  "scope": "Export structure, accessor bounds and validator; no visual/runtime claims",
+  "files": [
+    {
+      "file": "exports/ambulance.glb",
+      "bytes": 161212,
+      "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 9
+      },
+      "meshCount": 1,
+      "materialCount": 9,
+      "materials": [
+        {
+          "name": "navy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.09000000357627869,
+            0.14000000059604645,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        },
+        {
+          "name": "glass",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.23000000417232513,
+            0.30000001192092896,
+            1
+          ]
+        },
+        {
+          "name": "amber",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.9900000095367432,
+            0.47999998927116394,
+            0.10499999672174454,
+            1
+          ]
+        },
+        {
+          "name": "alloy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.4000000059604645,
+            0.49000000953674316,
+            0.5,
+            1
+          ]
+        },
+        {
+          "name": "lamp",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6399999856948853,
+            0.9200000166893005,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "redlamp",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.800000011920929,
+            0.10000000149011612,
+            0.05999999865889549,
+            1
+          ]
+        },
+        {
+          "name": "rubber",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.02500000037252903,
+            0.03500000014901161,
+            0.04500000178813934,
+            1
+          ]
+        },
+        {
+          "name": "beacon_cyan",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.47999998927116394,
+            0.800000011920929,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 2378,
+      "sceneTriangles": 2378,
+      "scenePrimitives": 9,
+      "bounds": {
+        "min": [
+          -1.3299999237060547,
+          0.009999990463256836,
+          -2.5950000286102295
+        ],
+        "max": [
+          1.3299999237060547,
+          2.793999671936035,
+          2.629999876022339
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "ambulance",
+          "mesh": 0,
+          "triangles": 2378,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -1.3299999237060547,
+              0.009999990463256836,
+              -2.5950000286102295
+            ],
+            "max": [
+              1.3299999237060547,
+              2.793999671936035,
+              2.629999876022339
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/bike.glb",
+      "bytes": 18848,
+      "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 5
+      },
+      "meshCount": 1,
+      "materialCount": 5,
+      "materials": [
+        {
+          "name": "rubber",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.02500000037252903,
+            0.03500000014901161,
+            0.04500000178813934,
+            1
+          ]
+        },
+        {
+          "name": "navy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.09000000357627869,
+            0.14000000059604645,
+            1
+          ]
+        },
+        {
+          "name": "terracotta",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.5799999833106995,
+            0.2800000011920929,
+            0.20000000298023224,
+            1
+          ]
+        },
+        {
+          "name": "alloy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.4000000059604645,
+            0.49000000953674316,
+            0.5,
+            1
+          ]
+        },
+        {
+          "name": "lamp",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6399999856948853,
+            0.9200000166893005,
+            1,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 196,
+      "sceneTriangles": 196,
+      "scenePrimitives": 5,
+      "bounds": {
+        "min": [
+          -0.3799999403878759,
+          0.014683031907559103,
+          -1.0199999809265137
+        ],
+        "max": [
+          0.3800001629368089,
+          1.0900001116768225,
+          1.0199999809265137
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "bike",
+          "mesh": 0,
+          "triangles": 196,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.3799999403878759,
+              0.014683031907559103,
+              -1.0199999809265137
+            ],
+            "max": [
+              0.3800001629368089,
+              1.0900001116768225,
+              1.0199999809265137
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/building_clay.glb",
+      "bytes": 3944,
+      "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 2
+      },
+      "meshCount": 1,
+      "materialCount": 2,
+      "materials": [
+        {
+          "name": "terracotta",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.5799999833106995,
+            0.2800000011920929,
+            0.20000000298023224,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 24,
+      "sceneTriangles": 24,
+      "scenePrimitives": 2,
+      "bounds": {
+        "min": [
+          -0.512499988079071,
+          0,
+          -0.512499988079071
+        ],
+        "max": [
+          0.512499988079071,
+          1.0299999713897705,
+          0.512499988079071
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "building_clay",
+          "mesh": 0,
+          "triangles": 24,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.512499988079071,
+              0,
+              -0.512499988079071
+            ],
+            "max": [
+              0.512499988079071,
+              1.0299999713897705,
+              0.512499988079071
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/building_sage.glb",
+      "bytes": 3924,
+      "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 2
+      },
+      "meshCount": 1,
+      "materialCount": 2,
+      "materials": [
+        {
+          "name": "mint",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.25,
+            0.6499999761581421,
+            0.550000011920929,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 24,
+      "sceneTriangles": 24,
+      "scenePrimitives": 2,
+      "bounds": {
+        "min": [
+          -0.512499988079071,
+          0,
+          -0.512499988079071
+        ],
+        "max": [
+          0.512499988079071,
+          1.0299999713897705,
+          0.512499988079071
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "building_sage",
+          "mesh": 0,
+          "triangles": 24,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.512499988079071,
+              0,
+              -0.512499988079071
+            ],
+            "max": [
+              0.512499988079071,
+              1.0299999713897705,
+              0.512499988079071
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/building_sand.glb",
+      "bytes": 3940,
+      "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 2
+      },
+      "meshCount": 1,
+      "materialCount": 2,
+      "materials": [
+        {
+          "name": "cream",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6299999952316284,
+            0.5699999928474426,
+            0.4300000071525574,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 24,
+      "sceneTriangles": 24,
+      "scenePrimitives": 2,
+      "bounds": {
+        "min": [
+          -0.512499988079071,
+          0,
+          -0.512499988079071
+        ],
+        "max": [
+          0.512499988079071,
+          1.0299999713897705,
+          0.512499988079071
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "building_sand",
+          "mesh": 0,
+          "triangles": 24,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.512499988079071,
+              0,
+              -0.512499988079071
+            ],
+            "max": [
+              0.512499988079071,
+              1.0299999713897705,
+              0.512499988079071
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/building_slate.glb",
+      "bytes": 3944,
+      "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 2
+      },
+      "meshCount": 1,
+      "materialCount": 2,
+      "materials": [
+        {
+          "name": "bluegrey",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.30000001192092896,
+            0.4399999976158142,
+            0.5199999809265137,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 24,
+      "sceneTriangles": 24,
+      "scenePrimitives": 2,
+      "bounds": {
+        "min": [
+          -0.512499988079071,
+          0,
+          -0.512499988079071
+        ],
+        "max": [
+          0.512499988079071,
+          1.0299999713897705,
+          0.512499988079071
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "building_slate",
+          "mesh": 0,
+          "triangles": 24,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.512499988079071,
+              0,
+              -0.512499988079071
+            ],
+            "max": [
+              0.512499988079071,
+              1.0299999713897705,
+              0.512499988079071
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/car.glb",
+      "bytes": 32596,
+      "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 5
+      },
+      "meshCount": 1,
+      "materialCount": 5,
+      "materials": [
+        {
+          "name": "bluegrey",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.30000001192092896,
+            0.4399999976158142,
+            0.5199999809265137,
+            1
+          ]
+        },
+        {
+          "name": "glass",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.23000000417232513,
+            0.30000001192092896,
+            1
+          ]
+        },
+        {
+          "name": "rubber",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.02500000037252903,
+            0.03500000014901161,
+            0.04500000178813934,
+            1
+          ]
+        },
+        {
+          "name": "alloy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.4000000059604645,
+            0.49000000953674316,
+            0.5,
+            1
+          ]
+        },
+        {
+          "name": "lamp",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6399999856948853,
+            0.9200000166893005,
+            1,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 412,
+      "sceneTriangles": 412,
+      "scenePrimitives": 5,
+      "bounds": {
+        "min": [
+          -0.9674999713897705,
+          0.02517247200012207,
+          -2.002500057220459
+        ],
+        "max": [
+          0.9674999713897705,
+          1.6099998950958252,
+          1.975000023841858
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "car",
+          "mesh": 0,
+          "triangles": 412,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -0.9674999713897705,
+              0.02517247200012207,
+              -2.002500057220459
+            ],
+            "max": [
+              0.9674999713897705,
+              1.6099998950958252,
+              1.975000023841858
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/city_static.glb",
+      "bytes": 1010792,
+      "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 15
+      },
+      "meshCount": 1,
+      "materialCount": 15,
+      "materials": [
+        {
+          "name": "earth",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.10000000149011612,
+            0.17000000178813934,
+            0.20000000298023224,
+            1
+          ]
+        },
+        {
+          "name": "sidewalk",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.3799999952316284,
+            0.4300000071525574,
+            0.4300000071525574,
+            1
+          ]
+        },
+        {
+          "name": "road",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.054999999701976776,
+            0.09000000357627869,
+            0.12999999523162842,
+            1
+          ]
+        },
+        {
+          "name": "line",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6899999976158142,
+            0.699999988079071,
+            0.5899999737739563,
+            1
+          ]
+        },
+        {
+          "name": "park",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.2199999988079071,
+            0.4000000059604645,
+            0.3400000035762787,
+            1
+          ]
+        },
+        {
+          "name": "hospital",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.800000011920929,
+            0.8500000238418579,
+            0.800000011920929,
+            1
+          ]
+        },
+        {
+          "name": "porcelain.001",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        },
+        {
+          "name": "glass.001",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.23000000417232513,
+            0.30000001192092896,
+            1
+          ]
+        },
+        {
+          "name": "mint.001",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.25,
+            0.6499999761581421,
+            0.550000011920929,
+            1
+          ]
+        },
+        {
+          "name": "navy.001",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.09000000357627869,
+            0.14000000059604645,
+            1
+          ]
+        },
+        {
+          "name": "terracotta",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.5799999833106995,
+            0.2800000011920929,
+            0.20000000298023224,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        },
+        {
+          "name": "mint",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.25,
+            0.6499999761581421,
+            0.550000011920929,
+            1
+          ]
+        },
+        {
+          "name": "cream",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6299999952316284,
+            0.5699999928474426,
+            0.4300000071525574,
+            1
+          ]
+        },
+        {
+          "name": "bluegrey",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.30000001192092896,
+            0.4399999976158142,
+            0.5199999809265137,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 14552,
+      "sceneTriangles": 14552,
+      "scenePrimitives": 15,
+      "bounds": {
+        "min": [
+          -515,
+          -5.5,
+          -525
+        ],
+        "max": [
+          535,
+          49.439998626708984,
+          510
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "city_static_batched",
+          "mesh": 0,
+          "triangles": 14552,
+          "worldOrigin": [
+            10,
+            -3,
+            -7.5
+          ],
+          "bounds": {
+            "min": [
+              -515,
+              -5.5,
+              -525
+            ],
+            "max": [
+              535,
+              49.439998626708984,
+              510
+            ]
+          },
+          "extras": {
+            "semantic_ids": "../map/city_manifest.json"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    },
+    {
+      "file": "exports/truck.glb",
+      "bytes": 29384,
+      "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4",
+      "gltfGenerator": "Khronos glTF Blender I/O v4.3.47",
+      "validation": {
+        "errors": 0,
+        "warnings": 0,
+        "infos": 6
+      },
+      "meshCount": 1,
+      "materialCount": 6,
+      "materials": [
+        {
+          "name": "navy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.09000000357627869,
+            0.14000000059604645,
+            1
+          ]
+        },
+        {
+          "name": "cream",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.6299999952316284,
+            0.5699999928474426,
+            0.4300000071525574,
+            1
+          ]
+        },
+        {
+          "name": "porcelain",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.8799999952316284,
+            0.8999999761581421,
+            0.8399999737739563,
+            1
+          ]
+        },
+        {
+          "name": "glass",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.03500000014901161,
+            0.23000000417232513,
+            0.30000001192092896,
+            1
+          ]
+        },
+        {
+          "name": "rubber",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.02500000037252903,
+            0.03500000014901161,
+            0.04500000178813934,
+            1
+          ]
+        },
+        {
+          "name": "alloy",
+          "alphaMode": "OPAQUE",
+          "doubleSided": true,
+          "baseColor": [
+            0.4000000059604645,
+            0.49000000953674316,
+            0.5,
+            1
+          ]
+        }
+      ],
+      "textures": 0,
+      "geometryTriangles": 368,
+      "sceneTriangles": 368,
+      "scenePrimitives": 6,
+      "bounds": {
+        "min": [
+          -1.0975000858306885,
+          0.02957737445831299,
+          -2.700000047683716
+        ],
+        "max": [
+          1.0975000858306885,
+          2.365000009536743,
+          2.700000047683716
+        ]
+      },
+      "nodes": [
+        {
+          "id": 0,
+          "name": "truck",
+          "mesh": 0,
+          "triangles": 368,
+          "worldOrigin": [
+            0,
+            0,
+            0
+          ],
+          "bounds": {
+            "min": [
+              -1.0975000858306885,
+              0.02957737445831299,
+              -2.700000047683716
+            ],
+            "max": [
+              1.0975000858306885,
+              2.365000009536743,
+              2.700000047683716
+            ]
+          },
+          "extras": {
+            "front_axis": "-Z",
+            "units": "meters",
+            "origin": "ground center",
+            "source_front_axis": "+Y",
+            "up_axis": "+Y"
+          }
+        }
+      ],
+      "issues": [],
+      "budget": {
+        "fileUnder20MiB": true,
+        "sceneUnder150kTriangles": true
+      }
+    }
+  ],
+  "totalBytes": 1268584,
+  "essentialUnder10MiB": true
+}

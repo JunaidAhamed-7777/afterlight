@@ -1,6 +1,6 @@
 # Blender / MCP production pipeline
 
-**Status:** design only. Blender MCP installation, connection and runtime capability are unverified. Do not claim an asset was generated through MCP until the actual tool session is verified.
+**Status:** original asset prototype authored and verified. A genuine cloud Blender 4.3.2 GUI/MCP command roundtrip and asset creation were completed using the existing bridge. The public product viewer, simulator, learned policy and benchmark results remain unimplemented.
 
 ## Role and trust boundary
 
@@ -70,3 +70,11 @@ Maintain initial scene ≤5 MiB transfer, essential 3D ≤10 MiB, individual fil
 ### Dynamic traffic load budget
 
 Initial profiling workload: 300 simultaneously visible civilian vehicles plus the solid ambulance and one render-only ghost; stress at 600 if simulation demand produces that population. These are profiling targets, not achieved capacity or a cap on scientific demand. Use simple shared meshes/materials and instance transforms, with bikes/trucks represented by their own low-poly archetypes. Pool instances and update only active transforms, not rebuild meshes per frame. If the real worst-case population exceeds the target, profile that actual peak and report it. Do not silently delete simulator vehicles or thin benchmark demand to hit a rendering target. At overview scale, explicit aggregate/LOD traffic representations are allowed only if labeled and metrics retain every vehicle; normal view should preserve individual traffic when feasible.
+
+## Verified asset-stage milestone — 2 November 2026
+
+The original procedural pack includes source `.blend` scenes, generators, the canonical graph, nine GLBs and native Blender previews. Nine GLBs total 1,268,584 bytes. City: 14,552 triangles / 15 material primitives; ambulance: 2,378 triangles / 9 primitives. All nine exports have zero Khronos validator errors/warnings; HTTP loading and GLTFLoader parsing passed for 9/9. The cloud browser reports WebGL disabled, so browser pixels, FPS, ghost blending/isolation and dynamic traffic rendering remain release gates. No security settings were changed to bypass this limit.
+
+Graph checks pass for 25 primary intersections, two hospitals and 100 pickup points, including all 200 pickup-to-hospital reachability pairs. This is not SUMO lane, connection, controller or traffic validation. Preserve the exported city root transform, and do not instantiate building rows over the already-baked city buildings. The low-poly targets and scientific validation requirements above remain in force.
+
+Published source and evidence: [asset pack](../assets/README.md), [geometry/export checks](../assets/qa/glb_audit.json), [graph checks](../assets/map/validation_report.json). The archived loader report covers Node parsing; additional browser HTTP/loader smoke checks passed, without WebGL drawing.

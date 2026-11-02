@@ -1,0 +1,78 @@
+{
+  "scope": "Independent manifest identity/count/reference and mathematical coordinate tests. Does not certify exported art alignment or traffic behavior.",
+  "manifest_sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
+  "checks": [
+    {
+      "name": "frozen_sha256",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "25_primary_intersections",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "100_unique_pickups",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "2_hospitals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "hospital_buildings_and_terminal_nodes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "pickup_road_references",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "north_east_south_west_mapping",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "front_bumper_to_center_heading_0",
+      "passed": true,
+      "detail": [
+        0.0,
+        0,
+        -7.0
+      ]
+    },
+    {
+      "name": "front_bumper_to_center_heading_90",
+      "passed": true,
+      "detail": [
+        7.0,
+        0,
+        1.8369701987210297e-16
+      ]
+    },
+    {
+      "name": "front_bumper_to_center_heading_180",
+      "passed": true,
+      "detail": [
+        -3.6739403974420594e-16,
+        0,
+        7.0
+      ]
+    },
+    {
+      "name": "front_bumper_to_center_heading_270",
+      "passed": true,
+      "detail": [
+        -7.0,
+        0,
+        -5.51091059616309e-16
+      ]
+    }
+  ],
+  "passed": true
+}

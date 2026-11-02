@@ -1,0 +1,182 @@
+{
+  "manifest_sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "nodes_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "roads_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "edges_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "buildings_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "parcels_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "hospitals_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "pickups_unique_ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "25_primary_intersections",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "100_pickups",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "2_hospitals",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "edge_references",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "road_endpoints_match_nodes",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "edge_geometry_and_length",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bidirectional_permissions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "lane_width_fits_road",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "stoplines_and_signals",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "strongly_connected_graph",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "legal_turn_references",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "200_pickup_to_hospital_routes",
+      "passed": true,
+      "detail": {
+        "passed": 200,
+        "total": 200,
+        "failures": []
+      }
+    },
+    {
+      "name": "hospital_driveway_anchors",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "pickup_correct_curb_and_directed_edge",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "pickups_outside_intersections",
+      "passed": true,
+      "detail": {
+        "minimum_node_distance_m": 27.29999999999999,
+        "required_minimum_m": 27
+      }
+    },
+    {
+      "name": "pickups_outside_all_buildings",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "pickups_outside_all_road_surfaces",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "buildings_do_not_overlap",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "parcels_do_not_overlap",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "buildings_clear_road_surfaces",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "buildings_inside_assigned_parcels",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "all_geometry_within_declared_bounds",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "all_centerline_crossings_have_graph_nodes",
+      "passed": true,
+      "detail": []
+    }
+  ],
+  "counts": {
+    "nodes": 57,
+    "roads": 63,
+    "edges": 158,
+    "connections": 312,
+    "buildings": 187,
+    "parcels": 189,
+    "pickups": 100,
+    "hospitals": 2
+  },
+  "primary_intersections": 25,
+  "additional_nodes": 32,
+  "limitations": [
+    "No SUMO/netconvert run; binaries unavailable in this workspace.",
+    "Signal metadata is not signal phases or a deployed controller.",
+    "Turn connections are topological, not lane-level swept paths.",
+    "Static GLB budget is a target; actual triangles/bytes must be checked after Blender export.",
+    "Ghost baseline is a separate nonphysical overlay, not present in this graph."
+  ]
+}

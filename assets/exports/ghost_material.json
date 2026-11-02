@@ -1,0 +1,29 @@
+{
+  "mesh": "ambulance.glb",
+  "baseColorFactor": [
+    0.5294117647058824,
+    0.8431372549019608,
+    1,
+    0.28
+  ],
+  "emissiveFactor": [
+    0.16,
+    0.58,
+    0.8
+  ],
+  "metallicFactor": 0,
+  "roughnessFactor": 0.4,
+  "alphaMode": "BLEND",
+  "runtime": {
+    "transparent": true,
+    "depthWrite": false,
+    "depthTest": true,
+    "castShadow": false,
+    "pickable": false,
+    "bloom": "optional localized; not required",
+    "trajectory": "actual synchronized baseline trace, never fabricated lag",
+    "queues": "baseline traffic requires separate view; overlay shares only displayed policy traffic",
+    "receiveShadow": false
+  },
+  "baseColorHex": "#87D7FF"
+}

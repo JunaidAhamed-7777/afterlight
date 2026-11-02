@@ -4,7 +4,7 @@
 
 A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a planned 20–25-intersection city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
-> **Status: documentation and design only.** City/asset work is being prepared separately; no completed simulator, trained model, measured improvement or deployment is claimed here. All performance numbers below are targets or experimental definitions until backed by released runs.
+> **Status: verified asset prototype; simulation and product implementation pending.** Original city and vehicle assets have been authored through a verified cloud Blender 4.3.2 MCP connection and checked. No completed simulator, trained model, measured traffic improvement or deployment is claimed. Browser WebGL rendering and frame times remain untested.
 
 ## Why Afterlight stands out
 
@@ -38,7 +38,7 @@ Emergency preemption itself is established work. Our intended distinction is the
 7. [Research sources](docs/SOURCES.md) and [three-pass review record](docs/REVIEW_LOG.md)
 8. [Execution roadmap, written after pass 3](docs/ROADMAP.md)
 
-Three documentation passes are complete; implementation and experimental validation are still pending. This README must later gain verified installation/run commands, actual screenshots, results, exact team attribution, licensing and AI-assistance disclosure before submission. Do not substitute planned commands for tested instructions.
+Three documentation passes and the original asset prototype are complete; simulation, viewer implementation and experimental validation are still pending. This README must later gain verified installation/run commands, actual screenshots, results, exact team attribution, licensing and AI-assistance disclosure before submission. Do not substitute planned commands for tested instructions.
 
 ## Boundaries
 
@@ -46,10 +46,20 @@ Simulation research, not a real-world traffic control system. No safety certific
 
 ## AI-assistance disclosure
 
-ChatGPT assisted with research, architectural planning, documentation and critical review for this documentation stage. No implementation, trained model or generated Blender asset is claimed yet. Update this disclosure with actual implementation/asset tools and their roles as work proceeds; human review remains responsible for factual accuracy, licensing and submission compliance.
+ChatGPT assisted with research, architectural planning, documentation, critical review and procedural asset creation through Blender 4.3.2 and the existing Blender MCP bridge. Original geometry, source scenes, generation scripts and export checks form the asset prototype; the traffic simulation, learned model and product viewer are not implemented. Human review remains responsible for factual accuracy, licensing and submission compliance.
 
 ## Expanded city and fair comparison
 
 The target map has 20–25 intersections (the working topology plan uses 25), two hospitals and approximately 100 pickup locations. These are a world/route-selection target, **not proof of 100 trained routes or city-wide model generalization**. The three-junction corridor remains the initial correctness fixture before city scaling. Traffic is seeded and randomized; whole demand realizations, seeds and appropriate route/regime groups are held out. Randomness alone does not establish freedom from overfitting.
 
 The ghost is a counterfactual overlay, not a second emergency vehicle in the active world. Its independent baseline queues/signals may differ, so apparent crossings through visible AFTERLIGHT cars or red lights must be explained with a label and optional separate-world view—not cosmetically corrected. See [the updated contracts](docs/ARCHITECTURE.md).
+
+## Verified asset milestone
+
+The original low-poly city contains 25 primary intersections, two hospitals and 100 pickup anchors. Nine GLBs total **1,268,584 bytes**; the city is **14,552 triangles / 15 material primitives**, and the ambulance **2,378 triangles / 9 primitives**. All nine exports pass Khronos validation with zero errors or warnings. HTTP loading and GLTFLoader parsing passed for 9/9 assets, but cloud Chrome has WebGL disabled: browser drawing, frame times, ghost compositing and traffic behavior are not verified. The separate baseline-world ghost remains a runtime contract, not implemented comparison evidence.
+
+[Explore the asset pack](assets/README.md) · [GLB validation report](assets/qa/glb_audit.json) · [Map checks](assets/map/validation_report.json)
+
+![Original Blender city prototype — authoring preview, not a running simulation](assets/previews/city_overview.png)
+
+This repository is the canonical source of truth for AFTERLIGHT's documentation, original assets, source scenes, generators and validation records. Asset licensing remains an explicit owner decision; see [provenance](assets/PROVENANCE.md).

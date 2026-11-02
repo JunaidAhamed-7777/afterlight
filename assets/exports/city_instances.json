@@ -1,0 +1,3961 @@
+{
+  "coordinate_system": {
+    "units": "meters",
+    "ground_plane": "XY",
+    "up": "Z",
+    "origin": "city center; local Cartesian, no georeference",
+    "traffic_side": "right"
+  },
+  "building_instances": [
+    {
+      "id": "HOSP_WEST_BUILDING",
+      "asset": "hospital",
+      "position": [
+        -335.0,
+        -98.5,
+        0
+      ],
+      "dimensions": [
+        76,
+        60,
+        26
+      ],
+      "baked": true
+    },
+    {
+      "id": "HOSP_EAST_BUILDING",
+      "asset": "hospital",
+      "position": [
+        352.5,
+        121.5,
+        0
+      ],
+      "dimensions": [
+        76,
+        60,
+        26
+      ],
+      "baked": true
+    },
+    {
+      "id": "B0002",
+      "asset": "building_clay",
+      "position": [
+        -404,
+        -279,
+        0
+      ],
+      "scale": [
+        22,
+        26,
+        20
+      ]
+    },
+    {
+      "id": "B0003",
+      "asset": "building_sage",
+      "position": [
+        -364,
+        -279,
+        0
+      ],
+      "scale": [
+        29,
+        27,
+        21
+      ]
+    },
+    {
+      "id": "B0004",
+      "asset": "building_sand",
+      "position": [
+        -324,
+        -399,
+        0
+      ],
+      "scale": [
+        28,
+        23,
+        16
+      ]
+    },
+    {
+      "id": "B0005",
+      "asset": "building_slate",
+      "position": [
+        -324,
+        -359,
+        0
+      ],
+      "scale": [
+        28,
+        28,
+        21
+      ]
+    },
+    {
+      "id": "B0006",
+      "asset": "building_clay",
+      "position": [
+        -324,
+        -279,
+        0
+      ],
+      "scale": [
+        23,
+        29,
+        13
+      ]
+    },
+    {
+      "id": "B0007",
+      "asset": "building_sage",
+      "position": [
+        -284,
+        -279,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        15
+      ]
+    },
+    {
+      "id": "B0008",
+      "asset": "building_sand",
+      "position": [
+        -194,
+        -399,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        21
+      ]
+    },
+    {
+      "id": "B0009",
+      "asset": "building_slate",
+      "position": [
+        -194,
+        -359,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        28
+      ]
+    },
+    {
+      "id": "B0010",
+      "asset": "building_clay",
+      "position": [
+        -194,
+        -319,
+        0
+      ],
+      "scale": [
+        24,
+        25,
+        39
+      ]
+    },
+    {
+      "id": "B0011",
+      "asset": "building_sage",
+      "position": [
+        -194,
+        -279,
+        0
+      ],
+      "scale": [
+        27,
+        25,
+        45
+      ]
+    },
+    {
+      "id": "B0012",
+      "asset": "building_sand",
+      "position": [
+        -154,
+        -399,
+        0
+      ],
+      "scale": [
+        28,
+        24,
+        17
+      ]
+    },
+    {
+      "id": "B0013",
+      "asset": "building_slate",
+      "position": [
+        -154,
+        -359,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        34
+      ]
+    },
+    {
+      "id": "B0014",
+      "asset": "building_clay",
+      "position": [
+        -154,
+        -319,
+        0
+      ],
+      "scale": [
+        29,
+        22,
+        34
+      ]
+    },
+    {
+      "id": "B0015",
+      "asset": "building_sage",
+      "position": [
+        -154,
+        -279,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        47
+      ]
+    },
+    {
+      "id": "B0016",
+      "asset": "building_sand",
+      "position": [
+        -114,
+        -399,
+        0
+      ],
+      "scale": [
+        23,
+        29,
+        19
+      ]
+    },
+    {
+      "id": "B0017",
+      "asset": "building_slate",
+      "position": [
+        -114,
+        -359,
+        0
+      ],
+      "scale": [
+        25,
+        27,
+        31
+      ]
+    },
+    {
+      "id": "B0018",
+      "asset": "building_clay",
+      "position": [
+        -114,
+        -319,
+        0
+      ],
+      "scale": [
+        24,
+        23,
+        18
+      ]
+    },
+    {
+      "id": "B0019",
+      "asset": "building_sage",
+      "position": [
+        -114,
+        -279,
+        0
+      ],
+      "scale": [
+        23,
+        28,
+        21
+      ]
+    },
+    {
+      "id": "B0020",
+      "asset": "building_sand",
+      "position": [
+        -74,
+        -399,
+        0
+      ],
+      "scale": [
+        26,
+        26,
+        24
+      ]
+    },
+    {
+      "id": "B0021",
+      "asset": "building_slate",
+      "position": [
+        -74,
+        -359,
+        0
+      ],
+      "scale": [
+        22,
+        28,
+        24
+      ]
+    },
+    {
+      "id": "B0022",
+      "asset": "building_clay",
+      "position": [
+        -74,
+        -319,
+        0
+      ],
+      "scale": [
+        29,
+        27,
+        38
+      ]
+    },
+    {
+      "id": "B0023",
+      "asset": "building_sage",
+      "position": [
+        -74,
+        -279,
+        0
+      ],
+      "scale": [
+        22,
+        26,
+        23
+      ]
+    },
+    {
+      "id": "B0024",
+      "asset": "building_sand",
+      "position": [
+        -34,
+        -399,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        37
+      ]
+    },
+    {
+      "id": "B0025",
+      "asset": "building_slate",
+      "position": [
+        -34,
+        -359,
+        0
+      ],
+      "scale": [
+        24,
+        23,
+        23
+      ]
+    },
+    {
+      "id": "B0026",
+      "asset": "building_clay",
+      "position": [
+        -34,
+        -319,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        48
+      ]
+    },
+    {
+      "id": "B0027",
+      "asset": "building_sage",
+      "position": [
+        -34,
+        -279,
+        0
+      ],
+      "scale": [
+        22,
+        27,
+        41
+      ]
+    },
+    {
+      "id": "B0028",
+      "asset": "building_sand",
+      "position": [
+        281,
+        -399,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        21
+      ]
+    },
+    {
+      "id": "B0029",
+      "asset": "building_slate",
+      "position": [
+        281,
+        -359,
+        0
+      ],
+      "scale": [
+        24,
+        25,
+        10
+      ]
+    },
+    {
+      "id": "B0030",
+      "asset": "building_clay",
+      "position": [
+        281,
+        -319,
+        0
+      ],
+      "scale": [
+        27,
+        28,
+        21
+      ]
+    },
+    {
+      "id": "B0031",
+      "asset": "building_sage",
+      "position": [
+        281,
+        -279,
+        0
+      ],
+      "scale": [
+        27,
+        26,
+        17
+      ]
+    },
+    {
+      "id": "B0032",
+      "asset": "building_sand",
+      "position": [
+        321,
+        -399,
+        0
+      ],
+      "scale": [
+        29,
+        25,
+        8
+      ]
+    },
+    {
+      "id": "B0033",
+      "asset": "building_slate",
+      "position": [
+        321,
+        -359,
+        0
+      ],
+      "scale": [
+        24,
+        23,
+        19
+      ]
+    },
+    {
+      "id": "B0034",
+      "asset": "building_clay",
+      "position": [
+        321,
+        -319,
+        0
+      ],
+      "scale": [
+        23,
+        24,
+        14
+      ]
+    },
+    {
+      "id": "B0035",
+      "asset": "building_sage",
+      "position": [
+        321,
+        -279,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        24
+      ]
+    },
+    {
+      "id": "B0036",
+      "asset": "building_sand",
+      "position": [
+        361,
+        -399,
+        0
+      ],
+      "scale": [
+        26,
+        24,
+        10
+      ]
+    },
+    {
+      "id": "B0037",
+      "asset": "building_slate",
+      "position": [
+        361,
+        -359,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        19
+      ]
+    },
+    {
+      "id": "B0038",
+      "asset": "building_clay",
+      "position": [
+        361,
+        -319,
+        0
+      ],
+      "scale": [
+        29,
+        29,
+        25
+      ]
+    },
+    {
+      "id": "B0039",
+      "asset": "building_sage",
+      "position": [
+        361,
+        -279,
+        0
+      ],
+      "scale": [
+        29,
+        23,
+        24
+      ]
+    },
+    {
+      "id": "B0040",
+      "asset": "building_sand",
+      "position": [
+        401,
+        -399,
+        0
+      ],
+      "scale": [
+        29,
+        27,
+        11
+      ]
+    },
+    {
+      "id": "B0041",
+      "asset": "building_slate",
+      "position": [
+        401,
+        -359,
+        0
+      ],
+      "scale": [
+        28,
+        22,
+        10
+      ]
+    },
+    {
+      "id": "B0042",
+      "asset": "building_clay",
+      "position": [
+        401,
+        -319,
+        0
+      ],
+      "scale": [
+        24,
+        28,
+        21
+      ]
+    },
+    {
+      "id": "B0043",
+      "asset": "building_sage",
+      "position": [
+        401,
+        -279,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        18
+      ]
+    },
+    {
+      "id": "B0044",
+      "asset": "building_sand",
+      "position": [
+        -194,
+        -189,
+        0
+      ],
+      "scale": [
+        25,
+        26,
+        44
+      ]
+    },
+    {
+      "id": "B0045",
+      "asset": "building_slate",
+      "position": [
+        -194,
+        -149,
+        0
+      ],
+      "scale": [
+        23,
+        28,
+        47
+      ]
+    },
+    {
+      "id": "B0046",
+      "asset": "building_clay",
+      "position": [
+        -194,
+        -109,
+        0
+      ],
+      "scale": [
+        24,
+        28,
+        39
+      ]
+    },
+    {
+      "id": "B0047",
+      "asset": "building_sage",
+      "position": [
+        -194,
+        -69,
+        0
+      ],
+      "scale": [
+        29,
+        25,
+        45
+      ]
+    },
+    {
+      "id": "B0048",
+      "asset": "building_sand",
+      "position": [
+        -194,
+        -29,
+        0
+      ],
+      "scale": [
+        28,
+        28,
+        22
+      ]
+    },
+    {
+      "id": "B0049",
+      "asset": "building_slate",
+      "position": [
+        -154,
+        -69,
+        0
+      ],
+      "scale": [
+        22,
+        22,
+        36
+      ]
+    },
+    {
+      "id": "B0050",
+      "asset": "building_clay",
+      "position": [
+        -154,
+        -29,
+        0
+      ],
+      "scale": [
+        28,
+        29,
+        26
+      ]
+    },
+    {
+      "id": "B0051",
+      "asset": "building_sage",
+      "position": [
+        -114,
+        -189,
+        0
+      ],
+      "scale": [
+        29,
+        26,
+        37
+      ]
+    },
+    {
+      "id": "B0052",
+      "asset": "building_sand",
+      "position": [
+        -114,
+        -149,
+        0
+      ],
+      "scale": [
+        27,
+        25,
+        39
+      ]
+    },
+    {
+      "id": "B0053",
+      "asset": "building_slate",
+      "position": [
+        -114,
+        -69,
+        0
+      ],
+      "scale": [
+        29,
+        25,
+        40
+      ]
+    },
+    {
+      "id": "B0054",
+      "asset": "building_clay",
+      "position": [
+        -114,
+        -29,
+        0
+      ],
+      "scale": [
+        28,
+        25,
+        40
+      ]
+    },
+    {
+      "id": "B0055",
+      "asset": "building_sage",
+      "position": [
+        -74,
+        -69,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        35
+      ]
+    },
+    {
+      "id": "B0056",
+      "asset": "building_sand",
+      "position": [
+        -74,
+        -29,
+        0
+      ],
+      "scale": [
+        29,
+        25,
+        29
+      ]
+    },
+    {
+      "id": "B0057",
+      "asset": "building_slate",
+      "position": [
+        -34,
+        -189,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        22
+      ]
+    },
+    {
+      "id": "B0058",
+      "asset": "building_clay",
+      "position": [
+        -34,
+        -149,
+        0
+      ],
+      "scale": [
+        25,
+        27,
+        17
+      ]
+    },
+    {
+      "id": "B0059",
+      "asset": "building_sage",
+      "position": [
+        -34,
+        -109,
+        0
+      ],
+      "scale": [
+        28,
+        25,
+        43
+      ]
+    },
+    {
+      "id": "B0060",
+      "asset": "building_sand",
+      "position": [
+        -34,
+        -69,
+        0
+      ],
+      "scale": [
+        22,
+        26,
+        27
+      ]
+    },
+    {
+      "id": "B0061",
+      "asset": "building_slate",
+      "position": [
+        -34,
+        -29,
+        0
+      ],
+      "scale": [
+        29,
+        27,
+        46
+      ]
+    },
+    {
+      "id": "B0062",
+      "asset": "building_clay",
+      "position": [
+        36,
+        -189,
+        0
+      ],
+      "scale": [
+        27,
+        24,
+        28
+      ]
+    },
+    {
+      "id": "B0063",
+      "asset": "building_sage",
+      "position": [
+        36,
+        -149,
+        0
+      ],
+      "scale": [
+        22,
+        25,
+        31
+      ]
+    },
+    {
+      "id": "B0064",
+      "asset": "building_sand",
+      "position": [
+        36,
+        -109,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        15
+      ]
+    },
+    {
+      "id": "B0065",
+      "asset": "building_slate",
+      "position": [
+        36,
+        -69,
+        0
+      ],
+      "scale": [
+        25,
+        25,
+        41
+      ]
+    },
+    {
+      "id": "B0066",
+      "asset": "building_clay",
+      "position": [
+        36,
+        -29,
+        0
+      ],
+      "scale": [
+        22,
+        23,
+        20
+      ]
+    },
+    {
+      "id": "B0067",
+      "asset": "building_sage",
+      "position": [
+        76,
+        -189,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        29
+      ]
+    },
+    {
+      "id": "B0068",
+      "asset": "building_sand",
+      "position": [
+        76,
+        -149,
+        0
+      ],
+      "scale": [
+        26,
+        29,
+        32
+      ]
+    },
+    {
+      "id": "B0069",
+      "asset": "building_slate",
+      "position": [
+        76,
+        -109,
+        0
+      ],
+      "scale": [
+        29,
+        27,
+        19
+      ]
+    },
+    {
+      "id": "B0070",
+      "asset": "building_clay",
+      "position": [
+        76,
+        -69,
+        0
+      ],
+      "scale": [
+        26,
+        29,
+        34
+      ]
+    },
+    {
+      "id": "B0071",
+      "asset": "building_sage",
+      "position": [
+        76,
+        -29,
+        0
+      ],
+      "scale": [
+        22,
+        28,
+        34
+      ]
+    },
+    {
+      "id": "B0072",
+      "asset": "building_sand",
+      "position": [
+        116,
+        -189,
+        0
+      ],
+      "scale": [
+        28,
+        22,
+        37
+      ]
+    },
+    {
+      "id": "B0073",
+      "asset": "building_slate",
+      "position": [
+        116,
+        -149,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        45
+      ]
+    },
+    {
+      "id": "B0074",
+      "asset": "building_clay",
+      "position": [
+        116,
+        -109,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        18
+      ]
+    },
+    {
+      "id": "B0075",
+      "asset": "building_sage",
+      "position": [
+        116,
+        -69,
+        0
+      ],
+      "scale": [
+        26,
+        25,
+        18
+      ]
+    },
+    {
+      "id": "B0076",
+      "asset": "building_sand",
+      "position": [
+        116,
+        -29,
+        0
+      ],
+      "scale": [
+        24,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "B0077",
+      "asset": "building_slate",
+      "position": [
+        156,
+        -189,
+        0
+      ],
+      "scale": [
+        28,
+        26,
+        18
+      ]
+    },
+    {
+      "id": "B0078",
+      "asset": "building_clay",
+      "position": [
+        156,
+        -149,
+        0
+      ],
+      "scale": [
+        26,
+        26,
+        15
+      ]
+    },
+    {
+      "id": "B0079",
+      "asset": "building_sage",
+      "position": [
+        156,
+        -109,
+        0
+      ],
+      "scale": [
+        26,
+        29,
+        23
+      ]
+    },
+    {
+      "id": "B0080",
+      "asset": "building_sand",
+      "position": [
+        156,
+        -69,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        17
+      ]
+    },
+    {
+      "id": "B0081",
+      "asset": "building_slate",
+      "position": [
+        156,
+        -29,
+        0
+      ],
+      "scale": [
+        28,
+        29,
+        44
+      ]
+    },
+    {
+      "id": "B0082",
+      "asset": "building_clay",
+      "position": [
+        196,
+        -189,
+        0
+      ],
+      "scale": [
+        22,
+        26,
+        22
+      ]
+    },
+    {
+      "id": "B0083",
+      "asset": "building_sage",
+      "position": [
+        196,
+        -149,
+        0
+      ],
+      "scale": [
+        23,
+        28,
+        15
+      ]
+    },
+    {
+      "id": "B0084",
+      "asset": "building_sand",
+      "position": [
+        196,
+        -109,
+        0
+      ],
+      "scale": [
+        24,
+        27,
+        25
+      ]
+    },
+    {
+      "id": "B0085",
+      "asset": "building_slate",
+      "position": [
+        196,
+        -69,
+        0
+      ],
+      "scale": [
+        24,
+        28,
+        27
+      ]
+    },
+    {
+      "id": "B0086",
+      "asset": "building_clay",
+      "position": [
+        196,
+        -29,
+        0
+      ],
+      "scale": [
+        26,
+        27,
+        40
+      ]
+    },
+    {
+      "id": "B0087",
+      "asset": "building_sage",
+      "position": [
+        281,
+        -69,
+        0
+      ],
+      "scale": [
+        28,
+        28,
+        8
+      ]
+    },
+    {
+      "id": "B0088",
+      "asset": "building_sand",
+      "position": [
+        281,
+        -29,
+        0
+      ],
+      "scale": [
+        29,
+        22,
+        23
+      ]
+    },
+    {
+      "id": "B0089",
+      "asset": "building_slate",
+      "position": [
+        321,
+        -69,
+        0
+      ],
+      "scale": [
+        28,
+        26,
+        14
+      ]
+    },
+    {
+      "id": "B0090",
+      "asset": "building_clay",
+      "position": [
+        321,
+        -29,
+        0
+      ],
+      "scale": [
+        23,
+        26,
+        22
+      ]
+    },
+    {
+      "id": "B0091",
+      "asset": "building_sage",
+      "position": [
+        361,
+        -189,
+        0
+      ],
+      "scale": [
+        22,
+        29,
+        19
+      ]
+    },
+    {
+      "id": "B0092",
+      "asset": "building_sand",
+      "position": [
+        361,
+        -149,
+        0
+      ],
+      "scale": [
+        25,
+        29,
+        17
+      ]
+    },
+    {
+      "id": "B0093",
+      "asset": "building_slate",
+      "position": [
+        361,
+        -69,
+        0
+      ],
+      "scale": [
+        22,
+        23,
+        17
+      ]
+    },
+    {
+      "id": "B0094",
+      "asset": "building_clay",
+      "position": [
+        361,
+        -29,
+        0
+      ],
+      "scale": [
+        23,
+        23,
+        20
+      ]
+    },
+    {
+      "id": "B0095",
+      "asset": "building_sage",
+      "position": [
+        401,
+        -69,
+        0
+      ],
+      "scale": [
+        27,
+        22,
+        11
+      ]
+    },
+    {
+      "id": "B0096",
+      "asset": "building_sand",
+      "position": [
+        401,
+        -29,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        12
+      ]
+    },
+    {
+      "id": "B0097",
+      "asset": "building_slate",
+      "position": [
+        -404,
+        156,
+        0
+      ],
+      "scale": [
+        24,
+        26,
+        17
+      ]
+    },
+    {
+      "id": "B0098",
+      "asset": "building_clay",
+      "position": [
+        -364,
+        36,
+        0
+      ],
+      "scale": [
+        22,
+        29,
+        10
+      ]
+    },
+    {
+      "id": "B0099",
+      "asset": "building_sage",
+      "position": [
+        -364,
+        156,
+        0
+      ],
+      "scale": [
+        28,
+        25,
+        16
+      ]
+    },
+    {
+      "id": "B0100",
+      "asset": "building_sand",
+      "position": [
+        -324,
+        36,
+        0
+      ],
+      "scale": [
+        29,
+        26,
+        19
+      ]
+    },
+    {
+      "id": "B0101",
+      "asset": "building_slate",
+      "position": [
+        -324,
+        76,
+        0
+      ],
+      "scale": [
+        22,
+        25,
+        15
+      ]
+    },
+    {
+      "id": "B0102",
+      "asset": "building_clay",
+      "position": [
+        -324,
+        156,
+        0
+      ],
+      "scale": [
+        27,
+        22,
+        13
+      ]
+    },
+    {
+      "id": "B0103",
+      "asset": "building_sage",
+      "position": [
+        -284,
+        156,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        23
+      ]
+    },
+    {
+      "id": "B0104",
+      "asset": "building_sand",
+      "position": [
+        36,
+        36,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        38
+      ]
+    },
+    {
+      "id": "B0105",
+      "asset": "building_slate",
+      "position": [
+        36,
+        76,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        23
+      ]
+    },
+    {
+      "id": "B0106",
+      "asset": "building_clay",
+      "position": [
+        36,
+        116,
+        0
+      ],
+      "scale": [
+        26,
+        25,
+        32
+      ]
+    },
+    {
+      "id": "B0107",
+      "asset": "building_sage",
+      "position": [
+        36,
+        156,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        17
+      ]
+    },
+    {
+      "id": "B0108",
+      "asset": "building_sand",
+      "position": [
+        76,
+        156,
+        0
+      ],
+      "scale": [
+        25,
+        22,
+        26
+      ]
+    },
+    {
+      "id": "B0109",
+      "asset": "building_slate",
+      "position": [
+        116,
+        36,
+        0
+      ],
+      "scale": [
+        23,
+        25,
+        34
+      ]
+    },
+    {
+      "id": "B0110",
+      "asset": "building_clay",
+      "position": [
+        116,
+        76,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        31
+      ]
+    },
+    {
+      "id": "B0111",
+      "asset": "building_sage",
+      "position": [
+        116,
+        156,
+        0
+      ],
+      "scale": [
+        26,
+        25,
+        32
+      ]
+    },
+    {
+      "id": "B0112",
+      "asset": "building_sand",
+      "position": [
+        156,
+        36,
+        0
+      ],
+      "scale": [
+        28,
+        24,
+        19
+      ]
+    },
+    {
+      "id": "B0113",
+      "asset": "building_slate",
+      "position": [
+        156,
+        76,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        33
+      ]
+    },
+    {
+      "id": "B0114",
+      "asset": "building_clay",
+      "position": [
+        156,
+        156,
+        0
+      ],
+      "scale": [
+        29,
+        22,
+        26
+      ]
+    },
+    {
+      "id": "B0115",
+      "asset": "building_sage",
+      "position": [
+        196,
+        156,
+        0
+      ],
+      "scale": [
+        23,
+        22,
+        27
+      ]
+    },
+    {
+      "id": "B0116",
+      "asset": "building_sand",
+      "position": [
+        -404,
+        251,
+        0
+      ],
+      "scale": [
+        25,
+        25,
+        11
+      ]
+    },
+    {
+      "id": "B0117",
+      "asset": "building_slate",
+      "position": [
+        -404,
+        291,
+        0
+      ],
+      "scale": [
+        28,
+        25,
+        14
+      ]
+    },
+    {
+      "id": "B0118",
+      "asset": "building_clay",
+      "position": [
+        -404,
+        331,
+        0
+      ],
+      "scale": [
+        25,
+        23,
+        18
+      ]
+    },
+    {
+      "id": "B0119",
+      "asset": "building_sage",
+      "position": [
+        -404,
+        371,
+        0
+      ],
+      "scale": [
+        25,
+        22,
+        22
+      ]
+    },
+    {
+      "id": "B0120",
+      "asset": "building_sand",
+      "position": [
+        -404,
+        411,
+        0
+      ],
+      "scale": [
+        28,
+        22,
+        16
+      ]
+    },
+    {
+      "id": "B0121",
+      "asset": "building_slate",
+      "position": [
+        -364,
+        251,
+        0
+      ],
+      "scale": [
+        28,
+        26,
+        20
+      ]
+    },
+    {
+      "id": "B0122",
+      "asset": "building_clay",
+      "position": [
+        -364,
+        291,
+        0
+      ],
+      "scale": [
+        24,
+        22,
+        13
+      ]
+    },
+    {
+      "id": "B0123",
+      "asset": "building_sage",
+      "position": [
+        -364,
+        331,
+        0
+      ],
+      "scale": [
+        27,
+        29,
+        11
+      ]
+    },
+    {
+      "id": "B0124",
+      "asset": "building_sand",
+      "position": [
+        -364,
+        371,
+        0
+      ],
+      "scale": [
+        28,
+        23,
+        19
+      ]
+    },
+    {
+      "id": "B0125",
+      "asset": "building_slate",
+      "position": [
+        -364,
+        411,
+        0
+      ],
+      "scale": [
+        23,
+        23,
+        8
+      ]
+    },
+    {
+      "id": "B0126",
+      "asset": "building_clay",
+      "position": [
+        -324,
+        251,
+        0
+      ],
+      "scale": [
+        22,
+        28,
+        10
+      ]
+    },
+    {
+      "id": "B0127",
+      "asset": "building_sage",
+      "position": [
+        -324,
+        291,
+        0
+      ],
+      "scale": [
+        22,
+        23,
+        14
+      ]
+    },
+    {
+      "id": "B0128",
+      "asset": "building_sand",
+      "position": [
+        -324,
+        331,
+        0
+      ],
+      "scale": [
+        27,
+        25,
+        24
+      ]
+    },
+    {
+      "id": "B0129",
+      "asset": "building_slate",
+      "position": [
+        -324,
+        371,
+        0
+      ],
+      "scale": [
+        27,
+        23,
+        13
+      ]
+    },
+    {
+      "id": "B0130",
+      "asset": "building_clay",
+      "position": [
+        -324,
+        411,
+        0
+      ],
+      "scale": [
+        26,
+        25,
+        13
+      ]
+    },
+    {
+      "id": "B0131",
+      "asset": "building_sage",
+      "position": [
+        -284,
+        251,
+        0
+      ],
+      "scale": [
+        29,
+        29,
+        19
+      ]
+    },
+    {
+      "id": "B0132",
+      "asset": "building_sand",
+      "position": [
+        -284,
+        291,
+        0
+      ],
+      "scale": [
+        28,
+        27,
+        21
+      ]
+    },
+    {
+      "id": "B0133",
+      "asset": "building_slate",
+      "position": [
+        -284,
+        331,
+        0
+      ],
+      "scale": [
+        25,
+        23,
+        23
+      ]
+    },
+    {
+      "id": "B0134",
+      "asset": "building_clay",
+      "position": [
+        -284,
+        371,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        22
+      ]
+    },
+    {
+      "id": "B0135",
+      "asset": "building_sage",
+      "position": [
+        -284,
+        411,
+        0
+      ],
+      "scale": [
+        29,
+        26,
+        21
+      ]
+    },
+    {
+      "id": "B0136",
+      "asset": "building_sand",
+      "position": [
+        -194,
+        331,
+        0
+      ],
+      "scale": [
+        23,
+        26,
+        32
+      ]
+    },
+    {
+      "id": "B0137",
+      "asset": "building_slate",
+      "position": [
+        -194,
+        371,
+        0
+      ],
+      "scale": [
+        22,
+        22,
+        41
+      ]
+    },
+    {
+      "id": "B0138",
+      "asset": "building_clay",
+      "position": [
+        -194,
+        411,
+        0
+      ],
+      "scale": [
+        24,
+        27,
+        25
+      ]
+    },
+    {
+      "id": "B0139",
+      "asset": "building_sage",
+      "position": [
+        -154,
+        371,
+        0
+      ],
+      "scale": [
+        28,
+        28,
+        16
+      ]
+    },
+    {
+      "id": "B0140",
+      "asset": "building_sand",
+      "position": [
+        -154,
+        411,
+        0
+      ],
+      "scale": [
+        25,
+        29,
+        21
+      ]
+    },
+    {
+      "id": "B0141",
+      "asset": "building_slate",
+      "position": [
+        -114,
+        251,
+        0
+      ],
+      "scale": [
+        25,
+        27,
+        46
+      ]
+    },
+    {
+      "id": "B0142",
+      "asset": "building_clay",
+      "position": [
+        -114,
+        291,
+        0
+      ],
+      "scale": [
+        25,
+        22,
+        38
+      ]
+    },
+    {
+      "id": "B0143",
+      "asset": "building_sage",
+      "position": [
+        -114,
+        371,
+        0
+      ],
+      "scale": [
+        22,
+        27,
+        44
+      ]
+    },
+    {
+      "id": "B0144",
+      "asset": "building_sand",
+      "position": [
+        -114,
+        411,
+        0
+      ],
+      "scale": [
+        27,
+        23,
+        20
+      ]
+    },
+    {
+      "id": "B0145",
+      "asset": "building_slate",
+      "position": [
+        -74,
+        371,
+        0
+      ],
+      "scale": [
+        24,
+        24,
+        27
+      ]
+    },
+    {
+      "id": "B0146",
+      "asset": "building_clay",
+      "position": [
+        -74,
+        411,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        17
+      ]
+    },
+    {
+      "id": "B0147",
+      "asset": "building_sage",
+      "position": [
+        -34,
+        251,
+        0
+      ],
+      "scale": [
+        28,
+        27,
+        18
+      ]
+    },
+    {
+      "id": "B0148",
+      "asset": "building_sand",
+      "position": [
+        -34,
+        291,
+        0
+      ],
+      "scale": [
+        23,
+        23,
+        19
+      ]
+    },
+    {
+      "id": "B0149",
+      "asset": "building_slate",
+      "position": [
+        -34,
+        331,
+        0
+      ],
+      "scale": [
+        25,
+        28,
+        40
+      ]
+    },
+    {
+      "id": "B0150",
+      "asset": "building_clay",
+      "position": [
+        -34,
+        371,
+        0
+      ],
+      "scale": [
+        23,
+        24,
+        45
+      ]
+    },
+    {
+      "id": "B0151",
+      "asset": "building_sage",
+      "position": [
+        -34,
+        411,
+        0
+      ],
+      "scale": [
+        29,
+        29,
+        38
+      ]
+    },
+    {
+      "id": "B0152",
+      "asset": "building_sand",
+      "position": [
+        36,
+        251,
+        0
+      ],
+      "scale": [
+        22,
+        23,
+        16
+      ]
+    },
+    {
+      "id": "B0153",
+      "asset": "building_slate",
+      "position": [
+        36,
+        291,
+        0
+      ],
+      "scale": [
+        22,
+        26,
+        27
+      ]
+    },
+    {
+      "id": "B0154",
+      "asset": "building_clay",
+      "position": [
+        36,
+        331,
+        0
+      ],
+      "scale": [
+        24,
+        24,
+        36
+      ]
+    },
+    {
+      "id": "B0155",
+      "asset": "building_sage",
+      "position": [
+        36,
+        371,
+        0
+      ],
+      "scale": [
+        25,
+        23,
+        43
+      ]
+    },
+    {
+      "id": "B0156",
+      "asset": "building_sand",
+      "position": [
+        36,
+        411,
+        0
+      ],
+      "scale": [
+        29,
+        23,
+        26
+      ]
+    },
+    {
+      "id": "B0157",
+      "asset": "building_slate",
+      "position": [
+        76,
+        251,
+        0
+      ],
+      "scale": [
+        28,
+        22,
+        29
+      ]
+    },
+    {
+      "id": "B0158",
+      "asset": "building_clay",
+      "position": [
+        76,
+        291,
+        0
+      ],
+      "scale": [
+        25,
+        24,
+        22
+      ]
+    },
+    {
+      "id": "B0159",
+      "asset": "building_sage",
+      "position": [
+        76,
+        331,
+        0
+      ],
+      "scale": [
+        25,
+        26,
+        18
+      ]
+    },
+    {
+      "id": "B0160",
+      "asset": "building_sand",
+      "position": [
+        76,
+        371,
+        0
+      ],
+      "scale": [
+        23,
+        25,
+        36
+      ]
+    },
+    {
+      "id": "B0161",
+      "asset": "building_slate",
+      "position": [
+        76,
+        411,
+        0
+      ],
+      "scale": [
+        22,
+        24,
+        48
+      ]
+    },
+    {
+      "id": "B0162",
+      "asset": "building_clay",
+      "position": [
+        116,
+        251,
+        0
+      ],
+      "scale": [
+        24,
+        29,
+        32
+      ]
+    },
+    {
+      "id": "B0163",
+      "asset": "building_sage",
+      "position": [
+        116,
+        291,
+        0
+      ],
+      "scale": [
+        25,
+        23,
+        15
+      ]
+    },
+    {
+      "id": "B0164",
+      "asset": "building_sand",
+      "position": [
+        116,
+        331,
+        0
+      ],
+      "scale": [
+        22,
+        22,
+        42
+      ]
+    },
+    {
+      "id": "B0165",
+      "asset": "building_slate",
+      "position": [
+        116,
+        371,
+        0
+      ],
+      "scale": [
+        22,
+        22,
+        22
+      ]
+    },
+    {
+      "id": "B0166",
+      "asset": "building_clay",
+      "position": [
+        116,
+        411,
+        0
+      ],
+      "scale": [
+        26,
+        22,
+        15
+      ]
+    },
+    {
+      "id": "B0167",
+      "asset": "building_sage",
+      "position": [
+        156,
+        251,
+        0
+      ],
+      "scale": [
+        24,
+        23,
+        48
+      ]
+    },
+    {
+      "id": "B0168",
+      "asset": "building_sand",
+      "position": [
+        156,
+        291,
+        0
+      ],
+      "scale": [
+        27,
+        28,
+        42
+      ]
+    },
+    {
+      "id": "B0169",
+      "asset": "building_slate",
+      "position": [
+        156,
+        331,
+        0
+      ],
+      "scale": [
+        27,
+        26,
+        19
+      ]
+    },
+    {
+      "id": "B0170",
+      "asset": "building_clay",
+      "position": [
+        156,
+        371,
+        0
+      ],
+      "scale": [
+        25,
+        25,
+        27
+      ]
+    },
+    {
+      "id": "B0171",
+      "asset": "building_sage",
+      "position": [
+        156,
+        411,
+        0
+      ],
+      "scale": [
+        27,
+        27,
+        42
+      ]
+    },
+    {
+      "id": "B0172",
+      "asset": "building_sand",
+      "position": [
+        196,
+        251,
+        0
+      ],
+      "scale": [
+        29,
+        29,
+        37
+      ]
+    },
+    {
+      "id": "B0173",
+      "asset": "building_slate",
+      "position": [
+        196,
+        291,
+        0
+      ],
+      "scale": [
+        28,
+        27,
+        24
+      ]
+    },
+    {
+      "id": "B0174",
+      "asset": "building_clay",
+      "position": [
+        196,
+        331,
+        0
+      ],
+      "scale": [
+        29,
+        28,
+        32
+      ]
+    },
+    {
+      "id": "B0175",
+      "asset": "building_sage",
+      "position": [
+        196,
+        371,
+        0
+      ],
+      "scale": [
+        25,
+        24,
+        28
+      ]
+    },
+    {
+      "id": "B0176",
+      "asset": "building_sand",
+      "position": [
+        196,
+        411,
+        0
+      ],
+      "scale": [
+        27,
+        24,
+        41
+      ]
+    },
+    {
+      "id": "B0177",
+      "asset": "building_slate",
+      "position": [
+        281,
+        371,
+        0
+      ],
+      "scale": [
+        27,
+        22,
+        14
+      ]
+    },
+    {
+      "id": "B0178",
+      "asset": "building_clay",
+      "position": [
+        281,
+        411,
+        0
+      ],
+      "scale": [
+        27,
+        23,
+        21
+      ]
+    },
+    {
+      "id": "B0179",
+      "asset": "building_sage",
+      "position": [
+        321,
+        371,
+        0
+      ],
+      "scale": [
+        22,
+        29,
+        20
+      ]
+    },
+    {
+      "id": "B0180",
+      "asset": "building_sand",
+      "position": [
+        321,
+        411,
+        0
+      ],
+      "scale": [
+        25,
+        27,
+        21
+      ]
+    },
+    {
+      "id": "B0181",
+      "asset": "building_slate",
+      "position": [
+        361,
+        251,
+        0
+      ],
+      "scale": [
+        28,
+        24,
+        12
+      ]
+    },
+    {
+      "id": "B0182",
+      "asset": "building_clay",
+      "position": [
+        361,
+        291,
+        0
+      ],
+      "scale": [
+        25,
+        24,
+        15
+      ]
+    },
+    {
+      "id": "B0183",
+      "asset": "building_sage",
+      "position": [
+        361,
+        371,
+        0
+      ],
+      "scale": [
+        25,
+        26,
+        18
+      ]
+    },
+    {
+      "id": "B0184",
+      "asset": "building_sand",
+      "position": [
+        361,
+        411,
+        0
+      ],
+      "scale": [
+        23,
+        28,
+        25
+      ]
+    },
+    {
+      "id": "B0185",
+      "asset": "building_slate",
+      "position": [
+        401,
+        371,
+        0
+      ],
+      "scale": [
+        29,
+        22,
+        17
+      ]
+    },
+    {
+      "id": "B0186",
+      "asset": "building_clay",
+      "position": [
+        401,
+        411,
+        0
+      ],
+      "scale": [
+        24,
+        25,
+        12
+      ]
+    }
+  ],
+  "pickups": [
+    {
+      "id": "P001",
+      "position": [
+        -339.2,
+        -428.5,
+        0
+      ],
+      "road_id": "H00",
+      "edge_id": "H00_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P002",
+      "position": [
+        -87.4,
+        -428.5,
+        0
+      ],
+      "road_id": "H01",
+      "edge_id": "H01_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P003",
+      "position": [
+        -41.4,
+        -428.5,
+        0
+      ],
+      "road_id": "H01",
+      "edge_id": "H01_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P004",
+      "position": [
+        93.1,
+        -441.5,
+        0
+      ],
+      "road_id": "H02",
+      "edge_id": "H02_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P005",
+      "position": [
+        117.6,
+        -441.5,
+        0
+      ],
+      "road_id": "H02",
+      "edge_id": "H02_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P006",
+      "position": [
+        44.1,
+        -441.5,
+        0
+      ],
+      "road_id": "H02",
+      "edge_id": "H02_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P007",
+      "position": [
+        378.3,
+        -441.5,
+        0
+      ],
+      "road_id": "H03",
+      "edge_id": "H03_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P008",
+      "position": [
+        283.7,
+        -428.5,
+        0
+      ],
+      "road_id": "H03",
+      "edge_id": "H03_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P009",
+      "position": [
+        -309.8,
+        -214.5,
+        0
+      ],
+      "road_id": "H10",
+      "edge_id": "H10_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P010",
+      "position": [
+        -402.2,
+        -214.5,
+        0
+      ],
+      "road_id": "H10",
+      "edge_id": "H10_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P011",
+      "position": [
+        -87.4,
+        -214.5,
+        0
+      ],
+      "road_id": "H11",
+      "edge_id": "H11_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P012",
+      "position": [
+        93.1,
+        -214.5,
+        0
+      ],
+      "road_id": "H12",
+      "edge_id": "H12_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P013",
+      "position": [
+        117.6,
+        -235.5,
+        0
+      ],
+      "road_id": "H12",
+      "edge_id": "H12_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P014",
+      "position": [
+        44.1,
+        -235.5,
+        0
+      ],
+      "road_id": "H12",
+      "edge_id": "H12_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P015",
+      "position": [
+        378.3,
+        -235.5,
+        0
+      ],
+      "road_id": "H13",
+      "edge_id": "H13_1_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P016",
+      "position": [
+        -339.2,
+        -6.5,
+        0
+      ],
+      "road_id": "H20",
+      "edge_id": "H20_1_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P017",
+      "position": [
+        -119.6,
+        6.5,
+        0
+      ],
+      "road_id": "H21",
+      "edge_id": "H21_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P018",
+      "position": [
+        -188.6,
+        6.5,
+        0
+      ],
+      "road_id": "H21",
+      "edge_id": "H21_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P019",
+      "position": [
+        151.9,
+        6.5,
+        0
+      ],
+      "road_id": "H22",
+      "edge_id": "H22_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P020",
+      "position": [
+        421.3,
+        6.5,
+        0
+      ],
+      "road_id": "H23",
+      "edge_id": "H23_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P021",
+      "position": [
+        -360.2,
+        225.5,
+        0
+      ],
+      "road_id": "H30",
+      "edge_id": "H30_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P022",
+      "position": [
+        -339.2,
+        204.5,
+        0
+      ],
+      "road_id": "H30",
+      "edge_id": "H30_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P023",
+      "position": [
+        -402.2,
+        204.5,
+        0
+      ],
+      "road_id": "H30",
+      "edge_id": "H30_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P024",
+      "position": [
+        -87.4,
+        204.5,
+        0
+      ],
+      "road_id": "H31",
+      "edge_id": "H31_1_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P025",
+      "position": [
+        93.1,
+        204.5,
+        0
+      ],
+      "road_id": "H32",
+      "edge_id": "H32_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P026",
+      "position": [
+        200.9,
+        225.5,
+        0
+      ],
+      "road_id": "H32",
+      "edge_id": "H32_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P027",
+      "position": [
+        326.7,
+        225.5,
+        0
+      ],
+      "road_id": "H33",
+      "edge_id": "H33_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P028",
+      "position": [
+        348.2,
+        225.5,
+        0
+      ],
+      "road_id": "H33",
+      "edge_id": "H33_1_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P029",
+      "position": [
+        -309.8,
+        456.5,
+        0
+      ],
+      "road_id": "H40",
+      "edge_id": "H40_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P030",
+      "position": [
+        -267.8,
+        456.5,
+        0
+      ],
+      "road_id": "H40",
+      "edge_id": "H40_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P031",
+      "position": [
+        -142.6,
+        443.5,
+        0
+      ],
+      "road_id": "H41",
+      "edge_id": "H41_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P032",
+      "position": [
+        -119.6,
+        443.5,
+        0
+      ],
+      "road_id": "H41",
+      "edge_id": "H41_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P033",
+      "position": [
+        -188.6,
+        443.5,
+        0
+      ],
+      "road_id": "H41",
+      "edge_id": "H41_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P034",
+      "position": [
+        151.9,
+        443.5,
+        0
+      ],
+      "road_id": "H42",
+      "edge_id": "H42_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P035",
+      "position": [
+        44.1,
+        456.5,
+        0
+      ],
+      "road_id": "H42",
+      "edge_id": "H42_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P036",
+      "position": [
+        378.3,
+        456.5,
+        0
+      ],
+      "road_id": "H43",
+      "edge_id": "H43_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P037",
+      "position": [
+        421.3,
+        456.5,
+        0
+      ],
+      "road_id": "H43",
+      "edge_id": "H43_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P038",
+      "position": [
+        -446.5,
+        -355.2,
+        0
+      ],
+      "road_id": "V00",
+      "edge_id": "V00_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P039",
+      "position": [
+        -446.5,
+        -334.2,
+        0
+      ],
+      "road_id": "V00",
+      "edge_id": "V00_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P040",
+      "position": [
+        -433.5,
+        -397.2,
+        0
+      ],
+      "road_id": "V00",
+      "edge_id": "V00_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P041",
+      "position": [
+        -433.5,
+        -85.5,
+        0
+      ],
+      "road_id": "V01",
+      "edge_id": "V01_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P042",
+      "position": [
+        -433.5,
+        -40.5,
+        0
+      ],
+      "road_id": "V01",
+      "edge_id": "V01_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P043",
+      "position": [
+        -433.5,
+        81.7,
+        0
+      ],
+      "road_id": "V02",
+      "edge_id": "V02_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P044",
+      "position": [
+        -446.5,
+        176.3,
+        0
+      ],
+      "road_id": "V02",
+      "edge_id": "V02_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P045",
+      "position": [
+        -446.5,
+        304.3,
+        0
+      ],
+      "road_id": "V03",
+      "edge_id": "V03_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P046",
+      "position": [
+        -446.5,
+        327.8,
+        0
+      ],
+      "road_id": "V03",
+      "edge_id": "V03_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P047",
+      "position": [
+        -446.5,
+        257.3,
+        0
+      ],
+      "road_id": "V03",
+      "edge_id": "V03_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P048",
+      "position": [
+        -236.5,
+        -304.8,
+        0
+      ],
+      "road_id": "V10",
+      "edge_id": "V10_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P049",
+      "position": [
+        -223.5,
+        -262.8,
+        0
+      ],
+      "road_id": "V10",
+      "edge_id": "V10_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P050",
+      "position": [
+        -223.5,
+        -139.5,
+        0
+      ],
+      "road_id": "V11",
+      "edge_id": "V11_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P051",
+      "position": [
+        -223.5,
+        -117.0,
+        0
+      ],
+      "road_id": "V11",
+      "edge_id": "V11_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P052",
+      "position": [
+        -223.5,
+        -184.5,
+        0
+      ],
+      "road_id": "V11",
+      "edge_id": "V11_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P053",
+      "position": [
+        -236.5,
+        103.2,
+        0
+      ],
+      "road_id": "V12",
+      "edge_id": "V12_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P054",
+      "position": [
+        -236.5,
+        38.7,
+        0
+      ],
+      "road_id": "V12",
+      "edge_id": "V12_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P055",
+      "position": [
+        -236.5,
+        360.7,
+        0
+      ],
+      "road_id": "V13",
+      "edge_id": "V13_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P056",
+      "position": [
+        -236.5,
+        407.7,
+        0
+      ],
+      "road_id": "V13",
+      "edge_id": "V13_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P057",
+      "position": [
+        -10.5,
+        -355.2,
+        0
+      ],
+      "road_id": "V20",
+      "edge_id": "V20_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P058",
+      "position": [
+        10.5,
+        -334.2,
+        0
+      ],
+      "road_id": "V20",
+      "edge_id": "V20_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P059",
+      "position": [
+        10.5,
+        -397.2,
+        0
+      ],
+      "road_id": "V20",
+      "edge_id": "V20_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P060",
+      "position": [
+        10.5,
+        -85.5,
+        0
+      ],
+      "road_id": "V21",
+      "edge_id": "V21_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P061",
+      "position": [
+        10.5,
+        -40.5,
+        0
+      ],
+      "road_id": "V21",
+      "edge_id": "V21_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P062",
+      "position": [
+        -10.5,
+        133.3,
+        0
+      ],
+      "road_id": "V22",
+      "edge_id": "V22_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P063",
+      "position": [
+        -10.5,
+        176.3,
+        0
+      ],
+      "road_id": "V22",
+      "edge_id": "V22_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P064",
+      "position": [
+        -10.5,
+        304.3,
+        0
+      ],
+      "road_id": "V23",
+      "edge_id": "V23_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P065",
+      "position": [
+        -10.5,
+        327.8,
+        0
+      ],
+      "road_id": "V23",
+      "edge_id": "V23_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P066",
+      "position": [
+        -10.5,
+        257.3,
+        0
+      ],
+      "road_id": "V23",
+      "edge_id": "V23_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P067",
+      "position": [
+        251.5,
+        -304.8,
+        0
+      ],
+      "road_id": "V30",
+      "edge_id": "V30_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P068",
+      "position": [
+        251.5,
+        -262.8,
+        0
+      ],
+      "road_id": "V30",
+      "edge_id": "V30_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P069",
+      "position": [
+        251.5,
+        -139.5,
+        0
+      ],
+      "road_id": "V31",
+      "edge_id": "V31_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P070",
+      "position": [
+        251.5,
+        -117.0,
+        0
+      ],
+      "road_id": "V31",
+      "edge_id": "V31_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P071",
+      "position": [
+        238.5,
+        81.7,
+        0
+      ],
+      "road_id": "V32",
+      "edge_id": "V32_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P072",
+      "position": [
+        238.5,
+        103.2,
+        0
+      ],
+      "road_id": "V32",
+      "edge_id": "V32_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P073",
+      "position": [
+        238.5,
+        38.7,
+        0
+      ],
+      "road_id": "V32",
+      "edge_id": "V32_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P074",
+      "position": [
+        238.5,
+        360.7,
+        0
+      ],
+      "road_id": "V33",
+      "edge_id": "V33_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P075",
+      "position": [
+        238.5,
+        407.7,
+        0
+      ],
+      "road_id": "V33",
+      "edge_id": "V33_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P076",
+      "position": [
+        466.5,
+        -355.2,
+        0
+      ],
+      "road_id": "V40",
+      "edge_id": "V40_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P077",
+      "position": [
+        466.5,
+        -334.2,
+        0
+      ],
+      "road_id": "V40",
+      "edge_id": "V40_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P078",
+      "position": [
+        466.5,
+        -397.2,
+        0
+      ],
+      "road_id": "V40",
+      "edge_id": "V40_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P079",
+      "position": [
+        466.5,
+        -85.5,
+        0
+      ],
+      "road_id": "V41",
+      "edge_id": "V41_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P080",
+      "position": [
+        453.5,
+        -184.5,
+        0
+      ],
+      "road_id": "V41",
+      "edge_id": "V41_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P081",
+      "position": [
+        453.5,
+        133.3,
+        0
+      ],
+      "road_id": "V42",
+      "edge_id": "V42_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P082",
+      "position": [
+        453.5,
+        176.3,
+        0
+      ],
+      "road_id": "V42",
+      "edge_id": "V42_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.82,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P083",
+      "position": [
+        453.5,
+        304.3,
+        0
+      ],
+      "road_id": "V43",
+      "edge_id": "V43_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P084",
+      "position": [
+        453.5,
+        327.8,
+        0
+      ],
+      "road_id": "V43",
+      "edge_id": "V43_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P085",
+      "position": [
+        466.5,
+        257.3,
+        0
+      ],
+      "road_id": "V43",
+      "edge_id": "V43_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.18,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P086",
+      "position": [
+        -347.096,
+        -328.7,
+        0
+      ],
+      "road_id": "LOCAL_00_1",
+      "edge_id": "LOCAL_00_1_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P087",
+      "position": [
+        -279.1,
+        -396.696,
+        0
+      ],
+      "road_id": "LOCAL_00_2",
+      "edge_id": "LOCAL_00_2_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P088",
+      "position": [
+        -164.7,
+        -173.16,
+        0
+      ],
+      "road_id": "LOCAL_11_0",
+      "edge_id": "LOCAL_11_0_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P089",
+      "position": [
+        -54.3,
+        -183.96,
+        0
+      ],
+      "road_id": "LOCAL_11_2",
+      "edge_id": "LOCAL_11_2_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P090",
+      "position": [
+        306.4,
+        -173.16,
+        0
+      ],
+      "road_id": "LOCAL_31_0",
+      "edge_id": "LOCAL_31_0_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P091",
+      "position": [
+        409.6,
+        -158.04,
+        0
+      ],
+      "road_id": "LOCAL_31_2",
+      "edge_id": "LOCAL_31_2_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P092",
+      "position": [
+        -390.9,
+        63.984,
+        0
+      ],
+      "road_id": "LOCAL_02_0",
+      "edge_id": "LOCAL_02_0_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P093",
+      "position": [
+        -337.016,
+        97.7,
+        0
+      ],
+      "road_id": "LOCAL_02_1",
+      "edge_id": "LOCAL_02_1_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P094",
+      "position": [
+        58.2,
+        63.984,
+        0
+      ],
+      "road_id": "LOCAL_22_0",
+      "edge_id": "LOCAL_22_0_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P095",
+      "position": [
+        120.148,
+        97.7,
+        0
+      ],
+      "road_id": "LOCAL_22_1",
+      "edge_id": "LOCAL_22_1_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P096",
+      "position": [
+        -175.7,
+        257.864,
+        0
+      ],
+      "road_id": "LOCAL_13_0",
+      "edge_id": "LOCAL_13_0_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P097",
+      "position": [
+        -101.752,
+        333.3,
+        0
+      ],
+      "road_id": "LOCAL_13_1",
+      "edge_id": "LOCAL_13_1_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P098",
+      "position": [
+        295.4,
+        257.864,
+        0
+      ],
+      "road_id": "LOCAL_33_0",
+      "edge_id": "LOCAL_33_0_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.38,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P099",
+      "position": [
+        364.884,
+        333.3,
+        0
+      ],
+      "road_id": "LOCAL_33_1",
+      "edge_id": "LOCAL_33_1_0_R",
+      "curb_side": "left",
+      "road_fraction": 0.62,
+      "curb_offset_m": 1.5
+    },
+    {
+      "id": "P100",
+      "position": [
+        398.6,
+        273.656,
+        0
+      ],
+      "road_id": "LOCAL_33_2",
+      "edge_id": "LOCAL_33_2_0_F",
+      "curb_side": "right",
+      "road_fraction": 0.48,
+      "curb_offset_m": 1.5
+    }
+  ],
+  "hospitals": [
+    {
+      "id": "HOSP_WEST",
+      "name": "Westhaven Medical",
+      "building_id": "HOSP_WEST_BUILDING",
+      "destination_node": "HOSP_WEST_ARRIVAL",
+      "driveway_road_id": "HOSP_WEST_DRIVEWAY",
+      "driveway_anchor": [
+        -335.0,
+        -140.5,
+        0
+      ]
+    },
+    {
+      "id": "HOSP_EAST",
+      "name": "Eastbank General",
+      "building_id": "HOSP_EAST_BUILDING",
+      "destination_node": "HOSP_EAST_ARRIVAL",
+      "driveway_road_id": "HOSP_EAST_DRIVEWAY",
+      "driveway_anchor": [
+        352.5,
+        79.5,
+        0
+      ]
+    }
+  ],
+  "source_manifest": "../map/city_manifest.json",
+  "note": "city_static.glb includes all building meshes for simple viewer; optimized runtime can instead use shared building archetypes and these transforms, excluding baked buildings to avoid duplicates."
+}
