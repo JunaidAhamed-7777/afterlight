@@ -20,7 +20,7 @@ from policies.scheduler import Scheduler, Timing
 from policies.timing import request_plan, distinct_schedules
 from sim.network import ROOT, binary, build_network, read_network, write_json, sha256
 from sim.demand import make_demand, save_demand
-from sim.accounting import Accounting
+from sim.accounting import Accounting, reconcile_tripinfo
 from export.replay import SCHEMA, save_replay
 from models.analytical import choose_lead
 from evaluation.protocol import digest
@@ -235,11 +235,25 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
             conn.trafficlight.setRedYellowGreenState(j, scheduler.advance(end_s, passed=passed, queues=phase_queues(conn, network['signals'][j])))
         frames.append(pose_frame(conn, network, end_s))
         events.extend(event for scheduler in schedulers.values() for event in scheduler.events)
-        events.sort(key=lambda event: (event['t'], event.get('junction', ''), event['kind']))
         physical = set(conn.vehicle.getIDList())
         expected_running = set(ledger.inserted) - set(ledger.completed)
         if physical != expected_running:
             reasons.append('vehicle_inventory_mismatch')
+        # Flush SUMO output before deriving exact trip metrics. List notifications
+        # are discovery-step times; tripinfo is authoritative for actual times.
+        conn.close()
+        conn = None
+        reasons.extend(reconcile_tripinfo(ledger, output/'tripinfo.xml'))
+        for event in events:
+            if event['kind'] == 'ambulance_inserted' and 'ambulance' in ledger.inserted:
+                event['detected_at_s'] = event['t']
+                event['t'] = ledger.inserted['ambulance']
+                event['insertion_delay_s'] = event['t']-demand['dispatch_s']
+            elif event['kind'] == 'ambulance_arrived' and 'ambulance' in ledger.completed:
+                event['detected_at_s'] = event['t']
+                event['t'] = ledger.completed['ambulance']
+                event['journey_s'] = event['t']-demand['dispatch_s']
+        events.sort(key=lambda event: (event['t'], event.get('junction', ''), event['kind']))
         counts = ledger.counts()
         fully_drained = counts['completed'] == counts['scheduled'] and 'ambulance' in ledger.completed
         status = 'invalid' if reasons else ('completed' if fully_drained else 'censored')
@@ -251,7 +265,8 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                    'common_horizon_burden_vehicle_s': burden_vehicle_s,
                    'drain_burden_vehicle_s': drain_burden_vehicle_s,
                    'runtime_s': time.perf_counter()-started,
-                   'civilian_reference_definition': demand['reference_definition']}
+                   'civilian_reference_definition': demand['reference_definition'],
+                   'trip_time_source': 'SUMO tripinfo departure/arrival; list-event discovery timestamps retained separately'}
         result = {'world_id': world_id, 'policy': policy, 'lead_s': decision['selected_lead_s'] if decision else None,
                   'status': status, 'metrics': metrics, 'events': events, 'frames': frames,
                   'decision': decision, 'sumo_version': sumo_version}

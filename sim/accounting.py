@@ -47,3 +47,36 @@ class Accounting:
             return None
         rows = [r for r in self.rows() if r['id'] != 'ambulance']
         return sum(r['excess_s'] for r in rows) / len(rows) if rows else 0.0
+
+
+def reconcile_tripinfo(ledger: Accounting, path) -> list[str]:
+    """Replace discovery-step timestamps with SUMO's authoritative trip times.
+
+    TraCI's arrived/departed lists describe the last step, not necessarily the
+    exact timestamp stored in tripinfo. The simulator is closed/flushed first.
+    """
+    import xml.etree.ElementTree as ET
+    reasons = []
+    seen = set()
+    for trip in ET.parse(path).getroot().findall('tripinfo'):
+        vid = trip.attrib['id']
+        if vid not in ledger.scheduled or vid in seen:
+            reasons.append('tripinfo_identity_mismatch')
+            continue
+        seen.add(vid)
+        departure = float(trip.attrib['depart'])
+        arrival = float(trip.attrib['arrival'])
+        if not math.isfinite(departure) or not math.isfinite(arrival):
+            reasons.append('nonfinite_tripinfo_time')
+            continue
+        if (departure >= 0) != (vid in ledger.inserted) or (arrival >= 0) != (vid in ledger.completed):
+            reasons.append('tripinfo_lifecycle_mismatch')
+        if departure >= 0:
+            ledger.inserted[vid] = departure
+        if arrival >= 0:
+            ledger.completed[vid] = arrival
+        if trip.get('vaporized', '') not in ('', 'false', '0'):
+            reasons.append('vaporized_vehicle')
+    if seen != set(ledger.scheduled):
+        reasons.append('tripinfo_missing_scheduled_vehicle')
+    return sorted(set(reasons))

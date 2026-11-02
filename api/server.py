@@ -61,8 +61,11 @@ def replay(replay_dir: Path, run_id: str) -> dict:
     if path.resolve().parent != replay_dir.resolve():
         raise ArtifactError("Run path is outside the replay directory")
     data = read_json(path)
-    if data.get("schema") != "afterlight.replay.v1" or data.get("mode") != "recorded":
-        raise ArtifactError("Run is not a supported recorded replay")
+    try:
+        from export.replay import validate_replay
+        validate_replay(data)
+    except (ValueError, TypeError, KeyError, AttributeError, IndexError) as exc:
+        raise ArtifactError(f"Run failed recorded replay validation: {exc}") from exc
     return data
 
 

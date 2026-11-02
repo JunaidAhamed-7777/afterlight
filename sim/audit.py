@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import bisect
 import json
+import hashlib
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from export.replay import validate_replay
 from sim.network import read_network, sha256, write_json
@@ -15,9 +17,19 @@ def audit(directory: Path) -> dict:
     network = read_network(directory/'network/network.net.xml')
     if sha256(directory/'demand/demand.rou.xml') != replay['provenance']['demand_sha256']:
         raise ValueError('Paired demand file identity changed')
+    net_path = directory/'network/network.net.xml'
+    canonical_hash = hashlib.sha256(ET.canonicalize(from_file=net_path,strip_text=True,with_comments=False).encode()).hexdigest()
+    if canonical_hash != replay['provenance']['network_sha256'] or sha256(net_path) != replay['provenance']['network_file_sha256']:
+        raise ValueError('Retained network differs from provenance')
     timing = Timing()
     checks = []
     for name, world in replay['worlds'].items():
+        if name == 'baseline' and any(e['kind'] in ('request_planned','request','priority_green','recovery_requested') for e in world['events']):
+            raise ValueError('Ordinary baseline contains priority/recovery events')
+        plan = world['decision']['request_plan']
+        planned = {e['junction']:e['request_at_s'] for e in world['events'] if e['kind']=='request_planned'}
+        if planned != plan:
+            raise ValueError(f'{name}: request events differ from frozen dispatch plan')
         for junction, signal in network['signals'].items():
             events = [e for e in world['events'] if e.get('junction') == junction and e['kind'] in ('green','yellow','all_red')]
             if not events or events[0]['t'] != 0 or events[0]['kind'] != 'green':

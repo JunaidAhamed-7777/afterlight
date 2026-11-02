@@ -59,6 +59,25 @@ class SchedulerTests(unittest.TestCase):
         with self.assertRaises(ValueError): Scheduler('J', ('yyyy',))
         with self.assertRaises(ValueError): Timing(yellow_s=0)
 
+    def test_plan_event_uses_actual_dispatch_boundary(self):
+        s = Scheduler('J', ('GGrr', 'rrGG'))
+        s.advance(59.5)
+        s.plan(80, 1, planned_at_s=60)
+        self.assertEqual(s.events[-1]['t'], 60)
+        with self.assertRaises(ValueError):
+            Scheduler('J', ('GGrr', 'rrGG')).plan(10, 1, planned_at_s=11)
+
+    def test_recovery_service_has_its_declared_duration(self):
+        s = Scheduler('J', ('GGrr', 'rrGG'), timing=Timing(recovery_green_s=12))
+        s.plan(0, 0)
+        s.advance(0)
+        s.advance(8, passed=True)
+        s.advance(11)
+        s.advance(12)
+        self.assertTrue(s.in_recovery_service)
+        self.assertEqual(s.advance(23), 'rrGG')
+        self.assertEqual(s.advance(24), 'rryy')
+
     def test_deduplicates_clipped_schedules(self):
         self.assertEqual(len(distinct_schedules(0, {'J': 0})), 1)
 

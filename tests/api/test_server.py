@@ -10,6 +10,15 @@ from pathlib import Path
 from api.server import ArtifactError, catalog, replay, make_handler, local_origin
 
 
+def synthetic_replay():
+    # Explicit unit fixture, never a public recording or traffic result.
+    return {"schema": "afterlight.replay.v1", "mode": "recorded", "duration_s": 1, "step_s": 1,
+            "coordinates": {"position_reference": "front_bumper"}, "scenario": {"network_kind": "fixture"},
+            "provenance": dict(source_commit="fixture", network_sha256="fixture", demand_sha256="fixture", sumo_version="fixture"),
+            "worlds": {w: {"world_id": w, "status": "completed", "policy": "ordinary" if w == "baseline" else "fixed",
+                           "frames": [{"t": 0, "vehicles": []}, {"t": 1, "vehicles": []}]} for w in ("baseline", "afterlight")}}
+
+
 class ArtifactTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -39,9 +48,15 @@ class ArtifactTests(unittest.TestCase):
 
     def test_reads_only_explicit_recorded_artifact(self):
         self.write("catalog.json", {"schema": "afterlight.catalog.v1", "runs": [{"id": "run-1"}]})
-        self.write("run-1.json", {"schema": "afterlight.replay.v1", "mode": "recorded"})
+        self.write("run-1.json", synthetic_replay())
         self.assertEqual(replay(self.root, "run-1")["mode"], "recorded")
         self.write("run-1.json", {"schema": "afterlight.replay.v1", "mode": "live"})
+        with self.assertRaises(ArtifactError):
+            replay(self.root, "run-1")
+
+    def test_incomplete_replay_rejected(self):
+        self.write("catalog.json", {"schema": "afterlight.catalog.v1", "runs": [{"id": "run-1"}]})
+        self.write("run-1.json", {"schema": "afterlight.replay.v1", "mode": "recorded"})
         with self.assertRaises(ArtifactError):
             replay(self.root, "run-1")
 

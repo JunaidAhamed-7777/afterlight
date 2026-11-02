@@ -27,4 +27,30 @@ class AccountingTests(unittest.TestCase):
         with self.assertRaises(ValueError): self.ledger.arrive(['c1'], 13)
 
 
+
+class TripinfoTests(unittest.TestCase):
+    def test_authoritative_times_replace_notification_times(self):
+        import tempfile
+        from pathlib import Path
+        from sim.accounting import reconcile_tripinfo
+        ledger = Accounting({'ambulance':{'type':'ambulance','depart_s':5,'reference_s':10}})
+        ledger.depart(['ambulance'], 5.5)
+        ledger.arrive(['ambulance'], 20.5)
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'tripinfo.xml'
+            path.write_text('<tripinfos><tripinfo id="ambulance" depart="5" arrival="20" vaporized=""/></tripinfos>')
+            self.assertEqual(reconcile_tripinfo(ledger,path), [])
+        self.assertEqual(ledger.inserted['ambulance'],5)
+        self.assertEqual(ledger.completed['ambulance'],20)
+
+    def test_missing_scheduled_vehicle_is_invalid(self):
+        import tempfile
+        from pathlib import Path
+        from sim.accounting import reconcile_tripinfo
+        ledger = Accounting({'c1':{'type':'car','depart_s':0,'reference_s':10}})
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'tripinfo.xml';path.write_text('<tripinfos/>')
+            self.assertIn('tripinfo_missing_scheduled_vehicle', reconcile_tripinfo(ledger,path))
+
+
 if __name__ == '__main__': unittest.main()
