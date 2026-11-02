@@ -15,7 +15,7 @@ python -m sim.audit --run local-runtime/city-7
 
 Choose a fresh output directory for each invocation; existing evidence is never overwritten. `sim.audit` checks schedule/frame alignment and accounting, not visual or performance superiority.
 
-Use `eclipse-sumo==1.28.0`, `traci==1.28.0`, `sumolib==1.28.0`. The official [PyPI release](https://pypi.org/project/eclipse-sumo/1.28.0/) supplies a Python 3 Windows x86-64 wheel; installation and execution remain local acceptance gates. No paid service or API key is needed.
+Use `eclipse-sumo==1.28.0`, its required `sumo-data==1.28.0` companion, `traci==1.28.0` and `sumolib==1.28.0`. The official [PyPI release](https://pypi.org/project/eclipse-sumo/1.28.0/) supplies a Python 3 Windows x86-64 wheel; installation and execution remain local acceptance gates. No paid service or API key is needed.
 
 ## What is actually implemented
 
@@ -60,7 +60,7 @@ Registration re-audits raw SUMO evidence, checks the canonical map fingerprint, 
 
 ### Official portable Windows alternative
 
-If the large `eclipse-sumo` wheel cannot be retrieved, use the verified official SUMO 1.28.0 portable archive and install matching `traci`/`sumolib` wheels in the selected interpreter. Set `SUMO_HOME` only in the running PowerShell session to the extracted distribution directory containing `bin`, then run `python -m sim.environment`. The runner supports that standard location without global PATH changes or installation. Missing `eclipse-sumo` Python metadata is explicitly recorded as null for this mode; the actual running SUMO version remains mandatory provenance. Verify the archive against the official published SHA-256 before extraction/use.
+If the large `eclipse-sumo` wheel cannot be retrieved, use the verified official SUMO 1.28.0 portable archive and install matching `traci`/`sumolib` wheels in the selected interpreter. Set `SUMO_HOME` only in the running PowerShell session to the extracted distribution directory containing `bin`, then run `python -m sim.environment`. The runner supports that standard location without global PATH changes or installation. Missing `eclipse-sumo` and `sumo-data` Python metadata is explicitly recorded as null for this mode; the actual running SUMO version remains mandatory provenance. Verify the archive against the official published SHA-256 before extraction/use.
 
 ### Independent-world negative control
 

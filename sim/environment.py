@@ -9,7 +9,7 @@ from sim.network import binary_candidates
 
 def inspect_environment() -> dict:
     versions = {}
-    for name in ('eclipse-sumo','traci','sumolib'):
+    for name in ('eclipse-sumo','sumo-data','traci','sumolib'):
         try:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:

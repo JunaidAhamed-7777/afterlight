@@ -56,13 +56,15 @@ def source_snapshot() -> dict:
 def dependency_versions() -> dict:
     """Portable official SUMO has no eclipse-sumo wheel metadata; that is valid."""
     versions={}
-    for name in ('traci','sumolib','eclipse-sumo'):
+    for name in ('traci','sumolib','eclipse-sumo','sumo-data'):
         try:
             versions[name]=importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:
-            if name!='eclipse-sumo':
+            if name not in ('eclipse-sumo','sumo-data'):
                 raise
             versions[name]=None
+    if versions['eclipse-sumo'] is not None and versions['sumo-data'] is None:
+        raise RuntimeError('Installed eclipse-sumo requires matching sumo-data; complete the pinned dependency installation')
     return versions
 
 

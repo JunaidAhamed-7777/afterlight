@@ -1,5 +1,7 @@
 # Official Eclipse SUMO packages; Windows x86-64 / Python 3.12 acceptance target.
 # Pin all three together. Runs are local, no hosted simulator or API key required.
 eclipse-sumo==1.28.0
+# Required binary/data companion; pin rather than leave transitive >= unbounded.
+sumo-data==1.28.0
 traci==1.28.0
 sumolib==1.28.0
