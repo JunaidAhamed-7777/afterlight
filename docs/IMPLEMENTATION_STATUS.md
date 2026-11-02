@@ -10,7 +10,7 @@ Windows PC; cloud code review/build is not an acceptance result.
 - Local-only recordings API with catalog allow-list and path confinement.
 - Unit checks written for timing, finite hold, ordinary-world isolation and API boundaries.
 - Official SUMO 1.28.0 dependencies pinned for the Python 3.12 acceptance environment.
-- **Not yet executed:** unit tests, SUMO conversion/runs, product browser acceptance.
+- **Initial checkpoint only:** unit tests, SUMO conversion/runs and product browser acceptance were unexecuted then. Later scoped unit results are in the [acceptance log](validation/OMEN_LOG.md).
 - **Not yet available:** measured benchmark, trained model, real replay catalog.
 
 The initial API served recordings only. The optional local-generation adapter now
@@ -23,13 +23,15 @@ pending Omen acceptance; it is not live streaming and does not invent progress.
 From `C:\Github\afterlight` in PowerShell:
 
 ```powershell
-& 'C:\Users\Junaid\AppData\Roaming\uv\python\cpython-3.12.15-windows-x86_64-none\python.exe' -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-sim.txt
 .\.venv\Scripts\python.exe -m unittest discover -s tests/sim -v
 .\.venv\Scripts\python.exe -m unittest discover -s tests/api -v
 ```
 
-Do not infer success from these instructions. Record command, source commit,
+If the Windows Python launcher is unavailable, invoke the already-installed
+Python 3.12 interpreter by its local path instead; no global Python change is
+required. Do not infer success from these instructions. Record command, source commit,
 environment, output, pass/fail and untested scope after real execution.
 
 Official package source: https://pypi.org/project/eclipse-sumo/1.28.0/
@@ -38,5 +40,22 @@ Official package source: https://pypi.org/project/eclipse-sumo/1.28.0/
 
 See [Omen validation log](validation/OMEN_LOG.md) for scoped actual results and
 known failures. A newer source commit does not inherit a prior test pass. The
-first real fixture/city run remains blocked until packaged SUMO executable
-discovery and local regression checks succeed.
+first real fixture/city run remains blocked until the complete pinned SUMO
+dependencies are installed and packaged executable discovery is checked locally.
+The [compiled preview](../preview/README.md) permits separate browser acceptance
+without npm installation, but does not waive the source-build or simulator gates.
+
+## First imported-city geometry audit
+
+After a genuine city network conversion on Omen, inspect its actual stop lines
+without rerunning or modifying SUMO:
+
+```powershell
+python -m sim.geometry_audit --graph assets/map/city_manifest.json --network local-runtime/city-7/network/network.net.xml --output local-runtime/city-7/stop-line-audit.json
+```
+
+Use the actual generated network path. The command refuses an existing report
+and records graph/network hashes, every signalized incoming lane, signed setback
+and lateral offset. Reconcile discrepancies before claiming city visual alignment;
+a graph-connectivity pass is not a stop-line-position pass. The audit does not
+alter simulation validity, move vehicles, or certify a real traffic system.

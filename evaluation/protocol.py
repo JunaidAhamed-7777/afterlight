@@ -121,6 +121,7 @@ def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, usef
             candidate_rows.setdefault(row["episode_id"], []).append(row)
     outcome_diversity = {}
     useful_winners = set()
+    useful_best_sets: list[set[int]] = []
     for eid, candidates in candidate_rows.items():
         if sorted(row["lead_s"] for row in candidates) != [0, 5, 10, 20, 30]:
             outcome_diversity[eid] = {"status": "incomplete_candidate_grid"}
@@ -131,18 +132,48 @@ def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, usef
         if any(row["status"] == "infrastructure_error" for row in candidates):
             outcome_diversity[eid] = {"status": "infrastructure_failure"}
             continue
-        ranked = sorted((cost, row["lead_s"]) for row in candidates if (cost := objective(row, civilian_weight)) is not None)
+        if any(row["request_plan"] is None for row in candidates):
+            outcome_diversity[eid] = {"status": "request_plan_unavailable"}
+            continue
+        # Clipped leads can represent exactly the same policy. Compare distinct
+        # request schedules, not labels; otherwise duplicate best labels create
+        # an artificial zero runner-up margin. Identical schedules in a paired,
+        # deterministic episode must agree on measured outcome semantics.
+        by_schedule: dict[str, list[Mapping]] = {}
+        for row in candidates:
+            by_schedule.setdefault(digest(row["request_plan"]), []).append(row)
+        measured_fields = ("status", "validity_reasons", "ambulance_journey_s", "civilian_mean_excess_s",
+            "accounting", "horizon_accounting", "horizon_s", "drain_end_s", "queue_samples",
+            "common_horizon_burden_vehicle_s", "drain_burden_vehicle_s",
+            "recovery_excess_queue_area_vehicle_s", "recovery_window_s", "queue_scope",
+            "civilian_reference_definition", "trip_time_source")
+        representatives = []
+        equivalent_leads = {}
+        for duplicates in by_schedule.values():
+            duplicates = sorted(duplicates, key=lambda row: row["lead_s"])
+            reference = duplicates[0]
+            for duplicate in duplicates[1:]:
+                for field in measured_fields:
+                    if (field in reference) != (field in duplicate) or reference.get(field) != duplicate.get(field):
+                        raise ValueError(f"{eid}: identical request schedules for leads {reference['lead_s']} and "
+                                         f"{duplicate['lead_s']} have conflicting measured {field}; retain raw rows and investigate")
+            representatives.append(reference)
+            equivalent_leads[reference["lead_s"]] = [row["lead_s"] for row in duplicates]
+        ranked = sorted((cost, row["lead_s"]) for row in representatives if (cost := objective(row, civilian_weight)) is not None)
         if not ranked:
             outcome_diversity[eid] = {"status": "all_candidates_infeasible"}
             continue
         margin = finite(ranked[1][0] - ranked[0][0], "pilot runner-up margin") if len(ranked) > 1 else None
-        distinct_schedule_count = len(schedules.get(eid, set()))
-        useful = len(ranked) > 1 and margin > useful_action_margin_s and distinct_schedule_count > 1
+        useful = len(ranked) > 1 and margin > useful_action_margin_s
         if useful:
             useful_winners.add(ranked[0][1])
-        outcome_diversity[eid] = {"status": "observed", "feasible_candidates": len(ranked),
-            "oracle_lead_s": ranked[0][1], "runner_up_margin_j_s": margin,
-            "useful_margin_observed": useful}
+            useful_best_sets.append(set(equivalent_leads[ranked[0][1]]))
+        outcome_diversity[eid] = {"status": "observed",
+            "feasible_candidates": sum(objective(row, civilian_weight) is not None for row in candidates),
+            "distinct_candidate_schedules": len(representatives), "feasible_schedules": len(ranked),
+            "oracle_lead_s": ranked[0][1], "equivalent_best_leads_s": equivalent_leads[ranked[0][1]],
+            "runner_up_margin_j_s": margin, "useful_margin_observed": useful}
+    common_useful_best_leads = set.intersection(*useful_best_sets) if useful_best_sets else set()
     return {
         "rollouts": len(rows), "episodes": len({r["episode_id"] for r in rows}),
         "demand_groups": len({r["demand_group_id"] for r in rows}),
@@ -152,7 +183,9 @@ def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, usef
         "status_counts": {status: sum(r["status"] == status for r in rows) for status in sorted({r["status"] for r in rows})},
         "outcome_diversity_by_episode": outcome_diversity,
         "distinct_useful_oracle_leads": sorted(useful_winners),
-        "multiple_useful_actions_observed": len(useful_winners) >= 2,
+        "useful_margin_episodes": len(useful_best_sets),
+        "common_useful_best_leads": sorted(common_useful_best_leads),
+        "multiple_useful_actions_observed": len(useful_best_sets) >= 2 and not common_useful_best_leads,
         "civilian_weight": civilian_weight, "useful_action_margin_s": useful_action_margin_s,
-        "interpretation": "Exploratory pilot oracle diagnostics only, not held-out selector performance. Different request signatures alone do not establish useful action diversity.",
+        "interpretation": "Exploratory pilot oracle diagnostics only, not held-out selector performance. Margins compare distinct request schedules with lowest-lead representatives. Diversity requires at least two useful-margin episodes with no common best lead across their equivalent-best sets; it is not selector decision gain. Conflicting duplicate outcomes are rejected.",
     }

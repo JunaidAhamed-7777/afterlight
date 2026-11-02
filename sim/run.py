@@ -75,12 +75,14 @@ def route_controls(route: list[str], network: dict) -> list[dict]:
             links = [link for link in signal['links'] if link['from_edge'] == a and link['to_edge'] == b]
             if not links:
                 continue
-            # Prefer a phase protecting every lane of the movement. Fall back
-            # to a phase serving at least one permitted lane, retaining g/G
-            # semantics from SUMO's conflict-checked program.
-            candidates = [(i, sum(state[link['index']] in 'gG' for link in links))
+            # Serve the greatest number of route lanes first. For equal
+            # coverage, prefer protected G over permissive g; retain the exact
+            # conflict-checked SUMO state rather than upgrading any signal.
+            # Stable phase order is the final tie-break.
+            candidates = [(i, sum(state[link['index']] in 'gG' for link in links),
+                           sum(state[link['index']] == 'G' for link in links))
                           for i, state in enumerate(signal['greens'])]
-            phase, coverage = max(candidates, key=lambda p: (p[1], -p[0]))
+            phase, coverage, _ = max(candidates, key=lambda p: (p[1], p[2], -p[0]))
             if coverage == 0:
                 raise ValueError(f'No legal green for route movement {a}->{b}')
             if any(c['junction'] == junction for c in result):
@@ -153,6 +155,23 @@ def pose_frame(conn, network: dict, now: float) -> dict:
             'queue_count': sum(v['speed_mps'] < .1 for v in vehicles if v['id'] != 'ambulance')}
 
 
+def validate_timing_grid(step_s: float, timing: Timing | None = None) -> None:
+    """Reject grids that would extend hard controller caps by rounding up.
+
+    Legal stages and priority onsets start on-grid, so representable durations
+    preserve exact stage lengths and maximum priority hold. Frozen absolute
+    request times may be off-grid: activation and the request-timeout deadline
+    are checked on the next tick, less than one step late. Divisibility does
+    not remove that explicitly retained absolute-request discretization.
+    """
+    if not math.isfinite(step_s) or step_s <= 0:
+        raise ValueError('Simulation step must be finite and positive')
+    for name, duration in vars(timing or Timing()).items():
+        ratio = duration / step_s
+        if not math.isfinite(ratio) or abs(ratio-round(ratio)) > 1e-9:
+            raise ValueError(f'Simulation step {step_s} must divide controller duration {name}={duration}')
+
+
 def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, demand_dir: Path,
               demand: dict, network: dict, output: Path, horizon_s: float, drain_s: float,
               step_s: float = .5, sample_s: float = 1.0, sensor_lag_s: float = 1.0) -> dict:
@@ -162,6 +181,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     parameters = (horizon_s, drain_s, step_s, sample_s, sensor_lag_s)
     if any(not math.isfinite(v) for v in parameters) or step_s <= 0 or sample_s <= 0 or drain_s < 0 or sensor_lag_s < 0:
         raise ValueError('Timing values must be finite; step/sample positive, drain/lag nonnegative')
+    validate_timing_grid(step_s)
     if demand['dispatch_s'] < sensor_lag_s:
         raise ValueError('Dispatch must allow the declared sensor lag')
     end_s = horizon_s + drain_s

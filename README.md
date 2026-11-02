@@ -62,6 +62,17 @@ For Python 3.12 setup, unit checks and local API instructions see
 All tests, traffic experiments and browser/performance checks run on the owner's
 Omen computer; cloud compilation is development evidence only.
 
+### Dependency-free browser acceptance preview
+
+A [source-bound compiled application preview](preview/README.md) is committed for
+Omen browser QA when npm installation is unavailable. From the repository root,
+run `python scripts/serve_preview.py`; it verifies its source/output/asset hashes
+and serves only on loopback. This is the actual application build, not simulated
+traffic, a package cache, or a substitute for reproducible source installation.
+The static entry keeps the empty genuine-recording catalog; `/local.html` targets
+the separately started local API. See the preview manifest for the exact compiled
+source revision and the acceptance log for executed test results.
+
 ## Boundaries
 
 Simulation research, not a real-world traffic control system. No safety certification, real emergency deployment, or lives-saved claim. No paid services or secret-bearing files are required by the design. Public replay is explicitly recorded, not disguised as live inference.

@@ -96,3 +96,27 @@ Ghost position may overlap active-world vehicles or appear to pass an active-wor
 The published canonical manifest defines an approximately 1 km² irregular 5×5 primary-junction district with service roads. Its graph/geometry checks pass; it is not yet a validated SUMO export. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
 
 Use deterministic pickup/hospital IDs and valid network curb anchors rather than arbitrary building centroids. With 100 pickups and two hospitals, validate reachability for the 200 potential origin/destination pairs, including permitted vehicle access and endpoint placement. This is a graph-connectivity target, **not 200 benchmarked traffic cases**. Persist route availability and manifest revision for UI selection; do not expose a visually plausible but disconnected route.
+
+### Imported stop lines and simulation time grid
+
+Canonical `stop_line.distance_before_node_m` is the node-centered design target,
+not a value that can be copied directly into SUMO `endOffset` (which is an extra
+setback from the generated junction boundary). The current importer preserves
+canonical road identity and origin, but lets netconvert construct lane endpoints.
+Those generated endpoints are the runtime stop-line truth exported to the viewer.
+Before full-city alignment or benchmark readiness is claimed, audit every
+signalized incoming lane against its canonical target: signed longitudinal
+setback, lateral offset, difference, and exact network hash. A difference larger
+than 0.5 m is an explicit geometry-review flag, not an outcome-dependent excuse to
+move vehicles or silently widen tolerance. Resolve the source/importer discrepancy
+or document an intentional map revision before accepting the city fixture.
+Numerical coordinate comparisons use 0.05 m tolerance; this is not a relaxation of
+the target-alignment gate. No generated lane/stop-line audit has yet run on Omen.
+
+Controller stage durations and maximum hold must be representable on the chosen
+simulation step; incompatible grids are rejected rather than rounding hard caps
+upward. Frozen absolute requests can fall between ticks: activation occurs at the
+first tick at or after the planned timestamp. The absolute request-timeout check
+may likewise occur less than one step after its nominal deadline. Preserve both
+planned and actual event timestamps; do not retime the replay or label them equal.
+All priority variants use the same grid, controller, release and recovery logic.

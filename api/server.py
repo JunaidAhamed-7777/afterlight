@@ -1,7 +1,8 @@
 """Loopback-only replay API. No external service, credentials or fabricated runs.
 
 Run with ``python -m api.server --replay-dir web/public/replays``.
-Generation endpoints are deliberately unavailable until the real runner is wired.
+Generation endpoints are disabled by default; --enable-generation explicitly
+opts into the real local SUMO runner and requires its dependencies.
 """
 from __future__ import annotations
 
