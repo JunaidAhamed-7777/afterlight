@@ -11,6 +11,8 @@ interface Props {
   city: City | null;
   frames: Frame[];
   baselineFrames: Frame[];
+  followFrames: Frame[];
+  onManualCamera: () => void;
   clock: { current: number };
   routeEdges: string[];
   networkGeometry: SignalGeometry[];
@@ -27,6 +29,7 @@ interface Props {
 const base = import.meta.env.BASE_URL;
 export function CityView(props: Props) {
   const host = useRef<HTMLDivElement>(null);
+  const compass = useRef<HTMLDivElement>(null);
   const current = useRef(props);
   current.current = props;
   const [status, setStatus] = useState("Loading original city assets…");
@@ -35,8 +38,17 @@ export function CityView(props: Props) {
   useEffect(() => {
     const container = host.current!;
     let disposed = false,
+      halted = false,
+      raf = 0,
       dirty = true,
       modelsRevision = 0;
+    const haltRuntime = (message: string) => {
+      if (disposed || halted) return;
+      halted = true;
+      cancelAnimationFrame(raf);
+      setFailed(true);
+      setStatus(message);
+    };
     let renderer: THREE.WebGLRenderer;
     setFailed(false);
     setStatus("Loading original city assets…");
@@ -60,11 +72,21 @@ export function CityView(props: Props) {
     renderer.toneMappingExposure = 1.35;
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive original AFTERLIGHT city. Drag to pan, scroll to zoom. Use the HTML controls to select a pickup and hospital.",
+      "Interactive original AFTERLIGHT city. Drag or use arrow keys to pan; scroll or use plus and minus to zoom; press zero to reset. Tab leaves the map. HTML controls select a pickup and hospital.",
     );
     renderer.domElement.setAttribute("role", "img");
+    renderer.domElement.tabIndex = 0;
+    renderer.domElement.setAttribute(
+      "aria-keyshortcuts",
+      "ArrowUp ArrowDown ArrowLeft ArrowRight + - 0",
+    );
     container.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
+    const projectedOrigin = new THREE.Vector3(),
+      projectedNorth = new THREE.Vector3(),
+      northDirection = new THREE.Vector3(0, 0, -100);
+    let viewportWidth = 1,
+      viewportHeight = 1;
     const camera = new THREE.OrthographicCamera(-850, 850, 650, -650, 1, 5000);
     const overview = () => {
       camera.position.set(1050, 1250, 1100);
@@ -80,6 +102,32 @@ export function CityView(props: Props) {
     controls.maxPolarAngle = Math.PI * 0.44;
     controls.minPolarAngle = Math.PI * 0.12;
     overview();
+    controls.listenToKeyEvents(renderer.domElement);
+    const manualCamera = () => current.current.onManualCamera();
+    controls.addEventListener("start", manualCamera);
+    const cameraKeys = (event: KeyboardEvent) => {
+      if (
+        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)
+      ) {
+        manualCamera();
+        return;
+      }
+      if (!["+", "=", "-", "0"].includes(event.key)) return;
+      event.preventDefault();
+      manualCamera();
+      if (event.key === "0") overview();
+      else {
+        camera.zoom = THREE.MathUtils.clamp(
+          camera.zoom * (event.key === "-" ? 1 / 1.2 : 1.2),
+          controls.minZoom,
+          controls.maxZoom,
+        );
+        camera.updateProjectionMatrix();
+        controls.update();
+      }
+      dirty = true;
+    };
+    renderer.domElement.addEventListener("keydown", cameraKeys);
     controls.addEventListener("change", () => {
       dirty = true;
     });
@@ -133,20 +181,20 @@ export function CityView(props: Props) {
         const gltf = await loader.loadAsync(
           `${base}assets/exports/city_static.glb`,
         );
-        if (disposed) {
+        if (disposed || halted) {
           disposeObject(gltf.scene);
           return;
         }
         // Preserve the authored root translation. Never center or replace glTF transforms.
         scene.add(gltf.scene);
         dirty = true;
-        setStatus("");
+        setStatus("Loading original vehicle assets…");
         await Promise.all(
           ["ambulance", "car", "truck", "bike"].map(async (type) => {
             const glb = await loader.loadAsync(
               `${base}assets/exports/${type}.glb`,
             );
-            if (disposed) {
+            if (disposed || halted) {
               disposeObject(glb.scene);
               return;
             }
@@ -155,34 +203,40 @@ export function CityView(props: Props) {
             dirty = true;
           }),
         );
+        if (!disposed && !halted) setStatus("");
       } catch (error) {
-        if (!disposed) {
-          setFailed(true);
-          setStatus(
-            `City assets could not load. ${error instanceof Error ? error.message : "Check the connection and retry."}`,
-          );
-        }
+        haltRuntime(
+          `City assets could not load. ${error instanceof Error ? error.message : "Check the connection and retry."}`,
+        );
       }
     };
     void load();
     const resize = () => {
-      dirty = true;
-      const { width, height } = container.getBoundingClientRect();
-      renderer.setSize(width, height, false);
-      const aspect = width / Math.max(height, 1);
-      camera.left = -670 * aspect;
-      camera.right = 670 * aspect;
-      camera.top = 670;
-      camera.bottom = -670;
-      camera.updateProjectionMatrix();
+      if (disposed || halted) return;
+      try {
+        dirty = true;
+        const { width, height } = container.getBoundingClientRect();
+        renderer.setSize(width, height, false);
+        viewportWidth = width;
+        viewportHeight = height;
+        const aspect = width / Math.max(height, 1);
+        camera.left = -670 * aspect;
+        camera.right = 670 * aspect;
+        camera.top = 670;
+        camera.bottom = -670;
+        camera.updateProjectionMatrix();
+      } catch (error) {
+        haltRuntime(
+          `The 3D view could not resize. ${error instanceof Error ? error.message : "Retry the city."}`,
+        );
+      }
     };
     const observer = new ResizeObserver(resize);
     observer.observe(container);
     resize();
     const contextLost = (e: Event) => {
       e.preventDefault();
-      setFailed(true);
-      setStatus(
+      haltRuntime(
         "The 3D graphics context was interrupted. Retry to restore the city. Playback evidence remains available.",
       );
     };
@@ -192,98 +246,123 @@ export function CityView(props: Props) {
       lastProps: Props | null = null,
       lastModelsRevision = -1,
       lastTime = -1;
-    let raf = 0;
     const loop = () => {
-      if (disposed) return;
-      const p = current.current;
-      const changed =
-        p !== lastProps ||
-        modelsRevision !== lastModelsRevision ||
-        p.clock.current !== lastTime;
-      const frame = changed
-        ? interpolatedFrame(p.frames, p.clock.current)
-        : null;
-      const ghostFrame =
-        changed && p.ghost && p.world === "afterlight"
-          ? interpolatedFrame(p.baselineFrames, p.clock.current)
+      if (disposed || halted) return;
+      try {
+        const p = current.current;
+        const changed =
+          p !== lastProps ||
+          modelsRevision !== lastModelsRevision ||
+          p.clock.current !== lastTime;
+        const frame = changed
+          ? interpolatedFrame(p.frames, p.clock.current)
           : null;
-      if (changed) {
-        dirty = true;
-        if (lastReset !== p.reset) {
-          overview();
-          lastReset = p.reset;
-        }
-        if (lastQuality !== p.quality) {
-          renderer.setPixelRatio(
-            Math.min(devicePixelRatio, p.quality === "high" ? 2 : 1.25),
-          );
-          lastQuality = p.quality;
-          resize();
-        }
-        if (
-          p.city !== lastProps?.city ||
-          p.routeEdges !== lastProps?.routeEdges ||
-          p.networkGeometry !== lastProps?.networkGeometry
-        )
-          geometryLayer.setGeometry(p.city, p.routeEdges, p.networkGeometry);
-        geometryLayer.update(frame?.signals ?? []);
-        active.update(frame?.vehicles ?? [], models);
-        ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
-        const point = p.city?.pickups.find((x) => x.id === p.pickup)?.position;
-        pickupMarker.visible = Boolean(point);
-        if (point)
-          pickupMarker.position.set(point[0], point[2] ?? 0, -point[1]);
-        const h = p.city?.hospitals.find((x) => x.id === p.hospital);
-        const hp =
-          h && p.city?.nodes.find((n) => n.id === h.destination_node)?.position;
-        hospitalMarker.visible = Boolean(hp);
-        if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
-        for (const s of signals.values()) s.visible = false;
-        for (const signal of p.networkGeometry.length
-          ? []
-          : (frame?.signals ?? [])) {
-          const n = p.city?.nodes.find((n) => n.id === signal.id);
-          if (!n) continue;
-          let dot = signals.get(signal.id);
-          if (!dot) {
-            dot = new THREE.Mesh(
-              new THREE.SphereGeometry(3.5, 8, 6),
-              new THREE.MeshBasicMaterial(),
+        const ghostFrame =
+          changed && p.ghost && p.world === "afterlight"
+            ? interpolatedFrame(p.baselineFrames, p.clock.current)
+            : null;
+        if (changed) {
+          dirty = true;
+          if (lastReset !== p.reset) {
+            overview();
+            lastReset = p.reset;
+          }
+          if (lastQuality !== p.quality) {
+            renderer.setPixelRatio(
+              Math.min(devicePixelRatio, p.quality === "high" ? 1.5 : 1.25),
             );
-            signals.set(signal.id, dot);
-            signalGroup.add(dot);
+            lastQuality = p.quality;
+            resize();
           }
-          dot.visible = true;
-          dot.position.set(n.position[0], 5, -n.position[1]);
-          (dot.material as THREE.MeshBasicMaterial).color.set(
-            "#B4C1CE",
-          ); /* Neutral marker: multi-link phase is not a universal green. */
+          if (
+            p.city !== lastProps?.city ||
+            p.routeEdges !== lastProps?.routeEdges ||
+            p.networkGeometry !== lastProps?.networkGeometry
+          )
+            geometryLayer.setGeometry(p.city, p.routeEdges, p.networkGeometry);
+          geometryLayer.update(frame?.signals ?? []);
+          active.update(frame?.vehicles ?? [], models);
+          ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
+          const point = p.city?.pickups.find(
+            (x) => x.id === p.pickup,
+          )?.position;
+          pickupMarker.visible = Boolean(point);
+          if (point)
+            pickupMarker.position.set(point[0], point[2] ?? 0, -point[1]);
+          const h = p.city?.hospitals.find((x) => x.id === p.hospital);
+          const hp =
+            h &&
+            p.city?.nodes.find((n) => n.id === h.destination_node)?.position;
+          hospitalMarker.visible = Boolean(hp);
+          if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
+          for (const s of signals.values()) s.visible = false;
+          for (const signal of p.networkGeometry.length
+            ? []
+            : (frame?.signals ?? [])) {
+            const n = p.city?.nodes.find((n) => n.id === signal.id);
+            if (!n) continue;
+            let dot = signals.get(signal.id);
+            if (!dot) {
+              dot = new THREE.Mesh(
+                new THREE.SphereGeometry(3.5, 8, 6),
+                new THREE.MeshBasicMaterial(),
+              );
+              signals.set(signal.id, dot);
+              signalGroup.add(dot);
+            }
+            dot.visible = true;
+            dot.position.set(n.position[0], 5, -n.position[1]);
+            (dot.material as THREE.MeshBasicMaterial).color.set(
+              "#B4C1CE",
+            ); /* Neutral marker: multi-link phase is not a universal green. */
+          }
+          if (p.follow && !p.reducedMotion) {
+            if (!lastProps?.follow) {
+              camera.zoom = 4;
+              camera.updateProjectionMatrix();
+            }
+            const followFrame =
+              p.world === "afterlight"
+                ? frame
+                : interpolatedFrame(p.followFrames, p.clock.current);
+            const ambulance = followFrame?.vehicles.find(
+              (v) => v.type === "ambulance" || v.id === "ambulance",
+            );
+            if (ambulance) {
+              const [x, , z] = vehiclePose(ambulance);
+              const delta = new THREE.Vector3(x, 0, z).sub(controls.target);
+              camera.position.add(delta);
+              controls.target.add(delta);
+            }
+          }
+          lastProps = p;
+          lastModelsRevision = modelsRevision;
+          lastTime = p.clock.current;
         }
-        if (p.follow && !p.reducedMotion) {
-          if (!lastProps?.follow) {
-            camera.zoom = 4;
-            camera.updateProjectionMatrix();
-          }
-          const ambulance = frame?.vehicles.find(
-            (v) => v.type === "ambulance" || v.id === "ambulance",
-          );
-          if (ambulance) {
-            const [x, , z] = vehiclePose(ambulance);
-            const delta = new THREE.Vector3(x, 0, z).sub(controls.target);
-            camera.position.add(delta);
-            controls.target.add(delta);
-          }
+        controls.update();
+        if (dirty) {
+          renderer.render(scene, camera);
+          renderer.domElement.dataset.cameraZoom = String(camera.zoom);
+          renderer.domElement.dataset.cameraTarget = controls.target
+            .toArray()
+            .join(",");
+          projectedOrigin.copy(controls.target).project(camera);
+          projectedNorth
+            .copy(controls.target)
+            .add(northDirection)
+            .project(camera);
+          const dx = (projectedNorth.x - projectedOrigin.x) * viewportWidth;
+          const dy = -(projectedNorth.y - projectedOrigin.y) * viewportHeight;
+          if (compass.current)
+            compass.current.style.transform = `rotate(${(Math.atan2(dx, -dy) * 180) / Math.PI}deg)`;
+          dirty = false;
         }
-        lastProps = p;
-        lastModelsRevision = modelsRevision;
-        lastTime = p.clock.current;
+        raf = requestAnimationFrame(loop);
+      } catch (error) {
+        haltRuntime(
+          `The 3D view stopped after a rendering error. ${error instanceof Error ? error.message : "Retry the city."} Recorded evidence remains available.`,
+        );
       }
-      controls.update();
-      if (dirty) {
-        renderer.render(scene, camera);
-        dirty = false;
-      }
-      raf = requestAnimationFrame(loop);
     };
     loop();
     return () => {
@@ -291,6 +370,7 @@ export function CityView(props: Props) {
       cancelAnimationFrame(raf);
       observer.disconnect();
       controls.dispose();
+      renderer.domElement.removeEventListener("keydown", cameraKeys);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
       geometryLayer.dispose();
       active.dispose();
@@ -321,7 +401,12 @@ export function CityView(props: Props) {
           )}
         </div>
       )}
-      <div className="map-compass" aria-hidden="true">
+      <div
+        className="map-compass"
+        ref={compass}
+        aria-hidden="true"
+        title="Canonical north (+Y)"
+      >
         <svg viewBox="0 0 40 56">
           <path d="M20 10 29 36 20 30 11 36Z" fill="currentColor" />
           <text x="20" y="7" textAnchor="middle">

@@ -4,6 +4,7 @@ import { recordingUrl } from "./catalog.ts";
 import { validateReplay } from "./replay.ts";
 import {
   generationParameters,
+  bindJob,
   localRequest,
   LocalResponseError,
   validateJob,
@@ -40,6 +41,10 @@ export function LocalGeneration(props: Props) {
   const [requestRecord, setRequestRecord] = useState<StoredRequest | null>(
     null,
   );
+  const [recovering, setRecovering] = useState(true);
+  const recoveryToken = useRef(0),
+    recoveryAbort = useRef<AbortController | null>(null),
+    recoveringNow = useRef(true);
   const pending = useRef(false),
     seedInput = useRef<HTMLInputElement>(null),
     postAbort = useRef<AbortController | null>(null);
@@ -48,48 +53,81 @@ export function LocalGeneration(props: Props) {
     requesting || job?.status === "queued" || job?.status === "running";
   useEffect(() => () => postAbort.current?.abort(), []);
   useEffect(() => {
-    const c = new AbortController();
+    const c = new AbortController(),
+      token = ++recoveryToken.current;
+    recoveryAbort.current = c;
+    recoveringNow.current = true;
+    setRecovering(true);
     setHealthError("");
-    localRequest(`${props.apiBase}/api/health`, c.signal)
-      .then((value) => {
-        if (c.signal.aborted) return;
-        const health = value as { generation_available?: boolean };
+    const current = () => !c.signal.aborted && token === recoveryToken.current;
+    const recover = async () => {
+      try {
+        const health = (await localRequest(
+          `${props.apiBase}/api/health`,
+          c.signal,
+        )) as { generation_available?: boolean };
+        if (!current()) return;
         setAvailable(health.generation_available === true);
-        if (health.generation_available) {
+        if (health.generation_available === true) {
+          let saved: string | null = null;
           try {
-            const saved = sessionStorage.getItem(sessionKey);
-            const record = saved ? storedRequest(JSON.parse(saved)) : null;
-            if (record) setRequestRecord(record);
-            const id = record?.id;
-            if (id)
-              localRequest(`${props.apiBase}/api/jobs/${id}`, c.signal)
-                .then(validateJob)
-                .then((job) => {
-                  if (!c.signal.aborted) {
-                    setJob(job);
-                    setUncertain(false);
-                    setPollError("");
-                  }
-                })
-                .catch(() => {
-                  if (!c.signal.aborted) {
-                    setUncertain(true);
-                    setPollError(
-                      "The previous job could not be recovered. Its ID is retained; retry the local connection before starting another run.",
-                    );
-                  }
-                });
+            saved = sessionStorage.getItem(sessionKey);
           } catch {
-            /* Storage may be disabled; generation still works in this page. */
+            /* Browser storage is optional. */
+          }
+          if (saved) {
+            let record: StoredRequest;
+            try {
+              record = storedRequest(JSON.parse(saved));
+            } catch {
+              setUncertain(true);
+              setPollError(
+                "The saved request record is unreadable. Check the local server before starting a new run.",
+              );
+              return;
+            }
+            setRequestRecord(record);
+            try {
+              const restored = validateJob(
+                await localRequest(
+                  `${props.apiBase}/api/jobs/${record.id}`,
+                  c.signal,
+                ),
+              );
+              if (!current()) return;
+              if (restored.id !== record.id)
+                throw new Error(
+                  "Recovered job identity differs from the saved request.",
+                );
+              bindJob(restored, record);
+              setJob(restored);
+              setUncertain(false);
+              setPollError("");
+            } catch {
+              if (current()) {
+                setUncertain(true);
+                setPollError(
+                  "The previous job could not be recovered. Its ID is retained; retry the local connection before starting another run.",
+                );
+              }
+            }
           }
         }
-      })
-      .catch((e) => {
-        if (!c.signal.aborted) {
+      } catch (e) {
+        if (current()) {
           setAvailable(false);
-          setHealthError(e.message);
+          setHealthError(
+            e instanceof Error ? e.message : "Local connection unavailable.",
+          );
         }
-      });
+      } finally {
+        if (current()) {
+          recoveringNow.current = false;
+          setRecovering(false);
+        }
+      }
+    };
+    void recover();
     return () => c.abort();
   }, [props.apiBase, healthRetry, sessionKey]);
   useEffect(() => {
@@ -97,7 +135,8 @@ export function LocalGeneration(props: Props) {
   }, [active]);
   useEffect(() => {
     if (!job?.id) return;
-    const c = new AbortController();
+    const c = new AbortController(), token = recoveryToken.current;
+    const current = () => !c.signal.aborted && token === recoveryToken.current;
     let timer: ReturnType<typeof setTimeout> | undefined;
     setPollError("");
     const poll = async () => {
@@ -105,7 +144,10 @@ export function LocalGeneration(props: Props) {
         const next = validateJob(
           await localRequest(`${props.apiBase}/api/jobs/${job.id}`, c.signal),
         );
-        if (c.signal.aborted) return;
+        if (!current()) return;
+        if (next.id !== job.id)
+          throw new Error("Local status belongs to a different request.");
+        if (requestRecord) bindJob(next, requestRecord);
         setJob(next);
         if (next.status === "queued" || next.status === "running") {
           timer = setTimeout(poll, 1500);
@@ -116,10 +158,19 @@ export function LocalGeneration(props: Props) {
             throw new Error("The completed job has no replay link.");
           const url = recordingUrl(next.replay_url, `${props.apiBase}/`);
           const replay = validateReplay(await localRequest(url, c.signal));
-          if (!c.signal.aborted) setReady({ replay, url });
+          if (!current()) return;
+          if (replay.scenario.network_kind !== next.parameters.network ||
+              replay.scenario.seed !== next.parameters.seed ||
+              replay.scenario.regime !== next.parameters.regime ||
+              replay.scenario.pickup_id !== next.parameters.pickup ||
+              replay.scenario.hospital_id !== next.parameters.hospital ||
+              replay.worlds.afterlight.policy !== next.parameters.policy ||
+              (next.parameters.policy === "fixed" && replay.worlds.afterlight.lead_s !== next.parameters.lead))
+            throw new Error("The completed recording does not match this job's requested experiment.");
+          setReady({ replay, url });
         }
       } catch (e) {
-        if (!c.signal.aborted)
+        if (current())
           setPollError(
             e instanceof Error ? e.message : "Local status could not be read.",
           );
@@ -133,7 +184,7 @@ export function LocalGeneration(props: Props) {
   }, [job?.id, props.apiBase, watchRetry]);
   async function submit(event: FormEvent) {
     event.preventDefault();
-    if (pending.current || active || uncertain) return;
+    if (pending.current || recoveringNow.current || active || uncertain) return;
     setError("");
     let parameters;
     try {
@@ -154,7 +205,11 @@ export function LocalGeneration(props: Props) {
     await sendRequest(record);
   }
   async function sendRequest(record: StoredRequest) {
-    if (pending.current) return;
+    if (pending.current || recoveringNow.current) return;
+    ++recoveryToken.current;
+    recoveryAbort.current?.abort();
+    recoveringNow.current = false;
+    setRecovering(false);
     pending.current = true;
     setRequesting(true);
     setUncertain(false);
@@ -181,6 +236,7 @@ export function LocalGeneration(props: Props) {
       if (c.signal.aborted) return;
       if (result.id !== record.id)
         throw new Error("Server returned a different request identity.");
+      bindJob(result, record);
       setJob(result);
     } catch (e) {
       if (c.signal.aborted) return;
@@ -205,7 +261,10 @@ export function LocalGeneration(props: Props) {
               c.signal,
             ),
           );
-          if (!c.signal.aborted) setJob(recovered);
+          if (!c.signal.aborted) {
+            bindJob(recovered, record);
+            setJob(recovered);
+          }
         } catch {
           if (!c.signal.aborted) {
             setUncertain(true);
@@ -225,14 +284,19 @@ export function LocalGeneration(props: Props) {
       <div className="local-generation unavailable">
         <h2>Local simulation</h2>
         <p>
-          {healthError
-            ? "The local runner could not be reached. Recorded files remain available."
-            : "New runs are disabled. Start the local server with --enable-generation to run real paired simulations."}
+          {recovering
+            ? "Checking the local runner…"
+            : healthError
+              ? "The local runner could not be reached. Recorded files remain available."
+              : "New runs are disabled. Start the local server with --enable-generation to run real paired simulations."}
         </p>
         {healthError && (
           <>
             <p className="field-note">{healthError}</p>
-            <button onClick={() => setHealthRetry((x) => x + 1)}>
+            <button
+              disabled={requesting || recovering}
+              onClick={() => setHealthRetry((x) => x + 1)}
+            >
               Retry local connection
             </button>
           </>
@@ -246,8 +310,13 @@ export function LocalGeneration(props: Props) {
         Generate independent SUMO worlds on this computer. No results exist
         until both runs finish.
       </p>
+      {recovering && (
+        <p role="status">
+          Checking the local runner and recovering any saved job…
+        </p>
+      )}
       <form onSubmit={submit} noValidate>
-        <fieldset disabled={Boolean(active || uncertain)}>
+        <fieldset disabled={Boolean(active || recovering || uncertain)}>
           <legend className="sr-only">New paired simulation settings</legend>
           <label htmlFor="generation-seed">Random seed</label>
           <input
@@ -321,10 +390,16 @@ export function LocalGeneration(props: Props) {
             {requestRecord.parameters.hospital} · seed{" "}
             {requestRecord.parameters.seed} · {requestRecord.parameters.policy}
           </p>
-          <button onClick={() => setHealthRetry((x) => x + 1)}>
+          <button
+            disabled={requesting || recovering}
+            onClick={() => setHealthRetry((x) => x + 1)}
+          >
             Check known request
           </button>
-          <button onClick={() => void sendRequest(requestRecord)}>
+          <button
+            disabled={requesting || recovering}
+            onClick={() => void sendRequest(requestRecord)}
+          >
             Retry exact saved request
           </button>
         </div>

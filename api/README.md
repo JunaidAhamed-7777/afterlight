@@ -40,3 +40,8 @@ recording catalog after validation.
 
 Tests under `tests/api` use explicit synthetic unit fixtures and mock runners;
 they never establish traffic benefit. Execute all tests on Omen, not the cloud.
+
+The server captures the simulation source identity at startup. If the checkout
+changes, new generation is refused until the server is restarted; a long-lived
+Python process must not attribute cached old modules to a newer commit. Existing
+verified recordings remain readable. Do not pull while a simulation is running.

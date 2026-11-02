@@ -57,3 +57,34 @@ test("saved idempotent request restores original settings without picking up lat
   assert.equal(saved.id, "a".repeat(32));
   assert.throws(() => storedRequest({ id: "bad", parameters }));
 });
+
+test("status records stay bound to the requested ID and original parameters", async () => {
+  const { bindJob } = await import("../src/generation.ts");
+  const parameters = generationParameters(
+    "7",
+    "moderate",
+    "fixed",
+    10,
+    "P001",
+    "HOSP_WEST",
+  );
+  const request = { id: "a".repeat(32), parameters };
+  const job = {
+    id: request.id,
+    status: "running" as const,
+    parameters: { ...parameters },
+  };
+  assert.equal(bindJob(job, request), job);
+  assert.throws(
+    () => bindJob({ ...job, id: "b".repeat(32) }, request),
+    /does not match/,
+  );
+  assert.throws(
+    () =>
+      bindJob(
+        { ...job, parameters: { ...parameters, pickup: "P002" } },
+        request,
+      ),
+    /does not match/,
+  );
+});

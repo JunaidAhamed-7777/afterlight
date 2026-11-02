@@ -12,13 +12,26 @@ from api.jobs import JobManager, RequestError, OutputConflict, parameters
 
 def synthetic_replay():
     return {"schema": "afterlight.replay.v1", "mode": "recorded", "duration_s": 1, "step_s": 1,
-            "coordinates": {"position_reference": "front_bumper"}, "scenario": {"network_kind": "fixture"},
+            "coordinates": {"position_reference": "front_bumper"}, "scenario": {"network_kind": "fixture", "seed": 7, "regime": "moderate"},
             "provenance": dict(source_commit="fixture", network_sha256="fixture", demand_sha256="fixture", sumo_version="fixture"),
-            "worlds": {w: {"world_id": w, "status": "completed", "policy": "ordinary" if w == "baseline" else "fixed",
+            "worlds": {w: {"world_id": w, "status": "completed", "policy": "ordinary" if w == "baseline" else "fixed", "lead_s": 10,
                            "frames": [{"t": 0, "vehicles": []}, {"t": 1, "vehicles": []}]} for w in ("baseline", "afterlight")}}
 
 
 class JobTests(unittest.TestCase):
+    def test_source_change_requires_server_restart_before_new_work(self):
+        current = {"source_commit": "initial", "source_code_sha256": "initial"}
+        with tempfile.TemporaryDirectory() as root:
+            manager = JobManager(Path(root), lambda args: self.fail("stale source must not execute"),
+                                 source_snapshot_fn=lambda: dict(current))
+            try:
+                current["source_code_sha256"] = "changed"
+                with self.assertRaisesRegex(RequestError, "restart"):
+                    manager.submit({"network": "fixture"})
+                self.assertEqual(list(Path(root).iterdir()), [])
+            finally:
+                manager.close()
+
     def test_parameter_allowlist_and_route_membership(self):
         self.assertEqual(parameters({"network": "fixture"})["seed"], 7)
         for value in ({"output": "../private"}, {"seed": True}, {"seed": -1}, {"policy": "invented"},
@@ -120,6 +133,22 @@ class JobTests(unittest.TestCase):
             self.assertEqual(manager.get(job["id"])["status"], "failed")
             self.assertIn("persistence_error", manager.get(job["id"]))
             self.assertIsNone(manager.replay_path(job["id"]))
+
+    def test_changed_replay_cannot_be_reused_as_same_job(self):
+        def runner(args):
+            args.output.mkdir(parents=True)
+            (args.output / "replay.json").write_text(json.dumps(synthetic_replay()), encoding="utf-8")
+            return {"scenario_id": "unit-fixture"}
+        with tempfile.TemporaryDirectory() as root:
+            manager = JobManager(Path(root), runner)
+            job = manager.submit({"network": "fixture"})
+            manager.close()
+            path = manager.replay_path(job["id"])
+            data = json.loads(path.read_text())
+            data["scenario"]["seed"] = 9
+            path.write_text(json.dumps(data), encoding="utf-8")
+            self.assertIsNone(manager.replay_path(job["id"]))
+            self.assertEqual(manager.get(job["id"])["status"], "failed")
 
     def test_corrupt_persisted_record_cannot_report_success(self):
         with tempfile.TemporaryDirectory() as root:

@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from evaluation.metrics import Accounting, excess_queue_area, objective, verify_pair
-from evaluation.protocol import digest, freeze_protocol, pilot_summary
+from evaluation.protocol import assert_episode_coverage, digest, freeze_protocol, pilot_summary
 from evaluation.splits import assign_groups, assert_disjoint
 
 
@@ -106,7 +106,10 @@ class ProtocolTests(unittest.TestCase):
                 "candidate_leads_s": [0, 5, 10, 20, 30], "civilian_weight": 1, "horizon_s": 100,
                 "drain_end_s": 200, "recovery_window_s": [50, 200], "tie_break": "smallest_lead",
                 "invalid_rules": ["collision"], "heldout_regimes": [], "model_specification": {"max_depth": 3},
-                "analytical_estimator": {"version": "test-fixture", "config": {}}}
+                "analytical_estimator": {"version": "test-fixture", "config": {}},
+                "episode_inventory": [{"episode_id": f"e{i}", "demand_group_id": f"g{i}", "split": split,
+                    "demand_sha256": f"d{i}", "network_sha256": "n", "dispatch_s": 20}
+                    for i, split in enumerate(("train", "validation", "test"), start=1)]}
 
     def test_freeze_cannot_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -115,6 +118,14 @@ class ProtocolTests(unittest.TestCase):
             self.assertEqual(result["sha256"], digest(self.protocol()))
             with self.assertRaises(FileExistsError):
                 freeze_protocol(self.protocol(), path)
+
+    def test_missing_dispatch_variant_rejected_even_when_group_present(self):
+        protocol = self.protocol()
+        original = protocol["episode_inventory"][-1]
+        protocol["episode_inventory"].append({**original, "episode_id": "e3-late", "demand_sha256": "d3-late", "dispatch_s": 30})
+        with self.assertRaises(ValueError):
+            assert_episode_coverage([original], protocol, "test")
+        assert_episode_coverage([original, protocol["episode_inventory"][-1]], protocol, "test")
 
     def test_freeze_rejects_missing_feature_provenance(self):
         protocol = self.protocol()

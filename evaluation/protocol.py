@@ -6,6 +6,7 @@ from pathlib import Path
 from statistics import median
 from typing import Mapping, Sequence
 from .metrics import finite, objective
+from .splits import assert_disjoint
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -16,10 +17,46 @@ def digest(value: object) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
+def validate_episode_inventory(protocol: Mapping) -> dict[str, Mapping]:
+    inventory = protocol.get("episode_inventory")
+    if not isinstance(inventory, list) or not inventory:
+        raise ValueError("frozen protocol requires a complete episode inventory")
+    by_id = {}
+    for item in inventory:
+        if not isinstance(item, dict) or not {"episode_id", "demand_group_id", "split", "demand_sha256", "network_sha256", "dispatch_s"} <= item.keys():
+            raise ValueError("inventory episode lacks identity, split, hashes or dispatch time")
+        for key in ("episode_id", "demand_group_id", "demand_sha256", "network_sha256"):
+            if not isinstance(item[key], str) or not item[key]:
+                raise ValueError("inventory identities and hashes must be nonempty strings")
+        if item["episode_id"] in by_id or item["split"] not in {"train", "validation", "test"}:
+            raise ValueError("duplicate episode id or invalid inventory split")
+        finite(item["dispatch_s"], "inventory dispatch")
+        by_id[item["episode_id"]] = item
+    assert_disjoint(inventory, protocol["group_assignments"])
+    if {item["demand_group_id"] for item in inventory} != set(protocol["group_assignments"]):
+        raise ValueError("episode inventory must cover exactly all declared demand groups")
+    return by_id
+
+
+def assert_episode_coverage(rows: Sequence[Mapping], protocol: Mapping, split: str) -> None:
+    inventory = validate_episode_inventory(protocol)
+    expected = {eid for eid, item in inventory.items() if item["split"] == split}
+    if not expected or {row["episode_id"] for row in rows} != expected:
+        raise ValueError(f"{split} outcomes omit or add declared episodes/dispatch variants")
+    for row in rows:
+        item = inventory[row["episode_id"]]
+        for key in ("demand_group_id", "split", "demand_sha256", "network_sha256"):
+            if row.get(key) != item[key]:
+                raise ValueError(f"episode differs from frozen inventory: {key}")
+        dispatch = row.get("dispatch_s", row.get("observation", {}).get("dispatch_s"))
+        if dispatch != item["dispatch_s"]:
+            raise ValueError("episode dispatch differs from frozen inventory")
+
+
 def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
     required = {"schema", "source_commit", "group_assignments", "feature_schema", "candidate_leads_s",
                 "civilian_weight", "horizon_s", "drain_end_s", "recovery_window_s", "tie_break",
-                "invalid_rules", "heldout_regimes", "model_specification", "analytical_estimator"}
+                "invalid_rules", "heldout_regimes", "model_specification", "analytical_estimator", "episode_inventory"}
     if missing := required - protocol.keys():
         raise ValueError(f"missing protocol fields: {sorted(missing)}")
     if protocol["schema"] != "afterlight.protocol.v1":
@@ -56,6 +93,7 @@ def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
         raise ValueError("duplicate feature names")
     if any(not isinstance(gid, str) or not gid for gid in protocol["group_assignments"]):
         raise ValueError("nonempty demand group identities required")
+    validate_episode_inventory(protocol)
     envelope = {"sha256": digest(protocol), "protocol": dict(protocol)}
     # Exclusive creation avoids overwriting a frozen test contract accidentally.
     with destination.open("x", encoding="utf-8") as handle:

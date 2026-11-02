@@ -1215,3 +1215,8 @@ footer {
   margin-top: 8px;
   width: 100%;
 }
+
+.three-host canvas:focus-visible {
+  outline: 2px solid var(--clearance);
+  outline-offset: -4px;
+}

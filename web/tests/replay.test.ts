@@ -45,6 +45,7 @@ function recording(): Replay {
     step_s: 1,
     worlds: {
       afterlight: {
+        world_id: "afterlight",
         policy: "fixed",
         status: "completed",
         metrics: {},
@@ -52,6 +53,7 @@ function recording(): Replay {
         frames: [frame(0), frame(1)],
       },
       baseline: {
+        world_id: "baseline",
         policy: "ordinary",
         status: "completed",
         metrics: {},
@@ -97,7 +99,9 @@ test("out-of-order samples fail closed", () => {
 });
 test("worlds must have identical sampled absolute timestamps", () => {
   const r = recording();
-  r.worlds.baseline.frames[1].t = 0.5;
+  r.step_s = 0.5;
+  r.worlds.afterlight.frames.splice(1, 0, frame(0.5));
+  r.worlds.baseline.frames.splice(1, 0, frame(0.5000000001));
   assert.throws(() => validateReplay(r), /absolute time/);
 });
 test("ghost pose is baseline data and does not mutate active world", () => {
@@ -194,4 +198,36 @@ test("malformed controlled-link geometry rejected before rendering", () => {
     ],
   };
   assert.throws(() => validateReplay(r), /controlled-link geometry/);
+});
+
+test("declared duration cannot extend beyond actual trace coverage", () => {
+  const r = recording();
+  r.duration_s = 2;
+  assert.throws(() => validateReplay(r), /playback horizon/);
+});
+test("a second physical ambulance identity is rejected", () => {
+  const r = recording();
+  r.worlds.afterlight.frames[0].vehicles.push({ ...vehicle, id: "ghost" });
+  assert.throws(() => validateReplay(r), /vehicle pose/);
+});
+
+test("nonordinary counterfactual and swapped world identity fail before playback", () => {
+  const a = recording();
+  a.worlds.baseline.policy = "fixed";
+  assert.throws(() => validateReplay(a), /ordinary/);
+  const b = recording();
+  b.worlds.baseline.world_id = "afterlight";
+  assert.throws(() => validateReplay(b), /identity/);
+});
+test("physical civilian ghost IDs and undeclared sample gaps fail closed", () => {
+  const a = recording();
+  a.worlds.afterlight.frames[0].vehicles.push({
+    ...vehicle,
+    id: "ghost_car",
+    type: "car",
+  });
+  assert.throws(() => validateReplay(a), /ghost/);
+  const b = recording();
+  b.step_s = 0.5;
+  assert.throws(() => validateReplay(b), /sampling gap/);
 });

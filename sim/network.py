@@ -106,6 +106,9 @@ def binary_candidates(name: str) -> list[Path]:
     # the package SUMO_HOME. Prefer that interpreter-local installation.
     for base in (Path(sys.executable).parent,Path(sys.prefix)/'Scripts',Path(sys.prefix)/'bin'):
         candidates.extend(base/(name+suffix) for suffix in suffixes)
+    if os.environ.get('SUMO_HOME'):
+        base=Path(os.environ['SUMO_HOME'])/'bin'
+        candidates.extend(base/(name+suffix) for suffix in suffixes)
     try:
         import sumo
         home = getattr(sumo,'SUMO_HOME',None)
@@ -143,12 +146,18 @@ def binary(name: str) -> str:
     except importlib.metadata.PackageNotFoundError:
         version = 'not installed in this interpreter'
     raise RuntimeError(f'{name} unavailable for {sys.executable}; eclipse-sumo={version}. '
-                       'Install requirements-sim.txt with this same Python interpreter; '
+                       'Install requirements-sim.txt with this same Python interpreter, or set session SUMO_HOME to the verified official portable package; '
                        'run python -m sim.environment for scoped package diagnostics.')
 
 
 def build_network(kind: str, output: Path) -> dict:
-    graph = load_graph(kind)
+    if kind == 'city':
+        map_bytes=(ROOT/'assets/map/city_manifest.json').read_bytes()
+        graph=json.loads(map_bytes)
+        canonical_map_sha256=hashlib.sha256(map_bytes).hexdigest()
+    else:
+        graph=load_graph(kind)
+        canonical_map_sha256=None
     output.mkdir(parents=True, exist_ok=True)
     nodes = ET.Element('nodes')
     for n in graph['nodes']:
@@ -188,7 +197,7 @@ def build_network(kind: str, output: Path) -> dict:
                 'network_file_sha256': sha256(output/'network.net.xml'),
                 'network_hash_definition': 'canonical XML excluding generator timestamp/path comments and insignificant whitespace',
                 'graph_sha256': hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest(),
-                'canonical_map_sha256': sha256(ROOT/'assets/map/city_manifest.json') if kind == 'city' else None,
+                'canonical_map_sha256': canonical_map_sha256,
                 'command': command, 'netconvert_version': subprocess.check_output([binary('netconvert'), '--version'], text=True).splitlines()[0],
                 'coordinate_normalization': False, 'validation_status': 'generated_not_acceptance_tested'}
     write_json(output/'network-manifest.json', metadata)

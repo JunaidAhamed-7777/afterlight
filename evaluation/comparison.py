@@ -6,11 +6,12 @@ from statistics import mean
 from typing import Mapping, Sequence
 from .metrics import finite, objective
 from .splits import assert_disjoint
-from .protocol import digest
+from .protocol import assert_episode_coverage, digest
 
 
 def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str, int], comparator_leads: Mapping[str, int],
-                           *, civilian_weight: float, expected_split: str = "test", frozen_protocol: Mapping | None = None) -> dict:
+                           *, civilian_weight: float, expected_split: str = "test", frozen_protocol: Mapping | None = None,
+                           frozen_selectors: Mapping | None = None) -> dict:
     """Compare decisions on real cached five-action outcomes; no oracle selection.
 
     Failure counts include every episode. Conditional finite differences include
@@ -30,6 +31,7 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
             raise ValueError("frozen comparison protocol schema/hash mismatch")
         assert_disjoint(rows, protocol["group_assignments"])
         if expected_split == "test":
+            assert_episode_coverage(rows, protocol, "test")
             expected_groups = {group for group, split in protocol["group_assignments"].items() if split == "test"}
             if {row["demand_group_id"] for row in rows} != expected_groups:
                 raise ValueError("held-out report omits or adds declared test demand groups")
@@ -40,6 +42,15 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
                 raise ValueError("comparison run source differs from frozen protocol")
             if row["horizon_s"] != protocol["horizon_s"] or row["drain_end_s"] != protocol["drain_end_s"]:
                 raise ValueError("comparison outcome windows differ from frozen protocol")
+    if expected_split == "test" and frozen_selectors is None:
+        raise ValueError("test comparison requires predeclared frozen selector artifacts")
+    if frozen_selectors is not None:
+        if frozen_protocol is None:
+            raise ValueError("frozen selectors require their frozen protocol")
+        from .selectors import recompute_frozen_decisions
+        actual_selected, actual_comparator = recompute_frozen_decisions(rows, frozen_protocol, frozen_selectors)
+        if dict(selected_leads) != actual_selected or dict(comparator_leads) != actual_comparator:
+            raise ValueError("supplied actions differ from frozen observation-only selector decisions")
     if set(selected_leads) != set(episodes) or set(comparator_leads) != set(episodes):
         raise ValueError("each decision map must include every episode exactly once")
     if any(r["status"] == "infrastructure_error" for r in rows):
@@ -70,7 +81,11 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
     p95 = civilian_deltas[max(0, (95 * len(civilian_deltas) + 99) // 100 - 1)] if civilian_deltas else None
     return {"schema": "afterlight.decision-comparison.v1", "split": expected_split,
             "evaluation_mode": "test_protocol_bound" if expected_split == "test" else "exploratory",
-            "protocol_sha256": protocol_sha256, "episodes": len(records), "demand_groups": len({r["demand_group_id"] for r in records}),
+            "protocol_sha256": protocol_sha256,
+            "selector_freeze_sha256": frozen_selectors["sha256"] if frozen_selectors else None,
+            "selected_selector_sha256": frozen_selectors["selectors"]["selected"]["sha256"] if frozen_selectors else None,
+            "comparator_selector_sha256": frozen_selectors["selectors"]["comparator"]["sha256"] if frozen_selectors else None,
+            "episodes": len(records), "demand_groups": len({r["demand_group_id"] for r in records}),
             "selected_failures": sum(r["selected_infeasible"] for r in records),
             "comparator_failures": sum(r["comparator_infeasible"] for r in records),
             "selected_status_counts": dict(Counter(r["selected_status"] for r in records)),

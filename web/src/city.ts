@@ -1,3 +1,4 @@
+import { validateCity } from "./validation.ts";
 import type { City } from "./types.ts";
 export async function loadCanonicalCity(
   url: string,
@@ -9,15 +10,7 @@ export async function loadCanonicalCity(
   if (!response.ok)
     throw new Error(`City map request failed (${response.status}).`);
   const bytes = await response.arrayBuffer();
-  const city = JSON.parse(new TextDecoder().decode(bytes)) as City;
-  if (
-    city.schema !== "afterlight.city.v1" ||
-    !Array.isArray(city.nodes) ||
-    !Array.isArray(city.edges) ||
-    !Array.isArray(city.pickups) ||
-    !Array.isArray(city.hospitals)
-  )
-    throw new Error("The canonical city map has an unsupported format.");
+  const city = validateCity(JSON.parse(new TextDecoder().decode(bytes)));
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   const sha256 = Array.from(new Uint8Array(digest), (b) =>
     b.toString(16).padStart(2, "0"),

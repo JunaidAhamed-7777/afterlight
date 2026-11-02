@@ -8,7 +8,7 @@ from typing import Mapping, Sequence
 import struct
 from statistics import mean
 from evaluation.metrics import finite, objective
-from evaluation.protocol import digest
+from evaluation.protocol import assert_episode_coverage, digest
 from evaluation.splits import assert_disjoint
 
 CANDIDATES = (0, 5, 10, 20, 30)
@@ -106,6 +106,7 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
         required_lag = max(field["sensor_lag_s"] for field in protocol["feature_schema"])
         if row["observation"]["sensor_lag_s"] < required_lag:
             raise ValueError("training observation lag is shorter than frozen feature lag")
+    assert_episode_coverage(train_rows, protocol, "train")
     specification = protocol["model_specification"]
     if specification.get("max_depth") != max_depth or specification.get("min_samples_leaf") != min_samples_leaf:
         raise ValueError("training hyperparameters differ from frozen protocol")

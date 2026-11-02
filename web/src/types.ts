@@ -20,7 +20,9 @@ export interface Frame {
   queue_count: number;
 }
 export interface World {
+  world_id: "afterlight" | "baseline";
   policy: string;
+  lead_s?: number | null;
   status: string;
   metrics: Record<string, unknown>;
   events: Array<Record<string, unknown>>;
@@ -31,6 +33,7 @@ export interface Replay {
   mode: "recorded";
   scenario: {
     network_kind: "fixture" | "city";
+    regime?: string;
     id: string;
     seed: number;
     pickup_id: string;
@@ -56,6 +59,9 @@ export interface Replay {
   worlds: { afterlight: World; baseline: World };
 }
 export interface CatalogEntry {
+  policy_label?: string;
+  sha256?: string;
+  bytes?: number;
   id: string;
   title: string;
   url: string;
@@ -63,6 +69,7 @@ export interface CatalogEntry {
   hospital_id: string;
   seed: number;
   policy: string;
+  lead_s?: number | null;
   duration_s: number;
 }
 export interface SignalLink {

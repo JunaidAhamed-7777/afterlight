@@ -39,7 +39,42 @@ def audit_lifecycle(demand: dict, rows: list[dict], tripinfo_path: Path, metrics
         raise ValueError('Published civilian mean differs from raw lifecycle/reference')
 
 
-def audit(directory: Path) -> dict:
+def audit_outcomes(replay: dict, rows: list[dict]) -> None:
+    """Scalar table must be the same evidence as the audited replay, not stale data."""
+    if len(rows)!=2:
+        raise ValueError('Paired scalar output must contain exactly baseline and AFTERLIGHT rows')
+    for name,row in zip(('baseline','afterlight'),rows):
+        world=replay['worlds'][name]
+        expected={'episode_id':replay['scenario']['episode_id'],
+                  'demand_group_id':replay['provenance']['demand_group_id'],
+                  'demand_sha256':replay['provenance']['demand_sha256'],
+                  'network_sha256':replay['provenance']['network_sha256'],
+                  'source_commit':replay['provenance']['source_commit'],
+                  'policy':world['policy'],'lead_s':world.get('lead_s'),
+                  'observation':world['decision']['observation'],
+                  'request_plan':world['decision']['request_plan'],**world['metrics']}
+        if row.get('world_id',name)!=name:
+            raise ValueError('Scalar world identity/order differs from replay')
+        for key,value in expected.items():
+            if row.get(key)!=value:
+                raise ValueError(f'{name}: scalar outcome {key} differs from audited replay')
+
+
+def audit_ordinary_negative_control(replay: dict) -> bool:
+    """Two fresh ordinary worlds must be identical except wall-clock runtime."""
+    baseline,afterlight=replay['worlds']['baseline'],replay['worlds']['afterlight']
+    if afterlight['policy']!='ordinary':
+        return False
+    for field in ('frames','events','decision','status'):
+        if baseline[field]!=afterlight[field]:
+            raise ValueError(f'Independent ordinary-world negative control differs: {field}')
+    metrics=lambda world:{key:value for key,value in world['metrics'].items() if key!='runtime_s'}
+    if metrics(baseline)!=metrics(afterlight):
+        raise ValueError('Independent ordinary-world negative control metrics differ')
+    return True
+
+
+def audit(directory: Path, *, write_result: bool = True) -> dict:
     replay = json.loads((directory/'replay.json').read_text(encoding='utf-8'))
     validate_replay(replay)
     network = read_network(directory/'network/network.net.xml')
@@ -100,10 +135,15 @@ def audit(directory: Path) -> dict:
                 raise ValueError(f'{name}: priority planned before dispatch')
         checks.append({'world':name,'signal_transition_and_frame_alignment':'passed',
                        'demand_reconciliation':'passed','raw_tripinfo_metric_agreement':'passed','status':world['status']})
+    negative_control=audit_ordinary_negative_control(replay)
+    audit_outcomes(replay,json.loads((directory/'outcomes.json').read_text(encoding='utf-8')))
     result = {'schema':'afterlight.audit.v1','run_id':replay['scenario']['id'],
               'replay_sha256':sha256(directory/'replay.json'),'checks':checks,
+              'scalar_table_agreement':'passed',
+              'ordinary_negative_control':'passed' if negative_control else 'not_this_policy',
               'scope':'Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority'}
-    write_json(directory/'audit.json',result)
+    if write_result:
+        write_json(directory/'audit.json',result)
     return result
 
 

@@ -17,9 +17,12 @@ def candidates(split="validation"):
 
 
 def paired_decision_report(rows, selected, comparator, **kwargs):
-    protocol = {"schema": "afterlight.protocol.v1", "group_assignments": {"g": "test"},
+    # Aggregation fixtures are explicitly exploratory, not a test-set claim.
+    rows = [{**row, "split": "validation"} for row in rows]
+    protocol = {"schema": "afterlight.protocol.v1", "group_assignments": {"g": "validation"},
                 "civilian_weight": 1, "source_commit": "test-fixture", "horizon_s": 100, "drain_end_s": 200}
-    return raw_report(rows, selected, comparator, frozen_protocol={"sha256": digest(protocol), "protocol": protocol}, **kwargs)
+    return raw_report(rows, selected, comparator, expected_split="validation",
+                      frozen_protocol={"sha256": digest(protocol), "protocol": protocol}, **kwargs)
 
 
 class ComparisonTests(unittest.TestCase):

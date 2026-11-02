@@ -41,6 +41,15 @@ export function validateCatalog(
       throw new Error(
         "The recording catalog contains incomplete or duplicate entries.",
       );
+    if (r.sha256 !== undefined && !/^[a-f0-9]{64}$/i.test(r.sha256))
+      throw new Error("The recording catalog contains an invalid checksum.");
+    if (r.bytes !== undefined && (!Number.isInteger(r.bytes) || r.bytes <= 0))
+      throw new Error("The recording catalog contains an invalid byte count.");
+    if (r.lead_s !== undefined && r.lead_s !== null &&
+        (!Number.isFinite(r.lead_s) || r.lead_s < 0))
+      throw new Error("The recording catalog contains an invalid lead time.");
+    if (r.policy_label !== undefined && typeof r.policy_label !== "string")
+      throw new Error("The recording catalog contains an invalid policy label.");
     recordingUrl(r.url, catalogBase);
     ids.add(r.id);
     return r;

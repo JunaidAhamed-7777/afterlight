@@ -1,3 +1,4 @@
+import { boundedJson } from "./response.ts";
 export interface GenerationParameters {
   network: "city";
   seed: number;
@@ -77,10 +78,10 @@ export async function localRequest(
     body: body === undefined ? undefined : JSON.stringify(body),
     signal: AbortSignal.any([signal, AbortSignal.timeout(30000)]),
   });
-  const value = await response.json();
+  const value = await boundedJson(response);
   if (!response.ok)
     throw new LocalResponseError(
-      typeof value.error === "string"
+      value && typeof value === "object" && "error" in value && typeof value.error === "string"
         ? value.error
         : `Local server returned ${response.status}.`,
       response.status,
@@ -103,6 +104,8 @@ export function storedRequest(value: unknown): StoredRequest {
   if (!request || !/^([a-f0-9]{32})$/.test(request.id) || !request.parameters)
     throw new Error("Saved local request is invalid.");
   const p = request.parameters;
+  if (p.network !== "city")
+    throw new Error("Saved local request network is unsupported.");
   return {
     id: request.id,
     parameters: generationParameters(
@@ -114,4 +117,21 @@ export function storedRequest(value: unknown): StoredRequest {
       p.hospital,
     ),
   };
+}
+
+export function bindJob(
+  job: GenerationJob,
+  request: StoredRequest,
+): GenerationJob {
+  if (
+    job.id !== request.id ||
+    Object.entries(request.parameters).some(
+      ([key, value]) =>
+        job.parameters[key as keyof GenerationParameters] !== value,
+    )
+  )
+    throw new Error(
+      "The local job does not match the saved request identity and settings.",
+    );
+  return job;
 }

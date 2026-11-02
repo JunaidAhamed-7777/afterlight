@@ -1,3 +1,9 @@
+import {
+  validateWorldIdentity,
+  validateCadence,
+  validatePhysicalIdentity,
+  validateEvents,
+} from "./validation.ts";
 import type { Frame, Replay, Vehicle } from "./types.ts";
 export function vehiclePose(v: Vehicle): [number, number, number, number] {
   const radians = (v.angle_deg * Math.PI) / 180;
@@ -9,7 +15,12 @@ export function vehiclePose(v: Vehicle): [number, number, number, number] {
   ];
 }
 export function frameAt(frames: Frame[], t: number): Frame | null {
-  if (!frames.length || t < frames[0].t || t > frames[frames.length - 1].t)
+  if (
+    !Number.isFinite(t) ||
+    !frames.length ||
+    t < frames[0].t ||
+    t > frames[frames.length - 1].t
+  )
     return null;
   let low = 0,
     high = frames.length - 1;
@@ -93,6 +104,7 @@ export function validateReplay(value: unknown): Replay {
       }
     }
   }
+  validateWorldIdentity(r.worlds);
   for (const name of ["afterlight", "baseline"] as const) {
     const w = r.worlds?.[name];
     if (
@@ -107,6 +119,7 @@ export function validateReplay(value: unknown): Replay {
       !w.frames.length
     )
       throw new Error(`The ${name} world has no recorded frames.`);
+    validateEvents(w.events, r.duration_s);
     let previous = -Infinity;
     for (const f of w.frames) {
       if (
@@ -137,8 +150,10 @@ export function validateReplay(value: unknown): Replay {
       }
       const ids = new Set<string>();
       for (const v of f.vehicles) {
+        validatePhysicalIdentity(v.id, v.type);
         if (
           !v.id ||
+          (v.id === "ambulance") !== (v.type === "ambulance") ||
           ids.has(v.id) ||
           !["ambulance", "car", "truck", "bike"].includes(v.type) ||
           ![v.x, v.y, v.z, v.angle_deg, v.speed_mps, v.length_m].every(
@@ -155,6 +170,11 @@ export function validateReplay(value: unknown): Replay {
         ids.add(v.id);
       }
     }
+    validateCadence(w.frames, r.step_s, r.duration_s);
+    if (w.frames[0].t !== 0 || w.frames[w.frames.length - 1].t !== r.duration_s)
+      throw new Error(
+        `The ${name} world does not cover the declared playback horizon.`,
+      );
   }
   const a = r.worlds.afterlight.frames,
     b = r.worlds.baseline.frames;

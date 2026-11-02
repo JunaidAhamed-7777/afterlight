@@ -57,3 +57,11 @@ python -m export.catalog --run local-runtime/city-7 --destination web/public/rep
 ```
 
 Registration re-audits raw SUMO evidence, checks the canonical map fingerprint, and copies exact bytes. It creates a compact evidence companion and atomically appends the catalog under an exclusive lock. Invalid/censored traffic outcomes retain explicit statuses; infrastructure failures are not registered as complete recordings. Existing different evidence is never overwritten, and an interrupted copy cannot leave a truncated final filename. This is local artifact preparation, not automatic deployment or Git publication. Public recording IDs include source-code revision; scientific episode/action IDs remain separate.
+
+### Official portable Windows alternative
+
+If the large `eclipse-sumo` wheel cannot be retrieved, use the verified official SUMO 1.28.0 portable archive and install matching `traci`/`sumolib` wheels in the selected interpreter. Set `SUMO_HOME` only in the running PowerShell session to the extracted distribution directory containing `bin`, then run `python -m sim.environment`. The runner supports that standard location without global PATH changes or installation. Missing `eclipse-sumo` Python metadata is explicitly recorded as null for this mode; the actual running SUMO version remains mandatory provenance. Verify the archive against the official published SHA-256 before extraction/use.
+
+### Independent-world negative control
+
+Before interpreting a priority benefit, run a fresh fixture pair with `--policy ordinary`, then `python -m sim.audit --run <that-run-directory>`. Both independent worlds must have exactly matching frames, control events, observations and metrics except wall-clock runtime. The audit asserts this automatically for ordinary/ordinary pairs. Passing this checks repeatability/world initialization; it is not evidence of policy improvement or real-world safety.

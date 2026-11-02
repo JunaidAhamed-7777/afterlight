@@ -44,12 +44,26 @@ def source_snapshot() -> dict:
     for directory in ('sim','policies','models','evaluation','export'):
         for path in sorted((ROOT/directory).rglob('*.py')):
             files[str(path.relative_to(ROOT)).replace('\\','/')] = sha256(path)
+    files['assets/map/city_manifest.json']=sha256(ROOT/'assets/map/city_manifest.json')
     try:
         dirty = bool(subprocess.check_output(['git','status','--porcelain','--','sim','policies','models','evaluation','export','assets/map/city_manifest.json'],cwd=ROOT,text=True).strip())
     except (OSError,subprocess.CalledProcessError):
         dirty = None
     return {'source_commit':source_commit(),'source_dirty':dirty,'source_code_sha256':digest(files),
             'source_files':files}
+
+
+def dependency_versions() -> dict:
+    """Portable official SUMO has no eclipse-sumo wheel metadata; that is valid."""
+    versions={}
+    for name in ('traci','sumolib','eclipse-sumo'):
+        try:
+            versions[name]=importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            if name!='eclipse-sumo':
+                raise
+            versions[name]=None
+    return versions
 
 
 def route_controls(route: list[str], network: dict) -> list[dict]:
@@ -129,8 +143,10 @@ def pose_frame(conn, network: dict, now: float) -> dict:
                          'speed_mps': round(conn.vehicle.getSpeed(vid), 4),
                          'length_m': conn.vehicle.getLength(vid),
                          'width_m': conn.vehicle.getWidth(vid)})
-    signals = [{'id': j, 'state': conn.trafficlight.getRedYellowGreenState(j), 'links': [{k: link[k] for k in ('index','from_edge','to_edge','from_lane','to_lane')} for link in s['links']]}
-               for j, s in network['signals'].items()]
+    # Static controlled-link geometry lives once in network_geometry, not
+    # repeated in every frame. Frames carry only changing signal states.
+    signals = [{'id': j, 'state': conn.trafficlight.getRedYellowGreenState(j)}
+               for j in network['signals']]
     return {'t': now, 'vehicles': vehicles, 'signals': signals,
             'queue_count': sum(v['speed_mps'] < .1 for v in vehicles if v['id'] != 'ambulance')}
 
@@ -314,6 +330,7 @@ def run_pair(args) -> dict:
     if isinstance(args.seed,bool) or not isinstance(args.seed,int) or not 0 <= args.seed <= 2**31-1:
         raise ValueError('Seed must be an integer from 0 to 2147483647')
     source = source_snapshot()
+    dependencies = dependency_versions()
     network_dir = output/'network'
     network_manifest = build_network(args.network, network_dir)
     graph = json.loads((network_dir/'graph.json').read_text(encoding='utf-8'))
@@ -329,8 +346,10 @@ def run_pair(args) -> dict:
     for world_id, policy in [('baseline', 'ordinary'), ('afterlight', args.policy)]:
         worlds[world_id] = run_world(world_id=world_id, policy=policy, lead_s=args.lead,
                                     output=output/world_id, **common)
-    if source_snapshot() != source:
-        raise RuntimeError('Project source changed during the pair; raw worlds retained, replay publication refused')
+    if source_snapshot() != source or dependency_versions()!=dependencies:
+        raise RuntimeError('Project source/dependencies changed during the pair; raw worlds retained, replay publication refused')
+    if worlds['baseline']['sumo_version'] != worlds['afterlight']['sumo_version']:
+        raise RuntimeError('Paired worlds used different SUMO versions; replay publication refused')
     episode_id = episode_identity(network_kind=args.network,regime=args.regime,seed=args.seed,
         network_sha256=network_manifest['network_sha256'],demand_sha256=hashes['demand_sha256'],
         dispatch_s=args.dispatch,horizon_s=args.horizon,drain_s=args.drain,step_s=args.step)
@@ -343,7 +362,8 @@ def run_pair(args) -> dict:
                   'network_file_sha256': network_manifest['network_file_sha256'],
                   'network_hash_definition': network_manifest['network_hash_definition'],
                   **hashes, 'sumo_version': worlds['baseline']['sumo_version'],
-                  'dependencies': {n:importlib.metadata.version(n) for n in ('traci','sumolib','eclipse-sumo')},
+                  'dependencies': dependencies,
+                  'sumo_distribution_metadata': 'eclipse-sumo-wheel-installed' if dependencies['eclipse-sumo'] else 'external-or-portable-without-wheel-metadata',
                   'model_sha256': None, 'verification': 'real SUMO execution; benchmark interpretation requires evaluation gates'}
     replay = {'schema': SCHEMA, 'mode': 'recorded',
               'scenario': {'id': scenario_id, 'episode_id': episode_id, 'network_kind': args.network, 'seed': args.seed,
@@ -360,7 +380,7 @@ def run_pair(args) -> dict:
     write_json(output/'replay-manifest.json', replay_metadata)
     scalar_rows = []
     for world in worlds.values():
-        scalar_rows.append({'episode_id': episode_id, 'run_id': run_identity(episode_id,world['policy'],world['lead_s']), 'demand_group_id': hashes['demand_group_id'],
+        scalar_rows.append({'world_id':world['world_id'],'episode_id': episode_id, 'run_id': run_identity(episode_id,world['policy'],world['lead_s']), 'demand_group_id': hashes['demand_group_id'],
             'split': args.split, 'policy': world['policy'], 'lead_s': world['lead_s'],
             **world['metrics'], 'demand_sha256': hashes['demand_sha256'],
             'network_sha256': network_manifest['network_sha256'], 'source_commit': provenance['source_commit'],

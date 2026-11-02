@@ -2,6 +2,7 @@
 from __future__ import annotations
 import importlib.metadata
 import json
+import os
 import sys
 from sim.network import binary_candidates
 
@@ -13,7 +14,7 @@ def inspect_environment() -> dict:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:
             versions[name] = None
-    return {'python':sys.executable,'version':sys.version,'prefix':sys.prefix,'packages':versions,
+    return {'python':sys.executable,'version':sys.version,'prefix':sys.prefix,'sumo_home':os.environ.get('SUMO_HOME'),'packages':versions,
             'executables':{name:[{'path':str(path),'exists':path.is_file()} for path in binary_candidates(name)]
                            for name in ('sumo','netconvert')}}
 

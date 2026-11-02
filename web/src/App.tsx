@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
 );
+import { bindRecording, loadRecording } from "./recording.ts";
 import { LocalGeneration } from "./LocalGeneration.tsx";
 import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
@@ -127,10 +128,10 @@ export default function App() {
           setCityHash(sha256);
         }
       })
-      .catch(() => {
+      .catch((error) => {
         if (!c.signal.aborted)
           setCityError(
-            "The canonical city map could not load. Retry to restore pickup selection.",
+            `The canonical city map could not load: ${error instanceof Error ? error.message : "unknown format"} Retry to restore pickup selection.`,
           );
       });
     return () => c.abort();
@@ -171,10 +172,14 @@ export default function App() {
     setLoading(true);
     const url = recordingUrl(item.url, catalogBase);
     (generatedReplays.current.has(selection)
-      ? Promise.resolve(generatedReplays.current.get(selection))
-      : json(url, c.signal)
+      ? Promise.resolve().then(() =>
+          bindRecording(
+            validateReplay(generatedReplays.current.get(selection)),
+            item,
+          ),
+        )
+      : loadRecording(item, url, c.signal)
     )
-      .then(validateReplay)
       .then((r) => {
         if (!c.signal.aborted) {
           setReplay(r);
@@ -243,6 +248,14 @@ export default function App() {
     setReplay(null);
     setPlaying(false);
     seekTime(0);
+  };
+  const selectRecording = (id: string) => {
+    setSelection(id);
+    setReplay(null);
+    setPlaying(false);
+    seekTime(0);
+    setLoadError("");
+    setLoading(Boolean(id));
   };
   const activeHospital = city?.hospitals.find((x) => x.id === hospital);
   const timelineMax = replay?.duration_s ?? 1;
@@ -340,6 +353,11 @@ export default function App() {
                 onChange={(e) => changeRoute(pickup, e.target.value)}
                 disabled={!city}
               >
+                {city && !city.hospitals.some((h) => h.id === hospital) && (
+                  <option value={hospital}>
+                    {hospital} · recorded destination
+                  </option>
+                )}
                 {city?.hospitals.map((h) => (
                   <option value={h.id} key={h.id}>
                     {h.name ?? h.id}
@@ -352,7 +370,11 @@ export default function App() {
                 <span className="route-rule" />
                 <Icon name="arrow" />
                 <span>
-                  {hospital === "HOSP_WEST" ? "Westhaven" : "Eastbank"}
+                  {hospital === "HOSP_WEST"
+                    ? "Westhaven"
+                    : hospital === "HOSP_EAST"
+                      ? "Eastbank"
+                      : "Fixture endpoint"}
                 </span>
                 <span className="route-destination" />
               </div>
@@ -362,7 +384,7 @@ export default function App() {
               <select
                 id="recording"
                 value={selection}
-                onChange={(e) => setSelection(e.target.value)}
+                onChange={(e) => selectRecording(e.target.value)}
                 disabled={!available.length || loading}
               >
                 <option value="">
@@ -402,12 +424,12 @@ export default function App() {
                           onClick={() => {
                             setPickup(r.pickup_id);
                             setHospital(r.hospital_id);
-                            setSelection(r.id);
+                            selectRecording(r.id);
                           }}
                         >
                           {r.title}
                           <small>
-                            {r.pickup_id} → {r.hospital_id} · seed {r.seed}
+                            {r.pickup_id} → {r.hospital_id} · seed {r.seed} · {r.policy_label ?? r.policy}
                           </small>
                         </button>
                       </li>
@@ -439,13 +461,14 @@ export default function App() {
                     pickup_id: r.scenario.pickup_id,
                     hospital_id: r.scenario.hospital_id,
                     policy: r.worlds.afterlight.policy,
+                    lead_s: r.worlds.afterlight.lead_s,
                     duration_s: r.duration_s,
                   };
                   setCatalog((rows) => [
                     ...rows.filter((row) => row.id !== entry.id),
                     entry,
                   ]);
-                  setSelection(entry.id);
+                  selectRecording(entry.id);
                   setPickup(entry.pickup_id);
                   setHospital(entry.hospital_id);
                 }}
@@ -457,7 +480,7 @@ export default function App() {
                 <input
                   type="checkbox"
                   checked={ghost}
-                  disabled={!replay || world === "baseline"}
+                  disabled={!cityReplay || world === "baseline"}
                   onChange={(e) => setGhost(e.target.checked)}
                 />{" "}
                 Show baseline ghost
@@ -472,17 +495,17 @@ export default function App() {
                 max=".65"
                 step=".05"
                 value={ghostOpacity}
-                disabled={!ghost || !replay || world === "baseline"}
+                disabled={!ghost || !cityReplay || world === "baseline"}
                 onChange={(e) => setGhostOpacity(Number(e.target.value))}
               />
               <label className="check-label">
                 <input
                   type="checkbox"
                   checked={follow}
-                  disabled={!replay || reducedMotion}
+                  disabled={!cityReplay || reducedMotion}
                   onChange={(e) => setFollow(e.target.checked)}
                 />{" "}
-                Follow ambulance
+                Follow AFTERLIGHT ambulance
               </label>
               <label className="check-label">
                 <input
@@ -594,6 +617,10 @@ export default function App() {
                       baselineFrames={
                         cityReplay ? replay!.worlds.baseline.frames : []
                       }
+                      followFrames={
+                        cityReplay ? replay!.worlds.afterlight.frames : []
+                      }
+                      onManualCamera={() => setFollow(false)}
                       clock={playbackClock}
                       routeEdges={replay?.scenario.route_edges ?? []}
                       networkGeometry={replay?.network_geometry?.signals ?? []}

@@ -21,6 +21,7 @@ def main() -> None:
     parser.add_argument("--base-url", default="http://127.0.0.1:5173")
     parser.add_argument("--output", type=Path, default=Path("local-runtime/browser-smoke"))
     parser.add_argument("--catalog-path", choices=("/replays/catalog.json", "/api/catalog"), default="/replays/catalog.json")
+    parser.add_argument("--headless", action="store_true", help="Supplementary headless capture; headed GPU QA is the default")
     parser.add_argument("--channel", choices=("chrome", "msedge"), default="chrome")
     args = parser.parse_args()
     parsed = urlsplit(args.base_url)
@@ -29,13 +30,16 @@ def main() -> None:
     args.output.mkdir(parents=True, exist_ok=True)
     checks: list[dict] = []
     errors: list[str] = []
-    report = {"scope": "Local browser smoke; not SUMO validity, complete accessibility audit, or performance benchmark", "platform": platform.platform(), "channel": args.channel, "checks": checks, "page_errors": errors}
+    report = {"scope": "Local browser smoke; not SUMO validity, complete accessibility audit, or performance benchmark", "platform": platform.platform(), "channel": args.channel, "headless": args.headless, "checks": checks, "page_errors": errors}
 
     def passed(name: str, detail: object = None) -> None:
         checks.append({"name": name, "passed": True, "detail": detail})
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel=args.channel, headless=True)
+        browser = p.chromium.launch(
+            channel=args.channel, headless=args.headless, chromium_sandbox=True,
+            ignore_default_args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
+        )
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
         page = context.new_page()
         page.on("pageerror", lambda error: errors.append(str(error)))
@@ -46,6 +50,17 @@ def main() -> None:
             page.wait_for_function("!document.querySelector('.canvas-status')", timeout=30000)
             expect(page.locator(".city-fallback")).to_have_count(0)
             passed("original_city_glb_drawn_without_fallback")
+            canvas = page.locator(".three-host canvas")
+            canvas.focus()
+            original_zoom = float(canvas.get_attribute("data-camera-zoom"))
+            canvas.press("Shift+Equal")
+            page.wait_for_function("value => Number(document.querySelector('.three-host canvas').dataset.cameraZoom)>value", arg=original_zoom)
+            previous_target = canvas.get_attribute("data-camera-target")
+            canvas.press("ArrowRight")
+            page.wait_for_function("value => document.querySelector('.three-host canvas').dataset.cameraTarget!==value", arg=previous_target)
+            canvas.press("0")
+            passed("scoped_keyboard_camera_zoom_pan_and_reset")
+
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Desktop horizontal overflow"
             passed("desktop_no_horizontal_overflow")
             page.get_by_label("Find a pickup", exact=True).fill("P050")
@@ -113,11 +128,28 @@ def main() -> None:
             page.wait_for_function("!document.querySelector('.canvas-status')", timeout=30000)
             expect(page.locator(".city-fallback")).to_have_count(0)
             passed("webgl_context_loss_keeps_preview_and_recovers")
+            # Inject a renderer exception in this ephemeral page, never in a simulator.
+            page.evaluate("""() => {
+                const prototype=WebGL2RenderingContext.prototype;
+                window.__qaOriginalDraws={};
+                for(const name of ['drawElements','drawArrays','drawElementsInstanced','drawArraysInstanced']){
+                    window.__qaOriginalDraws[name]=prototype[name];
+                    prototype[name]=function(){throw new Error('Injected UI QA rendering failure; no simulation failure implied');};
+                }
+            }""")
+            page.get_by_role("button", name="Reset camera to city overview").click()
+            expect(page.locator(".canvas-status")).to_contain_text("rendering error")
+            expect(page.locator(".city-fallback")).to_be_visible()
+            page.evaluate("""() => {for(const [name,method] of Object.entries(window.__qaOriginalDraws))WebGL2RenderingContext.prototype[name]=method;delete window.__qaOriginalDraws;}""")
+            page.get_by_role("button", name="Retry 3D city").click()
+            page.wait_for_function("!document.querySelector('.canvas-status')", timeout=30000)
+            passed("animation_frame_exception_preserves_evidence_and_retries")
+
 
             page.set_viewport_size({"width": 390, "height": 844})
             page.emulate_media(reduced_motion="reduce")
             expect(page.get_by_label("Reduced motion", exact=True)).to_be_checked()
-            expect(page.get_by_label("Follow ambulance", exact=True)).to_be_disabled()
+            expect(page.get_by_label("Follow AFTERLIGHT ambulance", exact=True)).to_be_disabled()
             page.evaluate("scrollTo(0,0)")
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Mobile horizontal overflow"
             assert page.locator(".stage").bounding_box()["y"] < 200, "Mobile city is buried below settings"

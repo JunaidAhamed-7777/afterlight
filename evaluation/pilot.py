@@ -8,7 +8,6 @@ import argparse
 from datetime import datetime, timezone
 import json
 import re
-import importlib.metadata
 from pathlib import Path
 import platform
 import time
@@ -76,13 +75,16 @@ def execute_plan(envelope: dict, output: Path) -> dict:
     # Deliberately lazy imports: plan/contract unit tests do not need SUMO.
     from sim.network import build_network, read_network, write_json
     from sim.demand import make_demand, save_demand
-    from sim.run import run_world, source_commit
+    from sim.run import dependency_versions, run_world, source_snapshot
     from models.analytical import AnalyticalConfig, estimate_candidates
 
+    source = source_snapshot()
+    if source["source_dirty"] is not False or source["source_commit"] == "unavailable":
+        raise ValueError("pilot requires clean committed source before execution")
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / "pilot-plan.json", envelope)
     started = time.perf_counter()
-    manifest = {"source_commit": source_commit(), "plan_sha256": envelope["sha256"],
+    manifest = {**source, "plan_sha256": envelope["sha256"],
                 "started_utc": datetime.now(timezone.utc).isoformat(), "platform": platform.platform(),
                 "python_version": platform.python_version(), "processor": platform.processor(),
                 "expected_worlds": len(plan["cases"]) * len(plan["policies"]),
@@ -91,7 +93,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
     rows = []
     write_json(output / "outcomes.json", rows)
     try:
-        manifest["dependencies"] = {name: importlib.metadata.version(name) for name in ("eclipse-sumo", "traci", "sumolib")}
+        manifest["dependencies"] = dependency_versions()
         netdir = output / "network"
         netmanifest = build_network(plan["network"], netdir)
         graph = json.loads((netdir / "graph.json").read_text(encoding="utf-8"))
@@ -104,11 +106,13 @@ def execute_plan(envelope: dict, output: Path) -> dict:
             scheduled = sum(v["id"] != "ambulance" for v in demand["vehicles"])
             case_rows = []
             for policy in plan["policies"]:
+                if source_snapshot() != source:
+                    raise RuntimeError("Source changed during pilot; retained completed attempts, remaining worlds unattempted")
                 name = policy["policy"] + (f"-{policy['lead_s']}" if policy["lead_s"] is not None else "")
                 world_dir = case_dir / name
                 identity = {"episode_id": case["id"], "demand_group_id": hashes["demand_group_id"],
                             "demand_sha256": hashes["demand_sha256"], "network_sha256": netmanifest["network_sha256"],
-                            "source_commit": manifest["source_commit"], "split": "pilot", "regime": case["regime"],
+                            "source_commit": manifest["source_commit"], "source_code_sha256": source["source_code_sha256"], "split": "pilot", "regime": case["regime"],
                             "seed": case["seed"], "policy": policy["policy"], "lead_s": policy["lead_s"]}
                 call_start = time.perf_counter()
                 try:
@@ -116,9 +120,11 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                                       network_dir=netdir, demand_dir=case_dir / "demand", demand=demand, network=network,
                                       output=world_dir, horizon_s=case["horizon_s"], drain_s=case["drain_s"],
                                       step_s=plan["step_s"], sample_s=plan["sample_s"])
+                    if source_snapshot() != source:
+                        raise RuntimeError("Source changed while simulator was running; outcome not eligible as locked-source evidence")
                     decision = world["decision"]
                     estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
-                    row = {**identity, **world["metrics"], "request_plan": decision["request_plan"],
+                    row = {**identity, **world["metrics"], "sumo_version": world["sumo_version"], "request_plan": decision["request_plan"],
                            "observation": decision["observation"],
                            "analytical_config_sha256": digest({"version": estimates["version"], "config": estimates["config"]}),
                            "analytical_cost_s": next((s["analytical_cost_s"] for s in estimates["scores"] if s["lead_s"] == policy["lead_s"]), None)}
