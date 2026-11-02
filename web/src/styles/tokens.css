@@ -1,0 +1,2 @@
+/* Normative values mapped from root DESIGN.md. Shared CSS is the runtime adapter. */
+:root{--canvas:#101C2B;--surface:#1C2C40;--text:#F4F1E8;--muted:#B4C1CE;--ambulance:#FFB85C;--clearance:#78D9CB;--ghost:#87D7FF;--line:color-mix(in srgb,var(--muted) 21%,transparent);--radius:6px;--space:4px;--sans:system-ui,sans-serif;--mono:ui-monospace,monospace;color-scheme:dark;font-family:var(--sans);color:var(--text);background:var(--canvas);font-synthesis:none;text-rendering:optimizeLegibility;font-weight:400;font-size:16px;line-height:1.5}
