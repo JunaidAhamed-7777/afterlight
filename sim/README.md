@@ -47,3 +47,13 @@ Network identity uses canonical XML excluding generated timestamp/path comments 
 ## Identity and revision safeguards
 
 The runner records source commit, dirty-code status and SHA-256 for each first-party Python source module. A changed source snapshot during a pair refuses replay publication while retaining raw world files. Keep the Omen checkout on one SHA until a process ends. City replay provenance includes the exact `canonical_map_sha256` of the published manifest so the viewer can reject stale geometry. Net conversion must preserve all canonical edge IDs, endpoints and the exact permitted external edge-transition set; generated geometry is still subject to Omen visual inspection.
+
+## Prepare a genuine city recording for the viewer
+
+After a clean-source Omen city run and successful artifact audit:
+
+```powershell
+python -m export.catalog --run local-runtime/city-7 --destination web/public/replays
+```
+
+Registration re-audits raw SUMO evidence, checks the canonical map fingerprint, and copies exact bytes. It creates a compact evidence companion and atomically appends the catalog under an exclusive lock. Invalid/censored traffic outcomes retain explicit statuses; infrastructure failures are not registered as complete recordings. Existing different evidence is never overwritten, and an interrupted copy cannot leave a truncated final filename. This is local artifact preparation, not automatic deployment or Git publication. Public recording IDs include source-code revision; scientific episode/action IDs remain separate.

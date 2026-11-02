@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 import json
 import os
+import re
 from pathlib import Path
 import threading
 import time
@@ -64,13 +65,25 @@ class JobManager:
         self.closed = False
 
     def submit(self, body: object) -> dict:
-        params = parameters(body)
+        if not isinstance(body, dict):
+            raise RequestError("Request must be a JSON object")
+        request_id = body.get("request_id")
+        if request_id is not None and (not isinstance(request_id, str) or not re.fullmatch(r"[a-f0-9]{32}", request_id)):
+            raise RequestError("request_id must be 32 lowercase hexadecimal characters")
+        params = parameters({key: value for key, value in body.items() if key != "request_id"})
+        if request_id is not None:
+            self.get(request_id)  # Recover a persisted terminal request after restart.
         with self.lock:
             if self.closed:
                 raise RequestError("Generation is shutting down")
+            if request_id in self.jobs:
+                existing = self.jobs[request_id]
+                if existing["parameters"] != params:
+                    raise RequestError("request_id is already associated with different parameters")
+                return deepcopy(existing)
             if any(job["status"] in {"queued", "running"} for job in self.jobs.values()):
                 raise RequestError("A local simulation is already running; wait for its actual result")
-            job_id = uuid4().hex
+            job_id = request_id or uuid4().hex
             job = {"id": job_id, "status": "queued", "parameters": params, "created_at": time.time(),
                    "mode": "local-generation", "message": "Queued for real SUMO execution; no result yet"}
             self.jobs[job_id] = job
@@ -124,7 +137,41 @@ class JobManager:
 
     def get(self, job_id: str) -> dict | None:
         with self.lock:
-            return deepcopy(self.jobs.get(job_id))
+            found = self.jobs.get(job_id)
+            if found is not None:
+                return deepcopy(found)
+        if not isinstance(job_id, str) or not re.fullmatch(r"[a-f0-9]{32}", job_id):
+            return None
+        path = self.output_root / job_id / "job.json"
+        try:
+            if path.resolve().parent != (self.output_root / job_id) or path.parent.resolve().parent != self.output_root:
+                return None
+            if path.stat().st_size > 1024 * 1024:
+                return None
+            record = json.loads(path.read_text(encoding="utf-8"))
+            if not isinstance(record, dict) or record.get("id") != job_id or record.get("status") not in {"completed", "failed"}:
+                return None
+            if parameters(record["parameters"]) != record["parameters"]:
+                return None
+            json.dumps(record, allow_nan=False)
+            if record["status"] == "completed":
+                try:
+                    artifact = path.parent / "replay.json"
+                    if artifact.resolve().parent != path.parent:
+                        raise ValueError("Recovered replay escaped its job directory")
+                    from export.replay import validate_replay
+                    data = json.loads(artifact.read_text(encoding="utf-8"))
+                    json.dumps(data, allow_nan=False)
+                    validate_replay(data)
+                    record["replay_url"] = f"/api/jobs/{job_id}/replay"
+                except (OSError, ValueError, TypeError, KeyError, AttributeError, IndexError, RuntimeError) as exc:
+                    record.update(status="failed", recovery_error=str(exc),
+                                  message="Saved completion record has no valid replay; original files were not modified")
+                    record.pop("replay_url", None)
+        except (OSError, ValueError, TypeError, KeyError, RuntimeError):
+            return None
+        with self.lock:
+            return deepcopy(self.jobs.setdefault(job_id, record))
 
     def replay_path(self, job_id: str) -> Path | None:
         job = self.get(job_id)

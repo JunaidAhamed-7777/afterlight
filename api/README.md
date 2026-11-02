@@ -18,7 +18,9 @@ The static public viewer does not start simulations.
 - `GET /api/health`: capabilities, never a fake progress value.
 - `GET /api/catalog`, `GET /api/runs/{id}`: allow-listed verified recording files.
 - `POST /api/runs`: enabled only by the explicit flag; JSON parameters `network`,
-  `seed`, `regime`, `policy`, `lead`, `pickup`, `hospital` only.
+  `seed`, `regime`, `policy`, `lead`, `pickup`, `hospital`, and optional `request_id`.
+  A 32-hex client request ID is an idempotency key: the same ID/parameters returns
+  the existing job, never starts a second one; changed parameters are rejected.
 - `GET /api/jobs/{id}`: queued/running/completed/failed actual process lifecycle.
 - `GET /api/jobs/{id}/replay`: only a completed validated real paired recording.
 
@@ -31,8 +33,8 @@ streaming or an evaluated learned controller. All completed/invalid/censored
 outcomes are retained. Errors are not replaced by sample data.
 
 Stopping the server waits for an active job to finish so it does not abandon a
-SUMO child process. There is no active-job cancel UI in this checkpoint. Job
-status is session-local; the output files survive restart. Do not change checkout
+SUMO child process. There is no active-job cancel UI in this checkpoint. Terminal job records can be recovered by their exact ID after restart; outputs
+survive restart. In-progress work cannot be silently resumed after a process crash. Do not change checkout
 while a run is active. Use the exporter to register a completed run into the
 recording catalog after validation.
 

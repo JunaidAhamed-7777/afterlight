@@ -20,7 +20,7 @@ Open `http://127.0.0.1:5173`. All acceptance tests and browser QA belong on Omen
 
 `public/replays/catalog.json` contains `schema: afterlight.catalog.v1` and `runs`. Each run has `id,title,url,seed,pickup_id,hospital_id,policy,duration_s`. Relative `url` resolves against `/replays/`. Replay schema is `afterlight.replay.v1` with `scenario.network_kind` explicitly `fixture` or `city`. Fixture data is shown as text/evidence, never atop the city. Both worlds must carry identical absolute frame timestamps. They remain separate objects; the ghost is a render clone of the baseline ambulance only.
 
-For an explicit local API library, set `VITE_API_BASE=http://127.0.0.1:8000` before starting Vite. The viewer fetches `/api/catalog`; this does not claim live simulation. Job generation UI is not implemented in this checkpoint.
+For an explicit local API library, set `VITE_API_BASE=http://127.0.0.1:8765` before starting Vite. The viewer fetches `/api/catalog`; this does not claim live simulation. Generation controls appear only when the explicitly enabled local server reports that capability.
 
 ## Omen browser acceptance matrix
 
@@ -45,8 +45,34 @@ Impeccable launcher was unavailable in this checkout; context and references wer
 
 Catalog entries are validated before selection; recording URLs are confined to the configured library origin. Aborted requests cannot replace current errors or results. City-map errors have a separate retry. Baseline inspection labels its solid vehicle as baseline, never AFTERLIGHT. The 3D module loads separately from the accessible UI (about 208 KB raw UI / 601 KB raw renderer at this checkpoint). Paused, unchanged views do not redraw the GPU; vehicle pools update on changed recorded frames. These are implementation/build facts, not measured browser-performance claims. Mobile places the city before the full settings panel.
 
-The evidence panel formats scalar outcomes and each civilian lifecycle count separately, rather than dumping queue arrays into a cell. Nested provenance remains safely text-rendered. Recorded queue histories are charted with a shared absolute axis, distinguishing them from the predeclared recovery metric. Invalid/censored pairs retain an explicit warning. Playback UI updates are bounded to 10 Hz; React state updater functions are pure. Source is formatted for review. Smooth render-only pose interpolation remains a subsequent integration task, not a claim in this checkpoint.
+The evidence panel formats scalar outcomes and each civilian lifecycle count separately, rather than dumping queue arrays into a cell. Nested provenance remains safely text-rendered. Recorded queue histories are charted with a shared absolute axis, distinguishing them from the predeclared recovery metric. Invalid/censored pairs retain an explicit warning. Playback UI updates are bounded to 10 Hz; React state updater functions are pure. Source is formatted for review. Smooth render-only pose interpolation now follows adjacent recorded samples on the shared animation clock; signals and metrics remain sampled observations. New/removed vehicles and discontinuities are not fabricated. This implementation still requires the Omen visual and runtime checks.
 
 ### Geometry and decision integrity
 
 City overlays now require `provenance.canonical_map_sha256` to match a SHA-256 digest computed from the actual fetched canonical map bytes. Mismatches preserve evidence but disable the traffic scene. Exported per-controlled-link lane geometry drives symbolic movement arrows; a junction is never represented as universally green. The selected route is a canonical road-center reference line, not an invented lane trajectory. Dispatch inputs, frozen requests and actual priority/release events can be inspected independently of playback. The renderer module has an error boundary, keeping HTML evidence available if 3D code fails.
+
+### Explicit local generation
+
+Start the loopback API with generation enabled, then opt the viewer into that API:
+
+```powershell
+# Repository root, in the configured Python environment:
+python -m api.server --enable-generation --port 8765
+# Separate terminal:
+cd web
+$env:VITE_API_BASE = 'http://127.0.0.1:8765'
+npm run dev -- --port 5173
+```
+
+The panel is health-gated. It submits one real paired job, shows actual queued/running/completed/failed state, and opens a completed result only on request. It is **local generation**, not a live traffic stream. No progress percentage, model-training claim or automatic POST retry is invented. A client-chosen request ID and original settings are saved before POST and retained in session storage. An interrupted response first triggers read-only recovery; an explicit retry reuses that exact ID and settings, so the server can return the same job rather than create a duplicate. Closing the viewer does not cancel a running simulator.
+
+Optional Omen-only reproducible browser smoke (using already installed Playwright and Chrome, with the viewer running):
+
+```powershell
+python web/tests/browser_smoke.py --base-url http://127.0.0.1:5173 --output local-runtime/browser-smoke
+# For a viewer configured with VITE_API_BASE, add --catalog-path /api/catalog.
+```
+
+The script records desktop/mobile screenshots, browser errors, empty/actual recording behavior, catalog error/retry and WebGL context recovery. It does not download a browser or disable sandbox protection. It is not a complete accessibility, traffic-validity or performance benchmark.
+
+Vehicle templates alone are normalized around their longitudinal/lateral footprint center, then scaled per instance to actual SUMO `length_m` and optional `width_m`. Their ground/up geometry is preserved. The city root is never normalized. This makes the authored model's nose agree with the recorded front bumper rather than assuming all authored mesh dimensions equal simulator type dimensions.

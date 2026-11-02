@@ -50,6 +50,8 @@ def validate_replay(replay: dict) -> None:
                 for key in ('x', 'y', 'z', 'angle_deg', 'speed_mps', 'length_m'):
                     if not math.isfinite(v[key]):
                         raise ValueError(f'Nonfinite pose field {key}')
+                if 'width_m' in v and (not math.isfinite(v['width_m']) or v['width_m'] <= 0):
+                    raise ValueError('Invalid vehicle width')
                 if v['length_m'] <= 0 or v['speed_mps'] < 0:
                     raise ValueError('Invalid vehicle dimensions/speed')
         clocks.append(times)

@@ -26,6 +26,38 @@ class JobTests(unittest.TestCase):
             with self.assertRaises(RequestError):
                 parameters(value)
 
+    def test_idempotent_request_is_not_started_twice(self):
+        entered, release = threading.Event(), threading.Event()
+        calls = []
+        def runner(args):
+            calls.append(args)
+            entered.set()
+            release.wait(timeout=3)
+            raise RuntimeError("unit-only terminal failure")
+        request_id = "a" * 32
+        body = {"network": "fixture", "request_id": request_id}
+        with tempfile.TemporaryDirectory() as root:
+            manager = JobManager(Path(root), runner)
+            try:
+                first = manager.submit(body)
+                self.assertTrue(entered.wait(timeout=2))
+                second = manager.submit(body)
+                self.assertEqual(first["id"], second["id"])
+                with self.assertRaises(RequestError):
+                    manager.submit({**body, "seed": 8})
+                release.set()
+                manager.close()
+                self.assertEqual(len(calls), 1)
+                recovered = JobManager(Path(root), lambda args: self.fail("must not rerun persisted request"))
+                try:
+                    self.assertEqual(recovered.get(request_id)["status"], "failed")
+                    self.assertEqual(recovered.submit(body)["id"], request_id)
+                finally:
+                    recovered.close()
+            finally:
+                release.set()
+                manager.close()
+
     def test_one_job_limit_and_genuine_artifact_gate(self):
         entered, release = threading.Event(), threading.Event()
         def runner(args):
@@ -88,6 +120,25 @@ class JobTests(unittest.TestCase):
             self.assertEqual(manager.get(job["id"])["status"], "failed")
             self.assertIn("persistence_error", manager.get(job["id"]))
             self.assertIsNone(manager.replay_path(job["id"]))
+
+    def test_corrupt_persisted_record_cannot_report_success(self):
+        with tempfile.TemporaryDirectory() as root:
+            job_id = "b" * 32
+            folder = Path(root) / job_id
+            folder.mkdir()
+            (folder / "job.json").write_text("[]", encoding="utf-8")
+            manager = JobManager(Path(root))
+            try:
+                self.assertIsNone(manager.get(job_id))
+                record = {"id": job_id, "status": "completed", "parameters": parameters({"network": "fixture"})}
+                (folder / "job.json").write_text(json.dumps(record), encoding="utf-8")
+                recovered = manager.get(job_id)
+                self.assertEqual(recovered["status"], "failed")
+                self.assertIn("recovery_error", recovered)
+                self.assertIsNone(manager.replay_path(job_id))
+                self.assertEqual(json.loads((folder / "job.json").read_text())["status"], "completed")
+            finally:
+                manager.close()
 
     def test_runner_failure_retained_not_fabricated(self):
         def runner(args):

@@ -24,3 +24,7 @@ If hosting is blocked, local code plus a strong truthful demo remains the fallba
 ## Expanded product capabilities
 
 Public static mode may expose the city, pickup/hospital catalog and only prerecorded combinations actually available, with clear unavailable states. It cannot run arbitrary randomized demand by pretending a new seed has been simulated. Local live mode is separate and advertises only implemented validated routes. Both share ghost/world-isolation semantics, error/retry behavior and accessible metrics. Preload the minimal map; lazy-load scenario traces and optional detail rather than shipping every pickup combination upfront. No new paid storage account is assumed.
+
+## Current local adapter distinction
+
+The implemented optional adapter binds loopback only and requires `--enable-generation` to accept one real SUMO pair at a time. Its job state is actual queued/running/completed/failed; completed output is a **recorded simulation**. This checkpoint does not stream synchronized live traffic. The static viewer has no generator. Do not expose the local API through a public tunnel, add hosted functions or claim a live backend without a separate authorized and validated implementation.

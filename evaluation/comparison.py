@@ -6,10 +6,11 @@ from statistics import mean
 from typing import Mapping, Sequence
 from .metrics import finite, objective
 from .splits import assert_disjoint
+from .protocol import digest
 
 
 def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str, int], comparator_leads: Mapping[str, int],
-                           *, civilian_weight: float, expected_split: str = "test") -> dict:
+                           *, civilian_weight: float, expected_split: str = "test", frozen_protocol: Mapping | None = None) -> dict:
     """Compare decisions on real cached five-action outcomes; no oracle selection.
 
     Failure counts include every episode. Conditional finite differences include
@@ -19,6 +20,26 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
     from models.residual import validate_candidate_rows
     episodes = validate_candidate_rows(rows, expected_split)
     assert_disjoint(rows)
+    protocol_sha256 = None
+    if expected_split == "test" and frozen_protocol is None:
+        raise ValueError("held-out comparison requires the frozen protocol, not only row split labels")
+    if frozen_protocol is not None:
+        protocol = frozen_protocol["protocol"]
+        protocol_sha256 = frozen_protocol["sha256"]
+        if protocol_sha256 != digest(protocol) or protocol.get("schema") != "afterlight.protocol.v1":
+            raise ValueError("frozen comparison protocol schema/hash mismatch")
+        assert_disjoint(rows, protocol["group_assignments"])
+        if expected_split == "test":
+            expected_groups = {group for group, split in protocol["group_assignments"].items() if split == "test"}
+            if {row["demand_group_id"] for row in rows} != expected_groups:
+                raise ValueError("held-out report omits or adds declared test demand groups")
+        if civilian_weight != protocol["civilian_weight"]:
+            raise ValueError("comparison weight differs from frozen protocol")
+        for row in rows:
+            if row.get("source_commit") != protocol["source_commit"]:
+                raise ValueError("comparison run source differs from frozen protocol")
+            if row["horizon_s"] != protocol["horizon_s"] or row["drain_end_s"] != protocol["drain_end_s"]:
+                raise ValueError("comparison outcome windows differ from frozen protocol")
     if set(selected_leads) != set(episodes) or set(comparator_leads) != set(episodes):
         raise ValueError("each decision map must include every episode exactly once")
     if any(r["status"] == "infrastructure_error" for r in rows):
@@ -48,7 +69,8 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
     # Nearest-rank empirical p95, explicitly conditional on paired feasibility.
     p95 = civilian_deltas[max(0, (95 * len(civilian_deltas) + 99) // 100 - 1)] if civilian_deltas else None
     return {"schema": "afterlight.decision-comparison.v1", "split": expected_split,
-            "episodes": len(records), "demand_groups": len({r["demand_group_id"] for r in records}),
+            "evaluation_mode": "test_protocol_bound" if expected_split == "test" else "exploratory",
+            "protocol_sha256": protocol_sha256, "episodes": len(records), "demand_groups": len({r["demand_group_id"] for r in records}),
             "selected_failures": sum(r["selected_infeasible"] for r in records),
             "comparator_failures": sum(r["comparator_infeasible"] for r in records),
             "selected_status_counts": dict(Counter(r["selected_status"] for r in records)),
@@ -61,7 +83,7 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
             "conditional_worsened_fraction": mean(d > 0 for d in deltas) if deltas else None,
             "conditional_civilian_harm_p95_s": p95,
             "records": records,
-            "interpretation": "Failures cover all episodes. Finite differences and civilian harm are conditional on BOTH decisions completing validly; not an unconditional policy benefit."}
+            "interpretation": "Protocol binding checks metadata; it is not independent proof of untouched test data. Failures cover all episodes. Finite differences and civilian harm are conditional on BOTH decisions completing validly; not an unconditional policy benefit."}
 
 
 def grouped_bootstrap_interval(records: Sequence[Mapping], *, field: str = "paired_delta_j_s", seed: int = 0,

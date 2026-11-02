@@ -5,13 +5,18 @@ interface Batch {
   capacity: number;
   meshes: THREE.InstancedMesh[];
   geometry: THREE.BufferGeometry[];
+  length: number;
+  width: number;
 }
 /** Original model primitives, baked once with their authored glTF transforms, instanced by type. */
 export class VehicleLayer {
   readonly group = new THREE.Group();
   private batches = new Map<string, Batch>();
   private transform = new THREE.Object3D();
-  constructor(private ghost = false) {}
+  private ghost: boolean;
+  constructor(ghost = false) {
+    this.ghost = ghost;
+  }
   update(
     vehicles: Vehicle[],
     templates: Map<string, THREE.Group>,
@@ -42,6 +47,11 @@ export class VehicleLayer {
         const [x, y, z, angle] = vehiclePose(rows[i]);
         this.transform.position.set(x, y + 0.12, z);
         this.transform.rotation.set(0, angle, 0);
+        this.transform.scale.set(
+          rows[i].width_m ? rows[i].width_m! / batch.width : 1,
+          1,
+          rows[i].length_m / batch.length,
+        );
         this.transform.updateMatrix();
         for (const mesh of batch.meshes)
           mesh.setMatrixAt(i, this.transform.matrix);
@@ -54,11 +64,25 @@ export class VehicleLayer {
     }
   }
   private create(template: THREE.Group, capacity: number): Batch {
-    const batch: Batch = { capacity, meshes: [], geometry: [] };
     template.updateMatrixWorld(true);
+    const bounds = new THREE.Box3().setFromObject(template);
+    const center = bounds.getCenter(new THREE.Vector3());
+    const size = bounds.getSize(new THREE.Vector3());
+    if (size.z <= 0 || size.x <= 0)
+      throw new Error("Vehicle asset has no measurable footprint.");
+    const batch: Batch = {
+      capacity,
+      meshes: [],
+      geometry: [],
+      length: size.z,
+      width: size.x,
+    };
     template.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
-      const geometry = child.geometry.clone().applyMatrix4(child.matrixWorld);
+      const geometry = child.geometry
+        .clone()
+        .applyMatrix4(child.matrixWorld)
+        .translate(-center.x, 0, -center.z);
       const material = this.ghost
         ? new THREE.MeshBasicMaterial({
             color: 0x87d7ff,

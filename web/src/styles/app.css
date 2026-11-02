@@ -1134,3 +1134,84 @@ footer {
   top: 0;
   background: var(--canvas);
 }
+.local-generation {
+  margin-top: 26px;
+  padding-top: 23px;
+  border-top: 1px solid var(--line);
+}
+.local-generation > p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 10px;
+}
+.local-generation fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.generate-button {
+  width: 100%;
+  margin-top: 18px;
+  font-size: 12px;
+  border-color: var(--clearance);
+  color: var(--clearance);
+}
+.generation-status {
+  margin-top: 18px;
+  font-size: 12px;
+}
+.generation-status strong {
+  font-weight: 600;
+  color: var(--clearance);
+}
+.generation-status p {
+  margin-top: 8px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.generation-status small {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.generation-error {
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ambulance);
+  margin-top: 14px;
+}
+.generation-error button {
+  font-size: 12px;
+  margin-top: 10px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 760px) {
+  .local-generation {
+    grid-column: 1/-1;
+    margin: 0;
+  }
+}
+.generation-recovery {
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.generation-recovery button {
+  font-size: 11px;
+  margin-top: 8px;
+  width: 100%;
+}

@@ -7,6 +7,7 @@ export interface Vehicle {
   angle_deg: number;
   speed_mps: number;
   length_m: number;
+  width_m?: number;
 }
 export interface Signal {
   id: string;

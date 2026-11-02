@@ -145,7 +145,9 @@ export function validateReplay(value: unknown): Replay {
             Number.isFinite,
           ) ||
           v.length_m <= 0 ||
-          v.speed_mps < 0
+          v.speed_mps < 0 ||
+          (v.width_m !== undefined &&
+            (!Number.isFinite(v.width_m) || v.width_m <= 0))
         )
           throw new Error(
             `The ${name} world contains an invalid vehicle pose.`,

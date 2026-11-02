@@ -32,9 +32,9 @@ A single depth-limited tree regressor is the initial model family: predict a sca
 
 All priority variants within each evaluated network use the same transition, release and recovery scheduler; ordinary fixed-time control has no special recovery. Otherwise a comparison could mistakenly credit learning for a different post-priority controller. Recovery initially follows a documented debt/queue-aware legal phase schedule with capped service starvation; no claim of guaranteed bounded waits under infeasible demand.
 
-## Planned modules and ownership
+## Modules and ownership
 
-| Planned module | Responsibility | Explicit non-responsibility |
+| Module | Responsibility | Explicit non-responsibility |
 |---|---|---|
 | `sim/` | Network, routes, policy-neutral runner and observations | UI state or fabricated counters |
 | `policies/` | Fixed/actuated, immediate, fixed lead, analytical, learned selectors | Breaking legal phase transitions |
@@ -42,9 +42,10 @@ All priority variants within each evaluated network use the same transition, rel
 | `evaluation/` | Splits, paired metrics, uncertainty, manifests | Choosing test seeds after seeing winners |
 | `export/` | Canonical replay and provenance | Correcting bad experiment results cosmetically |
 | `web/` | Replay, accessible charts, controls, provenance | Claiming recorded traces are live |
-| `assets/source/` | Original procedural Blender source | Unlicensed downloaded models |
+| `api/` | Explicit loopback local generation and recordings | Public hosted backend or fake live progress |
+| `assets/src/` and original `.blend` scenes | Original procedural Blender source | Unlicensed downloaded models |
 
-These are proposed paths, not existing implementation.
+These paths now contain source implementation. Their presence is not a claim that SUMO, model fitting or product acceptance has passed; see the [actual validation log](validation/OMEN_LOG.md). A tree-training entry point is not a trained artifact.
 
 ## Reproducibility manifest
 

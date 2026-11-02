@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
 );
+import { LocalGeneration } from "./LocalGeneration.tsx";
 import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
 import { DecisionInspector } from "./DecisionInspector.tsx";
@@ -107,6 +108,8 @@ export default function App() {
     [follow, setFollow] = useState(false),
     [reset, setReset] = useState(0),
     [motionOff, setMotionOff] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const generatedReplays = useRef(new Map<string, Replay>());
   const playbackClock = useRef(0);
   const seekTime = (t: number) => {
     playbackClock.current = t;
@@ -167,7 +170,10 @@ export default function App() {
     const c = new AbortController();
     setLoading(true);
     const url = recordingUrl(item.url, catalogBase);
-    json(url, c.signal)
+    (generatedReplays.current.has(selection)
+      ? Promise.resolve(generatedReplays.current.get(selection))
+      : json(url, c.signal)
+    )
       .then(validateReplay)
       .then((r) => {
         if (!c.signal.aborted) {
@@ -281,9 +287,11 @@ export default function App() {
               <span className={replay ? "status-dot recorded" : "status-dot"} />
               {replay
                 ? "Recorded simulation"
-                : apiBase
-                  ? "Local experiment library"
-                  : "City exploration"}
+                : generating
+                  ? "Local generation in progress"
+                  : apiBase
+                    ? "Local experiment library"
+                    : "City exploration"}
             </div>
             {cityError && (
               <div className="map-error" role="alert">
@@ -408,6 +416,41 @@ export default function App() {
                 </details>
               )}
             </div>
+            {apiBase && (
+              <LocalGeneration
+                apiBase={apiBase}
+                pickup={pickup}
+                hospital={hospital}
+                mapReady={Boolean(city)}
+                onBusy={setGenerating}
+                onStarted={() => {
+                  setSelection("");
+                  setReplay(null);
+                  setPlaying(false);
+                  seekTime(0);
+                }}
+                onOpen={(r, url) => {
+                  generatedReplays.current.set(r.scenario.id, r);
+                  const entry: CatalogEntry = {
+                    id: r.scenario.id,
+                    title: `Local ${r.worlds.afterlight.policy} run`,
+                    url,
+                    seed: r.scenario.seed,
+                    pickup_id: r.scenario.pickup_id,
+                    hospital_id: r.scenario.hospital_id,
+                    policy: r.worlds.afterlight.policy,
+                    duration_s: r.duration_s,
+                  };
+                  setCatalog((rows) => [
+                    ...rows.filter((row) => row.id !== entry.id),
+                    entry,
+                  ]);
+                  setSelection(entry.id);
+                  setPickup(entry.pickup_id);
+                  setHospital(entry.hospital_id);
+                }}
+              />
+            )}
             <div className="view-options">
               <h2>View settings</h2>
               <label className="check-label">

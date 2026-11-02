@@ -8,6 +8,7 @@ colors:
   ambulance: '#FFB85C'
   clearance: '#78D9CB'
   ghost: '#87D7FF'
+  trafficRed: '#ED8B82'
 typography:
   sans:
     fontFamily: 'system-ui, sans-serif'
@@ -30,7 +31,7 @@ components:
 
 An **architectural miniature at twilight**, used as a scientific instrument. Warm building windows and a luminous ambulance make a compact 20–25-junction city feel distinctive and legible; navy roads and restrained geometry keep queues readable. The memorable signature is **two synchronized futures followed by the aftermath reveal**. Not a neon cyberpunk dashboard, not an unrelated cinematic city, not an ornamental AI landing page.
 
-This is a product surface with one expressive 3D canvas. Evidence controls must remain familiar and quiet. The physical miniature supplies drama; the data supplies credibility. The planned token owner is `web/src/styles/tokens.css`; it does not yet exist. When implementation begins, map these semantic values there and update both in the same change rather than keeping competing token systems.
+This is a product surface with one expressive 3D canvas. Evidence controls must remain familiar and quiet. The physical miniature supplies drama; the data supplies credibility. The token owner is `web/src/styles/tokens.css`. Keep semantic values aligned with this document rather than creating competing palette systems. `trafficRed` is reserved for actual controlled-link states, never a universal whole-junction status.
 
 ## Colors
 
@@ -69,7 +70,7 @@ Do use original Blender-authored modular assets, coherent lighting, instanced ve
 
 Do not use previous car-film assets, unknown-license music, stock emergency footage or decorative fake metrics. Do not spend the deadline on photoreal façades or offline Cycles rendering. A polished demo video captured from the real browser experience remains a core deliverable.
 
-Validation status: design seed only; no rendered UI, contrast audit or external design linter has yet passed. An offline attempt to run the one-off design linter was blocked because its package was not cached (`ENOTCACHED`); no dependency was installed and no lint success is claimed.
+Validation status: the UI is now implemented in source; product browser acceptance, contrast audit and performance measurements remain pending on Omen. An offline attempt to run the one-off design linter was blocked because its package was not cached (`ENOTCACHED`); no dependency was installed and no lint success is claimed.
 
 ## Post-review city and ghost revision
 

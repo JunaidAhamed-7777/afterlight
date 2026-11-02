@@ -26,7 +26,8 @@ def audit_lifecycle(demand: dict, rows: list[dict], tripinfo_path: Path, metrics
         if row['arrival_s'] is not None: ledger.completed[row['id']]=row['arrival_s']
     prior_departures,prior_arrivals=dict(ledger.inserted),dict(ledger.completed)
     reasons=reconcile_tripinfo(ledger,tripinfo_path)
-    if reasons or ledger.inserted!=prior_departures or ledger.completed!=prior_arrivals:
+    undeclared=set(reasons)-set(metrics.get('validity_reasons',[]))
+    if undeclared or ledger.inserted!=prior_departures or ledger.completed!=prior_arrivals:
         raise ValueError(f'Lifecycle timestamps differ from raw SUMO tripinfo: {reasons}')
     if ledger.counts()!=metrics['accounting']:
         raise ValueError('Published counts differ from raw all-demand lifecycle')

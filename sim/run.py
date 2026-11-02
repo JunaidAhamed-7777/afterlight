@@ -127,7 +127,8 @@ def pose_frame(conn, network: dict, now: float) -> dict:
         vehicles.append({'id': vid, 'type': conn.vehicle.getTypeID(vid), 'x': round(x, 4), 'y': round(y, 4),
                          'z': 0.0, 'angle_deg': round(conn.vehicle.getAngle(vid), 4),
                          'speed_mps': round(conn.vehicle.getSpeed(vid), 4),
-                         'length_m': conn.vehicle.getLength(vid)})
+                         'length_m': conn.vehicle.getLength(vid),
+                         'width_m': conn.vehicle.getWidth(vid)})
     signals = [{'id': j, 'state': conn.trafficlight.getRedYellowGreenState(j), 'links': [{k: link[k] for k in ('index','from_edge','to_edge','from_lane','to_lane')} for link in s['links']]}
                for j, s in network['signals'].items()]
     return {'t': now, 'vehicles': vehicles, 'signals': signals,
@@ -310,6 +311,8 @@ def run_pair(args) -> dict:
         output.mkdir(parents=True, exist_ok=False)
     except FileExistsError as exc:
         raise OutputPathError('Output path already exists; choose a new path to preserve prior evidence') from exc
+    if isinstance(args.seed,bool) or not isinstance(args.seed,int) or not 0 <= args.seed <= 2**31-1:
+        raise ValueError('Seed must be an integer from 0 to 2147483647')
     source = source_snapshot()
     network_dir = output/'network'
     network_manifest = build_network(args.network, network_dir)
@@ -331,7 +334,10 @@ def run_pair(args) -> dict:
     episode_id = episode_identity(network_kind=args.network,regime=args.regime,seed=args.seed,
         network_sha256=network_manifest['network_sha256'],demand_sha256=hashes['demand_sha256'],
         dispatch_s=args.dispatch,horizon_s=args.horizon,drain_s=args.drain,step_s=args.step)
-    scenario_id = run_identity(episode_id,args.policy,worlds['afterlight']['lead_s'])
+    # Scientific episode/action identity is stable across code revisions; the
+    # public recording ID also names its source revision so a corrected capture
+    # never overwrites older evidence with the same experiment parameters.
+    scenario_id = run_identity(episode_id,args.policy,worlds['afterlight']['lead_s']) + '-' + source['source_code_sha256'][:12]
     provenance = {**source, 'network_sha256': network_manifest['network_sha256'],
                   'canonical_map_sha256': network_manifest['canonical_map_sha256'],
                   'network_file_sha256': network_manifest['network_file_sha256'],
