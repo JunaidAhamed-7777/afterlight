@@ -44,3 +44,11 @@ Run `python map/generate_city.py` and `python map/validate_city.py` for the stan
 Nine GLBs total **1,268,584 bytes (1.21 MiB)**, with no texture files. The hero ambulance has **2,378 triangles**; car **412**, truck **368**, bike **196**; each building module **24**. The final city adds inexpensive park trees and paths; the final city is **14,552 triangles / 15 material batches**. See `asset_manifest.json` for final geometry and hashes. All nine GLBs pass independent Khronos validation (zero errors/warnings); browser HTTP loading and GLTFLoader parsing pass. Cloud Chrome reports WebGL disabled, so actual browser drawing/frame-time/ghost compositing remains unverified; no FPS claim. Native Blender still previews were inspected.
 
 City geometry has a nonzero GLB root translation inherited from static batching. Preserve the node's transform when importing; do not reset it to zero. The manifest remains canonical XY/Z-up meters.
+
+## Supplemental asset overview
+
+![Actual exported Afterlight asset kit — presentation panels not to scale](previews/asset_overview.png)
+
+This supplemental Blender contact sheet displays the actual exported city, ambulance, civilian fleet, building palette and landmark geometry. Panels are deliberately **not to scale**; the cyan ghost panel is an opaque presentation treatment, not proof of browser transparency or simulation. Regenerate it with `src/render_asset_overview.py` in Blender, using the same `__file__` convention above. It imports existing GLBs and does not modify their files.
+
+`DELIVERY_FILES.json` is the immutable snapshot manifest for the original 35-file ZIP, not an evergreen checksum list for later repository revisions. This overview image/script and this README addition were added afterward; the original manifest and ZIP remain unchanged.
