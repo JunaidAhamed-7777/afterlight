@@ -71,15 +71,18 @@ class Scheduler:
             return "".join("y" if c in "gG" else "r" for c in self.greens[self.phase])
         return self.greens[self.phase]
 
-    def plan(self, request_at_s: float, phase: int) -> None:
+    def plan(self, request_at_s: float, phase: int, *, planned_at_s: float | None = None) -> None:
         if self.request is not None:
             raise ValueError("Only one frozen request per junction per run is supported")
         if not math.isfinite(request_at_s) or request_at_s < self.last_time:
             raise ValueError("Request must be finite and not in the past")
         if not 0 <= phase < len(self.greens):
             raise ValueError("Unknown priority phase")
+        planned_at_s = self.last_time if planned_at_s is None else planned_at_s
+        if not math.isfinite(planned_at_s) or not self.last_time <= planned_at_s <= request_at_s:
+            raise ValueError("Plan timestamp must be between current time and request")
         self.request = Request(request_at_s, phase, self.junction)
-        self.events.append({"t": self.last_time, "kind": "request_planned", "junction": self.junction,
+        self.events.append({"t": planned_at_s, "kind": "request_planned", "junction": self.junction,
                             "request_at_s": request_at_s, "phase": phase})
 
     def _event(self, now: float, kind: str, **extra) -> None:

@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from statistics import median
 from typing import Mapping, Sequence
-from .metrics import finite
+from .metrics import finite, objective
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -19,7 +19,7 @@ def digest(value: object) -> str:
 def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
     required = {"schema", "source_commit", "group_assignments", "feature_schema", "candidate_leads_s",
                 "civilian_weight", "horizon_s", "drain_end_s", "recovery_window_s", "tie_break",
-                "invalid_rules", "heldout_regimes", "model_specification"}
+                "invalid_rules", "heldout_regimes", "model_specification", "analytical_estimator"}
     if missing := required - protocol.keys():
         raise ValueError(f"missing protocol fields: {sorted(missing)}")
     if protocol["schema"] != "afterlight.protocol.v1":
@@ -64,16 +64,47 @@ def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
     return envelope
 
 
-def pilot_summary(rows: Sequence[Mapping]) -> dict:
+def pilot_summary(rows: Sequence[Mapping], *, civilian_weight: float = 1.0, useful_action_margin_s: float = 1.0) -> dict:
     if not rows or any(row.get("split") != "pilot" for row in rows):
         raise ValueError("pilot summary requires nonempty exclusively pilot rows")
+    finite(civilian_weight, "civilian_weight")
+    finite(useful_action_margin_s, "useful_action_margin_s")
     runtimes = [finite(r["runtime_s"], "runtime_s") for r in rows]
     schedules: dict[str, set[str]] = {}
     for row in rows:
         if row.get("lead_s") is not None:
             if "request_plan" not in row:
                 raise ValueError("lead candidate missing actual frozen request plan")
-            schedules.setdefault(row["episode_id"], set()).add(digest(row["request_plan"]))
+            if row["request_plan"] is not None:
+                schedules.setdefault(row["episode_id"], set()).add(digest(row["request_plan"]))
+    candidate_rows: dict[str, list[Mapping]] = {}
+    for row in rows:
+        if row.get("lead_s") is not None:
+            candidate_rows.setdefault(row["episode_id"], []).append(row)
+    outcome_diversity = {}
+    useful_winners = set()
+    for eid, candidates in candidate_rows.items():
+        if sorted(row["lead_s"] for row in candidates) != [0, 5, 10, 20, 30]:
+            outcome_diversity[eid] = {"status": "incomplete_candidate_grid"}
+            continue
+        if any("accounting" not in row for row in candidates):
+            outcome_diversity[eid] = {"status": "outcomes_unavailable"}
+            continue
+        if any(row["status"] == "infrastructure_error" for row in candidates):
+            outcome_diversity[eid] = {"status": "infrastructure_failure"}
+            continue
+        ranked = sorted((cost, row["lead_s"]) for row in candidates if (cost := objective(row, civilian_weight)) is not None)
+        if not ranked:
+            outcome_diversity[eid] = {"status": "all_candidates_infeasible"}
+            continue
+        margin = ranked[1][0] - ranked[0][0] if len(ranked) > 1 else None
+        distinct_schedule_count = len(schedules.get(eid, set()))
+        useful = len(ranked) > 1 and margin > useful_action_margin_s and distinct_schedule_count > 1
+        if useful:
+            useful_winners.add(ranked[0][1])
+        outcome_diversity[eid] = {"status": "observed", "feasible_candidates": len(ranked),
+            "oracle_lead_s": ranked[0][1], "runner_up_margin_j_s": margin,
+            "useful_margin_observed": useful}
     return {
         "rollouts": len(rows), "episodes": len({r["episode_id"] for r in rows}),
         "demand_groups": len({r["demand_group_id"] for r in rows}),
@@ -81,5 +112,9 @@ def pilot_summary(rows: Sequence[Mapping]) -> dict:
         "runtime_max_s": max(runtimes),
         "effective_schedules_by_episode": {k: len(v) for k, v in sorted(schedules.items())},
         "status_counts": {status: sum(r["status"] == status for r in rows) for status in sorted({r["status"] for r in rows})},
-        "interpretation": "Schedule diversity is not evidence that multiple actions are useful; inspect real training outcomes before freezing budget.",
+        "outcome_diversity_by_episode": outcome_diversity,
+        "distinct_useful_oracle_leads": sorted(useful_winners),
+        "multiple_useful_actions_observed": len(useful_winners) >= 2,
+        "civilian_weight": civilian_weight, "useful_action_margin_s": useful_action_margin_s,
+        "interpretation": "Exploratory pilot oracle diagnostics only, not held-out selector performance. Different request signatures alone do not establish useful action diversity.",
     }

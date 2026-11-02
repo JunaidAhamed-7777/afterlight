@@ -4,7 +4,7 @@
 
 A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
-> **Status: verified asset prototype; simulation and product implementation pending.** Original city and vehicle assets have been authored through a verified cloud Blender 4.3.2 MCP connection and checked. No completed simulator, trained model, measured traffic improvement or deployment is claimed. Browser WebGL rendering and frame times remain untested.
+> **Status: product implementation in progress; acceptance testing on Omen.** Original city assets are verified. The React/Three.js viewer, legal scheduling/network conversion, evaluation guards and local recordings API are now implemented in source. Real SUMO runs and product acceptance are being validated separately; no trained model, measured traffic improvement or deployment is claimed. The recording catalog is intentionally empty until genuine paired runs are available.
 
 ## Why Afterlight stands out
 
@@ -38,7 +38,29 @@ Emergency preemption itself is established work. Our intended distinction is the
 7. [Research sources](docs/SOURCES.md) and [three-pass review record](docs/REVIEW_LOG.md)
 8. [Execution roadmap, written after pass 3](docs/ROADMAP.md)
 
-Three documentation passes and the original asset prototype are complete; simulation, viewer implementation and experimental validation are still pending. This README must later gain verified installation/run commands, actual screenshots, results, exact team attribution, licensing and AI-assistance disclosure before submission. Do not substitute planned commands for tested instructions.
+Three documentation passes, the final implementation review and original asset prototype are complete. Source implementation is underway; [checkpoint status](docs/IMPLEMENTATION_STATUS.md) separates implemented code from actual local acceptance. Submission still requires verified setup, actual screenshots/results, exact team attribution, licensing and AI-assistance review.
+
+## Development entry points
+
+The public repository is the source of truth. Source commands below are **pending
+Omen acceptance** unless an exact execution result is recorded in the checkpoint log.
+
+```sh
+# Original-city viewer; no simulation or fictional results are generated here.
+cd web
+npm ci
+npm run dev
+```
+
+The viewer loads the original Blender city and canonical pickup/hospital map.
+When genuine recordings are published, it enables synchronized paired playback.
+An empty catalog is intentional, not a synthetic demonstration.
+
+For Python 3.12 setup, unit checks and local API instructions see
+[implementation status](docs/IMPLEMENTATION_STATUS.md),
+[replay contract](docs/REPLAY_SCHEMA.md) and [web acceptance matrix](web/README.md).
+All tests, traffic experiments and browser/performance checks run on the owner's
+Omen computer; cloud compilation is development evidence only.
 
 ## Boundaries
 
@@ -46,7 +68,7 @@ Simulation research, not a real-world traffic control system. No safety certific
 
 ## AI-assistance disclosure
 
-ChatGPT assisted with research, architectural planning, documentation, critical review and procedural asset creation through Blender 4.3.2 and the existing Blender MCP bridge. Original geometry, source scenes, generation scripts and export checks form the asset prototype; the traffic simulation, learned model and product viewer are not implemented. Human review remains responsible for factual accuracy, licensing and submission compliance.
+ChatGPT assisted with research, architectural planning, documentation, critical review, procedural asset creation through Blender 4.3.2 and the existing Blender MCP bridge, and implementation of Python/TypeScript source and tests. Original geometry, source scenes, generation scripts and export checks are included. A trained model or traffic benefit is not claimed merely because model-training code exists. Human review remains responsible for factual accuracy, licensing and submission compliance.
 
 ## Expanded city and fair comparison
 

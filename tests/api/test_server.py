@@ -7,7 +7,7 @@ from http.server import ThreadingHTTPServer
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 from pathlib import Path
-from api.server import ArtifactError, catalog, replay, make_handler
+from api.server import ArtifactError, catalog, replay, make_handler, local_origin
 
 
 class ArtifactTests(unittest.TestCase):
@@ -18,6 +18,11 @@ class ArtifactTests(unittest.TestCase):
 
     def write(self, name, data):
         (self.root / name).write_text(json.dumps(data), encoding="utf-8")
+
+    def test_cors_only_accepts_loopback_viewer_origins(self):
+        self.assertEqual(local_origin("http://localhost:5173"), "http://localhost:5173")
+        for origin in ("https://example.com", "http://localhost.evil.test", "null", "http://user@localhost:5173", "http://localhost:5173/path"):
+            self.assertIsNone(local_origin(origin))
 
     def test_empty_catalog_has_no_invented_runs(self):
         self.assertEqual(catalog(self.root)["runs"], [])
@@ -72,6 +77,12 @@ class HTTPTests(unittest.TestCase):
             self.assertEqual(response.headers["Cache-Control"], "no-store")
         with urlopen(self.base + "/api/catalog", timeout=3) as response:
             self.assertEqual(json.load(response)["runs"], [])
+
+    def test_local_cors_is_exact_and_external_is_absent(self):
+        for origin, allowed in (("http://127.0.0.1:5173", True), ("https://example.com", False)):
+            request = Request(self.base + "/api/health", headers={"Origin": origin})
+            with urlopen(request, timeout=3) as response:
+                self.assertEqual(response.headers.get("Access-Control-Allow-Origin"), origin if allowed else None)
 
     def test_generation_is_honestly_unavailable(self):
         with self.assertRaises(HTTPError) as caught:

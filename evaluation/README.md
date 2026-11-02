@@ -18,3 +18,23 @@ Only valid fully drained completed outcomes receive finite `J = ambulance_journe
 Freeze creates a new content-addressed protocol file exclusively; it cannot overwrite an existing file. The protocol records source, whole-group assignments, held-out regimes, features, five leads, weight, horizon/drain, recovery window, tie-break, invalid rules and model specification. Freeze is not evidence that the experiment was executed or that the held-out data stayed untouched. Preserve the frozen artifact and raw outcomes in a reproducible run record.
 
 `paired_decision_report` compares explicit episode→lead maps against all five real cached outcomes without fitting or oracle action selection. It retains every episode and headlines selected/comparator failures before conditional finite deltas, changed-action rate, empirical civilian-harm p95 and hindsight regret (diagnostic only). `grouped_bootstrap_interval` resamples whole demand-realization groups, keeping dispatch variants together; fewer than ten supported groups defaults to no confidence interval. Neither conditional statistics nor a narrow interval alone establish ML promotion.
+
+## Deliberate pilot execution (Omen only)
+
+First pass the three-junction correctness tests and inspect one real paired run. Then prepare a pilot plan without starting SUMO:
+
+```powershell
+.\.venv\Scripts\python.exe -m evaluation.pilot pilot-plan.json --network fixture
+```
+
+The default predeclares 12 whole episodes (three seeds each across sparse, moderate, asymmetric and heavy regimes), seven worlds per episode (ordinary, immediate, five leads), one shared network and one saved demand realization per episode. A later city pilot must use `--network city`; fixture runtime is not a city-runtime estimate. These are exploratory pilot groups only, never train/validation/test data.
+
+Execute only after checking the plan and local correctness gates:
+
+```powershell
+.\.venv\Scripts\python.exe -m evaluation.pilot pilot-plan.json --execute --output local-runtime/pilot-fixture-001
+```
+
+The output directory must not already exist. Source commit, dependencies, hardware/runtime, expected/recorded/unattempted worlds, demand hashes, scalar rows and raw per-world SUMO/lifecycle files are retained. No automatic retry: the first infrastructure failure is retained and stops the pilot; after diagnosis, repeat the unchanged plan in a **new** directory and preserve the failed attempt. Traffic invalidity/censoring is an outcome, not infrastructure, so those worlds remain in the full pilot.
+
+The summary reports actual feasible oracle lead winners and runner-up objective margins (default exploratory threshold 1 second-equivalent), in addition to request-schedule signatures. Multiple useful observed winners are a pilot diagnostic, not evidence of learned selector performance or test-set improvement. A failed/incomplete candidate grid cannot establish diversity. Inspect raw outcomes, failure rates and full output wall time before freezing the main dataset budget.

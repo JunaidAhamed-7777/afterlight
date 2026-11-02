@@ -77,7 +77,8 @@ class ProtocolTests(unittest.TestCase):
                 {"g1": "train", "g2": "validation", "g3": "test"}, "feature_schema": [{"name": "queue_sum_veh", "unit": "vehicles", "source": "lagged lane observations", "sensor_lag_s": 1}],
                 "candidate_leads_s": [0, 5, 10, 20, 30], "civilian_weight": 1, "horizon_s": 100,
                 "drain_end_s": 200, "recovery_window_s": [50, 200], "tie_break": "smallest_lead",
-                "invalid_rules": ["collision"], "heldout_regimes": [], "model_specification": {"max_depth": 3}}
+                "invalid_rules": ["collision"], "heldout_regimes": [], "model_specification": {"max_depth": 3},
+                "analytical_estimator": {"version": "test-fixture", "config": {}}}
 
     def test_freeze_cannot_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:

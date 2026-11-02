@@ -145,7 +145,9 @@ def build_network(kind: str, output: Path) -> dict:
     (output/'netconvert.stderr.txt').write_text(completed.stderr, encoding='utf-8')
     if completed.returncode:
         raise RuntimeError(f'netconvert failed ({completed.returncode}): {completed.stderr}')
-    metadata = {'schema': 'afterlight.network.v1', 'kind': kind, 'network_sha256': sha256(output/'network.net.xml'),
+    metadata = {'schema': 'afterlight.network.v1', 'kind': kind, 'network_sha256': hashlib.sha256(ET.canonicalize(from_file=output/'network.net.xml', strip_text=True, with_comments=False).encode()).hexdigest(),
+                'network_file_sha256': sha256(output/'network.net.xml'),
+                'network_hash_definition': 'canonical XML excluding generator timestamp/path comments and insignificant whitespace',
                 'graph_sha256': hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest(),
                 'command': command, 'netconvert_version': subprocess.check_output([binary('netconvert'), '--version'], text=True).splitlines()[0],
                 'coordinate_normalization': False, 'validation_status': 'generated_not_acceptance_tested'}
@@ -160,6 +162,11 @@ def read_network(path: Path) -> dict:
     if location is not None and location.get('netOffset', '0,0') not in ('0.00,0.00', '0,0'):
         raise ValueError('SUMO changed the canonical coordinate origin')
     edges = {}
+    lanes = {}
+    for lane in root.findall('./edge/lane'):
+        lanes[lane.attrib['id']] = {'shape': [[float(v) for v in point.split(',')] for point in lane.attrib['shape'].split()],
+                                    'length_m': float(lane.attrib['length']), 'speed_mps': float(lane.attrib['speed'])}
+    junction_positions = {j.attrib['id']: [float(j.attrib['x']), float(j.attrib['y']), 0.0] for j in root.findall('junction')}
     for edge in root.findall('edge'):
         if edge.get('function') == 'internal':
             continue
@@ -174,14 +181,19 @@ def read_network(path: Path) -> dict:
                       if any(c in 'gG' for c in p.attrib['state']) and all(c in 'rRgG' for c in p.attrib['state'])))
         if not greens:
             raise ValueError(f'No usable green states at {tl.attrib["id"]}')
-        signals[tl.attrib['id']] = {'greens': greens, 'links': []}
+        signals[tl.attrib['id']] = {'greens': greens, 'links': [],
+            'position': junction_positions.get(tl.attrib['id'])}
     for c in root.findall('connection'):
         if c.get('tl') in signals:
             signals[c.attrib['tl']]['links'].append({'index': int(c.attrib['linkIndex']),
                 'from_edge': c.attrib['from'], 'to_edge': c.attrib['to'],
                 'from_lane': f'{c.attrib["from"]}_{c.attrib["fromLane"]}',
-                'to_lane': f'{c.attrib["to"]}_{c.attrib["toLane"]}'})
-    return {'edges': edges, 'signals': signals}
+                'to_lane': f'{c.attrib["to"]}_{c.attrib["toLane"]}',
+                'incoming_shape': lanes[f'{c.attrib["from"]}_{c.attrib["fromLane"]}']['shape'],
+                'outgoing_shape': lanes[f'{c.attrib["to"]}_{c.attrib["toLane"]}']['shape'],
+                'stop_line': lanes[f'{c.attrib["from"]}_{c.attrib["fromLane"]}']['shape'][-1],
+                'turn': c.get('dir'), 'via_lane': c.get('via')})
+    return {'edges': edges, 'signals': signals, 'lanes': lanes}
 
 
 def main():

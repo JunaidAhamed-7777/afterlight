@@ -66,6 +66,23 @@ def replay(replay_dir: Path, run_id: str) -> dict:
     return data
 
 
+def local_origin(origin: str | None) -> str | None:
+    """Allow the local dev viewer only; never wildcard or credentialed CORS."""
+    if not origin:
+        return None
+    try:
+        parsed = urlsplit(origin)
+        hostname = parsed.hostname
+        parsed.port  # Reject malformed port syntax.
+    except ValueError:
+        return None
+    if (parsed.scheme == "http" and hostname in {"127.0.0.1", "localhost", "::1"}
+            and not parsed.username and not parsed.password and not parsed.path
+            and not parsed.query and not parsed.fragment):
+        return origin
+    return None
+
+
 def make_handler(replay_dir: Path):
     class Handler(BaseHTTPRequestHandler):
         server_version = "AfterlightLocal/0.1"
@@ -77,6 +94,10 @@ def make_handler(replay_dir: Path):
             self.send_header("Content-Length", str(len(body)))
             self.send_header("Cache-Control", "no-store")
             self.send_header("X-Content-Type-Options", "nosniff")
+            origin = local_origin(self.headers.get("Origin"))
+            if origin:
+                self.send_header("Access-Control-Allow-Origin", origin)
+                self.send_header("Vary", "Origin")
             self.end_headers()
             self.wfile.write(body)
 

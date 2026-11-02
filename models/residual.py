@@ -94,6 +94,9 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
         raise ValueError("training feature schema differs from frozen protocol")
     if civilian_weight != protocol["civilian_weight"]:
         raise ValueError("training objective weight differs from frozen protocol")
+    analytical_config_sha256 = digest(protocol["analytical_estimator"])
+    if any(row.get("analytical_config_sha256") != analytical_config_sha256 for row in train_rows):
+        raise ValueError("candidate analytical estimator differs from frozen protocol")
     specification = protocol["model_specification"]
     if specification.get("max_depth") != max_depth or specification.get("min_samples_leaf") != min_samples_leaf:
         raise ValueError("training hyperparameters differ from frozen protocol")
@@ -115,6 +118,7 @@ def fit_residual(train_rows: Sequence[Mapping], *, feature_names: Sequence[str],
     tree = estimator.tree_
     model = {"schema": "afterlight.residual-tree.v1", "protocol_sha256": protocol_sha256,
              "feature_names": list(feature_names), "civilian_weight": civilian_weight,
+             "analytical_config_sha256": analytical_config_sha256,
              "training_rows": len(train_rows), "finite_training_labels": len(labels),
              "excluded_infeasible_labels": len(train_rows) - len(labels),
              "training_groups": sorted({row["demand_group_id"] for row in train_rows}),

@@ -42,3 +42,7 @@ Record source revision/version when installing software, and capture the contest
 - [glTF Validator](https://github.com/KhronosGroup/glTF-Validator) — export validation, complemented by browser checks.
 
 Registration totals are not submitted-team counts. No competition-size or easy-win claim is made here. The public repository has no license grant implied by visibility; choose and add a license deliberately before asserting open-source licensing.
+
+## Implementation dependencies
+
+The application uses React, React DOM, Three.js, Vite and TypeScript; exact versions are in `web/package.json` and `web/package-lock.json`. These are third-party libraries, not original project code. Original Blender geometry and canonical map remain project-authored. Python simulation uses official Eclipse SUMO, TraCI and sumolib 1.28.0, pinned together in `requirements-sim.txt`: https://pypi.org/project/eclipse-sumo/1.28.0/ . No API keys or paid hosted simulation are required. Optional scikit-learn fitting is not evidence of a trained model or measured learning benefit. Preserve dependency licenses in distributed builds; project asset/source licensing remains an owner decision.
