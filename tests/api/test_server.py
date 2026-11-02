@@ -2,8 +2,12 @@
 import json
 import tempfile
 import unittest
+import threading
+from http.server import ThreadingHTTPServer
+from urllib.request import urlopen, Request
+from urllib.error import HTTPError
 from pathlib import Path
-from api.server import ArtifactError, catalog, replay
+from api.server import ArtifactError, catalog, replay, make_handler
 
 
 class ArtifactTests(unittest.TestCase):
@@ -36,10 +40,44 @@ class ArtifactTests(unittest.TestCase):
         with self.assertRaises(ArtifactError):
             replay(self.root, "run-1")
 
+    def test_nonfinite_json_rejected(self):
+        (self.root / "catalog.json").write_text('{"schema":"afterlight.catalog.v1","runs":[],"bad":NaN}', encoding="utf-8")
+        with self.assertRaises(ArtifactError):
+            catalog(self.root)
+
     def test_invalid_catalog_rejected(self):
         self.write("catalog.json", {"runs": []})
         with self.assertRaises(ArtifactError):
             catalog(self.root)
+
+
+class HTTPTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(Path(self.temp.name)))
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start()
+        self.base = f"http://127.0.0.1:{self.server.server_port}"
+
+    def tearDown(self):
+        self.server.shutdown()
+        self.server.server_close()
+        self.thread.join(timeout=2)
+        self.temp.cleanup()
+
+    def test_health_and_empty_catalog(self):
+        with urlopen(self.base + "/api/health", timeout=3) as response:
+            data = json.load(response)
+            self.assertFalse(data["generation_available"])
+            self.assertEqual(response.headers["Cache-Control"], "no-store")
+        with urlopen(self.base + "/api/catalog", timeout=3) as response:
+            self.assertEqual(json.load(response)["runs"], [])
+
+    def test_generation_is_honestly_unavailable(self):
+        with self.assertRaises(HTTPError) as caught:
+            urlopen(Request(self.base + "/api/runs", data=b"{}", method="POST"), timeout=3)
+        self.assertEqual(caught.exception.code, 501)
+        self.assertFalse(json.load(caught.exception)["generation_available"])
 
 
 if __name__ == "__main__":

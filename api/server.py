@@ -20,13 +20,17 @@ class ArtifactError(Exception):
     """An absent or invalid artifact, not a traffic outcome."""
 
 
+def reject_nonfinite(value: str):
+    raise ValueError(f"Non-finite JSON: {value}")
+
+
 def read_json(path: Path) -> dict:
     if not path.is_file():
         raise ArtifactError("Artifact is not available")
     if path.stat().st_size > MAX_REPLAY_BYTES:
         raise ArtifactError("Artifact exceeds the local API size limit")
     try:
-        value = json.loads(path.read_text(encoding="utf-8"))
+        value = json.loads(path.read_text(encoding="utf-8"), parse_constant=reject_nonfinite)
     except (OSError, UnicodeError, ValueError) as exc:
         raise ArtifactError("Artifact is not readable JSON") from exc
     if not isinstance(value, dict):

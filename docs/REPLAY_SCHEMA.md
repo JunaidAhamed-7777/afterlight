@@ -5,7 +5,8 @@ consumer. Empty catalogs are valid; fabricated simulation results are not.
 
 Top level:
 
-- `scenario`: `id`, `seed`, `pickup_id`, `hospital_id`, `dispatch_s`.
+- `scenario`: `id`, `seed`, `pickup_id`, `hospital_id`, `dispatch_s`, `network_kind` (`fixture` or `city`).
+  Never overlay fixture trajectories on the full-city asset.
 - `coordinates`: source `canonical XY meters`, position reference `front_bumper`,
   render transform `[x,z,-y]`.
 - `provenance`: `source_commit`, `network_sha256`, `demand_sha256`, `sumo_version`.

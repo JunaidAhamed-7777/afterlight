@@ -33,6 +33,29 @@ def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
         raise ValueError("invalid common horizon/drain/recovery window")
     if not protocol["group_assignments"] or set(protocol["group_assignments"].values()) != {"train", "validation", "test"}:
         raise ValueError("protocol needs nonempty disjoint train, validation and test groups")
+    if protocol["tie_break"] != "smallest_lead":
+        raise ValueError("unsupported tie-break")
+    if not isinstance(protocol["source_commit"], str) or not protocol["source_commit"]:
+        raise ValueError("source commit required")
+    if not isinstance(protocol["invalid_rules"], list) or not protocol["invalid_rules"] or not all(isinstance(r, str) and r for r in protocol["invalid_rules"]):
+        raise ValueError("explicit invalid outcome rules required")
+    if not isinstance(protocol["heldout_regimes"], list) or not all(isinstance(r, str) and r for r in protocol["heldout_regimes"]):
+        raise ValueError("heldout_regimes must be a list of regime names")
+    features = protocol["feature_schema"]
+    if not isinstance(features, list) or not features:
+        raise ValueError("nonempty timestamped feature dictionary required")
+    names = []
+    for field in features:
+        if not isinstance(field, dict) or not {"name", "unit", "source", "sensor_lag_s"} <= field.keys():
+            raise ValueError("features require name, unit, source, sensor_lag_s")
+        if not all(isinstance(field[k], str) and field[k] for k in ("name", "unit", "source")):
+            raise ValueError("feature metadata must contain nonempty strings")
+        finite(field["sensor_lag_s"], "feature sensor lag")
+        names.append(field["name"])
+    if len(set(names)) != len(names):
+        raise ValueError("duplicate feature names")
+    if any(not isinstance(gid, str) or not gid for gid in protocol["group_assignments"]):
+        raise ValueError("nonempty demand group identities required")
     envelope = {"sha256": digest(protocol), "protocol": dict(protocol)}
     # Exclusive creation avoids overwriting a frozen test contract accidentally.
     with destination.open("x", encoding="utf-8") as handle:

@@ -74,7 +74,7 @@ class SplitTests(unittest.TestCase):
 class ProtocolTests(unittest.TestCase):
     def protocol(self):
         return {"schema": "afterlight.protocol.v1", "source_commit": "test-fixture", "group_assignments":
-                {"g1": "train", "g2": "validation", "g3": "test"}, "feature_schema": [],
+                {"g1": "train", "g2": "validation", "g3": "test"}, "feature_schema": [{"name": "queue_sum_veh", "unit": "vehicles", "source": "lagged lane observations", "sensor_lag_s": 1}],
                 "candidate_leads_s": [0, 5, 10, 20, 30], "civilian_weight": 1, "horizon_s": 100,
                 "drain_end_s": 200, "recovery_window_s": [50, 200], "tie_break": "smallest_lead",
                 "invalid_rules": ["collision"], "heldout_regimes": [], "model_specification": {"max_depth": 3}}
@@ -86,6 +86,13 @@ class ProtocolTests(unittest.TestCase):
             self.assertEqual(result["sha256"], digest(self.protocol()))
             with self.assertRaises(FileExistsError):
                 freeze_protocol(self.protocol(), path)
+
+    def test_freeze_rejects_missing_feature_provenance(self):
+        protocol = self.protocol()
+        protocol["feature_schema"] = [{"name": "queue_sum_veh"}]
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaises(ValueError):
+                freeze_protocol(protocol, Path(directory) / "protocol.json")
 
     def test_pilot_deduplicates_schedules_not_labels(self):
         rows = [{"episode_id": "e", "demand_group_id": "g", "split": "pilot", "runtime_s": 1,
