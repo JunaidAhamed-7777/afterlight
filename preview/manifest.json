@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "source_commit": "1312e86564e45dad2b758336946cd692335049b8",
+  "build_environment": {
+    "node": "24.22.1",
+    "npm": "11.9.0",
+    "vite": "7.1.12",
+    "typescript": "5.9.3",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "scheduler": "0.26.0",
+    "three": "0.180.0"
+  },
+  "entries": {
+    "index.html": {
+      "VITE_API_BASE": null
+    },
+    "local.html": {
+      "VITE_API_BASE": "http://127.0.0.1:8765"
+    }
+  },
+  "validation_status": "Compiled only; Omen browser and preview-server tests pending. No real simulation results.",
+  "source_files": {
+    "web/index.html": "09aad451f6144d2f3dc180b1d3971168202d011abf750572fef27cec07c37936",
+    "web/package-lock.json": "3a6791532811203832c1eee51ba8219b55c20ff28be324c8ca6142433c2923b7",
+    "web/package.json": "ac474e6f630d4ff8cc572270f57c2d847b4d5808e2e7805b1a30a08aaef12f64",
+    "web/scripts/prepare-assets.mjs": "ab1a06469602b91c07895c3fe463e4df7e070fb7e68584e5cf8bc061da4a59c8",
+    "web/src/App.tsx": "1a34c3ca06d43d3cad95fa16bc20b62b06570f4452e4fcfe64d973703133bb3b",
+    "web/src/CanvasBoundary.tsx": "21f0c695ccac9c220383e4d0ef776beac22147cfd964900e7d493415b69eb2af",
+    "web/src/CityView.tsx": "373f0083653f128a934644b5516473766499f7f42c79c2bde2b82af340ebe9a3",
+    "web/src/DecisionInspector.tsx": "09f6bd90e086fe675859d5dea6dba63d7868c9e15646af814e600191d12c615a",
+    "web/src/GeometryLayer.ts": "e694525493519cd653aba96a3fc0916b8b516f9fe6f2fe42a6b16ccdddeb04a5",
+    "web/src/LocalGeneration.tsx": "7810cbd33b8c0eeaa066a1726088396511fda1c5b4a9346c3972def19e2c508e",
+    "web/src/QueueChart.tsx": "fd2fce80ceaf948e2caf8449aa2c391969e673c76730dc521baa2a7ba45e0dc1",
+    "web/src/VehicleLayer.ts": "e9a2a88979bb74fe08486d79a348240101335c661d4905605aaae9cc8360bb56",
+    "web/src/catalog.ts": "5b05f24eb1503cd565e1c127858c780f49c9282eff482fd3f50bb4d1cbf68ce3",
+    "web/src/city.ts": "39673dd6e950ba8f8d86d25578d5cddbc281134eaa6fb8517bf30e19ba402a3f",
+    "web/src/generation.ts": "44dce0f8a1949d130138cb4ce452f9dad3d9e137def697a5854f036ff641e889",
+    "web/src/main.tsx": "fd42f2908b72be024152b1e5afccdbc3806c7de378ea336f570c12b8fae612da",
+    "web/src/recording.ts": "e73a996fcf4de6953e68b19ba7731ecdfe855559a8683716e164f7f54d07e45b",
+    "web/src/replay.ts": "775795b832e63c1fb6ac58ae9783a56321706a5a6698566581962ccf01281704",
+    "web/src/response.ts": "f2a65187e70ef517d5064fbc8e22582a181bc0735084f691cca2ea75b9da73ad",
+    "web/src/styles/app.css": "aef6e12a55ecc536f31228f7b0501849c19f81f9f8fe5fbe45700b565a8121e6",
+    "web/src/styles/tokens.css": "e4124f98add0cd87b74dbd2e14382a5c782679ad16fac46613c39f498013fc21",
+    "web/src/types.ts": "e9b9028ff237343d5c77c3637ee71fc0dc0aa1d1e914893ae99a88ae1116912e",
+    "web/src/validation.ts": "f22dc8e7f228e0c5fcd53481e9cae453ec3f5c402d2205428745038b44e88b80",
+    "web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "web/tsconfig.json": "df27695479b83c1cfc627c07842a3bf77fd8f08d135e8e15bf1fb695cb1ec8c9"
+  },
+  "output_files": {
+    "preview/licenses/react-LICENSE.txt": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "preview/licenses/react-dom-LICENSE.txt": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "preview/licenses/scheduler-LICENSE.txt": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
+    "preview/licenses/three-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
+    "preview/site/assets/CityView-BMYCEBvh.js": "b0dc26ea5e70a3cb897aa97ddfc8e7ec1d53ebef23a483d2883aaf5706ab10af",
+    "preview/site/assets/CityView-DgDxAol0.js": "c1d2eacea6a07a02f72bda086bb2c33770982ae2bee68d549987c1558cb486aa",
+    "preview/site/assets/index-B2qqV5de.js": "ccc094666c8101a859c2ee6dfc3d993b19c2bf7975e3575482e0000b6796db3f",
+    "preview/site/assets/index-BCQUwX4A.js": "e596fb4712fb70fb33a70158540ff5ef63b6e9980a4a81fd6db197907ed68019",
+    "preview/site/assets/index-C_CbTPx-.css": "0d0744ccca745ab95fcd53d8c7bf2e619a9f30b511c83d46305bb05b76b2e306",
+    "preview/site/index.html": "f0c5a5bc1a59db25c6fccbf5cb8c08a8593a781ddd94bfc3552a90b0e566239f",
+    "preview/site/local.html": "ff260cc22047825d487f0c9c5ab4d170982561cad02a70b7b69798957eff6a99",
+    "scripts/serve_preview.py": "b5d747c37be76ee0d05ccdfc241d22a37fb2c8b829634fc1b061798f769a30b9"
+  },
+  "runtime_assets": {
+    "assets/exports/ambulance.glb": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1",
+    "assets/exports/bike.glb": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236",
+    "assets/exports/building_clay.glb": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb",
+    "assets/exports/building_sage.glb": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd",
+    "assets/exports/building_sand.glb": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e",
+    "assets/exports/building_slate.glb": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56",
+    "assets/exports/car.glb": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591",
+    "assets/exports/city_static.glb": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe",
+    "assets/exports/truck.glb": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4",
+    "assets/map/city_manifest.json": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
+    "assets/previews/city_overview.png": "1633cf1fcfdfe3d6ab6502c08e86ae5addb78eab3fc179e8c3950071c3908037"
+  }
+}
