@@ -122,6 +122,11 @@ def ready(page):
     page.wait_for_function("document.querySelector('.three-host canvas')?.dataset.renderInfo && !document.querySelector('.canvas-status') && !document.querySelector('.boot-screen')", timeout=90000)
 
 
+def returning_visit(context):
+    """Regular acceptance targets returning users; onboarding has its own suite."""
+    context.add_init_script("localStorage.setItem('afterlight.onboarding.v1',JSON.stringify({version:1,status:'completed'}))")
+
+
 def verify_served_build(context, base_url: str, manifest: dict):
     checked = []
     for name, expected in manifest["files"].items():
@@ -335,6 +340,11 @@ def measure(page, seconds: float):
     result = summarize(data["samples"], data["longTasks"])
     result["start"] = start
     result["end"] = page.locator(CANVAS).evaluate("c => ({counters:JSON.parse(c.dataset.renderInfo),camera:JSON.parse(c.dataset.cameraState),buffer:[c.width,c.height]})")
+    end = result["end"]["camera"]
+    result["camera_orientation_and_zoom_stable"] = (
+        start["camera"]["mode"] == end["mode"] and abs(start["camera"]["zoom"]-end["zoom"]) < 1e-7
+        and all(abs(a-b) < 1e-7 for a,b in zip(start["camera"]["quaternion"],end["quaternion"]))
+    )
     return result
 
 
@@ -430,6 +440,7 @@ def main():
             browser = p.chromium.launch(channel="chrome", headless=args.headless, chromium_sandbox=True, ignore_default_args=UNSAFE_DEFAULTS)
             report["browser_version"] = browser.version
             context = browser.new_context(viewport={"width": 1920, "height": 1080}, device_scale_factor=1)
+            returning_visit(context)
             build_manifest = json.loads(args.build_manifest.read_bytes()) if args.build_manifest else None
             if build_manifest:
                 report["served_production_build"] = build_manifest
@@ -437,6 +448,7 @@ def main():
             context.add_init_script(INSTRUMENT)
             page = context.new_page(); page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
             page.goto(args.base_url, wait_until="domcontentloaded"); ready(page)
+            page.evaluate("document.title='AFTERLIGHT performance check — leave this window untouched'")
             report["load"] = page.evaluate("""() => ({map_ready_ms:window.__desktopQA.readyMs,
               navigation:performance.getEntriesByType('navigation')[0]?.toJSON(),
               resources:performance.getEntriesByType('resource').map(e=>({name:e.name,transfer_bytes:e.transferSize,decoded_bytes:e.decodedBodySize,duration_ms:e.duration}))})""")
@@ -465,6 +477,7 @@ def main():
                 assert replay["provenance"]["canonical_map_sha256"] == digest(canonical), "Recording/map byte identity mismatch"
                 report["recording"] = {"catalog_entry": entry, "sha256": digest(raw_replay), "bytes": len(raw_replay), "response_body_bytes": len(transported), "canonical_map_sha256": digest(canonical)}
                 open_recording(page, entry)
+                page.evaluate("document.title='AFTERLIGHT performance check — leave this window untouched'")
                 frames = replay["worlds"]["afterlight"]["frames"]
                 candidates = [f for f in frames if any(v["id"] == "ambulance" for v in f["vehicles"]) and f["t"] + args.measure_seconds < replay["duration_s"]]
                 busiest = max(candidates or frames, key=lambda f: len(f["vehicles"]))
@@ -473,6 +486,7 @@ def main():
                 report["recording"]["vehicles_at_start"] = len(busiest["vehicles"])
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance"] = measure(page, args.measure_seconds)
+                assert report["performance"]["camera_orientation_and_zoom_stable"], "Camera changed during untouched overview performance measurement"
                 page.get_by_role("button", name="Pause recording", exact=True).click()
                 ordinary = page.get_by_role("button", name=re.compile(r"^(Baseline|Ordinary)$"))
                 ordinary.click()
@@ -480,23 +494,28 @@ def main():
                 page.get_by_role("button", name="Afterlight", exact=True).click()
                 expect(page.get_by_role("button", name="Afterlight", exact=True)).to_have_attribute("aria-pressed", "true")
                 report["checks"]["play_pause_world_switch"] = True
-                locate = page.get_by_role("button", name="Locate Afterlight ambulance", exact=True)
-                follow = page.locator(".follow-button")
+                follow = page.locator(".follow-ambulance")
                 seek(page, busiest["t"])
-                if locate.count():
-                    locate.click()
-                    page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.cameraZoom)>=11.9")
-                else:
-                    page.get_by_role("button", name=re.compile(r"^Explore(?: 2\.5×)?$")).click()
-                    if follow.count(): follow.click()
-                    page.get_by_role("button", name="Zoom in", exact=True).click()
-                    page.get_by_role("button", name="Zoom in", exact=True).click()
-                if follow.count(): expect(follow).to_have_attribute("aria-pressed", "true")
+                expect(follow).to_be_enabled()
+                if follow.get_attribute("aria-pressed") != "true": follow.click()
+                expect(follow).to_have_attribute("aria-pressed", "true")
+                page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.cameraZoom)>=11.9")
+                pose = next(v for v in sampled_vehicles(frames, busiest["t"]) if v["id"] == "ambulance")
+                angle = math.radians(pose["angle_deg"])
+                expected_target = [pose["x"]-math.sin(angle)*pose["length_m"]/2,pose["z"]+1.5,-(pose["y"]-math.cos(angle)*pose["length_m"]/2)]
+                page.wait_for_function("expected=>{const target=JSON.parse(document.querySelector('.three-host canvas').dataset.cameraState).target;return Math.hypot(...target.map((n,i)=>n-expected[i]))<.02}",arg=expected_target)
+                report["performance_close_follow_setup"] = {
+                    "control": ".follow-ambulance", "pressed": True, "world": "afterlight",
+                    "time_s": busiest["t"], "expected_target_from_genuine_pose": expected_target,
+                    "actual_camera": page.locator(CANVAS).evaluate("c=>JSON.parse(c.dataset.cameraState)"),
+                }
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance_close_follow"] = measure(page, args.measure_seconds)
+                expect(follow).to_have_attribute("aria-pressed", "true")
+                assert report["performance_close_follow"]["camera_orientation_and_zoom_stable"], "Camera orientation/zoom changed during untouched follow performance measurement"
                 page.get_by_role("button", name="Pause recording", exact=True).click()
                 page.screenshot(path=str(output / "traffic-close-follow.png"), full_page=True)
-                if follow.count(): follow.click()
+                follow.click()
                 check_camera(page)
             else:
                 report["recording"] = None
