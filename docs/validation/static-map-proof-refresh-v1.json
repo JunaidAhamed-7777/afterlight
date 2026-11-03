@@ -1,0 +1,16 @@
+{
+  "schema": "afterlight.static-map-proof-refresh.v1",
+  "recorded_utc": "2026-11-03T15:29:18.950695+00:00",
+  "status": "passed",
+  "scope": "Main-checkout graph/spatial validation only. No map generation, Blender, SUMO, training or test-collection access. Original report retained byte-exact; pinned map and all geometry unchanged.",
+  "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+  "previous_report_manifest_sha256": "f77c5ffb9488894947dc46dfd2aa00fc74f4c118be02af97ede40440af21fa42",
+  "previous_report_file_sha256": "872a8044ca6af412f06a3baca421759af8583e7046bed1866763a93484b83b40",
+  "current_report_file_sha256": "690b5a3dfb5d1fa0cffaabe82f16a2885cfc6b05438d29e6a9bfb6fe2ae97947",
+  "validator_file_sha256": "18445825778da91293fa078908cf09934ee7661da6cd15eddbe5020c6c8d49ca",
+  "check_count": 32,
+  "all_passed": true,
+  "report_content_identical_except_current_manifest_hash": true,
+  "previous_manifest_hash_matches_exact_CRLF_serialization_of_current_map": true,
+  "elapsed_s": 0.9408015000008163
+}
