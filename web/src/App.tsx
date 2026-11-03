@@ -874,6 +874,11 @@ export default function App() {
                   >
                     Evaluation protocol ↗
                   </a>
+                  <p>
+                    <a href={`${base}THIRD_PARTY_NOTICES.txt`} target="_blank" rel="noreferrer">
+                      Third-party notices ↗
+                    </a>
+                  </p>
                 </details>
               </div>
               <footer>

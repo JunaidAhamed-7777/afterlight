@@ -6,6 +6,10 @@
   "outputDirectory": "web/dist",
   "headers": [
     {
+      "source": "/THIRD_PARTY_NOTICES.txt",
+      "headers": [{ "key": "Content-Type", "value": "text/plain; charset=utf-8" }]
+    },
+    {
       "source": "/replays/(.*)",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
     },

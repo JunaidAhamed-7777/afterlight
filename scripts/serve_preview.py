@@ -33,6 +33,13 @@ def resolve_request(raw: str) -> Path | None:
         base, relative = ROOT / "assets/exports", path.removeprefix("/assets/exports/")
     elif path == "/assets/map/city_manifest.json":
         base, relative = ROOT / "assets/map", "city_manifest.json"
+    elif path == "/THIRD_PARTY_NOTICES.txt":
+        base, relative = ROOT / "web/public", "THIRD_PARTY_NOTICES.txt"
+        current = ROOT
+        for part in ("web", "public", relative):
+            current = current / part
+            if current.is_symlink() or (hasattr(current, "is_junction") and current.is_junction()):
+                return None
     elif path in ("/assets/previews/city_overview.png", "/assets/previews/city_expanded.png",
                   "/assets/previews/ambulance_model.png", "/assets/previews/ghost_model.png"):
         base, relative = ROOT / "assets/previews", path.rsplit("/", 1)[1]
@@ -75,7 +82,7 @@ class Handler(BaseHTTPRequestHandler):
         except OSError:
             self.send_error(404)
             return
-        mime = {".js": "text/javascript", ".css": "text/css", ".json": "application/json",
+        mime = {".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".txt": "text/plain; charset=utf-8",
                 ".glb": "model/gltf-binary"}.get(path.suffix)
         self.send_response(200)
         self.send_header("Content-Type", mime or mimetypes.guess_type(path.name)[0] or "application/octet-stream")
