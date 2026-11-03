@@ -11,6 +11,7 @@ import { selectionLabel } from "./selectionEvidence.ts";
 import { ReplayEvidence } from "./ReplayEvidence.tsx";
 import { StudyResults } from "./StudyResults.tsx";
 import { Onboarding } from "./Onboarding.tsx";
+import { BrandMark } from "./BrandMark.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt } from "./replay.ts";
 import type { MapPickMode } from "./MapSelectionLayer.ts";
@@ -383,12 +384,8 @@ export default function App() {
       </a>
       <header className="topbar" inert={!bootDismissed}>
         <a className="wordmark" href={base} aria-label="AFTERLIGHT home">
-          <span className="brand-mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          AFTERLIGHT<span className="wordmark-stop">.</span>
+          <BrandMark className="brand-mark" />
+          AFTERLIGHT
         </a>
         <span className="product-label">Traffic signal lab</span>
         <div className="topbar-right">
@@ -1207,18 +1204,12 @@ export default function App() {
           aria-label="Loading Afterlight"
         >
           <div className="boot-content">
-            <div className="boot-symbol" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
-            <span className="boot-wordmark">
-              AFTERLIGHT<span>.</span>
-            </span>
+            <BrandMark className="boot-symbol" />
+            <span className="boot-wordmark">AFTERLIGHT</span>
             <h2>
               {assetLoad.error || cityError || catalogError
                 ? "The city could not load."
-                : "Bringing the city to life."}
+                : "Loading the city"}
             </h2>
             <p>
               {cityError

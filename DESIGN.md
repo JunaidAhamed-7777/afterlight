@@ -1,17 +1,19 @@
 ---
-version: desktop-v4
+version: desktop-v4-identity
 colors:
-  canvas: '#172D48'
-  surface: '#213E5B'
+  canvas: '#0A1F44'
+  surface: '#183052'
   text: '#F2F7FC'
   muted: '#B0C7D9'
   ambulance: '#FFC067'
   clearance: '#72EAD2'
   ghost: '#85D7FF'
   trafficRed: '#ED8B82'
+  brandAmber: '#D98F2A'
+  brandTeal: '#2CB2A2'
 typography:
   sans:
-    fontFamily: 'Segoe UI, system-ui, sans-serif'
+    fontFamily: 'Inter, Segoe UI, system-ui, sans-serif'
     lineHeight: '1.5'
   mono:
     fontFamily: 'ui-monospace, monospace'
@@ -35,11 +37,11 @@ This is a product surface with one expressive 3D canvas. Evidence controls must 
 
 ## Colors
 
-Canvas `#172D48` and surface `#213E5B` establish a crisp blue instrument shell. Text `#F2F7FC` is warm and readable; muted text `#B0C7D9` remains intentionally light. Ambulance amber `#FFC067` is the narrative focal point; clearance mint `#72EAD2` marks the selected corridor. Signal lenses can use traffic-specific colors, but always retain position/labels and accessible text state. Do not encode policy winners only by hue. Measure text/control contrast in the actual rendered UI before claiming WCAG compliance.
+Canvas `#0A1F44` and surface `#183052` establish the deep blue instrument shell from the reviewed [Canva identity guide](https://canva.link/plj2l49fb5akdcu). The compact symbol joins perpendicular teal and amber routes with circular terminals. Core mark colors are amber `#D98F2A` and teal `#2CB2A2`; the native SVG is an implementation of the reviewed design, not an exported Canva vector. Text `#F2F7FC` is warm and readable; muted text `#B0C7D9` remains intentionally light. Ambulance amber `#FFC067` is the narrative focal point; clearance mint `#72EAD2` marks the selected corridor. Signal lenses can use traffic-specific colors, but always retain position/labels and accessible text state. Do not encode policy winners only by hue. Measure text/control contrast in the actual rendered UI before claiming WCAG compliance.
 
 ## Typography
 
-Segoe UI for controls, Bahnschrift for the restrained wordmark, and system monospace with tabular numbers for time, seed and metrics. No remote font dependency for MVP. Title 28–36px, body 16px, labels 12–14px; avoid illegible cinematic microtype. English is the initial UI language; fallbacks must not corrupt names or symbols.
+Self-hosted Inter for controls and the uppercase wordmark, with system monospace and tabular numbers for time, seed and metrics. The original variable WOFF2 is pinned to an official Inter source commit; its full OFL-1.1 license is shipped separately and in the combined notices. No third-party font request is needed. The font is preloaded while the real loading screen owns the workspace. Title 28–36px, body 16px, labels 12–14px; avoid illegible cinematic microtype. English is the initial UI language; fallbacks must not corrupt names or symbols.
 
 ## Layout
 
@@ -146,3 +148,9 @@ The comparison legend uses transparent renders of the actual ambulance and ghost
 | Feedback | Inline status/error regions owned by the active operation | docs/VIEWER_AND_DEMO.md | Informational/status/error | Failure/recovery browser tests |
 
 Local pickup filtering is immediate and transient. The clear button resets the query and returns focus to search. Long-lived request state remains owned by LocalGeneration; changing sidebar sections preserves it. Native controls preserve keyboard interaction and actual source outcomes remain inspectable without WebGL.
+
+## Identity implementation after first hosting
+
+The first public Vercel deployment preceded Canva creation, as requested. The eight-page editable guide supplies the route symbol, navy shell, core amber/teal and Inter typography. Its generated contact and unsupported simulation claim were corrected; ghost cyan identifies the ordinary-world ambulance. The header and loading screen reuse one native SVG mark, with the same symbol in the favicon. Real loading progress and error recovery remain functional.
+
+`web/src/styles/tokens.css` remains the runtime authority. The accessible interface tints `#FFC067` and `#72EAD2` retain their existing action/corridor roles; these are brighter variants of the core identity colors for small text and controls. The tested emergency roof lights, actual signal lenses and ghost material keep their rendering colors. Flat daylight sky is deliberate: the paused scene must remain pixel-stable. Original colorful city models are preserved.

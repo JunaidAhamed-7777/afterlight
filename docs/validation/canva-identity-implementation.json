@@ -1,0 +1,59 @@
+{
+  "schema": "afterlight.canva-identity-implementation.v1",
+  "design_id": "DAHZ4nNimvs",
+  "guide_url": "https://canva.link/plj2l49fb5akdcu",
+  "first_public_deployment": "https://afterlight-gamma.vercel.app/",
+  "first_deployment_id": "dpl_E6nVzEXdUNrzoFbs7rEj6kSQTYpE",
+  "sequence": "FirstVercelhosting READY/publicverified, thennewCanvaguide creation/review/correction, thenfrontendimplementation. README remains a later step.",
+  "palette": {
+    "canvas": "#0A1F44",
+    "brand_amber": "#D98F2A",
+    "brand_teal": "#2CB2A2",
+    "text": "#F2F7FC",
+    "surface_adapter": "#183052",
+    "accessible_action_tint": "#FFC067",
+    "accessible_corridor_tint": "#72EAD2"
+  },
+  "typography": "Original self-hosted Inter variable WOFF2 from exactofficialcommit, fullOFLretained; no external font request.",
+  "symbol": "NativeSVGimplementation of the reviewed Canva perpendicularroute/circle-terminal mark; not an exported Canva vector. Header and loader share one asset; faviconuses the same path geometry.",
+  "review_corrections": [
+    "Removed invented email/domain and unsupported safe/realistic claim.",
+    "Ghost cyan means ordinary-world ambulance, neverdisabled.",
+    "Corrected lab spelling and shortened/fit labels to avoidoverflow."
+  ],
+  "preserved": [
+    "Originalcity/vehiclegeometry and scientificreplays.",
+    "Tested roofbeacons, signalcolorsemantics and ghostmaterial.",
+    "Exact original5881Bnoticeprefix and all5MITbodies.",
+    "Actualloadingprogress/errors, inertworkspacegating and firstvisitguide.",
+    "Flatpauseddaylightsky."
+  ],
+  "files": {
+    "web/public/brand/mark.svg": {
+      "bytes": 594,
+      "sha256": "6f876b64f80027bca4389d6c884580b0d4978b3dcde7904010e0f3edcf921233"
+    },
+    "web/public/favicon.svg": {
+      "bytes": 650,
+      "sha256": "54d0dcba3207303c12ad3ce2537705caa6c1561c78012833066ecee7089a3d93"
+    },
+    "web/public/fonts/InterVariable.woff2": {
+      "bytes": 352240,
+      "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3"
+    },
+    "web/public/fonts/Inter-LICENSE.txt": {
+      "bytes": 4380,
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    },
+    "web/public/THIRD_PARTY_NOTICES.txt": {
+      "bytes": 10305,
+      "sha256": "828a097c26abcab136257f678590fa51c6da07725eae20785a8c48d90fe39374"
+    }
+  },
+  "working_source_checks": {
+    "typescript_build": "passed",
+    "node_tests": 139,
+    "node_failures": 0,
+    "scope": "Workingidentitysourcecheckedbeforecommit. Freshstrictproduction buildandactualpostidentitybrowser checksremainrequired."
+  }
+}

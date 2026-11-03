@@ -196,29 +196,12 @@ summary {
   letter-spacing: 0.09em;
   white-space: nowrap;
 }
-.wordmark-stop {
-  color: var(--ambulance);
-}
 .brand-mark {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  height: 27px;
+  display: block;
+  width: 32px;
+  height: 32px;
   margin-right: 12px;
-  transform: skew(-15deg);
-}
-.brand-mark i {
-  width: 4px;
-  height: 15px;
-  background: var(--text);
-}
-.brand-mark i:nth-child(2) {
-  height: 27px;
-  background: var(--ambulance);
-}
-.brand-mark i:nth-child(3) {
-  height: 21px;
-  background: var(--clearance);
+  flex: 0 0 auto;
 }
 .product-label {
   border-left: 1px solid var(--line);
@@ -1441,36 +1424,14 @@ td {
   padding: 28px 0;
 }
 .boot-symbol {
-  display: flex;
-  gap: 8px;
-  align-items: end;
+  display: block;
+  width: 80px;
   height: 80px;
   margin-bottom: 32px;
-  transform: skew(-15deg);
-}
-.boot-symbol span {
-  width: 14px;
-  height: 44px;
-  background: var(--ghost);
-  animation: signal-rise 1.7s ease-in-out infinite;
-  transform-origin: bottom;
-}
-.boot-symbol span:nth-child(2) {
-  height: 76px;
-  background: var(--ambulance);
-  animation-delay: 0.15s;
-}
-.boot-symbol span:nth-child(3) {
-  height: 58px;
-  background: var(--clearance);
-  animation-delay: 0.3s;
 }
 .boot-wordmark {
   font: 700 30px var(--display);
   letter-spacing: 0.1em;
-}
-.boot-wordmark > span {
-  color: var(--ambulance);
 }
 .boot-content h2 {
   margin-top: 30px;
@@ -1526,17 +1487,6 @@ td {
 @keyframes loader-spin {
   to {
     transform: rotate(360deg);
-  }
-}
-@keyframes signal-rise {
-  0%,
-  100% {
-    transform: scaleY(0.82);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scaleY(1);
-    opacity: 1;
   }
 }
 /* Desktop scroll ownership: settings scroll; city and transport stay in view. */

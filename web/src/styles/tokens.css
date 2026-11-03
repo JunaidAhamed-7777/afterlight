@@ -1,9 +1,18 @@
-/* Normative values mapped from root DESIGN.md. Shared CSS is the runtime adapter. */
+/* Runtime authority for the reviewed Canva identity; rationale lives in DESIGN.md. */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/InterVariable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
 :root {
-  --canvas: #172d48;
-  --surface: #213e5b;
-  --surface-hover: #2c5070;
-  --control-active: #355f80;
+  --canvas: #0a1f44;
+  --surface: #183052;
+  --surface-hover: #244564;
+  --control-active: #315879;
+  --brand-amber: #d98f2a;
+  --brand-teal: #2cb2a2;
   --text: #f2f7fc;
   --muted: #b0c7d9;
   --ambulance: #ffc067;
@@ -13,19 +22,20 @@
   --city-sky: #a9d0e6;
   --city-horizon: #d2e7e8;
   --scroll-thumb: #557a98;
-  --scroll-track: #172d48;
+  --scroll-track: #0a1f44;
   --scroll-hover: #89b2cf;
   --line: color-mix(in srgb, var(--muted) 21%, transparent);
   --radius: 6px;
   --space: 4px;
-  --sans: "Segoe UI", system-ui, sans-serif;
-  --display: "Bahnschrift", "Segoe UI", system-ui, sans-serif;
+  --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --display: "Inter", "Segoe UI", system-ui, sans-serif;
   --mono: ui-monospace, monospace;
   color-scheme: dark;
   font-family: var(--sans);
   color: var(--text);
   background: var(--canvas);
   font-synthesis: none;
+  font-optical-sizing: auto;
   text-rendering: optimizeLegibility;
   font-weight: 400;
   font-size: 16px;
