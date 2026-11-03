@@ -43,13 +43,17 @@ def tour_step(page, index, output, label):
       return {viewport:[innerWidth,innerHeight],card:box(layer.querySelector('.onboarding-card')),
         target:box(document.querySelector(layer.dataset.target)),spotlight:box(layer.querySelector('.onboarding-spotlight')),
         modal:layer.matches(':modal'),focusInside:layer.contains(document.activeElement),
-        document:[document.documentElement.scrollWidth,document.documentElement.scrollHeight]};
+        document:[document.documentElement.scrollWidth,document.documentElement.scrollHeight],
+        criticalRows:[...document.querySelectorAll('.camera-console,.transport')].map(box)};
     }""")
     card, target = geometry["card"], geometry["target"]
     assert geometry["modal"] and geometry["focusInside"], geometry
     assert card["x"] >= 8 and card["y"] >= 8 and card["right"] <= geometry["viewport"][0] - 8 and card["bottom"] <= geometry["viewport"][1] - 8, geometry
     overlap = max(0, min(card["right"], target["right"]) - max(card["x"], target["x"])) * max(0, min(card["bottom"], target["bottom"]) - max(card["y"], target["y"]))
     assert overlap == 0, ("Coachmark covers its highlighted control", geometry)
+    for row in geometry["criticalRows"]:
+        covered = max(0, min(card["right"], row["right"]) - max(card["x"], row["x"])) * max(0, min(card["bottom"], row["bottom"]) - max(card["y"], row["y"]))
+        assert covered == 0, ("Coachmark covers the camera or playback row", geometry)
     assert geometry["document"][0] <= geometry["viewport"][0] + 1 and geometry["document"][1] <= geometry["viewport"][1] + 1, geometry
     expect(page.locator(".play-button")).to_have_attribute("aria-label", "Play recording")
     page.screenshot(path=str(output / f"{label}-step-{index + 1}.png"), full_page=True)
@@ -57,9 +61,10 @@ def tour_step(page, index, output, label):
 
 
 def assert_focus_contained(page):
-    for key in ["Tab"] * 9 + ["Shift+Tab"] * 9:
+    for index, key in enumerate(["Tab"] * 9 + ["Shift+Tab"] * 9):
         page.keyboard.press(key)
-        assert page.evaluate("document.querySelector('.onboarding-layer').contains(document.activeElement)"), "Keyboard focus escaped the modal tour"
+        state = page.evaluate("({inside:document.querySelector('.onboarding-layer').contains(document.activeElement),focused:document.activeElement?.outerHTML,documentFocused:document.hasFocus()})")
+        assert state["inside"], ("Keyboard focus escaped the modal tour", index, key, state)
 
 
 def persisted(page, status):

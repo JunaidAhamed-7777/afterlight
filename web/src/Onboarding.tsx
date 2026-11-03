@@ -83,9 +83,17 @@ function visibleBox(element: HTMLElement | null): Box | null {
     : null;
 }
 
-function positionCard(target: Box | null, width: number, height: number): Position {
+function positionCard(
+  target: Box | null,
+  width: number,
+  height: number,
+  sideFirst: boolean,
+  dockTop?: number,
+  sceneLeft = 0,
+): Position {
   const margin = 16;
-  const clampX = (n: number) => Math.max(margin, Math.min(n, innerWidth - width - margin));
+  const minimumLeft = dockTop !== undefined ? Math.max(margin, sceneLeft + margin) : margin;
+  const clampX = (n: number) => Math.max(minimumLeft, Math.min(n, innerWidth - width - margin));
   const clampY = (n: number) => Math.max(margin, Math.min(n, innerHeight - height - margin));
   if (!target) {
     return {
@@ -101,9 +109,9 @@ function positionCard(target: Box | null, width: number, height: number): Positi
     right: { left: target.left + target.width + margin, top: clampY(centerY - height / 2), width, height },
     left: { left: target.left - width - margin, top: clampY(centerY - height / 2), width, height },
     below: { left: clampX(centerX - width / 2), top: target.top + target.height + margin, width, height },
-    above: { left: clampX(centerX - width / 2), top: target.top - height - margin, width, height },
+    above: { left: clampX(centerX - width / 2), top: Math.min(target.top, dockTop ?? target.top) - height - margin, width, height },
   };
-  const priority: Placement[] = centerX < innerWidth / 3
+  const priority: Placement[] = sideFirst
     ? ["right", "below", "above", "left"]
     : ["above", "below", "left", "right"];
   const placement = priority.find((side) => {
@@ -206,7 +214,15 @@ export function Onboarding({ ready, openRequest = 0, onOpen, onClose }: Onboardi
       frame = requestAnimationFrame(() => {
         if (!card.current) return;
         const bounds = card.current.getBoundingClientRect();
-        setPosition(positionCard(visibleBox(target), bounds.width, bounds.height));
+        const inDock = Boolean(target?.closest(".camera-console,.transport"));
+        const dock = inDock ? document.querySelector<HTMLElement>(".camera-console") : null;
+        const scene = document.querySelector<HTMLElement>(".stage-column");
+        setPosition(positionCard(
+          visibleBox(target), bounds.width, bounds.height,
+          Boolean(target?.closest(".sidebar")),
+          dock?.getBoundingClientRect().top,
+          scene?.getBoundingClientRect().left,
+        ));
       });
     };
     const observer = new ResizeObserver(update);
@@ -240,6 +256,19 @@ export function Onboarding({ ready, openRequest = 0, onOpen, onClose }: Onboardi
       onCancel={(event) => {
         event.preventDefault();
         finish("skipped");
+      }}
+      onKeyDown={(event) => {
+        if (event.key !== "Tab") return;
+        const buttons = event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)");
+        const first = buttons[0];
+        const last = buttons[buttons.length - 1];
+        if (event.shiftKey && (document.activeElement === first || !event.currentTarget.contains(document.activeElement))) {
+          event.preventDefault();
+          last?.focus({ preventScroll: true });
+        } else if (!event.shiftKey && (document.activeElement === last || !event.currentTarget.contains(document.activeElement))) {
+          event.preventDefault();
+          first?.focus({ preventScroll: true });
+        }
       }}
       data-step={step + 1}
       data-target={current.selector}
