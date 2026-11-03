@@ -810,7 +810,7 @@ export function CityView(props: Props) {
             const discontinuity =
               replacedTrack ||
               cameraSeek(previousFollowTime, p.clock.current, elapsed);
-            if (!discontinuity) delta.multiplyScalar(followBlend(elapsed));
+            if (!discontinuity) delta.multiplyScalar(followBlend(elapsed, p.playing));
             if (delta.lengthSq() > 1e-8) {
               camera.position.add(delta);
               controls.target.add(delta);

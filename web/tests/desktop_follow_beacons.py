@@ -156,11 +156,30 @@ def main():
         report['beacon_phases'].append(capture_phase(page,output,'#2288ff','roof-playing-blue'))
         page.get_by_role('button',name='Pause recording',exact=True).click();page.wait_for_timeout(1000)
         wait_lamp(page,'#2288ff')
+        paused_state = observed(page)
+        # Compare the rendered scene, excluding only the two-pixel CSS boundary.
+        # A whole-page capture also contains browser-composited HTML dividers;
+        # retain those screenshots without treating their rasterization as a
+        # changing 3D model. No pixel tolerance is applied inside the scene.
+        bounds = canvas.bounding_box()
+        assert bounds and bounds['width'] > 4 and bounds['height'] > 4
+        scene_clip = {'x':bounds['x']+2,'y':bounds['y']+2,
+                      'width':bounds['width']-4,'height':bounds['height']-4}
         paused1 = page.screenshot(path=str(output/'roof-paused-steady-blue.png'),full_page=True)
-        page.wait_for_timeout(900);paused2=page.screenshot(path=str(output/'roof-paused-steady-blue-repeat.png'),full_page=True)
-        assert paused1==paused2,'Paused pixels changed after camera settled'
+        scene1 = page.screenshot(path=str(output/'paused-scene.png'),clip=scene_clip)
+        page.wait_for_timeout(900)
+        paused2=page.screenshot(path=str(output/'roof-paused-steady-blue-repeat.png'),full_page=True)
+        scene2 = page.screenshot(path=str(output/'paused-scene-repeat.png'),clip=scene_clip)
+        paused_after = observed(page)
+        report['paused_observations'] = {'before':paused_state,'after':paused_after,
+                                        'scene_pixels_identical':scene1==scene2}
+        assert paused_state['camera'] == paused_after['camera'],'Paused camera changed'
+        assert paused_state['vehicles'] == paused_after['vehicles'],'Paused vehicle poses, clock or materials changed'
+        assert scene1==scene2,'Paused scene pixels changed after camera settled'
         assert lamp_color(page)=='#2288ff'
-        report['checks']['paused-steady-blue']={'actual_material':observed(page)['vehicles']['active']['beaconMaterials'],'same_pixels_over_900ms':True}
+        report['checks']['paused-steady-blue']={'actual_material':paused_after['vehicles']['active']['beaconMaterials'],
+            'same_scene_pixels_over_900ms':True,'scene_clip':scene_clip,'css_boundary_excluded_px':2,
+            'camera_clock_vehicle_materials_unchanged':True,'full_page_png_identical':paused1==paused2}
         page.get_by_role('button',name='Settings',exact=True).click()
         reduced=page.get_by_role('checkbox',name='Reduced motion',exact=False);reduced.check()
         expect(a).to_be_disabled();expect(g).to_be_disabled();expect(a).to_have_attribute('aria-pressed','false')

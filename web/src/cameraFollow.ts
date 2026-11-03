@@ -41,7 +41,10 @@ export class AmbulanceCameraTrack {
 export function cameraSeek(previous: number | null, next: number, elapsed: number): boolean {
   return previous !== null && (next < previous || next - previous > Math.max(1, elapsed * 10));
 }
-export function followBlend(elapsed: number): number {
+export function followBlend(elapsed: number, playing = true): number {
+  // A paused recording has one exact target. Finish the camera translation
+  // immediately so close-up inspection cannot drift between still frames.
+  if (!playing) return 1;
   return 1 - Math.exp(-Math.max(0, Math.min(.1, elapsed)) / .09);
 }
 export const MAX_CAMERA_ZOOM = 48;

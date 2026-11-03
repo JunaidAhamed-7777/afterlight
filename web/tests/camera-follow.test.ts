@@ -22,7 +22,7 @@ test("camera holds missing observed interval rather than manufacturing a vehicle
   const track = new AmbulanceCameraTrack([frame(0, vehicle(10)), frame(1), frame(2, vehicle(30))]);
   assert.deepEqual(track.target(1.5), [7, 3.5, -20]);
 });
-test("follow blend converges while paused and seek discontinuities are explicit", () => {
+test("playing follow blends smoothly and seek discontinuities are explicit", () => {
   assert.equal(cameraSeek(null, 50, .016), false);
   assert.equal(cameraSeek(20, 19, .016), true);
   assert.equal(cameraSeek(20, 80, .016), true);
@@ -32,4 +32,11 @@ test("follow blend converges while paused and seek discontinuities are explicit"
   assert.equal(followBlend(0), 0);
   assert.equal(followBlend(2), followBlend(.1));
   assert.ok(MAX_CAMERA_ZOOM > 12);
+});
+
+test("paused follow locks to the recorded target without residual settling", () => {
+  for (const elapsed of [0, .001, .016, .1, 2]) {
+    assert.equal(followBlend(elapsed, false), 1);
+  }
+  assert.equal(followBlend(.016, true), followBlend(.016));
 });
