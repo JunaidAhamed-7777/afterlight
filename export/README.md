@@ -54,8 +54,8 @@ artifact audit. Public catalog registration has separate **20 MiB physical /
 128 MiB decoded** per-recording caps when using gzip. A scalar study may sample
 vehicle poses too coarsely for a polished public replay; retain that scientific
 evidence without publishing it as a visual demo. No model,
-trace, selected replay or benefit is supplied as a fake fallback. Source is
-implemented; actual Omen end-to-end acceptance remains required.
+trace, selected replay or benefit is supplied as a fake fallback. Each selected
+export requires its own actual end-to-end audit.
 
 The current source-pinned study has a disclosed
 [pre-test analysis correction](../docs/ANALYSIS_AMENDMENT.md). For its report,
@@ -73,6 +73,13 @@ a fresh owned export. The current study's scientific traces are sampled at
 5 seconds; this selected export stays offline and cannot inherit the dense
 0.5-second public-demo presentation checks. No resampling or rerun supplies
 missing physical poses.
+
+The current actual Omen bridge passed for the predeclared `test-sparse-01` case:
+the frozen selector chose lead 0, retaining physical world `fixed-0` and its
+separate ordinary baseline. All six original candidate traces were verified
+before choosing the pair. The [acceptance record](../docs/validation/study-v4/offline-selected-bridge.json)
+binds the exported replay, raw audit, model/report and original trace hashes.
+This remains an offline 5-second scientific recording.
 
 
 Public city registration now requires captures at every recorded integration

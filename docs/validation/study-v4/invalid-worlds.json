@@ -1,0 +1,154 @@
+{
+  "schema": "afterlight.invalid-world-diagnostic.v1",
+  "scope": "Post-report descriptive static inspection; no simulator, fitting, policy/model/feature/protocol changes. Causes below are recorded validity flags/events, not inferred collision mechanisms.",
+  "report_sha256": "914697e102a6dc7a0c43d96264bf2be04da3ac74084ad5aabf6e6ef46aa74d26",
+  "scalar_file_sha256": "98dba56c63f2e6c9610be7e5caf34f3e94a1b9cf0cb3c02ed92ddc0d14b001f6",
+  "worlds": 140,
+  "invalid_worlds": 6,
+  "records": [
+    {
+      "episode_id": "city-heavy-22049-44e906f5e6699b38",
+      "case_id": "test-heavy-01",
+      "regime": "heavy",
+      "seed": 22049,
+      "policy": "fixed",
+      "lead_s": 30,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-01/fixed-30",
+      "raw_outcome_sha256": "e0a34f45f2fe0b7315481261180b8d1119cc59932ee88c37d75b054e8763adc9",
+      "collision_teleport_events": [
+        {
+          "t": 249.5,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00161",
+            "civilian_00567"
+          ]
+        }
+      ]
+    },
+    {
+      "episode_id": "city-heavy-22053-1ae5d3192deb01ab",
+      "case_id": "test-heavy-05",
+      "regime": "heavy",
+      "seed": 22053,
+      "policy": "ordinary",
+      "lead_s": null,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-05/ordinary",
+      "raw_outcome_sha256": "4e421eff9f493a2ecda5d8f3e2f0ed5b45162a2b4805bf6e06f8538ed311ca27",
+      "collision_teleport_events": [
+        {
+          "t": 311.5,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00239",
+            "civilian_00428"
+          ]
+        }
+      ]
+    },
+    {
+      "episode_id": "city-heavy-22053-1ae5d3192deb01ab",
+      "case_id": "test-heavy-05",
+      "regime": "heavy",
+      "seed": 22053,
+      "policy": "fixed",
+      "lead_s": 10,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-05/fixed-10",
+      "raw_outcome_sha256": "ddd6cd33e9080cbfb4b6e5c4db53a23a0240014f4eecb4ad727ab0ea77efb564",
+      "collision_teleport_events": [
+        {
+          "t": 244.0,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00009",
+            "civilian_00864"
+          ]
+        }
+      ]
+    },
+    {
+      "episode_id": "city-heavy-22056-3ee074f8c33204d1",
+      "case_id": "test-heavy-08",
+      "regime": "heavy",
+      "seed": 22056,
+      "policy": "fixed",
+      "lead_s": 0,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-08/fixed-0",
+      "raw_outcome_sha256": "82f3a584550a9dc2b47f7ad1117cfcfb4d235420f5e87a1cdeff3f663ad1b3fc",
+      "collision_teleport_events": [
+        {
+          "t": 250.0,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00506",
+            "civilian_00269"
+          ]
+        }
+      ]
+    },
+    {
+      "episode_id": "city-heavy-22056-3ee074f8c33204d1",
+      "case_id": "test-heavy-08",
+      "regime": "heavy",
+      "seed": 22056,
+      "policy": "fixed",
+      "lead_s": 20,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-08/fixed-20",
+      "raw_outcome_sha256": "e7f43266fad0259cd9caa1d41a5f90c146778333a2b4f83538843c676b3eee81",
+      "collision_teleport_events": [
+        {
+          "t": 250.5,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00506",
+            "civilian_00269"
+          ]
+        }
+      ]
+    },
+    {
+      "episode_id": "city-heavy-22056-3ee074f8c33204d1",
+      "case_id": "test-heavy-08",
+      "regime": "heavy",
+      "seed": 22056,
+      "policy": "fixed",
+      "lead_s": 30,
+      "status": "invalid",
+      "validity_reasons": [
+        "collision"
+      ],
+      "raw_world_directory": "worlds/test-heavy-08/fixed-30",
+      "raw_outcome_sha256": "ef43236f9185de0ba3ceb2b34c680c2f707fb57048e8450b1cc6cd0eb3a356da",
+      "collision_teleport_events": [
+        {
+          "t": 250.5,
+          "kind": "collision",
+          "vehicle_ids": [
+            "civilian_00506",
+            "civilian_00269"
+          ]
+        }
+      ]
+    }
+  ]
+}

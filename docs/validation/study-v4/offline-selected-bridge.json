@@ -1,0 +1,107 @@
+{
+  "schema": "afterlight.offline-selected-bridge-acceptance.v1",
+  "scope": "Actual post-report original cached-selector export and raw audit; scientific 5 s poses stay offline and carry no dense public presentation claim. No new simulation/refit/retiming.",
+  "case_id": "test-sparse-01",
+  "selected_lead_s": 0,
+  "physical_policy": "fixed",
+  "selector_kind": "residual_tree",
+  "selection_evidence": {
+    "analysis_amendment": {
+      "schema": "afterlight.analysis-amendment-binding.v1",
+      "id": "frozen-estimator-config-v1",
+      "sha256": "c30562eadf64ed991e18b905f685bcc325116158d32f9c560ba04d187b7909ae",
+      "file_sha256": "9cc3c3edabf2af1075392e06cf16468d2a6ef90e93da86ffe46e5ccb50a144eb",
+      "implementation_sha256": "67c706bea0d1b776a99bb8dff738aceb59ee49d236d4bde60254533f3ec70adb",
+      "binding_helper_sha256": "a33e95210b26e0a2f44099e516d04fb7a5bd343562cc13df9af173662e7ce92b",
+      "entrypoint_sha256": "dea9a7153d6705187237a93989b7107316740dfabb4f6dc78933f17c6313b3a5"
+    },
+    "schema": "afterlight.selection-evidence.v1",
+    "selector_kind": "residual_tree",
+    "selector_sha256": "176e2c4a732e5799df0ebef80eff9b1209d8a1d6bd3ebfff2ff4fc76b1e48eb4",
+    "model_sha256": "df1c707613d7a1d379aa5f4a810d63a2b2f85fb1140a3fd743ab3c09323d9998",
+    "model_file_sha256": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d",
+    "study_sha256": "c45cc52dd231edef36f2ddedd14cad29d1b621abad07e32ed35c6a8cdab0981d",
+    "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+    "release_sha256": "7f19aac710fc4d9ddb9790b14ce6ddc7a011d1d9bbdc9a1c7bfcf8d44e20bcdf",
+    "report_sha256": "914697e102a6dc7a0c43d96264bf2be04da3ac74084ad5aabf6e6ef46aa74d26",
+    "selection_sha256": "1c30e8d616ce2654969f234b88b2a633f152b4ae8896ba5e368c642cf5db7f9c",
+    "trace_manifest_sha256": "5022efb6126cdd6085a2cb6747597dc39eaf6ee8e86aab737b516a9242716805",
+    "collection_manifest_sha256": "90580b7c279694b14764286d21b2b116e84a10ce6fb0fb83920e4537874b7d19",
+    "comparison_artifact_sha256": "885417b372e7a34bca6f43dadd3db50799fce5b457b0430007284ff0b46230ca",
+    "case_id": "test-sparse-01",
+    "episode_id": "city-sparse-22037-4cbb3af3b2da27e3",
+    "selected_lead_s": 0,
+    "source_world_aliases": {
+      "baseline": {
+        "original_world_id": "ordinary",
+        "trace_sha256": "fd9493cfa21148208875c0b63a2ca4b3235b7acf6530d80d70b103d2316dd1ca",
+        "trace_file": "worlds/test-sparse-01/ordinary/rich-world.json"
+      },
+      "afterlight": {
+        "original_world_id": "fixed-0",
+        "trace_sha256": "03f5e29214e0c333c1489673d3fe1c3b46c86bf73aa096461f29bdbb914c85aa",
+        "trace_file": "worlds/test-sparse-01/fixed-0/rich-world.json"
+      }
+    },
+    "interpretation": "Frozen selector chose a predeclared recorded fixed-lead candidate using only lagged observations. No live ML controller, new rollout, retiming or benefit claim. Invalid/censored outcomes remain visible."
+  },
+  "original_output_directory": "C:\\Github\\afterlight-final-study-v4\\local-runtime\\study-selected-offline-v4",
+  "files": {
+    "audit.json": {
+      "bytes": 1406,
+      "sha256": "49e40fbb1bceba489cfcaa0b9fdc19084f99243749347616ce7bc4bba0f2a623"
+    },
+    "selection-evidence.json": {
+      "bytes": 2290,
+      "sha256": "02791e2040fe0ccae9e9f24553fdfe52640ab5fc62109614d96690e7bea15187"
+    },
+    "selected-export-manifest.json": {
+      "bytes": 5437,
+      "sha256": "a0d514bc86b61f988a4b0c9af1489cc0f115d902a5b053765c48e03cb74b543c"
+    },
+    "replay.json": {
+      "bytes": 8734273,
+      "sha256": "4a74289345b2d45455fac0e3514fe5cc85720d1eba9c6307991a5142d5d38162"
+    }
+  },
+  "audit": {
+    "schema": "afterlight.audit.v1",
+    "run_id": "selected-bf9f40df58aaadfe39dcc0d94ebb0d87123ebb62",
+    "replay_sha256": "4a74289345b2d45455fac0e3514fe5cc85720d1eba9c6307991a5142d5d38162",
+    "checks": [
+      {
+        "world": "baseline",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      },
+      {
+        "world": "afterlight",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      }
+    ],
+    "scalar_table_agreement": "passed",
+    "paired_dispatch_causality": {
+      "shared_pre_dispatch_history": "passed",
+      "shared_causal_observation_and_etas": "passed",
+      "pre_dispatch_frames": 12,
+      "pre_dispatch_events": 462,
+      "frozen_request_timing": {
+        "baseline": "passed",
+        "afterlight": "passed"
+      }
+    },
+    "ordinary_negative_control": "not_this_policy",
+    "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
+  }
+}

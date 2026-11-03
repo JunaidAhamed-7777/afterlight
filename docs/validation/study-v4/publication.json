@@ -1,0 +1,16 @@
+{
+  "schema": "afterlight.study-publication.v1",
+  "scope": "Atomic local publication of completed verified original-byte proof pack; no new fitting/simulation/deployment",
+  "manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+  "summary_sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5",
+  "summary_bytes": 8208,
+  "pack_files": 28,
+  "pack_physical_bytes": 2405037,
+  "public_total_bytes": 38536606,
+  "original_report_sha256": "914697e102a6dc7a0c43d96264bf2be04da3ac74084ad5aabf6e6ef46aa74d26",
+  "source_directory": "C:\\Github\\afterlight-final-study-v4\\local-runtime\\study-public-pack-v4",
+  "destination": "C:\\Github\\afterlight\\web\\public\\study",
+  "git_blob_commit": "66d60b2",
+  "original_working_git_all_equal": true,
+  "production_typescript_summary_validation": "passed actualpublishedsummary"
+}
