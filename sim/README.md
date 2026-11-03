@@ -1,9 +1,10 @@
-# SUMO backend — implementation checkpoint
+# SUMO backend
 
 The expanded city has genuine source-bound recordings and an ordinary/ordinary
 negative control accepted on the owner's Omen. The matched 84-world pilot and
-252 development worlds are complete; the released held-out study still needs
-its final report. See [recording evidence](../docs/validation/expanded-city-recordings.json),
+252 development worlds are complete. The released 140-world held-out study is
+also complete and retains its six invalid traffic outcomes; its learned model
+was not promoted. See [recording evidence](../docs/validation/expanded-city-recordings.json),
 [negative control](../docs/validation/expanded-city-negative-control.json) and
 [the current study protocol](../docs/BENCHMARK_PROTOCOL.md). Commands below create
 new evidence; running a command is not a claim of policy improvement.

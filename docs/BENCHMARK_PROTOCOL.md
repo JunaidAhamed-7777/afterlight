@@ -36,11 +36,29 @@ to their original source. Independent checks of the
 [actual frozen model](validation/study-v4/model-pre-test-review.json) preceded
 the single learned-mode test release.
 
-The one complete 20-case/140-world test collection is in progress. Its results
-must pass the released-collection and report checks before any performance
-claim or public Study summary is published. Model fitting and test collection
-do not modify either public illustrative recording. Scientific 5-second traces
-stay private; public traffic playback requires actual 0.5-second captures.
+The complete 20-case/140-world test collection took 8,951.34 seconds: 134 traffic
+worlds completed and six were invalid. All 140 remain in the audited inventory.
+The learned selector failed on 1/20 cases versus 0/20 for validation-best fixed
+lead 5. Among 19 paired-valid cases its mean objective difference was **+0.68 s**
+(95% grouped interval **−4.99 to +5.98 s**); positive values favor the comparator.
+It chose exactly the same actions as the analytical selector on all 20 cases.
+This study establishes **no learned policy benefit**, and the model is not
+promoted. The [actual report checkpoint](validation/study-v4/report-checkpoint.json)
+retains the full denominators and original report identities.
+
+The separate declared validation-only timing measurement used all 12 retained
+snapshots and 2,400 repeated calls per method. Complete five-candidate learned
+inference had a 0.2241 ms median and 0.2512 ms nearest-rank p95 on the owner's
+Ryzen 9 5900HX. This is warm in-process Python computation, excluding file I/O,
+imports, simulator, UI and network; it is not hosted or live-controller latency.
+The [original timing samples](validation/study-v4/selector-timing.json) bind
+hardware, source, model and input bytes. Before/after observations found no
+active SUMO process; they do not establish continuous system isolation.
+
+Model fitting and test collection do not modify either public illustrative
+recording. Scientific 5-second traces stay private; public traffic playback
+requires actual 0.5-second captures. The public Study pack is published only
+after deterministic report and original-byte verification.
 
 ## Experiment
 

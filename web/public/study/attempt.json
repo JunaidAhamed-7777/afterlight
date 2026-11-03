@@ -1,0 +1,14 @@
+{
+  "sha256": "8721e3da209e1643f0ea9847a2cca1255532dcb15abbe397280c8cdfe6ba9bcb",
+  "attempt": {
+    "schema": "afterlight.test-attempt.v1",
+    "release_sha256": "7f19aac710fc4d9ddb9790b14ce6ddc7a011d1d9bbdc9a1c7bfcf8d44e20bcdf",
+    "study_sha256": "c45cc52dd231edef36f2ddedd14cad29d1b621abad07e32ed35c6a8cdab0981d",
+    "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+    "output_directory": "study-test-v4",
+    "expected_worlds": 140,
+    "claimed_utc": "2026-11-03T15:19:28.685554+00:00",
+    "state": "claimed_before_first_test_world",
+    "interpretation": "Reservation is not proof of completed execution; marker is never automatically removed"
+  }
+}

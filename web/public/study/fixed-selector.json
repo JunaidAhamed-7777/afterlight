@@ -1,0 +1,58 @@
+{
+  "sha256": "77525192d0544952e13c4f01143bb6a85590e844d302c0471db58369e46d371f",
+  "selector": {
+    "schema": "afterlight.selector.v1",
+    "kind": "fixed",
+    "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+    "lead_s": 5,
+    "validation_groups": [
+      "053f1703f8d915ccb6065b4d742c1ddc8ccd53e2b59e35b6e3f0814de16ccf2c",
+      "19183e614a4934f68e7d526dd5f35f5cddadf882b33714a9d49cbb1ac16d5f25",
+      "19a8d3eaec1ce212fa3c2f96a9d3261d142e6d0f0fe1b259b9c22cd34bbbba6d",
+      "23a801a2249e5b2f1c765dfb836ef0e05129f73ac7677c3e38ab63cf37db092a",
+      "419721a91fe2570ec6ada8cdfbe945c36e5aa1ffab81451b707e94fd032f9fb5",
+      "692add019afbcf7e2ac88472335f76027ac79b93dbd96b0227ed62f710e5ffcf",
+      "7450bc2e8745690446e90e22c1a3ce7a2ac69b6d20029f268c62b39155a5d8f1",
+      "9ac35f7cccac1ce4b8f3582e06b7dcb0c7a8c1de08ecc506bdee066d93f95120",
+      "a813b70e6764e5f119683ffc83b7a73ab4cecad28f7d2605244cebd8f2470d91",
+      "b5cb8f6c848b7bffa0c3bef000d1a444dd81c47c525a808f37d7214bed6ffca6",
+      "b88600a2b9ef1401051d7be02ab9d308e0038f9ef3563eca33c4a4effb89f413",
+      "c170a04761993185254540e2b7f739fe05cd87747bfaeca5dc9bd8f1f8e60bcc"
+    ],
+    "validation_data_sha256": "678bd143d675ab8cb20e8db48093d8089ce166d6d065e9e510d28af6f040b875",
+    "validation_selection": {
+      "lead_s": 5,
+      "scores": [
+        {
+          "lead_s": 0,
+          "infeasible_count": 0,
+          "common_feasible_mean_j_s": 504.13277188118803
+        },
+        {
+          "lead_s": 5,
+          "infeasible_count": 0,
+          "common_feasible_mean_j_s": 502.0159831837717
+        },
+        {
+          "lead_s": 10,
+          "infeasible_count": 0,
+          "common_feasible_mean_j_s": 508.35525149010175
+        },
+        {
+          "lead_s": 20,
+          "infeasible_count": 0,
+          "common_feasible_mean_j_s": 525.1371868030158
+        },
+        {
+          "lead_s": 30,
+          "infeasible_count": 0,
+          "common_feasible_mean_j_s": 531.4180337974341
+        }
+      ],
+      "common_feasible_episodes": 12,
+      "episodes": 12,
+      "conclusive": true,
+      "tie_break": "smallest_lead"
+    }
+  }
+}

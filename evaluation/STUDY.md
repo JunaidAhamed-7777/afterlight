@@ -4,8 +4,9 @@ This workflow prepares a finite, declared study from an **actually completed,
 audited pilot**. It does not turn pilot data into training data, run an experiment
 implicitly, or manufacture a model. Execute commands and tests only on the
 assigned Omen machine. The current expanded-city pilot and development
-collections have been executed and audited locally; the one released held-out
-collection is in progress. The exact frozen design and current evidence are in
+collections have been executed and audited locally; the single released held-out
+collection completed all 140 worlds, retaining six invalid traffic outcomes.
+The exact frozen design, negative learned result and current evidence are in
 [the benchmark protocol](../docs/BENCHMARK_PROTOCOL.md).
 
 The current source-pinned study uses an explicit
@@ -16,6 +17,9 @@ and binds the correction into selection/report hashes; the simulation and
 original one-shot test collector remain unchanged. For this study, use the
 amended entry point for selection/report verification and the amended publication
 helpers described below, rather than relabeling or rewriting the original data.
+Canonical main now supplies the complete frozen estimator for **future** study
+audits, preserving the legacy pilot path. That correction has a new source
+identity and does not change this study's original source or frozen amendment.
 
 ## Lock source before generating data
 

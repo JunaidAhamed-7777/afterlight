@@ -1,0 +1,8 @@
+{
+  "sha256": "62a2078dab7d473482983b2d95c2c74baa3e99ccb6cca9e7a4e691786d2a0949",
+  "selector": {
+    "schema": "afterlight.selector.v1",
+    "kind": "analytical",
+    "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb"
+  }
+}

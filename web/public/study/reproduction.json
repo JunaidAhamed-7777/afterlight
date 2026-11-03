@@ -1,0 +1,57 @@
+{
+  "schema": "afterlight.study-reproduction.v1",
+  "study_sha256": "c45cc52dd231edef36f2ddedd14cad29d1b621abad07e32ed35c6a8cdab0981d",
+  "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+  "selection_sha256": "1c30e8d616ce2654969f234b88b2a633f152b4ae8896ba5e368c642cf5db7f9c",
+  "release_sha256": "7f19aac710fc4d9ddb9790b14ce6ddc7a011d1d9bbdc9a1c7bfcf8d44e20bcdf",
+  "report_sha256": "914697e102a6dc7a0c43d96264bf2be04da3ac74084ad5aabf6e6ef46aa74d26",
+  "decoded_limit_bytes": 134217728,
+  "transfer_limit_bytes": 4194304,
+  "decoder_memory_limit_bytes": 134217728,
+  "files": [
+    {
+      "kind": "train_candidates",
+      "split": "train",
+      "source_file": "candidate-outcomes.json",
+      "url": "train-candidates.json.xz",
+      "encoding": "xz",
+      "sha256": "0f6d38148d0273b8c8ad53da7c508de5ff2615c861b6652da4e33ca4138d0e9c",
+      "bytes": 48763514,
+      "transfer_sha256": "9d9f99388b5e9e158dbb6074f1a7757076c6163d3f18001dac878c87a21dc565",
+      "transfer_bytes": 459620
+    },
+    {
+      "kind": "validation_candidates",
+      "split": "validation",
+      "source_file": "candidate-outcomes.json",
+      "url": "validation-candidates.json.xz",
+      "encoding": "xz",
+      "sha256": "d3c23e1447d7a47190eb9d24edee69e8b50e851efe153259c1b18d6d09c61c88",
+      "bytes": 24382978,
+      "transfer_sha256": "a212e44a371693f46cfb32e6f70aa593f471d59011dd6d9b9c7c8b3cb4c32551",
+      "transfer_bytes": 237732
+    },
+    {
+      "kind": "test_candidates",
+      "split": "test",
+      "source_file": "candidate-outcomes.json",
+      "url": "test-candidates.json.xz",
+      "encoding": "xz",
+      "sha256": "2b6837e11e7b523cce82377b7f7803d7fabb5ca2a0a73ac4e8ae7da2cefa04c4",
+      "bytes": 40648492,
+      "transfer_sha256": "b4160b991fe3ce2d179a2b55a51425783a27c9cec43b8d15fb1b349f497c220a",
+      "transfer_bytes": 394952
+    },
+    {
+      "kind": "test_outcomes",
+      "split": "test",
+      "source_file": "outcomes.json",
+      "url": "test-outcomes.json.xz",
+      "encoding": "xz",
+      "sha256": "98dba56c63f2e6c9610be7e5caf34f3e94a1b9cf0cb3c02ed92ddc0d14b001f6",
+      "bytes": 56902123,
+      "transfer_sha256": "221a33dc19869f71491896a7731012f7794bf3b7a6cd7b9aeeb5807e5aa3fe1b",
+      "transfer_bytes": 538852
+    }
+  ]
+}

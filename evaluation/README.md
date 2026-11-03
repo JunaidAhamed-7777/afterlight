@@ -3,8 +3,11 @@
 The matched expanded-city pilot completed 84 audited worlds; development then
 completed 168 training and 84 validation worlds. One frozen residual model has
 passed [pre-test review](../docs/validation/study-v4/model-pre-test-review.json).
-The single released 140-world test collection is in progress, with no held-out
-performance claim yet. [Current protocol and provenance](../docs/BENCHMARK_PROTOCOL.md)
+The single released 140-world test collection is complete: 134 completed traffic
+worlds and six invalid ones are all retained. The frozen learned selector matched
+the analytical choices and established no benefit over validation-best fixed lead 5;
+failures and conditional intervals are explicit in the
+[current protocol and provenance](../docs/BENCHMARK_PROTOCOL.md), which
 distinguish these measured artifacts from the explicitly synthetic unit fixtures.
 All experiments, fitting and acceptance run on the owner's Omen.
 

@@ -1,0 +1,39 @@
+{
+  "schema": "afterlight.selection-dependency-watcher.v1",
+  "created_utc": "2026-11-03T13:13:55.646555+00:00",
+  "scope": "Explicit one-shot frozen training/validation selection only. Never releases, runs or reads test outcomes.",
+  "state": "watcher_stopped_no_test_release",
+  "command": [
+    "C:\\Github\\afterlight\\.venv\\Scripts\\python.exe",
+    "-m",
+    "evaluation.study",
+    "select",
+    "--study",
+    "local-runtime/expanded-city-study-v4",
+    "--train",
+    "local-runtime/study-train-v4",
+    "--validation",
+    "local-runtime/study-validation-v4",
+    "--output",
+    "local-runtime/study-selection-v4",
+    "--fit-model"
+  ],
+  "watcher_source_sha256": "6049b8e8ef156e9dddc87192c5ebd46ee3d218047c187953d24fde618c4a3fb4",
+  "automatic_retries": 0,
+  "development": {
+    "train": {
+      "status": "completed",
+      "recorded_worlds": 168,
+      "planned_worlds": 168
+    },
+    "validation": {
+      "status": "completed",
+      "recorded_worlds": 84,
+      "planned_worlds": 84
+    }
+  },
+  "invoked_utc": "2026-11-03T14:44:58.969505+00:00",
+  "return_code": 1,
+  "error": "Canonical selection failed; preserve all outputs and inspect, no automatic retry",
+  "stopped_utc": "2026-11-03T14:45:03.097907+00:00"
+}

@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Github\afterlight-final-study-v4\evaluation\study.py", line 50, in <module>
+    main()
+  File "C:\Github\afterlight-final-study-v4\evaluation\study.py", line 40, in main
+    result = select_study(args.study, args.train, args.validation, args.output, fit_model=args.fit_model)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Github\afterlight-final-study-v4\evaluation\study_reporting.py", line 188, in select_study
+    train = verify_collection(root,train_directory,'train')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Github\afterlight-final-study-v4\evaluation\study_reporting.py", line 51, in verify_collection
+    return _verify_collection_evidence(study_directory, collection_directory, expected_split)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Github\afterlight-final-study-v4\evaluation\study_reporting.py", line 129, in _verify_collection_evidence
+    validate_pilot_world_binding(row,raw,{'civilian_weight':study['spec']['civilian_weight'],
+  File "C:\Github\afterlight-final-study-v4\evaluation\study_manifest.py", line 355, in validate_pilot_world_binding
+    raise ValueError("pilot analytical prediction/config differs from recomputed observation-only estimate")
+ValueError: pilot analytical prediction/config differs from recomputed observation-only estimate

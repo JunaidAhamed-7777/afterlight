@@ -6,9 +6,18 @@ candidate labels from 24 training groups, with maximum depth 3, minimum leaf siz
 [pre-test model review](../docs/validation/study-v4/model-pre-test-review.json)
 binds its training identity and original source; the
 [analysis correction](../docs/ANALYSIS_AMENDMENT.md) is disclosed separately.
-The held-out comparison is still in progress, so fitting establishes no policy
-gain. Public recordings remain fixed/analytical demonstrations, and the hosted
-viewer does not run a live learned traffic controller.
+The completed held-out comparison found **no learned contribution**: it matched
+the analytical selector's choices on all 20 cases. It failed on 1/20 cases versus
+0/20 for validation-best fixed lead 5. Across 19 paired-valid cases, selected
+minus fixed objective was +0.68 s (95% grouped interval −4.99 to +5.98 s).
+The model is not promoted. Public recordings remain fixed/analytical
+demonstrations, and the hosted viewer does not run a live learned controller.
+
+A post-report inspection of the actual 11-node model found that all five internal
+splits use downstream occupancy or frozen ETA. The tree does not model
+action-dependent residuals; this explains the observed unchanged analytical
+choices. This diagnostic does not change the model, features, objective or test
+results. Full model bytes and every candidate outcome are retained for review.
 
 `models.residual` implements:
 

@@ -43,3 +43,9 @@ hash-different estimator metadata, ignore poisoned cached bytecode, protect inpu
 before writes, reject a wrong amendment before test evidence, and reject an
 internally resealed amendment during a command. They perform no simulation,
 collection or model fitting.
+
+After the original collection finished, canonical main received the same
+complete-estimator study binding as a separately reviewed future-study fix.
+Legacy pilot verification remains compatible. That new main-source identity
+does not replace the original simulation checkout, frozen analysis bundle,
+selection, model, report or their recorded hashes.

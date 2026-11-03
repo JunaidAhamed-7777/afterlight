@@ -1,0 +1,234 @@
+--- fa39f8a/evaluation/study_reporting.py
++++ afterlight_analysis_amendment_v1.py
+@@ -1,3 +1,6 @@
++# Explicit static analysis revision of fa39f8a evaluation/study_reporting.py.
++# Only study raw-estimator verification and disclosed amendment provenance differ.
++# All original simulation/model/source/runtime/raw evidence guards remain in force.
+ """Audited train/validation selection. No test outcomes are opened here.
+ 
+ Optional ML is imported only after an explicit request and sufficient finite
+@@ -12,13 +15,14 @@
+ import platform
+ from typing import Mapping
+ 
+-from .metrics import excess_queue_area, finite, objective, verify_pair
+-from .protocol import assert_episode_coverage, digest
+-from .selectors import (analytical_artifact, fixed_lead_artifact, learned_artifact,
++from evaluation.metrics import excess_queue_area, finite, objective, verify_pair
++from evaluation.protocol import assert_episode_coverage, digest
++from evaluation.selectors import (analytical_artifact, fixed_lead_artifact, learned_artifact,
+                         freeze_selectors, validate_prediction_inputs)
+-from .splits import assert_disjoint
+-from .study_manifest import (POLICIES, assert_study_runtime, file_hash, load_study,
+-                             read_json, validate_pilot_world_binding)
++from evaluation.splits import assert_disjoint
++from evaluation.study_manifest import (POLICIES, assert_study_runtime, file_hash, load_study,
++                             read_json)
++from afterlight_analysis_binding_v1 import validate_frozen_estimator_world_binding
+ 
+ RAW_FILES = ('lifecycle.json', 'tripinfo.xml', 'outcome.json', 'command.json', 'signal-audit-input.json')
+ 
+@@ -126,8 +130,9 @@
+                 raise ValueError(f'Raw collection evidence changed: {directory}/{name}')
+             files[directory+'/'+name] = actual
+         raw = read_json(world_dir/'outcome.json')
+-        validate_pilot_world_binding(row,raw,{'civilian_weight':study['spec']['civilian_weight'],
+-                                             'network':study['spec']['network_kind']})
++        validate_frozen_estimator_world_binding(row,raw,{'civilian_weight':study['spec']['civilian_weight'],
++                                             'network':study['spec']['network_kind'],
++                                             'analytical_estimator':study['protocol']['analytical_estimator']})
+         signal = read_json(world_dir/'signal-audit-input.json')
+         if row.get('signal_audit_input_sha256') != hashes['signal-audit-input.json'] or any(
+                 signal.get(name) != raw.get(name) for name in ('policy','status','decision','metrics','events')):
+@@ -170,7 +175,7 @@
+ 
+ 
+ def select_study(study_directory: Path, train_directory: Path, validation_directory: Path,
+-                 output: Path, *, fit_model: bool = False) -> dict:
++                 output: Path, *, fit_model: bool = False, analysis_amendment: Mapping) -> dict:
+     """Select once from declared train/validation evidence; no test path argument."""
+     from sim.network import ROOT
+     from models.residual import fit_residual, select_fixed_lead
+@@ -231,7 +236,8 @@
+         if runtime is not None and ml_runtime()!=runtime:
+             raise ValueError('Optional ML runtime changed before selection freeze')
+         artifacts = {p.name:file_hash(p) for p in output.iterdir() if p.is_file()}
+-        selection = {'schema':'afterlight.study-selection.v2','study_sha256':envelope['sha256'],
++        selection = {'schema':'afterlight.study-selection.v2','analysis_amendment':dict(analysis_amendment),
++            'study_sha256':envelope['sha256'],
+             'protocol_sha256':protocol['sha256'],'source':study['source'],'simulation_dependencies':study['dependencies'],
+             'status':'learned_ready' if model else ('baseline_only' if fixed else 'inconclusive'),
+             'reason':reason,'fit_model_requested':fit_model,'finite_training_labels':finite_labels,
+@@ -371,7 +377,7 @@
+ def _released_test_context(study_directory: Path, collection_directory: Path) -> dict:
+     """Authenticate release/claim/path before opening any held-out outcomes."""
+     from sim.network import ROOT
+-    from .study_release import load_test_release
++    from evaluation.study_release import load_test_release
+     root = study_directory.resolve()
+     release_envelope = load_test_release(root)
+     release = release_envelope['release']
+@@ -437,7 +443,7 @@
+ 
+ 
+ def _derive_report(study_envelope: Mapping, verified: Mapping, comparison_artifacts: Mapping,
+-                   *, created_utc: str) -> dict:
++                   *, created_utc: str, analysis_amendment: Mapping) -> dict:
+     """Pure deterministic report arithmetic, shared by creation and verification.
+ 
+     Operates on already-released, already-audited cached outcomes. It performs
+@@ -445,8 +451,8 @@
+     """
+     from collections import Counter
+     from statistics import mean
+-    from .comparison import paired_decision_report, grouped_bootstrap_interval
+-    from .selectors import recompute_frozen_decisions
++    from evaluation.comparison import paired_decision_report, grouped_bootstrap_interval
++    from evaluation.selectors import recompute_frozen_decisions
+     study=study_envelope['study']
+     context=verified['release_context'];release=context['release']['release']
+     protocol={'sha256':digest(study['protocol']),'protocol':study['protocol']}
+@@ -471,7 +477,8 @@
+         report['conditional_mean_delta_recovery_vehicle_s']=finite(mean(recovery),'conditional recovery difference',nonnegative=False) if recovery else None
+         report['recovery_window_s']=study['protocol']['recovery_window_s']
+         comparisons[name.removesuffix('.json')]=report
+-    result={'schema':'afterlight.study-report.v1','study_sha256':study_envelope['sha256'],
++    result={'schema':'afterlight.study-report.v1','analysis_amendment':dict(analysis_amendment),
++        'study_sha256':study_envelope['sha256'],
+         'protocol_sha256':protocol['sha256'],'source':study['source'],'dependencies':study['dependencies'],
+         'sumo_version':study['pilot_evidence']['sumo_version'],'release_sha256':context['release']['sha256'],
+         'test_attempt_sha256':context['attempt']['sha256'],'selection_sha256':release['selection_sha256'],
+@@ -488,7 +495,7 @@
+     return result
+ 
+ 
+-def report_study(study_directory: Path, collection_directory: Path, output: Path) -> dict:
++def report_study(study_directory: Path, collection_directory: Path, output: Path, *, analysis_amendment: Mapping) -> dict:
+     """Write a reproducible descriptive report from the single released test run.
+ 
+     No fitting, model selection, simulator execution or automatic benefit label.
+@@ -498,8 +505,12 @@
+     study_envelope = load_study(root,require_frozen=True)
+     study=study_envelope['study']
+     assert_study_runtime(study)
++    context=_released_test_context(root,collection_directory)
++    _require_selection_amendment(context, analysis_amendment)
+     verified=verify_released_test_collection(root,collection_directory)
+-    context=verified['release_context'];release=context['release']['release']
++    if verified['release_context'] != context:
++        raise ValueError('Released context changed during amendment verification')
++    release=context['release']['release']
+     selection_directory=context['selection_directory']
+     output=output.resolve();runtime_path=ROOT/'local-runtime';runtime=runtime_path.resolve()
+     if runtime_path.is_symlink() or not runtime.is_relative_to(ROOT.resolve()) or output==runtime or not output.is_relative_to(runtime):
+@@ -508,7 +519,7 @@
+         if output==protected or output.is_relative_to(protected) or protected.is_relative_to(output):
+             raise ValueError('Report output cannot overlap frozen study, collection or selection')
+     result=_derive_report(study_envelope,verified,_load_report_comparators(context),
+-                          created_utc=datetime.now(timezone.utc).isoformat())
++                          created_utc=datetime.now(timezone.utc).isoformat(), analysis_amendment=analysis_amendment)
+     assert_study_runtime(study)
+     if _released_test_context(root,collection_directory)!=context or any(file_hash(_contained(collection_directory,name))!=value for name,value in verified['files_sha256'].items()):
+         raise ValueError('Frozen report inputs changed during analysis')
+@@ -518,7 +529,7 @@
+     return envelope
+ 
+ 
+-def verify_report_artifacts(study_directory: Path, collection_directory: Path, report_directory: Path) -> dict:
++def verify_report_artifacts(study_directory: Path, collection_directory: Path, report_directory: Path, *, analysis_amendment: Mapping) -> dict:
+     """Recompute all report metrics and intervals from the single released run.
+ 
+     Read-only verification uses the same deterministic arithmetic and fixed
+@@ -527,15 +538,18 @@
+     """
+     study_envelope=load_study(study_directory,require_frozen=True)
+     study=study_envelope['study'];assert_study_runtime(study)
++    context=_released_test_context(study_directory,collection_directory)
++    _require_selection_amendment(context, analysis_amendment)
+     verified=verify_released_test_collection(study_directory,collection_directory)
+-    context=verified['release_context']
++    if verified['release_context'] != context:
++        raise ValueError('Released context changed during amendment verification')
+     envelope=read_json(_contained(report_directory.resolve(),'report.json'))
+     report=envelope['report']
+     if envelope.get('sha256')!=digest(report) or report.get('schema')!='afterlight.study-report.v1':
+         raise ValueError('Report envelope hash/schema mismatch')
+     if not isinstance(report.get('created_utc'),str) or not report['created_utc']:
+         raise ValueError('Report creation timestamp missing')
+-    expected=_derive_report(study_envelope,verified,_load_report_comparators(context),created_utc='not-compared')
++    expected=_derive_report(study_envelope,verified,_load_report_comparators(context),created_utc='not-compared', analysis_amendment=analysis_amendment)
+     actual_content={key:value for key,value in report.items() if key!='created_utc'}
+     expected_content={key:value for key,value in expected.items() if key!='created_utc'}
+     if actual_content!=expected_content:
+@@ -545,3 +559,9 @@
+             file_hash(_contained(collection_directory,name))!=value for name,value in verified['files_sha256'].items()):
+         raise ValueError('Report source evidence changed during verification')
+     return envelope
++
++
++def _require_selection_amendment(context: Mapping, binding: Mapping) -> None:
++    selection = read_json(_contained(context['selection_directory'], 'selection.json'))['selection']
++    if selection.get('analysis_amendment') != dict(binding):
++        raise ValueError('Report analysis amendment differs from the pre-test frozen selection')
+--- fa39f8a/evaluation/study_manifest.py:validate_pilot_world_binding
++++ afterlight_analysis_binding_v1.py
+@@ -1,23 +1,39 @@
+-def validate_pilot_world_binding(row: Mapping, raw: Mapping, plan: Mapping) -> None:
+-    """Bind aggregate pilot measurements to the saved simulator outcome."""
+-    from policies.scheduler import Timing, timing_for_network
+-    expected_timing=asdict(timing_for_network(plan.get('network','fixture')))
+-    if raw['metrics'].get('controller_timing',asdict(Timing()))!=expected_timing:
+-        raise ValueError('pilot raw controller timing differs from declared network profile')
+-    for key in ("policy", "lead_s", "status", "sumo_version"):
++"""Explicit study-only correction: bind the EXACT frozen analytical estimator.
++
++Original simulation, scalar rows, hashes, objectives and legacy pilot verifier
++remain untouched. Every original raw/metric/decision/timing guard is retained.
++"""
++from dataclasses import asdict
++from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
++from policies.scheduler import Timing, timing_for_network
++from evaluation.protocol import digest
++
++
++def validate_frozen_estimator_world_binding(row, raw, plan):
++    expected_timing = asdict(timing_for_network(plan['network']))
++    if raw['metrics'].get('controller_timing', asdict(Timing())) != expected_timing:
++        raise ValueError('study raw controller timing differs from declared network profile')
++    for key in ('policy', 'lead_s', 'status', 'sumo_version'):
+         if row.get(key) != raw.get(key):
+-            raise ValueError(f"pilot scalar/raw outcome mismatch: {key}")
+-    for key, value in raw["metrics"].items():
+-        row_key = "simulator_runtime_s" if key == "runtime_s" else key
++            raise ValueError(f'study scalar/raw outcome mismatch: {key}')
++    for key, value in raw['metrics'].items():
++        row_key = 'simulator_runtime_s' if key == 'runtime_s' else key
+         if row.get(row_key) != value:
+-            raise ValueError(f"pilot scalar/raw metric mismatch: {key}")
+-    decision = raw["decision"]
+-    for key in ("observation", "request_plan"):
++            raise ValueError(f'study scalar/raw metric mismatch: {key}')
++    decision = raw['decision']
++    for key in ('observation', 'request_plan'):
+         if row.get(key) != decision[key]:
+-            raise ValueError(f"pilot scalar/raw decision mismatch: {key}")
+-    estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
+-    expected_hash = digest({"version": estimates["version"], "config": estimates["config"]})
+-    cost = next((score["analytical_cost_s"] for score in estimates["scores"] if score["lead_s"] == row["lead_s"]), None)
+-    if row.get("analytical_config_sha256") != expected_hash or row.get("analytical_cost_s") != cost:
+-        raise ValueError("pilot analytical prediction/config differs from recomputed observation-only estimate")
+-
++            raise ValueError(f'study scalar/raw decision mismatch: {key}')
++    estimator = plan['analytical_estimator']
++    if (set(estimator) != {'version', 'config'} or estimator['version'] != ESTIMATOR_VERSION or
++            set(estimator['config']) != set(asdict(AnalyticalConfig())) or
++            estimator['config']['civilian_weight'] != plan['civilian_weight']):
++        raise ValueError('Exact frozen analytical estimator/version/configuration required')
++    estimates = estimate_candidates(decision['observation'], AnalyticalConfig(**estimator['config']))
++    reconstructed = {'version': estimates['version'], 'config': estimates['config']}
++    expected_hash = digest(estimator)
++    if digest(reconstructed) != expected_hash:
++        raise ValueError('Analytical constructor changed the exact frozen estimator identity')
++    cost = next((score['analytical_cost_s'] for score in estimates['scores'] if score['lead_s'] == row['lead_s']), None)
++    if row.get('analytical_config_sha256') != expected_hash or row.get('analytical_cost_s') != cost:
++        raise ValueError('Study prediction/config differs from the exact frozen observation-only estimator')

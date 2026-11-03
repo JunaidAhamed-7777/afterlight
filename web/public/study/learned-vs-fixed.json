@@ -1,0 +1,208 @@
+{
+  "sha256": "11a6af67a9f7bb88658b9d12122d95be2434f9f54d9243701ef45afd958a9459",
+  "selectors": {
+    "schema": "afterlight.selector-freeze.v1",
+    "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+    "selected": {
+      "sha256": "176e2c4a732e5799df0ebef80eff9b1209d8a1d6bd3ebfff2ff4fc76b1e48eb4",
+      "selector": {
+        "schema": "afterlight.selector.v1",
+        "kind": "residual_tree",
+        "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+        "model": {
+          "sha256": "df1c707613d7a1d379aa5f4a810d63a2b2f85fb1140a3fd743ab3c09323d9998",
+          "model": {
+            "schema": "afterlight.residual-tree.v1",
+            "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+            "feature_names": [
+              "queue_sum_veh",
+              "queue_max_veh",
+              "downstream_occupancy",
+              "route_distance_m",
+              "route_junction_count",
+              "eta_remaining_s",
+              "phase_elapsed_s"
+            ],
+            "civilian_weight": 1,
+            "analytical_config_sha256": "94088eb6a774a152e3ddb1f6a4766cc42b84f0c98848563345d4678cd6737883",
+            "training_rows": 120,
+            "finite_training_labels": 120,
+            "excluded_infeasible_labels": 0,
+            "training_groups": [
+              "04f5c046227298ff3dc5d6c9eef9985eab3460e93fa68bf0b0d0b2956c627032",
+              "05c867f6eb96ef793ccd5f2bd8d9a0ec5fb39507912a47985d187a489302eac2",
+              "19836d8619ca57ca34413987a84d2e1e4c0b5f309634343bd7e4df57f37920dc",
+              "1baef6df69e0617133f568cb0e8344f2155e7b76df72d54cfea1af85792d52dc",
+              "392b38eebc16a1faeafbefcb787704ade20afb4e0a24a3e420833e800ce70e38",
+              "42d6f645b739c922fabbb09ef1a7798fc1b2772642ace950a186c33c096084a1",
+              "4c927c8c38752f07aa01dd90a88dbbd6126bb85fef8b889545ee35df184fda79",
+              "56a5ad0d642a7d2d3e09fb0b874f7b39fdba3b668f1cff030ec4ddae9a2e6485",
+              "5b0afd44e9982c51b6667a548df20b6ad968f62a6f98e5b91e63aeb6c6dd59d3",
+              "69916983add0e87915bb32484324a4496edae1912fc69157b4ff3132f80b8edd",
+              "834befe3efe1f0be7a81ea5dbd49a08412fdd0e3230209a454bcff64909c3919",
+              "87a5a4376e407598e0a1b17806143295ce9829499f214ae4285411299fdf366c",
+              "9344e5da0a99a0f02d70643096fb1be914b887c04ed99b6f7089eb448f75a4db",
+              "9d06f62478b8dac62f8d965d3e497d5dc53399995cb7dd0058e799c88a38a703",
+              "a358410a8e5be83fb8ae8692b68b45c5ebefb274ca20bac4b2590346516aacf7",
+              "a85985fd9467cfcc0f44654eed1ff6c5c4c50b66af71d0123f6cca625992054c",
+              "ad4a0b2806da52e52071727c1a18a5628b37d56f2dbdf375037a04a9f9c301e4",
+              "b9b6108a4f03fd0933fd446964d64903058bbaa92f30beec85fe5c07440e6007",
+              "bafc882e8682434a46fcc602fcdd2e6e67917365017c4f4cd0c5c7414ccaecef",
+              "c98ae78bd2a9bae25739521df077f6349fac79bf0d3bec060fc0f19d3a6cffcd",
+              "d6e1f5821a2ea39713c3ed00a3dcfef4550ec3cbf074aa8499d04f3be27dd15f",
+              "dd3eb74f0546115677cfbefc5686df799dace738ab8143db6af48b0fefe0295f",
+              "dd63f5725bd030cee0b78c2e125529a301719458039129032d55cfe1cd963c05",
+              "e4dfb211b8c67cf98c8b1f7fed69212ffa40e17dd34aad4e82e221725245c432"
+            ],
+            "training_data_sha256": "99878d23ea4b38a7af06286571dd0f5ea76e148a8ff8843b04e5fb4d69601aea",
+            "sklearn_version": "1.7.2",
+            "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+            "parameters": {
+              "max_depth": 3,
+              "min_samples_leaf": 8,
+              "random_state": 0
+            },
+            "nodes": [
+              {
+                "left": 1,
+                "right": 8,
+                "feature": 2,
+                "threshold": 9.734870764077641e-05,
+                "value": 348.98246918521323
+              },
+              {
+                "left": 2,
+                "right": 5,
+                "feature": 2,
+                "threshold": 5.428226813819492e-06,
+                "value": 391.31823024811865
+              },
+              {
+                "left": 3,
+                "right": 4,
+                "feature": 5,
+                "threshold": 170.7780532836914,
+                "value": 247.15353935839582
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 216.36434270802852
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 318.9949982092527
+              },
+              {
+                "left": 6,
+                "right": 7,
+                "feature": 5,
+                "threshold": 159.1791534423828,
+                "value": 535.4829211378415
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 828.4571449243055
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 340.1667719468654
+              },
+              {
+                "left": 9,
+                "right": 10,
+                "feature": 2,
+                "threshold": 0.00014481315884040669,
+                "value": 137.30366387068597
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 131.9511361831179
+              },
+              {
+                "left": -1,
+                "right": -1,
+                "feature": -2,
+                "threshold": -2.0,
+                "value": 142.65619155825397
+              }
+            ],
+            "limitation": "Regression does not predict feasibility; headline evaluation must count selected-action failures."
+          }
+        }
+      }
+    },
+    "comparator": {
+      "sha256": "77525192d0544952e13c4f01143bb6a85590e844d302c0471db58369e46d371f",
+      "selector": {
+        "schema": "afterlight.selector.v1",
+        "kind": "fixed",
+        "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+        "lead_s": 5,
+        "validation_groups": [
+          "053f1703f8d915ccb6065b4d742c1ddc8ccd53e2b59e35b6e3f0814de16ccf2c",
+          "19183e614a4934f68e7d526dd5f35f5cddadf882b33714a9d49cbb1ac16d5f25",
+          "19a8d3eaec1ce212fa3c2f96a9d3261d142e6d0f0fe1b259b9c22cd34bbbba6d",
+          "23a801a2249e5b2f1c765dfb836ef0e05129f73ac7677c3e38ab63cf37db092a",
+          "419721a91fe2570ec6ada8cdfbe945c36e5aa1ffab81451b707e94fd032f9fb5",
+          "692add019afbcf7e2ac88472335f76027ac79b93dbd96b0227ed62f710e5ffcf",
+          "7450bc2e8745690446e90e22c1a3ce7a2ac69b6d20029f268c62b39155a5d8f1",
+          "9ac35f7cccac1ce4b8f3582e06b7dcb0c7a8c1de08ecc506bdee066d93f95120",
+          "a813b70e6764e5f119683ffc83b7a73ab4cecad28f7d2605244cebd8f2470d91",
+          "b5cb8f6c848b7bffa0c3bef000d1a444dd81c47c525a808f37d7214bed6ffca6",
+          "b88600a2b9ef1401051d7be02ab9d308e0038f9ef3563eca33c4a4effb89f413",
+          "c170a04761993185254540e2b7f739fe05cd87747bfaeca5dc9bd8f1f8e60bcc"
+        ],
+        "validation_data_sha256": "678bd143d675ab8cb20e8db48093d8089ce166d6d065e9e510d28af6f040b875",
+        "validation_selection": {
+          "lead_s": 5,
+          "scores": [
+            {
+              "lead_s": 0,
+              "infeasible_count": 0,
+              "common_feasible_mean_j_s": 504.13277188118803
+            },
+            {
+              "lead_s": 5,
+              "infeasible_count": 0,
+              "common_feasible_mean_j_s": 502.0159831837717
+            },
+            {
+              "lead_s": 10,
+              "infeasible_count": 0,
+              "common_feasible_mean_j_s": 508.35525149010175
+            },
+            {
+              "lead_s": 20,
+              "infeasible_count": 0,
+              "common_feasible_mean_j_s": 525.1371868030158
+            },
+            {
+              "lead_s": 30,
+              "infeasible_count": 0,
+              "common_feasible_mean_j_s": 531.4180337974341
+            }
+          ],
+          "common_feasible_episodes": 12,
+          "episodes": 12,
+          "conclusive": true,
+          "tie_break": "smallest_lead"
+        }
+      }
+    }
+  }
+}
