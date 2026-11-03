@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from playwright.sync_api import expect, sync_playwright
-from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, source_identity
+from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, returning_visit, source_identity
 
 
 def sha(data: bytes) -> str:
@@ -69,10 +69,28 @@ def main():
         playwright = sync_playwright().start()
         browser = playwright.chromium.launch(channel="chrome", headless=False, chromium_sandbox=True, ignore_default_args=UNSAFE_DEFAULTS)
         context = browser.new_context(viewport={"width": 1440, "height": 810}, service_workers="block")
+        returning_visit(context)
         responses = []
+        replay_bodies = []
         page = context.new_page()
+        page.add_init_script("""(() => {
+          const Original=window.Worker;window.__verifiedJobWorkers=[];
+          window.Worker=class extends Original {
+            constructor(...args){super(...args);this.addEventListener('message',e=>{
+              if(e.data?.type==='loaded')window.__verifiedJobWorkers.push({url:this.__jobUrl,expectedSha256:this.__expectedSha256,scenario:e.data.replay?.scenario?.id});
+            });}
+            postMessage(message,...args){this.__jobUrl=message?.url;this.__expectedSha256=message?.expectedSha256;return super.postMessage(message,...args);}
+          };
+        })()""")
         page.on("request", lambda r: report["requests"].append({"method": r.method, "url": r.url}))
-        page.on("response", lambda r: responses.append(r))
+        def observed_response(response):
+            responses.append(response)
+            if response.url == api + "/api/jobs/" + identifier + "/replay":
+                # Read while its dedicated worker still exists; the product
+                # terminates that worker immediately after successful loading.
+                try: replay_bodies.append(response.body())
+                except Exception as error: replay_bodies.append({"unavailable": str(error)})
+        page.on("response", observed_response)
         page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
         page.goto(origin + "/favicon.svg", wait_until="load")
         saved = {"id": identifier, "parameters": expected_job["parameters"]}
@@ -82,8 +100,11 @@ def main():
         report["current_map_sha256"] = sha(canonical)
         report["recorded_map_sha256"] = replay["provenance"]["canonical_map_sha256"]
         mismatched = report["current_map_sha256"] != report["recorded_map_sha256"]
+        independent = context.request.get(api + "/api/jobs/" + identifier + "/replay")
+        assert independent.ok and independent.body() == replay_bytes
         for attempt in range(2):
             responses.clear()
+            replay_bodies.clear()
             if attempt == 0: page.goto(args.base_url, wait_until="domcontentloaded")
             else: page.reload(wait_until="domcontentloaded")
             open_button = page.get_by_role("button", name="Open completed recording", exact=True)
@@ -108,12 +129,20 @@ def main():
                     assert response.status == 200 and response.json() == expected_job
                     job_gets += 1
                 elif response.url == api + "/api/jobs/" + identifier + "/replay":
-                    assert response.status == 200 and response.body() == replay_bytes
+                    assert response.status == 200
                     replay_gets += 1
             assert job_gets >= 1 and replay_gets >= 1, (job_gets, replay_gets)
+            available = [body for body in replay_bodies if isinstance(body,bytes)]
+            assert all(body == replay_bytes for body in available), "Observed worker response bytes differ"
+            worker_loads = page.evaluate("window.__verifiedJobWorkers")
+            matching = [w for w in worker_loads if w["url"] == api + "/api/jobs/" + identifier + "/replay"]
+            if expected_job.get("replay_sha256"):
+                assert matching and all(w["expectedSha256"] == sha(replay_bytes) and w["scenario"] == replay["scenario"]["id"] for w in matching), "Job checksum was not bound to the successful worker load"
             assert json.loads(page.evaluate("key => sessionStorage.getItem(key)", key)) == saved
             report["checks"].append({"pass": "initial saved job recovery" if attempt == 0 else "same-tab reload recovery",
                                      "job_gets": job_gets, "exact_replay_gets": replay_gets,
+                                     "browser_response_body_capture_available": bool(available),
+                                     "expected_sha_bound_to_successful_worker": bool(matching),
                                      "historical_traffic_hidden_for_different_map": mismatched})
         for request in report["requests"]:
             address = urlsplit(request["url"])
@@ -121,9 +150,13 @@ def main():
             assert f"{address.scheme}://{address.netloc}" in {origin, api}, request
         assert not report["page_errors"], report["page_errors"]
         assert inventory(directory) == before, "Original raw job files changed"
+        independent = context.request.get(api + "/api/jobs/" + identifier + "/replay")
+        assert independent.ok and independent.body() == replay_bytes
         assert (acceptance / "journal.json").read_bytes() == journal_bytes, "Original journal changed"
         report.update(status="passed_current_ui_retained_job_recovery", browser_post_count=0,
-                      original_raw_files_unchanged=True, original_journal_unchanged=True)
+                      original_raw_files_unchanged=True, original_journal_unchanged=True,
+                      exact_independent_server_bytes_verified_before_after=True,
+                      identity_method="Observed successful worker requests bind the original job SHA. Independent GETs verify exact raw bytes before/after. Some Chrome worker response bodies are unavailable after worker termination.")
     except Exception as error:
         report.update(status="failed", error=str(error))
         if page is not None:

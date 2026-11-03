@@ -14,7 +14,7 @@ from urllib.parse import urljoin
 from urllib.request import urlopen
 
 from playwright.sync_api import expect, sync_playwright
-from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, digest, ready, source_identity, verify_served_build
+from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, digest, ready, returning_visit, source_identity, verify_served_build
 
 
 def real_entry(raw: bytes, name: str):
@@ -28,6 +28,7 @@ def real_entry(raw: bytes, name: str):
 def boot_case(browser, base_url, raw: bytes, name: str, output: Path):
     entry, replay = real_entry(raw, name)
     context = browser.new_context(viewport={"width": 1440, "height": 810})
+    returning_visit(context)
     held = []; errors = []
     context.route("**/replays/catalog.json", lambda route: route.fulfill(content_type="application/json", body=json.dumps({"schema":"afterlight.catalog.v1","runs":[entry]})))
     context.route("**/replays/retained-genuine.json", lambda route: route.fulfill(content_type="application/json", body=raw))
@@ -45,6 +46,11 @@ def boot_case(browser, base_url, raw: bytes, name: str, output: Path):
     expect(page.locator(".evidence tbody tr").first.locator("td")).to_have_text([replay["worlds"][w]["status"] for w in ("afterlight", "baseline")])
     page.screenshot(path=str(output/f"initial-{name}.png"), full_page=True)
     assert not errors, errors
+    for route in held:
+        try: route.abort()
+        except Exception: pass
+    page.wait_for_timeout(50)
+    context.unroute_all(behavior="ignoreErrors")
     context.close()
     return {"case": name, "genuine_replay_sha256": digest(raw), "bytes": len(raw), "city_glb_deliberately_held": True,
             "boot_unblocked": True, "timeline_and_actual_results_accessible": True}
@@ -52,6 +58,7 @@ def boot_case(browser, base_url, raw: bytes, name: str, output: Path):
 
 def cancellation_case(browser, base_url, entry, output):
     context = browser.new_context(viewport={"width": 1440, "height": 810})
+    returning_visit(context)
     held = []; errors = []
     pattern = "**/replays/" + entry["url"]
     context.route(pattern, lambda route: held.append(route))
@@ -87,6 +94,7 @@ def cancellation_case(browser, base_url, entry, output):
     expect(page.locator(".stage-title")).to_contain_text(entry["title"])
     page.screenshot(path=str(output/"worker-canceled-then-genuine-reloaded.png"), full_page=True)
     assert not errors, errors
+    context.unroute_all(behavior="ignoreErrors")
     context.close()
     return {"canceled": canceled, "loaded": loaded, "no_stale_replay_or_error": True}
 
