@@ -73,7 +73,7 @@ python web/tests/browser_smoke.py --base-url http://127.0.0.1:5173 --output loca
 # For a viewer configured with VITE_API_BASE, add --catalog-path /api/catalog.
 ```
 
-The script records desktop/mobile screenshots, browser errors, empty/actual recording behavior, catalog error/retry and WebGL context recovery. It does not download a browser or disable sandbox protection. It is not a complete accessibility, traffic-validity or performance benchmark.
+The script defaults to desktop screenshots, browser errors, empty/actual recording behavior, catalog error/retry and WebGL context recovery. Legacy mobile checks are optional and outside the current acceptance target. It does not download a browser or disable sandbox protection. It is not a complete accessibility, traffic-validity or performance benchmark.
 
 Vehicle templates alone are normalized around their longitudinal/lateral footprint center, then scaled per instance to actual SUMO `length_m` and optional `width_m`. Their ground/up geometry is preserved. The city root is never normalized. This makes the authored model's nose agree with the recorded front bumper rather than assuming all authored mesh dimensions equal simulator type dimensions.
 
@@ -81,10 +81,31 @@ The browser smoke launcher defaults to headed Chrome with `chromium_sandbox=True
 
 For the optional interrupted-request/idempotency UI fixture, configure `VITE_API_BASE` before starting the viewer, then run `python web/tests/local_generation_smoke.py`. This separate script intercepts every API request in an isolated browser context; it uses **no simulator, no traffic traces and no outcome metrics**. Its labeled synthetic screenshot/report must not be presented as traffic evidence. It checks a lost POST response, known-ID read recovery, and explicit same-ID/same-settings retry after route controls change.
 
-### Pending independent-review hardening patch
+### Implemented contract hardening — acceptance is source-specific
 
 Replay acceptance now binds the exact requested catalog metadata, verifies published byte counts/checksums when present, and mirrors the exporter's ordinary-baseline/world-identity/cadence/no-physical-ghost constraints. Nested city geometry and event timestamps fail closed before rendering. Saved-job recovery disables new submissions while in flight and stale responses cannot replace a newer request. Runtime rendering exceptions halt the scene into its retryable preview instead of leaving an apparently live stale canvas. Scoped keyboard controls pan/zoom/reset only while the canvas has focus; follow mode uses the AFTERLIGHT trajectory in both inspection views to preserve a shared comparison camera.
 
 Compilation is not runtime acceptance. Run all new unit/browser regressions on the pinned commit on Omen before treating this checkpoint as validated.
 
-Catalog `policy` is a machine identifier; optional `policy_label` is presentation only and `lead_s` binds the recorded lead. This viewer change must land with the matching exporter catalog update. Response readers enforce the 64 MiB decoded-byte limit while streaming, including missing/compressed Content-Length. Local job status and replay completion are guarded against a newer operation before any state update.
+Catalog `policy` is a machine identifier; optional `policy_label` is presentation only and `lead_s` binds the recorded lead. The matching exporter catalog contract is implemented; both sides still require acceptance on the same source cohort. Response readers enforce the 64 MiB decoded-byte limit while streaming, including missing/compressed Content-Length. Local job status and replay completion are guarded against a newer operation before any state update.
+
+## Offline selection evidence acceptance
+
+The optional inspector distinguishes a frozen offline selector from the original
+fixed-lead controller that produced the recording. Artifact hashes are declared
+references, not browser-verified model contents. One displayed recording does not
+establish held-out gain. A present metric status must match its world status.
+
+For the separate **synthetic UI-only** contract harness on Omen, serve the pinned
+preview and use a fresh output directory:
+
+```powershell
+python web/tests/selection_inspector_smoke.py --base-url http://127.0.0.1:5173 --output local-runtime/selection-inspector-new-attempt
+```
+
+This headed desktop harness intercepts its own fixture responses and watermarks
+its screenshots. It covers learned/analytical labels, original fixed physics,
+keyboard disclosure, legacy absence and malformed-evidence rejection. It does
+not run SUMO, train a model, produce real traffic, or establish a scientific
+result. It is authored but not yet accepted on Omen. Never register its fixtures
+in the public recording catalog.

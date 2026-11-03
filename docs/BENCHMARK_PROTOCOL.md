@@ -98,3 +98,18 @@ Report scheduled worlds, invoked simulations, preflight rejections, retained
 outcomes and failures separately. New world metrics record `simulation_step_s`;
 replay `step_s` is only the sampling cadence and must not be used as the simulator
 integration step when auditing request/hold deadlines.
+
+## Implemented percentile scope
+
+Decision-comparison v2 reports the nearest-rank p95 of **episode-level mean
+civilian excess-delay differences**, conditional on both selected and comparator
+policies completing validly through the common drain. It records the eligible
+episode count and population explicitly. This is not the p95 of individual
+vehicle delays; that planned distributional view remains separate and must not
+be inferred from the episode-mean statistic. Failed/censored episodes remain in
+the full failure accounting rather than entering a finite percentile.
+
+The validation-best fixed comparator is re-derived from retained exact
+validation-only candidate bytes during selection verification (selection schema
+v2). Neither that check nor hash binding independently proves untouched test
+history. Preserve the actual freeze, release and execution records.
