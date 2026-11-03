@@ -1,115 +1,91 @@
 # AFTERLIGHT
 
-**Clear the ambulance’s path. Then clear the congestion left behind.**
+A desktop traffic signal lab. Follow an ambulance through a miniature city, inspect the ordinary-signal response, and measure the traffic cost of giving it priority.
 
-A Python-first AI traffic-signal prototype under active validation for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
+[Open the lab](https://afterlight-gamma.vercel.app/) · [Watch the 84-second walkthrough](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
 
-> **Owner handoff — cloud work halted November 3.** See [HANDOFF.md](HANDOFF.md) before running or updating anything. Genuine fixture/city qualification and the corrected `3060716` viewer passed scoped Omen checks. The latest fixed-right-map / scrollable-left-settings redesign, follow-camera changes and intersection-symbol changes are now preserved in source but **have not been built or tested**. The committed preview is older; its integrity guard must not be bypassed. No trained model, held-out gain or public replay catalog is claimed. [Exact evidence](docs/validation/OMEN_LOG.md).
+![AFTERLIGHT running in the browser: colorful original city, two recorded journeys, visible follow controls and shared playback](docs/images/workspace.png)
 
-## Why Afterlight stands out
+## Try a response
 
-A basic emergency-priority demo turns a light green and celebrates the ambulance arriving sooner. **AFTERLIGHT tells the harder, more impressive story: prepare the corridor before arrival, then reveal what that decision leaves behind.** A compact city becomes an architectural miniature with two synchronized futures: the same external traffic demand, different signal decisions, and an aftermath you can inspect rather than take on trust.
+1. Open **Cross-city response** or **Westhaven response** and press **Play**.
+2. Select **Follow Ambulance**, beside Zoom. Orbit or zoom closer while it tracks the vehicle.
+3. Switch to **Ordinary** to inspect that world's traffic and signals. **Follow Ghost** puts its translucent ambulance over the Afterlight scene on the same clock.
+4. Pause, scrub, or use **10× / 20×** to explore the journey. Speed changes playback for both worlds together.
+5. Open **Results → This run** for the recording's outcomes, or **Study** for the separate held-out experiment.
 
-- **Predictive pre-clearance, not a cosmetic green wave.** A Python model is designed to learn where an analytical estimate is wrong and choose a clearance lead from observed conditions.
-- **The city matters after the ambulance passes.** Civilian queues, insertion backlog and recovery remain visible. A faster emergency journey is not automatically a better overall decision.
-- **Evidence built into the experience.** Paired traces, a no-learning ablation, a validation-tuned fixed lead and held-out scenarios are part of the product—not a results slide added at the end.
-- **A ghost that makes the counterfactual immediate.** A light-blue translucent baseline ambulance shares the same simulation clock but comes from a separate ordinary-signal world. Only the solid AFTERLIGHT ambulance affects the visible AFTERLIGHT traffic; the ghost never changes it.
-- **A distinctive visual instrument.** Original Blender-authored streets, a clearly readable ambulance and synchronized camera choreography make the experiment compelling without hiding its mechanics.
-- **A serious zero-paid-backend delivery plan.** The real simulator runs locally; a free public viewer exposes versioned experiment replays, provenance and results without pretending recorded data is live.
+A five-step first-visit guide introduces these controls. Reopen it from Settings. The left pane scrolls; the map and playback stay on screen. Desktop, keyboard and mouse are the intended experience.
 
-Emergency preemption itself is established work. Our intended distinction is the combination of learned timing, explicit civilian aftermath and an inspectable visual experiment. **These are design advantages we are building toward, not measured superiority claims.** Learning must beat strong non-learned alternatives on held-out decisions to earn a performance claim.
+![First-visit guide highlighting Follow Ambulance and Follow Ghost](docs/images/onboarding.png)
 
-## Intended deliverable
+## The city and its traffic
 
-- Python/SUMO experiment with a 25-primary-junction canonical city, two hospitals and approximately 100 pickup locations, with a three-intersection fixed-route correctness fixture.
-- Learned timing selector compared with strong non-learned baselines on unseen whole scenarios.
-- Original low-poly Blender-authored city assets: multicolored cuboid buildings, simple cars/trucks/bikes and a more detailed stylized ambulance; React/Three.js experiment viewer.
-- Free static public replay viewer, plus local simulation and a compelling recorded demo.
-- Reproducible benchmark manifests, raw outcomes, honest limitations, and setup instructions.
+The original Blender city covers **4.1004 km²**, exactly four times the earlier map's area. It has 81 primary intersections, 77 signal controllers, 826 buildings, eight parks, 100 pickup anchors and hospitals in two diagonal quadrants. Cars, trucks and bikes follow genuine SUMO recordings. Movement arrows show the recorded signals.
 
-## Read the plan
+Both traffic worlds use the same external demand and routes. Each has its own vehicles, queues and signal decisions. The ghost comes from the ordinary world and never affects Afterlight traffic. Its overlap with a visible vehicle is a comparison between separate worlds.
 
-1. [Product and contest requirements](docs/REQUIREMENTS.md)
-2. [Architecture and contracts](docs/ARCHITECTURE.md)
-3. [Benchmark protocol](docs/BENCHMARK_PROTOCOL.md)
-4. [Visual identity](DESIGN.md) and [Blender production pipeline](docs/BLENDER_PIPELINE.md)
-5. [Viewer behavior and demo](docs/VIEWER_AND_DEMO.md)
-6. [Zero-cost delivery](docs/DEPLOYMENT.md)
-7. [Research sources](docs/SOURCES.md) and [three-pass review record](docs/REVIEW_LOG.md)
-8. [Current execution roadmap](docs/ROADMAP.md)
+The roof lights alternate red and blue during playback. Reduced motion keeps them steady and disables continuous camera following. The model thumbnails in the legend are renders of the original ambulance.
 
-Three documentation passes, the final implementation review and original asset prototype are complete. Source implementation is underway; [checkpoint status](docs/IMPLEMENTATION_STATUS.md) separates implemented code from actual local acceptance. Submission still requires verified setup, actual screenshots/results, exact team attribution, licensing and AI-assistance review.
+![Close desktop view of the ambulance, mixed traffic and ordinary-world ghost](docs/images/ambulance-follow.png)
 
-## Development entry points
+Logarithmic depth and separated road/plaza surfaces correct the camera-dependent striping. Fourteen paused camera-repeat pairs at two desktop resolutions matched exactly; independent screenshot review found no visible depth conflicts. [Camera and post-identity acceptance](docs/validation/postbrand-desktop-acceptance.json)
 
-The public repository is the source of truth. Source commands below are **pending
-Omen acceptance** unless an exact execution result is recorded in the checkpoint log.
+## What the recordings show
+
+These are **two exploratory examples**, each retaining every 0.5-second simulation step through 900 seconds:
+
+- **Cross-city, fixed 20 s lead:** ambulance journey **601 → 473 s**, saving 128 s. Mean civilian excess travel time increases **2.19 s**. All 398 civilians finish in each world.
+- **Westhaven, analytical lead:** ambulance journey **426.5 → 322.5 s**, saving 104 s. Mean civilian excess increases **1.14 s**. All 426 civilians finish in each world.
+
+All four worlds report zero collisions and teleports. A separate presentation audit found no red/all-red or unresolved movements among 9,839 eligible stop-line crossings. These checks apply to the published recordings; the two examples do not establish held-out model performance. [Recording evidence](docs/validation/expanded-city-recordings.json) · [Presentation audit](docs/validation/expanded-city-presentation.json)
+
+## The learned selector did not improve the held-out result
+
+The frozen study uses **24 training, 12 validation and 20 test episodes**, with seven policy worlds per episode. Heavy demand and one ordered route family are held out. The predeclared residual tree has 11 nodes, depth 3 and 120 finite candidate labels from the 24 training groups. Validation chooses the fixed comparator's 5-second lead.
+
+The single test attempt retains **all 140 worlds: 134 completed and six collision-invalid**. Against fixed 5 s, the learned selection has **one failure versus zero**. Among the 19 pairs with valid objectives in both choices, mean objective difference is **+0.681 s**, with a 95% group-bootstrap interval of **−4.993 to +5.978 s**. Lower is better. The interval includes zero.
+
+The learned and analytical selectors choose the **same action in all 20 test episodes**. There is no demonstrated learned benefit, and the model is not promoted. Selection operates offline over five cached candidates; the hosted site replays evidence.
+
+![Actual held-out comparisons, retaining failures and showing the interval across zero](docs/images/study-comparisons.png)
+
+The objective adds ambulance journey time to mean civilian excess travel time over all scheduled civilian demand, with weight 1. Failures stay in the counts; unavailable outcomes never become zero. A retained pre-fit metadata failure led to an explicitly frozen analysis correction before the model fit and test release. Original physics, data and failed evidence remain intact. [Protocol](docs/BENCHMARK_PROTOCOL.md) · [Analysis amendment](docs/ANALYSIS_AMENDMENT.md) · [Per-case results](https://afterlight-gamma.vercel.app/study/paired-records.csv)
+
+## Measured on the desktop
+
+The measured identity build recorded **161.8 FPS overview / 127.7 FPS close follow** in separate 30-second foreground windows. The profile used a Ryzen 9 5900HX, integrated AMD Radeon graphics, Chrome 156, a 1920×1080 CSS viewport at DPR 1 and 373 vehicles at the chosen start frame. The native window was 1724×978; the canvas buffer was 1552×737. These measurements describe browser rendering cadence on this machine. [Measurements, method and retained earlier attempts](docs/validation/final-desktop-performance.json)
+
+Complete warm Python selection across five candidates measured **0.2241 ms median / 0.2512 ms p95** for the learned method, versus **0.0429 / 0.0549 ms** analytical. That is 2,400 repeated decisions per method across 12 validation observations, excluding I/O, startup, simulation, browser and network. [Original timing samples](docs/validation/study-v4/selector-timing.json)
+
+The shipped budget is below 50 MB, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer.
+
+## Verify the experiment
+
+The public proof pack contains 28 files totaling 2,405,037 bytes, including four lossless grids representing **170,697,107 bytes of complete original JSON**, the model, selectors, original report, 40 comparison rows and amendment/release evidence.
+
+Recompute it with Python's standard library, without SUMO, model fitting or private inputs:
 
 ```sh
-# Original-city viewer; no simulation or fictional results are generated here.
-cd web
-npm ci
-npm run dev
+python scripts/verify_public_study.py --base-url https://afterlight-gamma.vercel.app/ --released-manifest-sha256 f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9
 ```
 
-The viewer loads the original Blender city and canonical pickup/hospital map.
-When genuine recordings are published, it enables synchronized paired playback.
-An empty catalog is intentional, not a synthetic demonstration.
+The verifier checks original bytes, full world inventories, frozen choices, failures, per-case rows and confidence intervals. [Public verification instructions](docs/STUDY_BROWSER_ACCEPTANCE.md) · [Publication record](docs/validation/study-v4/publication.json)
 
-For Python 3.12 setup, unit checks and local API instructions see
-[implementation status](docs/IMPLEMENTATION_STATUS.md),
-[replay contract](docs/REPLAY_SCHEMA.md) and [web acceptance matrix](web/README.md).
-All tests, traffic experiments and browser/performance checks run on the owner's
-Omen computer; cloud compilation is development evidence only.
+## Run locally
 
-### Dependency-free browser acceptance preview
+Use **Node ≥22.12** and the committed lockfile:
 
-A [source-bound compiled application preview](preview/README.md) is committed for
-Omen browser QA when npm installation is unavailable. From the repository root,
-run `python scripts/serve_preview.py`; it verifies its source/output/asset hashes
-and serves only on loopback. This is the actual application build, not simulated
-traffic, a package cache, or a substitute for reproducible source installation.
-The static entry keeps the empty genuine-recording catalog; `/local.html` targets
-the separately started local API. See the preview manifest for the exact compiled
-source revision and the acceptance log for executed test results.
+```sh
+npm --prefix web ci
+npm --prefix web run dev
+```
 
-## Boundaries
+The static viewer needs no Python, SUMO, API key or environment file. For simulation or new recordings, follow the [local API instructions](api/README.md). See [viewer controls and tests](web/README.md), [architecture](docs/ARCHITECTURE.md), [source-bound preview](preview/README.md) and [current handoff](HANDOFF.md).
 
-Simulation research, not a real-world traffic control system. No safety certification, real emergency deployment, or lives-saved claim. No paid services or secret-bearing files are required by the design. Public replay is explicitly recorded, not disguised as live inference.
+## Assets, identity and attribution
 
-## AI-assistance disclosure
+The current city and model work used Blender 5.2.2 LTS through the existing Blender MCP bridge. Source scenes, generators and export records are retained. [Asset provenance](assets/PROVENANCE.md) · [Blender pipeline](docs/BLENDER_PIPELINE.md)
 
-ChatGPT assisted with research, architectural planning, documentation, critical review, procedural asset creation through Blender 4.3.2 and the existing Blender MCP bridge, and implementation of Python/TypeScript source and tests. Original geometry, source scenes, generation scripts and export checks are included. A trained model or traffic benefit is not claimed merely because model-training code exists. Human review remains responsible for factual accuracy, licensing and submission compliance.
+The [editable Canva identity guide](https://canva.link/plj2l49fb5akdcu) supplied the navy, amber, teal and Inter direction. The frontend implements the reviewed signal mark as SVG and self-hosts Inter under its full OFL license. [Design decisions](DESIGN.md) · [Runtime third-party notices](https://afterlight-gamma.vercel.app/THIRD_PARTY_NOTICES.txt)
 
-## Expanded city and fair comparison
-
-The published map has 25 primary junctions plus 32 access/bend/terminal nodes, two hospitals and 100 curb pickup anchors. These are a world/route-selection target, **not proof of 100 trained routes or city-wide model generalization**. The three-junction corridor remains the initial correctness fixture before city scaling. Traffic is seeded and randomized; whole demand realizations, seeds and appropriate route/regime groups are held out. Randomness alone does not establish freedom from overfitting.
-
-The ghost is a counterfactual overlay, not a second emergency vehicle in the active world. Its independent baseline queues/signals may differ, so apparent crossings through visible AFTERLIGHT cars or red lights must be explained with a label and optional separate-world view—not cosmetically corrected. See [the updated contracts](docs/ARCHITECTURE.md).
-
-## Original assets and current 3D city
-
-The original nine-GLB pack remains preserved: **1,268,584 bytes**, including the
-14,552-triangle city prototype and 2,378-triangle ambulance. Its Khronos checks
-passed with zero errors/warnings. These counts describe the original pack, not
-the current enhanced city.
-
-The current [V3 city manifest](assets/exports/city_enhanced_manifest.json) records
-**4,439,048 bytes**, 187 separately identified buildings and unchanged canonical
-roads/vehicle geometry, below the owner's **25 MB map ceiling**. Real modeled
-facades, roof details and hospital structures replace neither geometry with
-parallax nor simple vehicles with costly decoration. The viewer batches buildings
-by shared material and fades only foreground building geometry.
-
-Desktop controls include true-perspective Explore 2.5×, a fitted Full city view,
-X tilt/Y heading/Z view-roll, and opt-in canonical pickup/hospital selection.
-Camera magnification never rescales the simulation. Earlier enhanced geometry,
-selective transparency and desktop controls were observed on Omen; **V3 and the
-new map-picking flow still require their own acceptance**. There is no accepted
-traffic replay demonstrating the ghost comparison yet.
-
-[Explore the asset pack](assets/README.md) · [GLB validation report](assets/qa/glb_audit.json) · [Map checks](assets/map/validation_report.json)
-
-![Original Blender city prototype — authoring preview, not a running simulation](assets/previews/city_overview.png)
-
-This repository is the canonical source of truth for AFTERLIGHT's documentation, original assets, source scenes, generators and validation records. Asset licensing remains an explicit owner decision; see [provenance](assets/PROVENANCE.md).
+ChatGPT/Codex assisted with source, tests, procedural Blender work, analysis tooling and documentation. Measurements and screenshots come from executed local runs. AFTERLIGHT is simulation research; it has no real-world traffic-control or safety certification.
