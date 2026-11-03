@@ -303,8 +303,85 @@ def audit_world_signals(world: dict, network: dict, dispatch_s: float, *, simula
                 deadline=onset['t']+timing.max_hold_s
                 if (release is None and endpoint>=deadline-tolerance) or (release is not None and release['t']>deadline+tolerance):
                     raise ValueError(f'{name}/{junction}: priority green exceeded maximum hold')
+    audit_signal_release(world, network, timing, step)
     return {'priority_deadline_audit':'passed' if step is not None else 'not_checked_missing_integration_step',
+            'release_recovery_audit':'passed' if step is not None else 'phase_binding_only_missing_integration_step',
             'simulation_step_s':step}
+
+
+def audit_signal_release(world: dict, network: dict, timing: Timing, step: float | None) -> None:
+    """Bind priority labels to actual states and bounded post-release service.
+
+    Recovery phase choice may depend on queues not retained in the replay. We
+    check legal state/target/time consistency, not reconstruct those queues.
+    Same-phase recovery on a single-phase signal is deliberately supported.
+    """
+    tolerance = 1e-8
+    endpoint = world['frames'][-1]['t']
+    transition_kinds = ('green', 'yellow', 'all_red')
+    for junction in network['signals']:
+        events = [e for e in world['events'] if e.get('junction') == junction]
+        transitions = [(i, e) for i, e in enumerate(events) if e['kind'] in transition_kinds]
+        recovery = [e for e in events if e['kind'] == 'recovery_requested']
+        if len(recovery) > 1:
+            raise ValueError(f'{junction}: multiple recovery services for one request')
+        release = next((e for e in events if e['kind'] == 'release'), None)
+        request = next((e for e in events if e['kind'] == 'request'), None)
+        for i, event in enumerate(events):
+            if event['kind'] == 'priority_green':
+                previous = [e for index, e in transitions if index < i]
+                if not previous or previous[-1]['kind'] != 'green' or previous[-1]['phase'] != event['phase']:
+                    raise ValueError(f'{junction}: priority onset is not the active requested green')
+        if recovery and (release is None or recovery[0]['t'] < release['t'] - tolerance):
+            raise ValueError(f'{junction}: recovery has no preceding release')
+        needs_recovery = release is not None and request is not None and release['t'] >= request['t'] - tolerance
+        if not needs_recovery:
+            if recovery:
+                raise ValueError(f'{junction}: recovery without an activated priority request')
+            continue
+        if step is None:
+            continue
+        quantized = lambda value: math.ceil((value - TIME_EPSILON_S) / step) * step
+        release_index = next(i for i, e in enumerate(events) if e is release)
+        before = [e for i, e in transitions if i < release_index]
+        if not before:
+            raise ValueError(f'{junction}: release lacks preceding controller state')
+        stage = before[-1]
+        if stage['kind'] == 'green':
+            recovery_due = max(release['t'], quantized(stage['t'] + timing.min_green_s))
+        elif stage['kind'] == 'yellow':
+            recovery_due = quantized(quantized(stage['t'] + timing.yellow_s) + timing.all_red_s) + timing.min_green_s
+        else:
+            recovery_due = quantized(stage['t'] + timing.all_red_s) + timing.min_green_s
+        recovery_due = quantized(recovery_due)
+        if not recovery:
+            if endpoint >= recovery_due - tolerance:
+                raise ValueError(f'{junction}: released priority never begins bounded recovery')
+            continue
+        recovered = recovery[0]
+        if abs(recovered['t'] - recovery_due) > tolerance:
+            raise ValueError(f'{junction}: recovery did not begin at legal release boundary')
+        yellow = next((e for _, e in transitions if e['kind'] == 'yellow' and abs(e['t']-recovered['t']) <= tolerance), None)
+        if yellow is None or yellow.get('target') != recovered.get('phase'):
+            raise ValueError(f'{junction}: recovery event does not match actual yellow target')
+        expected = [('all_red', quantized(recovered['t'] + timing.yellow_s), None),
+                    ('green', quantized(quantized(recovered['t'] + timing.yellow_s) + timing.all_red_s), recovered['phase'])]
+        expected.append(('yellow', quantized(expected[-1][1] + timing.recovery_green_s), recovered['phase']))
+        ordinary_yellow_at = expected[-1][1]
+        ordinary_phase = (recovered['phase'] + 1) % len(network['signals'][junction]['greens'])
+        expected.append(('all_red', quantized(ordinary_yellow_at + timing.yellow_s), None))
+        expected.append(('green', quantized(expected[-1][1] + timing.all_red_s), ordinary_phase))
+        for kind, due, phase in expected:
+            if endpoint < due - tolerance:
+                continue
+            actual = next((e for _, e in transitions if e['kind'] == kind and abs(e['t']-due) <= tolerance), None)
+            if actual is None or (phase is not None and actual.get('phase') != phase):
+                raise ValueError(f'{junction}: released priority recovery stage exceeded its bound')
+        # Recovery must finish into the ordinary next phase, including n=1.
+        end_yellow = next((e for _, e in transitions if e['kind'] == 'yellow' and abs(e['t']-ordinary_yellow_at) <= tolerance), None)
+        if end_yellow is not None and end_yellow.get('target') != ordinary_phase:
+            raise ValueError(f'{junction}: recovery does not return to ordinary cycling')
+
 
 
 def audit(directory: Path, *, write_result: bool = True) -> dict:
