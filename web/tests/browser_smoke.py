@@ -166,8 +166,14 @@ def main() -> None:
             passed("mobile_city_first_no_overflow_reduced_motion")
             page.keyboard.press("Tab")
             focused = page.evaluate("document.activeElement.tagName")
+            # The map is intentionally focusable for non-pointer camera access.
+            # Reset → Tab may enter it; the next Tab must leave, not trap focus.
+            if focused == "CANVAS":
+                assert page.evaluate("document.activeElement.matches('.three-host canvas[tabindex=\"0\"]')")
+                page.keyboard.press("Tab")
+                focused = page.evaluate("document.activeElement.tagName")
             assert focused in {"A", "BUTTON", "INPUT", "SELECT", "SUMMARY"}, focused
-            passed("keyboard_focus_enters_interactive_html", focused)
+            passed("keyboard_focus_leaves_camera_for_interactive_html", focused)
             assert not errors, errors
             passed("no_uncaught_browser_errors")
             report["status"] = "passed"

@@ -5,10 +5,10 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `b33ced8d161defb019903dd3e98440a6a3e3bda1`.
+**Compiled source:** `14ea738befab111041511a58c8b1fb402c1ce8c3`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
-Compilation succeeded in the cloud; this revised build still requires Omen browser regression checks. Earlier scoped
+Compilation succeeded in the cloud. This true-perspective camera and enhanced 3D map build still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
 acceptance is recorded in `docs/validation/OMEN_LOG.md`.
 A successful preview test does not establish npm installation reproducibility,
 SUMO correctness, performance improvement, or a trained model.

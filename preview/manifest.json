@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_commit": "b33ced8d161defb019903dd3e98440a6a3e3bda1",
+  "source_commit": "14ea738befab111041511a58c8b1fb402c1ce8c3",
   "build_environment": {
     "node": "24.22.1",
     "npm": "11.9.0",
@@ -19,7 +19,7 @@
       "VITE_API_BASE": "http://127.0.0.1:8765"
     }
   },
-  "validation_status": "Responsive camera/favicon revision compiled only; Omen regression/browser acceptance pending. Earlier source acceptance is separately recorded in docs/validation/OMEN_LOG.md. No real simulation results.",
+  "validation_status": "True perspective camera and enhanced real 3D map compiled only; Omen structural, shader, interaction, visual and performance acceptance pending. No new simulation results claimed.",
   "source_files": {
     "web/index.html": "70f72034c9421d7882ebd2925fde40aee948dd8e3323f9c1eaf0a668c5730b8c",
     "web/package-lock.json": "3a6791532811203832c1eee51ba8219b55c20ff28be324c8ca6142433c2923b7",
@@ -27,8 +27,10 @@
     "web/public/favicon.svg": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44",
     "web/scripts/prepare-assets.mjs": "ab1a06469602b91c07895c3fe463e4df7e070fb7e68584e5cf8bc061da4a59c8",
     "web/src/App.tsx": "1a34c3ca06d43d3cad95fa16bc20b62b06570f4452e4fcfe64d973703133bb3b",
+    "web/src/BuildingCutaway.ts": "6cbbb1f2e69be7179434def68a0734b65ca51cbc4ab33f8a782c9def87d463de",
+    "web/src/CameraControls.tsx": "828b38f89bd57e7a35c6c545d4db76d55d65925d82ee613eaacb11e31beed631",
     "web/src/CanvasBoundary.tsx": "21f0c695ccac9c220383e4d0ef776beac22147cfd964900e7d493415b69eb2af",
-    "web/src/CityView.tsx": "c1d5b04a0a05b0f05111adb4568334003a0141e5b8bb8e828ea215ce7dacedbb",
+    "web/src/CityView.tsx": "d7ee3e4bd7d3040021635675ebe4fbf0486fb678de245dd77fc4d24c2a22842f",
     "web/src/DecisionInspector.tsx": "09f6bd90e086fe675859d5dea6dba63d7868c9e15646af814e600191d12c615a",
     "web/src/GeometryLayer.ts": "e694525493519cd653aba96a3fc0916b8b516f9fe6f2fe42a6b16ccdddeb04a5",
     "web/src/LocalGeneration.tsx": "7810cbd33b8c0eeaa066a1726088396511fda1c5b4a9346c3972def19e2c508e",
@@ -42,7 +44,7 @@
     "web/src/recording.ts": "e73a996fcf4de6953e68b19ba7731ecdfe855559a8683716e164f7f54d07e45b",
     "web/src/replay.ts": "775795b832e63c1fb6ac58ae9783a56321706a5a6698566581962ccf01281704",
     "web/src/response.ts": "f2a65187e70ef517d5064fbc8e22582a181bc0735084f691cca2ea75b9da73ad",
-    "web/src/styles/app.css": "aef6e12a55ecc536f31228f7b0501849c19f81f9f8fe5fbe45700b565a8121e6",
+    "web/src/styles/app.css": "d16fdc6f688ee966018550e38d160d4fa5950f1b074b980b36322ec81b15bae5",
     "web/src/styles/tokens.css": "e4124f98add0cd87b74dbd2e14382a5c782679ad16fac46613c39f498013fc21",
     "web/src/types.ts": "e9b9028ff237343d5c77c3637ee71fc0dc0aa1d1e914893ae99a88ae1116912e",
     "web/src/validation.ts": "f22dc8e7f228e0c5fcd53481e9cae453ec3f5c402d2205428745038b44e88b80",
@@ -55,14 +57,14 @@
     "preview/licenses/scheduler-LICENSE.txt": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
     "preview/licenses/three-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
     "preview/licenses/vite-runtime-LICENSE.txt": "e373c2e74cd342b9e74d0b8813a8fddf3c9788515669a79c2ac238195673d38b",
-    "preview/site/assets/CityView-DEy4UUFj.js": "ac485ad3ac30023e050976748d7f47e8750b3d2672d901990018f3eb868e9035",
-    "preview/site/assets/CityView-Jl4BN5Tf.js": "9bb33d63c58b243ac89ab89e37d56d66d6cbd7b38918d13f64cc3a3e703a1a8c",
-    "preview/site/assets/index-CCYrJPUY.js": "7f8eaad2506025a819a87756b3663d957fdc266ec4acdc23f1e3f008bf4acb9d",
-    "preview/site/assets/index-C_CbTPx-.css": "0d0744ccca745ab95fcd53d8c7bf2e619a9f30b511c83d46305bb05b76b2e306",
-    "preview/site/assets/index-I_hEBegt.js": "db05437f60089194670ffb591fc4ab5dde00827b2efc4db14ab717d975feb037",
+    "preview/site/assets/CityView-DJf3l5xC.js": "2cebf040f9059db9b9faaf3e60fe209f3750618afe8223c9e60c760d85203520",
+    "preview/site/assets/CityView-DaD5NLJv.js": "fd5e6f4b40e378bea8f0e129905346e90df227ac7b3a7470897154a382d7fabb",
+    "preview/site/assets/index-2MnKDGA0.js": "292f854775f4297570971e7e6cd4eb48974ce8e4d6d394bc0f5115a833a7d7c8",
+    "preview/site/assets/index-C2e_dyaI.js": "38b1a8ccfde5286983952fe522f01a540321e59c70dc15485346dced4af66460",
+    "preview/site/assets/index-mDofnGso.css": "3232148c40271e1f6d5d68f139a45046e4350c5a78703835027fcba3eb1a2810",
     "preview/site/favicon.svg": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44",
-    "preview/site/index.html": "471b10f0f62d4059883e08d549ed8f082467dff20a0ecd0144924287447df399",
-    "preview/site/local.html": "3982dcdf265c3ad76e3d6df29e05f02b024373afa8492e6513d8bb60db1d6d64",
+    "preview/site/index.html": "f3d750a380e48ba61192001f6c56fad841e1022211a2a7ccce3e7f1430107deb",
+    "preview/site/local.html": "a841a1813f3190d5d1aa696cd216fddfd7ab54e6c6f698a46a743e924397b1e7",
     "scripts/serve_preview.py": "b5d747c37be76ee0d05ccdfc241d22a37fb2c8b829634fc1b061798f769a30b9"
   },
   "runtime_assets": {
@@ -73,6 +75,8 @@
     "assets/exports/building_sand.glb": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e",
     "assets/exports/building_slate.glb": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56",
     "assets/exports/car.glb": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591",
+    "assets/exports/city_enhanced.glb": "9ad513c55f7934e95933a5c617351941f2ca6e0a21dc0f010ba1982f1d072b0c",
+    "assets/exports/city_enhanced_manifest.json": "6d94ced332aab4650651b0c0622fbfe1983e9cce71de77e4b6597c34fa5ce246",
     "assets/exports/city_static.glb": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe",
     "assets/exports/truck.glb": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4",
     "assets/map/city_manifest.json": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
