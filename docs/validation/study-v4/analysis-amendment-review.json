@@ -1,0 +1,34 @@
+{
+  "schema": "afterlight.analysis-amendment-independent-review.v1",
+  "recorded_utc": "2026-11-03T15:16:28.990157+00:00",
+  "status": "passed_descriptor_and_source_review_before_amended_fit",
+  "descriptor_sha256": "c30562eadf64ed991e18b905f685bcc325116158d32f9c560ba04d187b7909ae",
+  "descriptor_file_sha256": "9cc3c3edabf2af1075392e06cf16468d2a6ef90e93da86ffe46e5ccb50a144eb",
+  "descriptor_created_utc": "2026-11-03T15:11:54.758978+00:00",
+  "original_source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+  "original_source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
+  "original_source_files_byte_verified": 37,
+  "original_checkout_git_head_verified": true,
+  "frozen_estimator_sha256": "94088eb6a774a152e3ddb1f6a4766cc42b84f0c98848563345d4678cd6737883",
+  "analysis_sources_match_commit": "ff3edbc",
+  "analysis_sources": {
+    "verifier": "67c706bea0d1b776a99bb8dff738aceb59ee49d236d4bde60254533f3ec70adb",
+    "binding_helper": "a33e95210b26e0a2f44099e516d04fb7a5bd343562cc13df9af173662e7ce92b",
+    "entrypoint": "dea9a7153d6705187237a93989b7107316740dfabb4f6dc78933f17c6313b3a5",
+    "diff": "eb1cd6489d7ffc70910fb4f2a970bb7127f9b2620f31e060a48210c6d2a8a034"
+  },
+  "retained_failed_attempt": {
+    "journal_sha256": "6a2971bbee6fa967dd2386e3d74b1c336955fa84967273784a4427e33303e427",
+    "log_sha256": "a1957d535b2d30011ce3c86c74880dbb5e68a96467e6b7fe3f371a134fb0c721",
+    "reviewed_stack_stops_before_selection_output_and_model_fit": true,
+    "journal_has_independent_fit_stage_marker": false
+  },
+  "synthetic_regressions": {
+    "amendment": 8,
+    "public_proof_guards": 31,
+    "status": "passed",
+    "scope": "Synthetic verifier/source/provenance regressions; no benchmark-result claim."
+  },
+  "root_inspection_scope": "Actual descriptor, source companions, retained failure metadata/stack and original source bytes only. No original outcome files opened, model fitting, simulation or held-out release by this review.",
+  "decision": "Authorize one fresh amended selection, then independently review its actual model/provenance before explicit held-out release."
+}
