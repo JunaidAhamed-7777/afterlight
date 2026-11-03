@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_commit": "be33af7a11b7892191d8624e99ee93cfc0a565ce",
+  "source_commit": "66527db088abe12ebac63af62bd6c9aac39b6d69",
   "build_environment": {
     "vite": "7.3.7",
     "typescript": "5.9.3",
@@ -30,14 +30,15 @@
     "preview/licenses/three-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
     "preview/licenses/vite-runtime-LICENSE.txt": "e373c2e74cd342b9e74d0b8813a8fddf3c9788515669a79c2ac238195673d38b",
     "scripts/build_preview.py": "d2f77b29e74e957037da73f245770f109aea0c7f05230cd1950d04996b2ed036",
-    "scripts/serve_preview.py": "7c03a31999976623ba0d25f0a9b70b0add663121aa2fc09bf094e17461d2d25c",
+    "scripts/serve_preview.py": "a322e443f451f70a4f9d375600fcae0e74e9f3da00b5c61d35abc686e5a757b1",
     "web/index.html": "70f72034c9421d7882ebd2925fde40aee948dd8e3323f9c1eaf0a668c5730b8c",
     "web/package-lock.json": "be7aa5210f7119b808b53fb09e6e3eacd2732485559d3697d623f3eae70f5797",
     "web/package.json": "62cec7500e798701751272e31273b547641b7053d9e0d04fc1df45de58683056",
+    "web/public/THIRD_PARTY_NOTICES.txt": "e8fc9eb43bcd4068316f90891c7814f995be0e163fdb1a2c0b3c5c8be0491db1",
     "web/public/favicon.svg": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44",
     "web/scripts/audit-presentation.mjs": "033904c84e35e23a65d72f8283ee9247091c060cbb3754cba3d8a634ed78f962",
     "web/scripts/prepare-assets.mjs": "dec6489d0a41e2235e261c02123fc1431d27b23d9a48bf49e098bdfdfc7fa8a2",
-    "web/src/App.tsx": "15a575faa9f89763e5b30294d8274965df6b8982f003bcc2511d3a07716df2d3",
+    "web/src/App.tsx": "dab679c4378435015beb4e16880697a22dcaee00d4f9d7249ac4ef631282e37d",
     "web/src/BuildingCutaway.ts": "6cbbb1f2e69be7179434def68a0734b65ca51cbc4ab33f8a782c9def87d463de",
     "web/src/CameraControls.tsx": "dc170e9e9b1a38173dc8b6c03cd76481bd7cf5e36dc321d9e288e8846888c244",
     "web/src/CanvasBoundary.tsx": "118c650c2a8073e8ddb9b74df23beb0feaf967f8b8b9f4d07469207cee99b72e",
@@ -105,15 +106,15 @@
     "preview/licenses/scheduler-LICENSE.txt": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93",
     "preview/licenses/three-LICENSE.txt": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601",
     "preview/licenses/vite-runtime-LICENSE.txt": "e373c2e74cd342b9e74d0b8813a8fddf3c9788515669a79c2ac238195673d38b",
-    "preview/site/assets/CityView-DmgLSNk8.js": "1555586ff1f36f523ac57bbfd84a2e2c33f3624a2f16835663c7f4f27bc1bbce",
-    "preview/site/assets/CityView-pugPnA8b.js": "934af0d234cc72315f92b92c3ef916ba62fcc48715d83e4f423236cd2e0f3ff4",
-    "preview/site/assets/index-C90_xGKb.js": "fc0dc0b7b34ca825be7341188f49361c023609e826f57dc2b6c7062cae648362",
-    "preview/site/assets/index-CId2shP-.js": "6a15b2e838f6fbf2dc06b00a10bb48ec833237f49b80784c96200c7c5c6573b2",
+    "preview/site/assets/CityView-Ck6JI_gF.js": "f9cca0a458254c4dcf44d6553371997d8417f25e795c11ed1c967f9d2de9dbe2",
+    "preview/site/assets/CityView-D-pw9EHU.js": "705f45a678aac04975209088be180a96905ea798416fe737a38cc99dffe39a04",
     "preview/site/assets/index-CdLo48_Q.css": "454c5984ec98dac3ee13444c24c834e3081caf1fb7c3b798478a9a31a5538b2f",
+    "preview/site/assets/index-Cz8FT8Pg.js": "15de7c96d477ca9deead64b219f79d9a79d850b30660949d0ed2c2e39741d39c",
+    "preview/site/assets/index-OCLVW-NN.js": "c15c5355c185d384f2303214c63f1166a9d73576c69ee9f2052c8e30e844aa52",
     "preview/site/assets/recording.worker-DdqdYQIB.js": "45407607bd9bc9cba76c742d263eba9c5a3aeead2d2dbe7569d897846a105364",
     "preview/site/favicon.svg": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44",
-    "preview/site/index.html": "a31abf5006c1700baf75ece4cfdf1a86baa94f19ecccf00bd05638d39258c001",
-    "preview/site/local.html": "1c8a37a28b0312c676d068925c2e7b5cfda73c64a77ac8a4d88df7061048a177",
-    "scripts/serve_preview.py": "7c03a31999976623ba0d25f0a9b70b0add663121aa2fc09bf094e17461d2d25c"
+    "preview/site/index.html": "0ca8bb690ee8536a8698763b98a51fc2424875aaf019ebdeddffb7d3dce96c47",
+    "preview/site/local.html": "59882d44a1ce46264b10d625c6ca894f3131a78342c5c80b15e020d54729e87e",
+    "scripts/serve_preview.py": "a322e443f451f70a4f9d375600fcae0e74e9f3da00b5c61d35abc686e5a757b1"
   }
 }
