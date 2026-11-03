@@ -33,8 +33,9 @@ def resolve_request(raw: str) -> Path | None:
         base, relative = ROOT / "assets/exports", path.removeprefix("/assets/exports/")
     elif path == "/assets/map/city_manifest.json":
         base, relative = ROOT / "assets/map", "city_manifest.json"
-    elif path == "/assets/previews/city_overview.png":
-        base, relative = ROOT / "assets/previews", "city_overview.png"
+    elif path in ("/assets/previews/city_overview.png", "/assets/previews/city_expanded.png",
+                  "/assets/previews/ambulance_model.png", "/assets/previews/ghost_model.png"):
+        base, relative = ROOT / "assets/previews", path.rsplit("/", 1)[1]
     elif path.startswith("/replays/"):
         base, relative = ROOT / "web/public/replays", path.removeprefix("/replays/")
     else:

@@ -1,7 +1,7 @@
 """Source-bound dual preview assembly. Default is read-only; --build opts in.
 
 Usage: python scripts/build_preview.py --source-commit <full HEAD SHA> [--build]
-Cloud/Linux build tool; Windows build execution is not supported by this helper.
+Portable Windows/Linux/macOS build using Node and the installed npm CLI directly.
 Never installs dependencies, runs tests, changes Git state, or deletes old outputs.
 Installed dependency versions are checked, not every installed package byte.
 Obsolete manifest-owned chunks remain on disk but are no longer in the manifest.
@@ -59,7 +59,9 @@ def is_source(name: str) -> bool:
 
 def is_asset(name: str) -> bool:
     return name.startswith('assets/exports/') or name in (
-        'assets/map/city_manifest.json', 'assets/previews/city_overview.png')
+        'assets/map/city_manifest.json', 'assets/previews/city_overview.png',
+        'assets/previews/city_expanded.png', 'assets/previews/ambulance_model.png',
+        'assets/previews/ghost_model.png')
 
 
 def snapshot(root: Path, commit: str) -> dict:
@@ -127,6 +129,48 @@ def snapshot(root: Path, commit: str) -> dict:
     return sections
 
 
+def tool_commands() -> dict[str, list[str]]:
+    """Resolve npm's JS entry point without asking a shell to run npm.cmd.
+
+    Windows Node installers put npm under node_modules beside node.exe/npm.cmd.
+    Unix installations commonly expose a symlink to npm-cli.js. The npm package
+    metadata must identify that exact entry; an arbitrary nearby JS file is not
+    accepted. Returned paths remain individual argv values, including spaces.
+    """
+    node = shutil.which('node')
+    if node is None:
+        raise ValueError('node is not installed')
+    node_path = Path(node).resolve()
+    launcher = shutil.which('npm') or shutil.which('npm.cmd')
+    candidates = []
+    if launcher is not None:
+        npm_path = Path(launcher)
+        resolved = npm_path.resolve()
+        if resolved.name == 'npm-cli.js':
+            candidates.append(resolved)
+        for parent in (npm_path.parent, resolved.parent):
+            candidates.extend((parent / 'node_modules/npm/bin/npm-cli.js',
+                               parent.parent / 'lib/node_modules/npm/bin/npm-cli.js'))
+    for parent in (Path(node).parent, node_path.parent):
+        candidates.extend((parent / 'node_modules/npm/bin/npm-cli.js',
+                           parent.parent / 'lib/node_modules/npm/bin/npm-cli.js'))
+    for candidate in candidates:
+        if not candidate.is_file():
+            continue
+        cli = candidate.resolve()
+        package_file = cli.parent.parent / 'package.json'
+        try:
+            package = json.loads(package_file.read_bytes())
+        except (OSError, ValueError):
+            continue
+        if not isinstance(package, dict):
+            continue
+        bins = package.get('bin')
+        if package.get('name') == 'npm' and isinstance(bins, dict) and bins.get('npm') == 'bin/npm-cli.js':
+            return {'node': [str(node_path)], 'npm': [str(node_path), str(cli)]}
+    raise ValueError('Cannot locate the installed npm/bin/npm-cli.js; use a standard Node/npm installation')
+
+
 def environment(root: Path) -> tuple[dict, dict[str, bytes]]:
     locked = json.loads(safe(root, 'web/package-lock.json').read_bytes())['packages']
     versions = {}
@@ -135,12 +179,13 @@ def environment(root: Path) -> tuple[dict, dict[str, bytes]]:
         if installed != locked[f'node_modules/{name}']['version']:
             raise ValueError(f'Installed {name} differs from lockfile')
         versions[name] = installed
-    for command in ('node', 'npm'):
-        executable = shutil.which(command)
-        if executable is None:
-            raise ValueError(f'{command} is not installed')
-        versions[command] = subprocess.run([executable, '--version'], cwd=root, check=True,
+    commands = tool_commands()
+    for command, prefix in commands.items():
+        versions[command] = subprocess.run([*prefix, '--version'], cwd=root, check=True,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True).stdout.strip().removeprefix('v')
+    versions['node_executable'] = commands['node'][0]
+    versions['npm_cli'] = commands['npm'][1]
+    versions['npm_cli_sha256'] = digest(Path(commands['npm'][1]).read_bytes())
     licenses = {}
     for name, relative in LICENSES.items():
         original = safe(root, f'preview/licenses/{name}-LICENSE.txt').read_bytes()
@@ -241,7 +286,7 @@ def build(root: Path, commit: str, *, execute: bool = False) -> dict:
             'action': 'build' if execute else 'plan', 'tests_executed': False}
     if not execute:
         return plan
-    npm = shutil.which('npm')
+    npm = tool_commands()['npm']
     env = {k: v for k, v in os.environ.items() if not k.upper().startswith('VITE_') and k not in ('NODE_OPTIONS', 'NODE_ENV')}
     # Scratch outputs are newly allocated, never a caller-selected deletion target.
     with tempfile.TemporaryDirectory(prefix='afterlight-preview-') as scratch:
@@ -250,7 +295,7 @@ def build(root: Path, commit: str, *, execute: bool = False) -> dict:
             build_env = dict(env)
             if api_base:
                 build_env['VITE_API_BASE'] = api_base
-            subprocess.run([npm, 'run', 'build', '--prefix', 'web', '--', '--outDir', str(output), '--emptyOutDir'],
+            subprocess.run([*npm, 'run', 'build', '--prefix', 'web', '--', '--outDir', str(output), '--emptyOutDir'],
                            cwd=root, env=build_env, check=True)
         if snapshot(root, commit) != inputs or environment(root) != (versions, licenses):
             raise ValueError('Build source/runtime changed during compilation')
@@ -269,8 +314,6 @@ def main() -> None:
     parser.add_argument('--source-commit', required=True)
     parser.add_argument('--build', action='store_true', help='Explicitly run both npm compilations and assemble preview')
     args = parser.parse_args()
-    if os.name == 'nt':
-        parser.error('Run this build helper on the cloud/Linux computer; serve the resulting preview on Omen')
     print(json.dumps(build(ROOT, args.source_commit, execute=args.build), indent=2))
 
 

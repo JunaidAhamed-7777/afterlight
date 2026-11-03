@@ -23,6 +23,13 @@ class PreviewPaths(unittest.TestCase):
     def test_original_map(self):
         self.assertEqual(server.resolve_request('/assets/map/city_manifest.json?v=1'), ROOT / 'assets/map/city_manifest.json')
 
+    def test_current_city_fallback(self):
+        self.assertEqual(server.resolve_request('/assets/previews/city_expanded.png'), ROOT / 'assets/previews/city_expanded.png')
+
+    def test_current_model_thumbnails(self):
+        for name in ('ambulance_model.png', 'ghost_model.png'):
+            self.assertEqual(server.resolve_request('/assets/previews/' + name), ROOT / 'assets/previews' / name)
+
     def test_manifest(self):
         declared = json.loads((ROOT / 'preview/manifest.json').read_text(encoding='utf-8'))
         # The compiled source may differ from HEAD after backend-only commits.

@@ -33,6 +33,10 @@ class PreviewAssembly(unittest.TestCase):
         for name in ('web/node_modules/x.js', 'web/dist/index.html', 'web/tests/a.ts',
                      'web/public/assets/exports/city.glb', 'web/public/replays/catalog.json'):
             self.assertFalse(builder.is_source(name), name)
+        self.assertTrue(builder.is_asset('assets/previews/city_expanded.png'))
+        self.assertTrue(builder.is_asset('assets/previews/ambulance_model.png'))
+        self.assertTrue(builder.is_asset('assets/previews/ghost_model.png'))
+        self.assertFalse(builder.is_asset('assets/previews/private-note.txt'))
 
     def test_paths_refuse_traversal_and_redirect(self):
         for name in ('../secret', '/tmp/secret', 'web/../secret', 'C:/secret', 'web\\x'):
@@ -59,7 +63,7 @@ class PreviewAssembly(unittest.TestCase):
         before = (self.root / 'preview/manifest.json').read_bytes()
         with patch.object(builder, 'snapshot', return_value={}), \
              patch.object(builder, 'environment', return_value=({}, {})), \
-             patch.object(builder.shutil, 'which', return_value='npm'), \
+             patch.object(builder, 'tool_commands', return_value={'npm': ['node', 'npm-cli.js']}), \
              patch.object(builder.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, 'npm')), \
              patch.object(builder, 'publish') as publish:
             with self.assertRaises(subprocess.CalledProcessError):
@@ -70,7 +74,7 @@ class PreviewAssembly(unittest.TestCase):
     def test_source_drift_after_build_refuses_publication(self):
         with patch.object(builder, 'snapshot', side_effect=[{'source_files': {}}, {'source_files': {'new': 'hash'}}]), \
              patch.object(builder, 'environment', return_value=({}, {})), \
-             patch.object(builder.shutil, 'which', return_value='npm'), \
+             patch.object(builder, 'tool_commands', return_value={'npm': ['node', 'npm-cli.js']}), \
              patch.object(builder.subprocess, 'run'), patch.object(builder, 'publish') as publish:
             with self.assertRaisesRegex(ValueError, 'changed during'):
                 builder.build(self.root, 'a' * 40, execute=True)
@@ -140,7 +144,8 @@ class PreviewAssembly(unittest.TestCase):
             self.put(f'web/node_modules/{name}/package.json', b'{"version":"1"}')
         self.put('web/package-lock.json', json.dumps({'packages': {
             f'node_modules/{n}': {'version': '1'} for n in builder.PACKAGES}}).encode())
-        with patch.object(builder.shutil, 'which', return_value='tool'), \
+        cli = self.put('tooling/npm-cli.js', b'cli')
+        with patch.object(builder, 'tool_commands', return_value={'node': ['node'], 'npm': ['node', str(cli)]}), \
              patch.object(builder.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, '1\n', '')):
             with self.assertRaises(FileNotFoundError):
                 builder.environment(self.root)
@@ -151,7 +156,7 @@ class PreviewAssembly(unittest.TestCase):
         inputs = {'source_files': {}, 'runtime_assets': {}}
         with patch.object(builder, 'snapshot', return_value=inputs), \
              patch.object(builder, 'environment', return_value=({}, {})), \
-             patch.object(builder.shutil, 'which', return_value='npm'), \
+             patch.object(builder, 'tool_commands', return_value={'npm': ['node', 'npm-cli.js']}), \
              patch.object(builder.subprocess, 'run') as run, \
              patch.object(builder, 'collect_outputs', return_value={}), \
              patch.object(builder, 'publish'), \
@@ -163,13 +168,50 @@ class PreviewAssembly(unittest.TestCase):
         self.assertNotIn('VITE_SECRET', first.kwargs['env'])
         self.assertNotIn('NODE_OPTIONS', first.kwargs['env'])
         self.assertEqual(second.kwargs['env']['VITE_API_BASE'], 'http://127.0.0.1:8765')
-        self.assertEqual(first.args[0][1:6], ['run', 'build', '--prefix', 'web', '--'])
+        self.assertEqual(first.args[0][:2], ['node', 'npm-cli.js'])
+        self.assertEqual(first.args[0][2:7], ['run', 'build', '--prefix', 'web', '--'])
+        self.assertNotIn('shell', first.kwargs)
+
+    def npm_installation(self, folder='Program Files/Node.js'):
+        node = self.put(f'{folder}/node.exe', b'node')
+        launcher = self.put(f'{folder}/npm.cmd', b'Windows command shim; never execute this')
+        cli = self.put(f'{folder}/node_modules/npm/bin/npm-cli.js', b'CLI entry')
+        package = self.put(f'{folder}/node_modules/npm/package.json',
+            b'{"name":"npm","version":"10.0.0","bin":{"npm":"bin/npm-cli.js"}}')
+        return node, launcher, cli, package
+
+    def test_windows_npm_cmd_resolves_to_node_and_cli_argv_with_spaces(self):
+        node, launcher, cli, _ = self.npm_installation()
+        with patch.object(builder.shutil, 'which', side_effect=lambda name: str(node if name == 'node' else launcher)):
+            commands = builder.tool_commands()
+        self.assertEqual(commands['node'], [str(node.resolve())])
+        self.assertEqual(commands['npm'], [str(node.resolve()), str(cli.resolve())])
+        self.assertNotIn(str(launcher), commands['npm'])
+
+    def test_unix_style_direct_npm_entry_is_supported(self):
+        node, _, cli, _ = self.npm_installation('toolchain')
+        with patch.object(builder.shutil, 'which', side_effect=lambda name: str(node if name == 'node' else cli)):
+            self.assertEqual(builder.tool_commands()['npm'], [str(node.resolve()), str(cli.resolve())])
+
+    def test_missing_or_wrong_npm_entry_fails_closed(self):
+        node, launcher, cli, package = self.npm_installation()
+        with patch.object(builder.shutil, 'which', side_effect=lambda name: str(node if name == 'node' else launcher)):
+            package.write_bytes(b'{"name":"unrelated","bin":{"npm":"bin/npm-cli.js"}}')
+            with self.assertRaisesRegex(ValueError, 'Cannot locate'):
+                builder.tool_commands()
+            package.write_bytes(b'{"name":"npm","bin":"wrong-entry.js"}')
+            with self.assertRaisesRegex(ValueError, 'Cannot locate'):
+                builder.tool_commands()
+            cli.unlink()
+            with self.assertRaisesRegex(ValueError, 'Cannot locate'):
+                builder.tool_commands()
 
     def source_fixture(self):
         commit = 'a' * 40
         names = ['web/package.json', 'web/package-lock.json', 'web/index.html', 'web/tsconfig.json',
                  'web/public/favicon.svg', 'scripts/serve_preview.py', 'scripts/build_preview.py',
-                 'web/src/new.ts']
+                 'web/src/new.ts', 'assets/previews/city_expanded.png',
+                 'assets/previews/ambulance_model.png', 'assets/previews/ghost_model.png']
         entries = {}
         for i, name in enumerate(names):
             payload = name.encode()
@@ -197,6 +239,16 @@ class PreviewAssembly(unittest.TestCase):
             self.assertIn('web/src/new.ts', snapshot['source_files'])
             self.put('web/src/new.ts', b'edited')
             with self.assertRaisesRegex(ValueError, 'Actual source bytes'):
+                builder.snapshot(self.root, commit)
+
+    def test_snapshot_binds_current_fallback_and_model_thumbnail_bytes(self):
+        commit, git = self.source_fixture()
+        with patch.object(builder, 'git', side_effect=git):
+            snapshot = builder.snapshot(self.root, commit)
+            for name in ('city_expanded.png', 'ambulance_model.png', 'ghost_model.png'):
+                self.assertIn('assets/previews/' + name, snapshot['runtime_assets'])
+            self.put('assets/previews/ghost_model.png', b'changed image')
+            with self.assertRaisesRegex(ValueError, 'Actual source bytes.*ghost_model'):
                 builder.snapshot(self.root, commit)
 
     def test_ignored_source_and_env_rejected_without_reading_contents(self):
