@@ -151,6 +151,12 @@ The comparison legend uses transparent renders of the actual ambulance and ghost
 
 Local pickup filtering is immediate and transient. The clear button resets the query and returns focus to search. Long-lived request state remains owned by LocalGeneration; changing sidebar sections preserves it. Native controls preserve keyboard interaction and actual source outcomes remain inspectable without WebGL.
 
+## Journey editing and algorithm evidence
+
+The journey disclosure is a visible control surface with a labeled header and directional indicator. Selecting a recording locks and blurs the complete pickup/search/hospital/map-selection field group, including during loading or a recording error. The unblurred **Leave recording & explore** action stays above that group and returns focus to pickup search after unlocking. Disabled native fieldset semantics preserve keyboard behavior; blur alone never enforces the lock.
+
+Results separates **This run**, **Study** and **Algorithm**. Algorithm explains the selected recording's route calculation and display using its saved evidence and recognized source hashes. Show the solid and ordinary/ghost responses as separate physical worlds sharing the saved route where that is what the source records. Distinguish the distance-based route objective, lane-geometry reference length, signal-priority timing and measured journey duration. Fold exact edges and source details beneath a concise process explanation. Unknown source versions and missing route details remain explicit.
+
 ## Identity implementation after first hosting
 
 The first public Vercel deployment preceded Canva creation, as requested. The eight-page editable guide supplies the route symbol, navy shell, core amber/teal and Inter typography. Its generated contact and unsupported simulation claim were corrected; ghost cyan identifies the ordinary-world ambulance. The header and loading screen reuse one native SVG mark, with the same symbol in the favicon. Real loading progress and error recovery remain functional.

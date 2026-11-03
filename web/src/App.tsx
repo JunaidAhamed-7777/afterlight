@@ -10,6 +10,7 @@ import { loadCanonicalCity, geometryMatches } from "./city.ts";
 import { selectionLabel } from "./selectionEvidence.ts";
 import { ReplayEvidence } from "./ReplayEvidence.tsx";
 import { StudyResults } from "./StudyResults.tsx";
+import { AlgorithmResults } from "./AlgorithmResults.tsx";
 import { Onboarding } from "./Onboarding.tsx";
 import { BrandMark } from "./BrandMark.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
@@ -89,7 +90,7 @@ export default function App() {
   const [tourRequest, setTourRequest] = useState(0);
   const [followTarget, setFollowTarget] = useState<"ambulance" | "ghost">("ambulance");
   const [panel, setPanel] = useState<"run" | "results" | "settings">("run");
-  const [resultScope, setResultScope] = useState<"recording" | "study">("recording");
+  const [resultScope, setResultScope] = useState<"recording" | "study" | "algorithm">("recording");
   const [bootDismissed, setBootDismissed] = useState(false);
   const [assetLoad, setAssetLoad] = useState({
     completed: 0,
@@ -313,7 +314,9 @@ export default function App() {
       ) ?? [],
     [city, search],
   );
+  const journeyLocked = Boolean(selection || replay);
   const changeRoute = (p: string, h: string) => {
+    if (journeyLocked) return;
     setMapPickMode(null);
     setPickup(p);
     setHospital(h);
@@ -524,6 +527,139 @@ export default function App() {
                     </p>
                   )}
                 </section>
+                <details
+                  className="route-control disclosure"
+                  open={!catalog.length || Boolean(apiBase)}
+                >
+                  <summary>
+                    <span>
+                      <strong>
+                        {journeyLocked ? "Explore another journey" : "Choose a journey"}
+                      </strong>
+                      <small>Pickup & destination hospital</small>
+                    </span>
+                    <Icon name="arrow" />
+                  </summary>
+                  <div className="journey-control-body">
+                    {!journeyLocked && (
+                      <p>
+                        Pick a curb location and destination.{" "}
+                        {apiBase
+                          ? "The local runner can generate this journey."
+                          : "Traffic playback is available for the recordings above."}
+                      </p>
+                    )}
+                    {journeyLocked && (
+                      <div className="journey-unlock">
+                        <p id="journey-lock-note">
+                          This recording has a fixed journey. Leave it to choose a pickup and hospital.
+                        </p>
+                        <button
+                          className="new-journey"
+                          onClick={() => {
+                            selectRecording("");
+                            requestAnimationFrame(() => document.getElementById("pickup-search")?.focus());
+                          }}
+                        >
+                          Leave recording & explore <Icon name="arrow" />
+                        </button>
+                      </div>
+                    )}
+                    <fieldset
+                      className={`journey-fields${journeyLocked ? " is-locked" : ""}`}
+                      disabled={!city || journeyLocked}
+                      aria-describedby={journeyLocked ? "journey-lock-note" : undefined}
+                    >
+                      <legend className="sr-only">Journey pickup and destination</legend>
+                      <label htmlFor="pickup-search">Find a pickup</label>
+                      <div className="search-field">
+                        <input
+                          id="pickup-search"
+                          type="search"
+                          placeholder="Pickup ID or street"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          autoComplete="off"
+                        />
+                        {search && (
+                          <button
+                            className="search-clear"
+                            aria-label="Clear pickup search"
+                            onClick={() => {
+                              setSearch("");
+                              document.getElementById("pickup-search")?.focus();
+                            }}
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      <label htmlFor="pickup">Pickup point</label>
+                      <select
+                        id="pickup"
+                        value={pickup}
+                        onChange={(e) => changeRoute(e.target.value, hospital)}
+                        disabled={!city || Boolean(replay)}
+                      >
+                        {!pickups.some((x) => x.id === pickup) && (
+                          <option value={pickup}>{pickup} · selected</option>
+                        )}
+                        {pickups.map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.id} · {p.road_id}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="field-note">
+                        {city
+                          ? `${pickups.length} of ${city.pickups.length} pickup locations`
+                          : "Loading map…"}
+                        {city && !pickups.length
+                          ? " · No matches. Try a pickup ID such as P001."
+                          : ""}
+                      </span>
+                      <label htmlFor="hospital">Destination hospital</label>
+                      <select
+                        id="hospital"
+                        value={hospital}
+                        onChange={(e) => changeRoute(pickup, e.target.value)}
+                        disabled={!city || Boolean(replay)}
+                      >
+                        {city?.hospitals.map((h) => (
+                          <option key={h.id} value={h.id}>
+                            {h.name ?? h.id}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="map-selection-actions">
+                        {(
+                          [
+                            ["pickup", "Pick on map"],
+                            ["hospital", "Hospital on map"],
+                          ] as const
+                        ).map(([mode, label]) => (
+                          <button
+                            key={mode}
+                            disabled={mapPickingBlocked}
+                            aria-pressed={mapPickMode === mode}
+                            onClick={(event) => {
+                              mapPickTrigger.current = event.currentTarget;
+                              setMapPickMode(mode);
+                              setMapSelectionNotice(
+                                `Choose a ${mode} marker on the map.`,
+                              );
+                            }}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </fieldset>
+                    <span className="sr-only" role="status">
+                      {mapSelectionNotice}
+                    </span>
+                  </div>
+                </details>
                 {replay && (
                   <section className="run-overview">
                     <div className="label-row">
@@ -555,119 +691,6 @@ export default function App() {
                     </button>
                   </section>
                 )}
-                <details
-                  className="route-control disclosure"
-                  open={!catalog.length || Boolean(apiBase)}
-                >
-                  <summary>
-                    {replay ? "Explore another journey" : "Choose a journey"}
-                  </summary>
-                  <p>
-                    Pick a curb location and destination.{" "}
-                    {apiBase
-                      ? "The local runner can generate this journey."
-                      : "Traffic playback is available for the recordings above."}
-                  </p>
-                  {replay && (
-                    <button
-                      className="new-journey"
-                      onClick={() => selectRecording("")}
-                    >
-                      Leave recording & explore
-                    </button>
-                  )}
-                  <label htmlFor="pickup-search">Find a pickup</label>
-                  <div className="search-field">
-                    <input
-                      id="pickup-search"
-                      type="search"
-                      placeholder="Pickup ID or street"
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      autoComplete="off"
-                    />
-                    {search && (
-                      <button
-                        className="search-clear"
-                        aria-label="Clear pickup search"
-                        onClick={() => {
-                          setSearch("");
-                          document.getElementById("pickup-search")?.focus();
-                        }}
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
-                  <label htmlFor="pickup">Pickup point</label>
-                  <select
-                    id="pickup"
-                    value={pickup}
-                    onChange={(e) => changeRoute(e.target.value, hospital)}
-                    disabled={!city || Boolean(replay)}
-                  >
-                    {!pickups.some((x) => x.id === pickup) && (
-                      <option value={pickup}>{pickup} · selected</option>
-                    )}
-                    {pickups.map((p) => (
-                      <option key={p.id} value={p.id}>
-                        {p.id} · {p.road_id}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="field-note">
-                    {city
-                      ? `${pickups.length} of ${city.pickups.length} pickup locations`
-                      : "Loading map…"}
-                    {city && !pickups.length
-                      ? " · No matches. Try a pickup ID such as P001."
-                      : ""}
-                  </span>
-                  <label htmlFor="hospital">Destination hospital</label>
-                  <select
-                    id="hospital"
-                    value={hospital}
-                    onChange={(e) => changeRoute(pickup, e.target.value)}
-                    disabled={!city || Boolean(replay)}
-                  >
-                    {city?.hospitals.map((h) => (
-                      <option key={h.id} value={h.id}>
-                        {h.name ?? h.id}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="map-selection-actions">
-                    {(
-                      [
-                        ["pickup", "Pick on map"],
-                        ["hospital", "Hospital on map"],
-                      ] as const
-                    ).map(([mode, label]) => (
-                      <button
-                        key={mode}
-                        disabled={mapPickingBlocked}
-                        aria-pressed={mapPickMode === mode}
-                        onClick={(event) => {
-                          mapPickTrigger.current = event.currentTarget;
-                          setMapPickMode(mode);
-                          setMapSelectionNotice(
-                            `Choose a ${mode} marker on the map.`,
-                          );
-                        }}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                  {replay && (
-                    <p className="field-note">
-                      Leave the recording to change its journey.
-                    </p>
-                  )}
-                  <span className="sr-only" role="status">
-                    {mapSelectionNotice}
-                  </span>
-                </details>
               </div>
               {apiBase && (
                 <div hidden={panel !== "run"} className="generation-wrap">
@@ -714,8 +737,11 @@ export default function App() {
                 <div className="results-scope" role="group" aria-label="Results scope">
                   <button aria-pressed={resultScope === "recording"} onClick={() => { setResultScope("recording"); settingsScroll.current?.scrollTo({ top: 0 }); }}>This run</button>
                   <button aria-pressed={resultScope === "study"} onClick={() => { setResultScope("study"); settingsScroll.current?.scrollTo({ top: 0 }); }}>Study</button>
+                  <button aria-pressed={resultScope === "algorithm"} onClick={() => { setResultScope("algorithm"); settingsScroll.current?.scrollTo({ top: 0 }); }}>Algorithm</button>
                 </div>
-                {resultScope === "study" ? (
+                {resultScope === "algorithm" ? (
+                  <AlgorithmResults replay={replay} />
+                ) : resultScope === "study" ? (
                   panel === "results" && <StudyResults />
                 ) : replay ? (
                   <ReplayEvidence replay={replay} />

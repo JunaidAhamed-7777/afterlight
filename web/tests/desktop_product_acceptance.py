@@ -319,7 +319,7 @@ def check_text_contrast(page):
       const checked=[],skipped=[];
       for(const e of document.querySelectorAll('.topbar *, .sidebar *, .stage-toolbar *, .map-location *, .camera-console *, .transport *, .legend *')) {
         const text=[...e.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE).map(n=>n.textContent).join('').trim();
-        if(!text||!e.getClientRects().length||e.closest('[hidden],[aria-hidden=true],button:disabled,select:disabled,input:disabled'))continue;
+        if(!text||!e.getClientRects().length||e.closest('[hidden],[aria-hidden=true],fieldset:disabled,button:disabled,select:disabled,input:disabled'))continue;
         const box=e.getBoundingClientRect();if(box.bottom<0||box.top>innerHeight)continue;
         const s=getComputedStyle(e);let bg=[0,0,0,0],gradient=false;
         for(let p=e;p;p=p.parentElement){const ps=getComputedStyle(p);if(ps.backgroundImage!=='none')gradient=true;const c=rgba(ps.backgroundColor);const alpha=bg[3]+c[3]*(1-bg[3]);if(alpha)bg=[0,1,2].map(i=>(bg[i]*bg[3]+c[i]*c[3]*(1-bg[3]))/alpha).concat(alpha);if(bg[3]>=.999)break;}
