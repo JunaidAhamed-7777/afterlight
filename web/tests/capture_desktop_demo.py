@@ -129,6 +129,25 @@ def main():
         manifest=json.loads(args.build_manifest.read_bytes()) if args.build_manifest else None
         if manifest:report['served_build_before']=verify_served_build(context,args.base_url,manifest)
         page=context.new_page();page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
+        # Restore only this capture's own native window. A minimized recorder can
+        # otherwise produce one-frame-per-second traffic despite a healthy app.
+        # Keep native rendering and throttling behavior; do not force GPU flags.
+        session=context.new_cdp_session(page)
+        try:
+            window=session.send('Browser.getWindowForTarget')
+            report['native_window_before']=window['bounds']
+            if window['bounds']['windowState']=='minimized':
+                session.send('Browser.setWindowBounds',{'windowId':window['windowId'],'bounds':{'windowState':'normal'}})
+            report['native_window_after']=session.send('Browser.getWindowBounds',{'windowId':window['windowId']})['bounds']
+        finally:session.detach()
+        page.bring_to_front()
+        page.wait_for_function("document.visibilityState==='visible' && document.hasFocus()",timeout=15000)
+        page.add_init_script("""(() => {
+          const state = event => ({event,visibility:document.visibilityState,focused:document.hasFocus()});
+          const q = window.__captureLifecycle = {enabled:false,events:[],state};
+          document.addEventListener('visibilitychange', () => {if(q.enabled)q.events.push(state('visibilitychange'));});
+          for(const event of ['focus','blur'])window.addEventListener(event, () => {if(q.enabled)q.events.push(state(event));});
+        })();""")
         def study_response(response):
             if study_pack and response.url in (study_pack['manifest_url'],study_pack['summary_url']):
                 data=response.body();report['study_responses'].append({'url':response.url,'status':response.status,'bytes':len(data),'sha256':digest(data)})
@@ -140,6 +159,9 @@ def main():
         expect(page.locator('.mode-label')).to_contain_text('Recorded')
         expect(page.get_by_role('combobox',name='Playback speed',exact=True)).to_be_visible()
         assert page.locator('.generation-wrap').count()==0,'Capture the public recording viewer, not local generation'
+        page.locator('canvas').focus()
+        page.wait_for_function("document.visibilityState==='visible' && document.hasFocus()",timeout=15000)
+        page.evaluate("() => {const q=window.__captureLifecycle;q.events=[q.state('start')];q.enabled=true;}")
         started=time.perf_counter()
         def note(action):
             report['actions'].append({'walkthrough_seconds':round(time.perf_counter()-started,3),'action':action,
@@ -191,6 +213,9 @@ def main():
             note('Inspect the actual released Study report')
             until(max(70,time.perf_counter()-started+2.5));shot('08-released-study')
         report['captured_wall_seconds']=time.perf_counter()-capture_started
+        report['walkthrough_lifecycle']=page.evaluate("() => {const q=window.__captureLifecycle;q.events.push(q.state('end'));q.enabled=false;return q.events;}")
+        report['foreground_qualified']=all(row['visibility']=='visible' and row['focused'] for row in report['walkthrough_lifecycle'])
+        assert report['foreground_qualified'],'Capture lost foreground visibility/focus; retain it privately and inspect before publishing'
         assert not report['page_errors'],report['page_errors']
         context.close();context=None
         source=Path(video.path())
