@@ -1,0 +1,1239 @@
+{
+  "schema": "afterlight.vercel-source-preflight.v1",
+  "status": "passed",
+  "scope": "Actual Vercel CLI source-only dry run; no upload, deployment, build, link, environment pull or project setting change. Does not claim remote build or hosted acceptance.",
+  "command": [
+    "vercel",
+    "deploy",
+    "--dry",
+    "--json",
+    "--scope",
+    "junaidahamed-7777s-projects"
+  ],
+  "cli_version": "65.8.0",
+  "node_version": "26.8.1",
+  "project": {
+    "scope": "junaidahamed-7777s-projects",
+    "name": "afterlight",
+    "id": "prj_qMbWHy2oykyULSJSELDiHeSOCDn2",
+    "existing_project_inspect": "matched expected owner/project/root directory"
+  },
+  "source_head_before": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+  "source_head_after": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+  "started_utc": "2026-11-03T18:33:16.229258+00:00",
+  "finished_utc": "2026-11-03T18:35:48.245433+00:00",
+  "cli_exit_code": 0,
+  "framework": {
+    "name": "Other",
+    "slug": null
+  },
+  "reported_entries": 139,
+  "regular_files": 123,
+  "zero_byte_directory_markers": 16,
+  "source_upload_bytes": 45840403,
+  "study_files": 28,
+  "study_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+  "needed_paths_verified": [
+    "assets/asset_manifest.json",
+    "assets/exports/ambulance.glb",
+    "assets/exports/bike.glb",
+    "assets/exports/building_clay.glb",
+    "assets/exports/building_sage.glb",
+    "assets/exports/building_sand.glb",
+    "assets/exports/building_slate.glb",
+    "assets/exports/car.glb",
+    "assets/exports/city_enhanced.glb",
+    "assets/exports/city_enhanced_manifest.json",
+    "assets/exports/city_instances.json",
+    "assets/exports/city_static.glb",
+    "assets/exports/ghost_material.json",
+    "assets/exports/truck.glb",
+    "assets/map/city_manifest.json",
+    "assets/previews/ambulance_model.png",
+    "assets/previews/city_expanded.png",
+    "assets/previews/city_overview.png",
+    "assets/previews/ghost_model.png",
+    "vercel.json",
+    "web/index.html",
+    "web/package-lock.json",
+    "web/package.json",
+    "web/public/THIRD_PARTY_NOTICES.txt",
+    "web/public/replays/catalog.json",
+    "web/public/replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
+    "web/public/replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+    "web/public/replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.evidence.json",
+    "web/public/replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.json.gz",
+    "web/public/study/afterlight_analysis_amendment_v1.py",
+    "web/public/study/afterlight_analysis_binding_v1.py",
+    "web/public/study/analysis-amendment.json",
+    "web/public/study/analysis-amendment.patch",
+    "web/public/study/analysis-failed-selection-journal.json",
+    "web/public/study/analysis-failure.txt",
+    "web/public/study/analytical-selector.json",
+    "web/public/study/attempt.json",
+    "web/public/study/collection.json",
+    "web/public/study/fixed-selector.json",
+    "web/public/study/learned-selector.json",
+    "web/public/study/learned-vs-analytical.json",
+    "web/public/study/learned-vs-fixed.json",
+    "web/public/study/manifest.json",
+    "web/public/study/model.json",
+    "web/public/study/paired-records.csv",
+    "web/public/study/protocol.json",
+    "web/public/study/release.json",
+    "web/public/study/report.json",
+    "web/public/study/reproduction.json",
+    "web/public/study/run_analysis_amendment.py",
+    "web/public/study/selection.json",
+    "web/public/study/study.json",
+    "web/public/study/summary.json",
+    "web/public/study/test-candidates.json.xz",
+    "web/public/study/test-outcomes.json.xz",
+    "web/public/study/train-candidates.json.xz",
+    "web/public/study/validation-candidates.json.xz",
+    "web/scripts/audit-presentation.mjs",
+    "web/scripts/prepare-assets.mjs",
+    "web/src/App.tsx",
+    "web/src/BuildingCutaway.ts",
+    "web/src/CameraControls.tsx",
+    "web/src/CanvasBoundary.tsx",
+    "web/src/CityView.tsx",
+    "web/src/DecisionInspector.tsx",
+    "web/src/GeometryLayer.ts",
+    "web/src/LocalGeneration.tsx",
+    "web/src/MapSelectionLayer.ts",
+    "web/src/Onboarding.tsx",
+    "web/src/QueueChart.tsx",
+    "web/src/ReplayEvidence.tsx",
+    "web/src/SelectionEvidenceInspector.tsx",
+    "web/src/StudyResults.tsx",
+    "web/src/VehicleLayer.ts",
+    "web/src/cameraFit.ts",
+    "web/src/cameraFollow.ts",
+    "web/src/catalog.ts",
+    "web/src/city.ts",
+    "web/src/civilianTail.ts",
+    "web/src/generation.ts",
+    "web/src/main.tsx",
+    "web/src/recording.ts",
+    "web/src/recording.worker.ts",
+    "web/src/recordingCore.ts",
+    "web/src/replay.ts",
+    "web/src/replayContracts.ts",
+    "web/src/response.ts",
+    "web/src/selectionEvidence.ts",
+    "web/src/signalTimeline.ts",
+    "web/src/strictJson.ts",
+    "web/src/studySummary.ts",
+    "web/src/styles/app.css",
+    "web/src/styles/onboarding.css",
+    "web/src/styles/study.css",
+    "web/src/styles/tokens.css",
+    "web/src/types.ts",
+    "web/src/validation.ts",
+    "web/src/vite-env.d.ts",
+    "web/vite.config.ts"
+  ],
+  "checks": {
+    "all_required_source_public_files_present": true,
+    "all_actual_file_sizes_and_cli_sha1_match_working_bytes": true,
+    "all_upload_files_have_sha256": true,
+    "no_private_runtime_authoring_dependencies_build_output_env_credentials_or_python_cache_files": true,
+    "no_common_credential_literal_pattern_in_bounded_text_inputs": true,
+    "gitignore_raw_bytes_unchanged": true,
+    "head_stable": true
+  },
+  "findings": {
+    "missing_required": [],
+    "byte_identity_mismatch": [],
+    "forbidden_regular_files": [],
+    "credential_pattern_file_names": []
+  },
+  "directory_marker_note": "CLI lists sixteen zero-byte directory markers, including excluded local-runtime/web-dist/source-tool directories. These are directory metadata only: no files or bytes from those trees are selected. They are retained in this complete list, not mislabeled as source-file leakage.",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "type": "file",
+      "bytes": 505,
+      "mode": 33206,
+      "cli_sha1": "ed7f1458f4226403d8b08d517bac07ffa963a539",
+      "sha256": "f6a2655e8f4db242d1c5e56154e4a3507582992e53fb0df630179053a62361f7"
+    },
+    {
+      "path": ".vercelignore",
+      "type": "file",
+      "bytes": 395,
+      "mode": 33206,
+      "cli_sha1": "5aed170c48944344efaf3bd441dc9c42adf5f307",
+      "sha256": "81961c1a525a8cb265e48e0242182c67c71986838afd6846e8612a5823186c6d"
+    },
+    {
+      "path": "AGENTS.md",
+      "type": "file",
+      "bytes": 788,
+      "mode": 33206,
+      "cli_sha1": "d877f83967c63c4f3dab4dd3fabda0e5ddc217d4",
+      "sha256": "9fcf432059b1039d68505a666cd0b1cce6fb9f7c32c8862157c8801d0be3b682"
+    },
+    {
+      "path": "DESIGN.md",
+      "type": "file",
+      "bytes": 13509,
+      "mode": 33206,
+      "cli_sha1": "9802cee8ce30d44981675863e29a90178d95fa30",
+      "sha256": "4c68d7ddc281de2adfbc8505b62c722d325238fe99c47734dd6db3c6e0f17e54"
+    },
+    {
+      "path": "HANDOFF.md",
+      "type": "file",
+      "bytes": 9858,
+      "mode": 33206,
+      "cli_sha1": "b10c33cd7fcf50bf688cf3b9ef791b09b7afb0ec",
+      "sha256": "7a63992d0a81e1a95447bde6128ddecd79caf615fa68112efc050b51fb619271"
+    },
+    {
+      "path": "README.md",
+      "type": "file",
+      "bytes": 9730,
+      "mode": 33206,
+      "cli_sha1": "848bbb5f1f10c8555326e14e50bd768ba330f389",
+      "sha256": "b6649a3de32300f1b364acb429f2bacbe76d27546f048a029aff6a64be3dc315"
+    },
+    {
+      "path": "api",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "assets/DELIVERY_FILES.json",
+      "type": "file",
+      "bytes": 5198,
+      "mode": 33206,
+      "cli_sha1": "bae5dcb5ffda404663841f323b094e502a026385",
+      "sha256": "9f983b174f441275ec76643ea5f12c2f24031f0de129559c00cbb7b92ed4b8bf"
+    },
+    {
+      "path": "assets/PROVENANCE.md",
+      "type": "file",
+      "bytes": 2237,
+      "mode": 33206,
+      "cli_sha1": "9296a6c995e519d62be37c05a68c6ce13453f3d4",
+      "sha256": "f5a157dc4acf7581fc75668f5adcfcee1375f7b05772f9f9ce72ab2cffb2563d"
+    },
+    {
+      "path": "assets/README.md",
+      "type": "file",
+      "bytes": 10117,
+      "mode": 33206,
+      "cli_sha1": "cec60353acc77076d112337eba7569a4e08aa826",
+      "sha256": "68d377011dfc1e4a0b19f3fec9ff00b1a728002aaeb3fbdb3c72cb3d18d5c7fc"
+    },
+    {
+      "path": "assets/asset_manifest.json",
+      "type": "file",
+      "bytes": 3679,
+      "mode": 33206,
+      "cli_sha1": "15a36a270541865d9d5ece97e5428b7a588f9bdd",
+      "sha256": "fc157a2d444084813256fb9fcc035d3c3fec1aa377a56946040acac4db70ab34"
+    },
+    {
+      "path": "assets/exports/ambulance.glb",
+      "type": "file",
+      "bytes": 161212,
+      "mode": 33206,
+      "cli_sha1": "78873186b7bdf0eb47409eb372bca7d43f7d9949",
+      "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1"
+    },
+    {
+      "path": "assets/exports/bike.glb",
+      "type": "file",
+      "bytes": 18848,
+      "mode": 33206,
+      "cli_sha1": "871017187951c20ff5f654985a8522987c4ec04b",
+      "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236"
+    },
+    {
+      "path": "assets/exports/building_clay.glb",
+      "type": "file",
+      "bytes": 3944,
+      "mode": 33206,
+      "cli_sha1": "479236ccc31919fc61633b095729cd26bddceeb8",
+      "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb"
+    },
+    {
+      "path": "assets/exports/building_sage.glb",
+      "type": "file",
+      "bytes": 3924,
+      "mode": 33206,
+      "cli_sha1": "770e4725154a2858da9ddbbf46be4571effec3b3",
+      "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd"
+    },
+    {
+      "path": "assets/exports/building_sand.glb",
+      "type": "file",
+      "bytes": 3940,
+      "mode": 33206,
+      "cli_sha1": "3b5ab411543e4fb9e7e8b9120fbe21f87a0e5403",
+      "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e"
+    },
+    {
+      "path": "assets/exports/building_slate.glb",
+      "type": "file",
+      "bytes": 3944,
+      "mode": 33206,
+      "cli_sha1": "5480f7c4bf562d7a9737fee217ed117630d6d538",
+      "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56"
+    },
+    {
+      "path": "assets/exports/car.glb",
+      "type": "file",
+      "bytes": 32596,
+      "mode": 33206,
+      "cli_sha1": "490a711a419f9d314b0d1ae5701f304ae842bab8",
+      "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591"
+    },
+    {
+      "path": "assets/exports/city_enhanced.glb",
+      "type": "file",
+      "bytes": 14380920,
+      "mode": 33206,
+      "cli_sha1": "5c91ecee0c4c124ba05184e618b71385d13f781b",
+      "sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac"
+    },
+    {
+      "path": "assets/exports/city_enhanced_manifest.json",
+      "type": "file",
+      "bytes": 701022,
+      "mode": 33206,
+      "cli_sha1": "ebbb526eaf5ff9034494f5f80bc5e5066ad4766d",
+      "sha256": "f33a9ccc09bd208750603dca839b45d3489e17ec2bb939ee6757f0298aa77911"
+    },
+    {
+      "path": "assets/exports/city_instances.json",
+      "type": "file",
+      "bytes": 61051,
+      "mode": 33206,
+      "cli_sha1": "2cbfe771d1e543f079685a2d5e5e6b83d1bce925",
+      "sha256": "2a51e8181a9dfdb8bab45a1614d729a247c227cce5951670fd7a26c85af7a9f5"
+    },
+    {
+      "path": "assets/exports/city_static.glb",
+      "type": "file",
+      "bytes": 1010792,
+      "mode": 33206,
+      "cli_sha1": "4dc085f097f7b7dba5f87de593dbac051cfe8abc",
+      "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe"
+    },
+    {
+      "path": "assets/exports/ghost_material.json",
+      "type": "file",
+      "bytes": 676,
+      "mode": 33206,
+      "cli_sha1": "e36b529fc2ffbd642f408d92f8a729809ba20328",
+      "sha256": "ab8898a9e8788f519f91a2890671d760b98c17d98c64871c67bf3a44513ae4b4"
+    },
+    {
+      "path": "assets/exports/truck.glb",
+      "type": "file",
+      "bytes": 29384,
+      "mode": 33206,
+      "cli_sha1": "228ecddb8c59d1818eaed08b2366399f710efff6",
+      "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4"
+    },
+    {
+      "path": "assets/map/README.md",
+      "type": "file",
+      "bytes": 6453,
+      "mode": 33206,
+      "cli_sha1": "6496fe529a492c24a089fd7c479fd319d117149e",
+      "sha256": "2fcd9d90f6a11bd0e2b1876f84aaf3e20b96df0375a8c8c37a5f014cddc6c2a6"
+    },
+    {
+      "path": "assets/map/city_manifest.json",
+      "type": "file",
+      "bytes": 1042452,
+      "mode": 33206,
+      "cli_sha1": "c840f98d1980744530c58329be5f28e15f4bff4a",
+      "sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b"
+    },
+    {
+      "path": "assets/map/generate_city.py",
+      "type": "file",
+      "bytes": 8666,
+      "mode": 33206,
+      "cli_sha1": "97da762103658d9b7d08ca802780b3dc163f6ece",
+      "sha256": "3260ecf3c540ac0e246d5edb5b4f49e5616b3832d70327d48307a67f0aaaa2de"
+    },
+    {
+      "path": "assets/map/validate_city.py",
+      "type": "file",
+      "bytes": 8291,
+      "mode": 33206,
+      "cli_sha1": "2f9fcf7761ea53c9b62152adb6a9846b154b6de9",
+      "sha256": "18445825778da91293fa078908cf09934ee7661da6cd15eddbe5020c6c8d49ca"
+    },
+    {
+      "path": "assets/map/validation_report.json",
+      "type": "file",
+      "bytes": 4075,
+      "mode": 33206,
+      "cli_sha1": "ebb5b59eb07f9ad0ac914fdd9292fb0bb1943eaa",
+      "sha256": "690b5a3dfb5d1fa0cffaabe82f16a2885cfc6b05438d29e6a9bfb6fe2ae97947"
+    },
+    {
+      "path": "assets/previews/ambulance_model.png",
+      "type": "file",
+      "bytes": 44991,
+      "mode": 33206,
+      "cli_sha1": "00c129314ef9b5546165d979d49af9ae635a1824",
+      "sha256": "1748907a1c7771e322fcaaf4057c237c27bc5357618a0b5ef346263622d2d6ad"
+    },
+    {
+      "path": "assets/previews/city_expanded.png",
+      "type": "file",
+      "bytes": 3125704,
+      "mode": 33206,
+      "cli_sha1": "074b50a2a84c8d0d5b345763ab6e23416bd4d223",
+      "sha256": "17bb1814cb7c58c30fb6850a5294e3a115e06d9e07f1450e410b2e77a8bd47ae"
+    },
+    {
+      "path": "assets/previews/city_overview.png",
+      "type": "file",
+      "bytes": 1596667,
+      "mode": 33206,
+      "cli_sha1": "fbc69bfd73fadecac672f4ffa502e8df0f69016e",
+      "sha256": "1633cf1fcfdfe3d6ab6502c08e86ae5addb78eab3fc179e8c3950071c3908037"
+    },
+    {
+      "path": "assets/previews/city_street_detail.png",
+      "type": "file",
+      "bytes": 2471475,
+      "mode": 33206,
+      "cli_sha1": "28c035c15bec401dd22f9b6a33f0436891ea24a2",
+      "sha256": "c79ddc5806aed02ced175637b400b5d3dff786bf963eae311639a339046be3ba"
+    },
+    {
+      "path": "assets/previews/ghost_model.png",
+      "type": "file",
+      "bytes": 38534,
+      "mode": 33206,
+      "cli_sha1": "8964efa0b7ed3b99ffd2aefaf639d84d12a4dcb4",
+      "sha256": "26b814f3094c37620194c0ae6f030492d7f0b494a1636efc647e79edef4f2a31"
+    },
+    {
+      "path": "assets/previews/hosp_east_detail.png",
+      "type": "file",
+      "bytes": 2195709,
+      "mode": 33206,
+      "cli_sha1": "85fb135ea0b0312b68da82b632ea0e797cca634c",
+      "sha256": "a1831879abc2e62c2d32a533cba3e9e7398d4da979307426bce03b65a92e61aa"
+    },
+    {
+      "path": "assets/previews/hosp_west_detail.png",
+      "type": "file",
+      "bytes": 2189579,
+      "mode": 33206,
+      "cli_sha1": "e0edf5d1670fa01b4d954ca48f0cf95e1350253c",
+      "sha256": "3bf117431260a91d1a29ca29cf002bd86895b18dd8a3967d5fd199a5fef30dbb"
+    },
+    {
+      "path": "assets/qa",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "assets/src",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "docs",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "evaluation",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "export",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "local-runtime",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "models",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "policies",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "premium-ui.json",
+      "type": "file",
+      "bytes": 324,
+      "mode": 33206,
+      "cli_sha1": "1c0582195a7979e72a3cc9aa3fac4de7df683466",
+      "sha256": "29e3e53513adb88cc3d6c356324d6670e6267e33fced89365ab01d4ed0b0e490"
+    },
+    {
+      "path": "preview",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "requirements-browser.txt",
+      "type": "file",
+      "bytes": 102,
+      "mode": 33206,
+      "cli_sha1": "9066da18cf3b348347099b7e95340dec689e161a",
+      "sha256": "6a661fabb0856b059b7f23f26957adc9f4c51a9bcf71d3dea24ab0f1a1a34024"
+    },
+    {
+      "path": "requirements-ml.txt",
+      "type": "file",
+      "bytes": 297,
+      "mode": 33206,
+      "cli_sha1": "187d703f9b04a99f89a944057097250dbde4f6c0",
+      "sha256": "b5fa77f7485f0f37eb7e7884ef4ddcb827ee670e89994f4e38f273296f688291"
+    },
+    {
+      "path": "requirements-sim.txt",
+      "type": "file",
+      "bytes": 322,
+      "mode": 33206,
+      "cli_sha1": "967bbadf5cfbbab4b209090204daa94175cd900b",
+      "sha256": "7fab2d26b864476ba59a35dd16aed7569b919c6cbdcf6f6a57286d40e46d6dd3"
+    },
+    {
+      "path": "scripts",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "sim",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "tests",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "vercel.json",
+      "type": "file",
+      "bytes": 925,
+      "mode": 33206,
+      "cli_sha1": "ae31111be26cfc24afe369afa6b58a0df6a6ee2a",
+      "sha256": "c9b408c7afc9a478bfc9f5e09a0ea6d8e54890dbad73b8b264f5b8c743e0aef8"
+    },
+    {
+      "path": "web/README.md",
+      "type": "file",
+      "bytes": 11013,
+      "mode": 33206,
+      "cli_sha1": "6acdcc3b1d776a433f9d7592395608269fc7e419",
+      "sha256": "a695caa26fa8374de5657ecb67cac2042524bbc587d7f52f638862cf53e73a27"
+    },
+    {
+      "path": "web/dist",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "web/index.html",
+      "type": "file",
+      "bytes": 521,
+      "mode": 33206,
+      "cli_sha1": "6e5a72152ae459c9e1ddf87ff18072de98a8f279",
+      "sha256": "70f72034c9421d7882ebd2925fde40aee948dd8e3323f9c1eaf0a668c5730b8c"
+    },
+    {
+      "path": "web/package-lock.json",
+      "type": "file",
+      "bytes": 41257,
+      "mode": 33206,
+      "cli_sha1": "5b2d7dc652edcc0b16d4ece7ae46f230dabc9fc1",
+      "sha256": "be7aa5210f7119b808b53fb09e6e3eacd2732485559d3697d623f3eae70f5797"
+    },
+    {
+      "path": "web/package.json",
+      "type": "file",
+      "bytes": 727,
+      "mode": 33206,
+      "cli_sha1": "8fc7696a74afe772ee33ccb47f8966c2de6db2d8",
+      "sha256": "62cec7500e798701751272e31273b547641b7053d9e0d04fc1df45de58683056"
+    },
+    {
+      "path": "web/public/THIRD_PARTY_NOTICES.txt",
+      "type": "file",
+      "bytes": 5881,
+      "mode": 33206,
+      "cli_sha1": "bbf7fd40ec0c430dac2d9ad110e8ed1f607bc6ae",
+      "sha256": "e8fc9eb43bcd4068316f90891c7814f995be0e163fdb1a2c0b3c5c8be0491db1"
+    },
+    {
+      "path": "web/public/assets",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "web/public/favicon.svg",
+      "type": "file",
+      "bytes": 261,
+      "mode": 33206,
+      "cli_sha1": "34aef2b1ac5309cbd495e4b5b1e240e5701eca4c",
+      "sha256": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44"
+    },
+    {
+      "path": "web/public/replays/catalog.json",
+      "type": "file",
+      "bytes": 1949,
+      "mode": 33206,
+      "cli_sha1": "3ea12fe4c85bbcad811468fe1ccd97335c964f8b",
+      "sha256": "b69d26f06a6b002c5a904b65f288144672f96bf8eb0568d78656471f3c4820f9"
+    },
+    {
+      "path": "web/public/replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
+      "type": "file",
+      "bytes": 279358,
+      "mode": 33206,
+      "cli_sha1": "64f6614b9c3f44b57e218bdec83ed2f6203007a4",
+      "sha256": "5f34f44a04cebd6abc8c20791280283f3979f3392c273dd28b104ad9fdf7d3c9"
+    },
+    {
+      "path": "web/public/replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+      "type": "file",
+      "bytes": 6585636,
+      "mode": 33206,
+      "cli_sha1": "d22c39f898d597565fb0a304fb9981a9c2de44e4",
+      "sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
+    },
+    {
+      "path": "web/public/replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.evidence.json",
+      "type": "file",
+      "bytes": 279080,
+      "mode": 33206,
+      "cli_sha1": "edcdc2c739ccdf84748bf6dca6b66b22e94375cd",
+      "sha256": "de1b989eb24df4ea7d31ecc379c1d82cfbacffa8f451a9a56fbc9bd5c141849d"
+    },
+    {
+      "path": "web/public/replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.json.gz",
+      "type": "file",
+      "bytes": 6718803,
+      "mode": 33206,
+      "cli_sha1": "29576dea98adc9284c84133ccffcee8edf56a207",
+      "sha256": "bab80cd0acdb6462ce5c31af4c99a226303f936704d21fec8b7496be82f33b69"
+    },
+    {
+      "path": "web/public/study/afterlight_analysis_amendment_v1.py",
+      "type": "file",
+      "bytes": 39837,
+      "mode": 33206,
+      "cli_sha1": "ac96b8130914f6c31852f00bb2009ad65925a8af",
+      "sha256": "67c706bea0d1b776a99bb8dff738aceb59ee49d236d4bde60254533f3ec70adb"
+    },
+    {
+      "path": "web/public/study/afterlight_analysis_binding_v1.py",
+      "type": "file",
+      "bytes": 2454,
+      "mode": 33206,
+      "cli_sha1": "04464f6372f1794b86d0758a10bb424e3c7d502e",
+      "sha256": "a33e95210b26e0a2f44099e516d04fb7a5bd343562cc13df9af173662e7ce92b"
+    },
+    {
+      "path": "web/public/study/analysis-amendment.json",
+      "type": "file",
+      "bytes": 7098,
+      "mode": 33206,
+      "cli_sha1": "9b89155246484e4727b2c183a630021092dd66d3",
+      "sha256": "9cc3c3edabf2af1075392e06cf16468d2a6ef90e93da86ffe46e5ccb50a144eb"
+    },
+    {
+      "path": "web/public/study/analysis-amendment.patch",
+      "type": "file",
+      "bytes": 15052,
+      "mode": 33206,
+      "cli_sha1": "7f1b76f79b57bb6372b26b0f13de9f7cf68f96c8",
+      "sha256": "eb1cd6489d7ffc70910fb4f2a970bb7127f9b2620f31e060a48210c6d2a8a034"
+    },
+    {
+      "path": "web/public/study/analysis-failed-selection-journal.json",
+      "type": "file",
+      "bytes": 1276,
+      "mode": 33206,
+      "cli_sha1": "2215cb5afa001d58cb1a0e057fa9b8aeddd659e8",
+      "sha256": "6a2971bbee6fa967dd2386e3d74b1c336955fa84967273784a4427e33303e427"
+    },
+    {
+      "path": "web/public/study/analysis-failure.txt",
+      "type": "file",
+      "bytes": 1602,
+      "mode": 33206,
+      "cli_sha1": "fa3310b42c6e2946fbb5b542e4e4dafbb4999c02",
+      "sha256": "a1957d535b2d30011ce3c86c74880dbb5e68a96467e6b7fe3f371a134fb0c721"
+    },
+    {
+      "path": "web/public/study/analytical-selector.json",
+      "type": "file",
+      "bytes": 268,
+      "mode": 33206,
+      "cli_sha1": "52b376821bc9dfbe3c138b0d39f265f91baa4efa",
+      "sha256": "4af9ae61f9dc6bf76e8bdbc99b9f300bc386d466ec71f011c39ad4c4abbd02f2"
+    },
+    {
+      "path": "web/public/study/attempt.json",
+      "type": "file",
+      "bytes": 713,
+      "mode": 33206,
+      "cli_sha1": "5be43332876a0cd09b4d216e20c16b6a7be016fa",
+      "sha256": "74890c19f9f6500d89a1febf96ff46fd4c4c4fef756053fc92d0117eb6c79369"
+    },
+    {
+      "path": "web/public/study/collection.json",
+      "type": "file",
+      "bytes": 43689,
+      "mode": 33206,
+      "cli_sha1": "a5c038a66f73db84331141f912a68c26df011e50",
+      "sha256": "90580b7c279694b14764286d21b2b116e84a10ce6fb0fb83920e4537874b7d19"
+    },
+    {
+      "path": "web/public/study/fixed-selector.json",
+      "type": "file",
+      "bytes": 2222,
+      "mode": 33206,
+      "cli_sha1": "9b31eabaca2f0b08e3030d24c1e7065df2a0a04c",
+      "sha256": "c4c982f6c14d608ec558044bf16d028f264cd36a3c57dccd4172cf6a9aa98c07"
+    },
+    {
+      "path": "web/public/study/learned-selector.json",
+      "type": "file",
+      "bytes": 5512,
+      "mode": 33206,
+      "cli_sha1": "7e01c7cc83c7f97b6f68360c9901598963201c4a",
+      "sha256": "4dc49dc5615a8bf851eb8b5481d6c697612ab9f6d0177a57656d72b86210cd46"
+    },
+    {
+      "path": "web/public/study/learned-vs-analytical.json",
+      "type": "file",
+      "bytes": 6661,
+      "mode": 33206,
+      "cli_sha1": "fadae116dde760e061d14a7bdf23576b755bd747",
+      "sha256": "7a7bbb6d75438e65a630a72adf4e4da12957e878dac9ca9231eedfe16cb70349"
+    },
+    {
+      "path": "web/public/study/learned-vs-fixed.json",
+      "type": "file",
+      "bytes": 8815,
+      "mode": 33206,
+      "cli_sha1": "a33a22a708b931a787b110cb7728274de253081f",
+      "sha256": "885417b372e7a34bca6f43dadd3db50799fce5b457b0430007284ff0b46230ca"
+    },
+    {
+      "path": "web/public/study/manifest.json",
+      "type": "file",
+      "bytes": 177,
+      "mode": 33206,
+      "cli_sha1": "b6358c8d97a5bdc0f9e0e265e1b53a35c9d6bf3d",
+      "sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9"
+    },
+    {
+      "path": "web/public/study/model.json",
+      "type": "file",
+      "bytes": 4691,
+      "mode": 33206,
+      "cli_sha1": "7c399956f06903dcb0a2f9d14e3c17ac45bb347c",
+      "sha256": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d"
+    },
+    {
+      "path": "web/public/study/paired-records.csv",
+      "type": "file",
+      "bytes": 11599,
+      "mode": 33206,
+      "cli_sha1": "7fdad6bc84c5747d9170cf0458b6be5f5a4d7379",
+      "sha256": "f7b859937277e4f69f2de447bf710a2c17c9f4c30de5eb6012b41c88771fe7fa"
+    },
+    {
+      "path": "web/public/study/protocol.json",
+      "type": "file",
+      "bytes": 45566,
+      "mode": 33206,
+      "cli_sha1": "1fa10cb29671fda5a6704d2870cbba397276167b",
+      "sha256": "ccb32d3149e9203ad524e283e7c17732449b959cd1bdf3cff628a016a1ab41a1"
+    },
+    {
+      "path": "web/public/study/release.json",
+      "type": "file",
+      "bytes": 7110,
+      "mode": 33206,
+      "cli_sha1": "317f85be015167ebea78de7d39da498f47ea5593",
+      "sha256": "876c0e8a6aef48ad2adcfb54b94e72a2d2281193477d2eedcdd538b8f1b35d22"
+    },
+    {
+      "path": "web/public/study/report.json",
+      "type": "file",
+      "bytes": 165110,
+      "mode": 33206,
+      "cli_sha1": "8ea4587433aa3972c4b4fab01ae8ee5c252fe258",
+      "sha256": "8682f7f6c7a642debe5a45b89c4b089699eaf9beed240e5923e8f24c974b4271"
+    },
+    {
+      "path": "web/public/study/reproduction.json",
+      "type": "file",
+      "bytes": 2285,
+      "mode": 33206,
+      "cli_sha1": "d1d929017cdd293e1be248a7f86329e6551b75c4",
+      "sha256": "3f05730faedfc4c477aa9d8228dfef63bf9784ec7a82cb8373988b569ac57426"
+    },
+    {
+      "path": "web/public/study/run_analysis_amendment.py",
+      "type": "file",
+      "bytes": 14454,
+      "mode": 33206,
+      "cli_sha1": "4d155b6b699fe11ff92ebf1599bda235ed648a06",
+      "sha256": "dea9a7153d6705187237a93989b7107316740dfabb4f6dc78933f17c6313b3a5"
+    },
+    {
+      "path": "web/public/study/selection.json",
+      "type": "file",
+      "bytes": 173788,
+      "mode": 33206,
+      "cli_sha1": "07c852937e95ba3c3b4dc793cb897855b96b8d08",
+      "sha256": "4acc0e915ad625e8f598398e46216c27d16f9b1c22c46f7e7ca4147d49c89165"
+    },
+    {
+      "path": "web/public/study/study.json",
+      "type": "file",
+      "bytes": 205694,
+      "mode": 33206,
+      "cli_sha1": "d5c85ed1fdc0a808ef85d39392c58ca5ef2a10f8",
+      "sha256": "5dda85d4c90175af130710b7680653f459821bbb8874e1a86eb8525cea7b003b"
+    },
+    {
+      "path": "web/public/study/summary.json",
+      "type": "file",
+      "bytes": 8208,
+      "mode": 33206,
+      "cli_sha1": "2cc0b743e96536613d043f36494a8f341ce39daa",
+      "sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5"
+    },
+    {
+      "path": "web/public/study/test-candidates.json.xz",
+      "type": "file",
+      "bytes": 394952,
+      "mode": 33206,
+      "cli_sha1": "8fcc25d4ebfc4e2e701ed7d419b3ae0665f936fd",
+      "sha256": "b4160b991fe3ce2d179a2b55a51425783a27c9cec43b8d15fb1b349f497c220a"
+    },
+    {
+      "path": "web/public/study/test-outcomes.json.xz",
+      "type": "file",
+      "bytes": 538852,
+      "mode": 33206,
+      "cli_sha1": "43383f427d26051d8b2e9bba14a394ceb973c181",
+      "sha256": "221a33dc19869f71491896a7731012f7794bf3b7a6cd7b9aeeb5807e5aa3fe1b"
+    },
+    {
+      "path": "web/public/study/train-candidates.json.xz",
+      "type": "file",
+      "bytes": 459620,
+      "mode": 33206,
+      "cli_sha1": "38d252789a0a7aa2706b895e83a8cce881c2120f",
+      "sha256": "9d9f99388b5e9e158dbb6074f1a7757076c6163d3f18001dac878c87a21dc565"
+    },
+    {
+      "path": "web/public/study/validation-candidates.json.xz",
+      "type": "file",
+      "bytes": 237732,
+      "mode": 33206,
+      "cli_sha1": "cade2065eb08512bcbd3a5f7689e78c5da6daf67",
+      "sha256": "a212e44a371693f46cfb32e6f70aa593f471d59011dd6d9b9c7c8b3cb4c32551"
+    },
+    {
+      "path": "web/scripts/audit-presentation.mjs",
+      "type": "file",
+      "bytes": 17182,
+      "mode": 33206,
+      "cli_sha1": "b06b44e808071041eabbd3073e895f9a42591060",
+      "sha256": "df7bb43bd4570593abe936b30f13ed0e7afe1d7e09a8ec96a73317566322ac32"
+    },
+    {
+      "path": "web/scripts/prepare-assets.mjs",
+      "type": "file",
+      "bytes": 603,
+      "mode": 33206,
+      "cli_sha1": "56191886e4fb15dd537413bd242d0fa020f0a6d8",
+      "sha256": "dec6489d0a41e2235e261c02123fc1431d27b23d9a48bf49e098bdfdfc7fa8a2"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "type": "file",
+      "bytes": 49051,
+      "mode": 33206,
+      "cli_sha1": "1dae91fa058ff0fef2ae93ff7ba23238dc90005d",
+      "sha256": "dab679c4378435015beb4e16880697a22dcaee00d4f9d7249ac4ef631282e37d"
+    },
+    {
+      "path": "web/src/BuildingCutaway.ts",
+      "type": "file",
+      "bytes": 7380,
+      "mode": 33206,
+      "cli_sha1": "61ccb193e31683d5b7a5828bfa29c2f6b198c68b",
+      "sha256": "6cbbb1f2e69be7179434def68a0734b65ca51cbc4ab33f8a782c9def87d463de"
+    },
+    {
+      "path": "web/src/CameraControls.tsx",
+      "type": "file",
+      "bytes": 4538,
+      "mode": 33206,
+      "cli_sha1": "9a111f116c3b3b80629d2d76a289f2f829af5043",
+      "sha256": "dc170e9e9b1a38173dc8b6c03cd76481bd7cf5e36dc321d9e288e8846888c244"
+    },
+    {
+      "path": "web/src/CanvasBoundary.tsx",
+      "type": "file",
+      "bytes": 1049,
+      "mode": 33206,
+      "cli_sha1": "d2801734a2662f06fd1ac104c0cf8c4c08e241f1",
+      "sha256": "118c650c2a8073e8ddb9b74df23beb0feaf967f8b8b9f4d07469207cee99b72e"
+    },
+    {
+      "path": "web/src/CityView.tsx",
+      "type": "file",
+      "bytes": 40677,
+      "mode": 33206,
+      "cli_sha1": "ac84219670c90646576d175aa5c90f8019e418fd",
+      "sha256": "4ed50e725a01824dade55f024b45cd87b457583c77c5eda666b3dfcae5cc725e"
+    },
+    {
+      "path": "web/src/DecisionInspector.tsx",
+      "type": "file",
+      "bytes": 3245,
+      "mode": 33206,
+      "cli_sha1": "0bcf3615564043ca121aa5e1035d1192244172b6",
+      "sha256": "e2b93ac3602f38db1265b41a9105de10df0d39a9361ec5540621184556695e96"
+    },
+    {
+      "path": "web/src/GeometryLayer.ts",
+      "type": "file",
+      "bytes": 9595,
+      "mode": 33206,
+      "cli_sha1": "28717ad62178d6dd2a18cd87be1b884854d1a4cc",
+      "sha256": "e2b310671dde8839c67d330503bf6a86ef87ea257f075d7a8155b20afcc4e759"
+    },
+    {
+      "path": "web/src/LocalGeneration.tsx",
+      "type": "file",
+      "bytes": 17824,
+      "mode": 33206,
+      "cli_sha1": "3cafc29225154f56b6248e797fe6fbc762092d4b",
+      "sha256": "d3dc646e3fcbc916eb429e07f78888f3fe0d6dbaf03f9ec8c9396688c346910e"
+    },
+    {
+      "path": "web/src/MapSelectionLayer.ts",
+      "type": "file",
+      "bytes": 3592,
+      "mode": 33206,
+      "cli_sha1": "e3f31cf4c37de75dc886d0e0c19e724b56d6990e",
+      "sha256": "08c3a4f9ed7f5f14131f1df8496cce72ba59cbcb48a2ab530dcf61f572dd556b"
+    },
+    {
+      "path": "web/src/Onboarding.tsx",
+      "type": "file",
+      "bytes": 12220,
+      "mode": 33206,
+      "cli_sha1": "8b1099232e745647dfc96cabdf172c5bdcb5d9a5",
+      "sha256": "959f358d8658ae9910617cdedc19282ae3781c6dff658e5b10864a1e43064239"
+    },
+    {
+      "path": "web/src/QueueChart.tsx",
+      "type": "file",
+      "bytes": 2749,
+      "mode": 33206,
+      "cli_sha1": "b1d902bea4a05c0d4d0d25d76b1441addd837e22",
+      "sha256": "2cec2ac40625ee76331d1314797f48e66ba3dcfe11f57d4fe9c757e3495a1309"
+    },
+    {
+      "path": "web/src/ReplayEvidence.tsx",
+      "type": "file",
+      "bytes": 5998,
+      "mode": 33206,
+      "cli_sha1": "07021a89a2ab24abafab99a5707cf1cf25cbbdd1",
+      "sha256": "6cef41fdb49c59d35a70788b535b09bf9dc943cc620eaf2571d0eb35fe59f969"
+    },
+    {
+      "path": "web/src/SelectionEvidenceInspector.tsx",
+      "type": "file",
+      "bytes": 1680,
+      "mode": 33206,
+      "cli_sha1": "7bbc558fc36f89a645d77d6ac147986871642f82",
+      "sha256": "0bdc31f5a5862627e2cbf848a29c52f8c9f54dea81da50cb077cc374dd9829f7"
+    },
+    {
+      "path": "web/src/StudyResults.tsx",
+      "type": "file",
+      "bytes": 11815,
+      "mode": 33206,
+      "cli_sha1": "56a65d1a4dd0370855cb1b1739d74ee2bad33516",
+      "sha256": "5a62dc61ae716714dab12894ae51cbbac314f82a15fe888251966eeda10d3e7d"
+    },
+    {
+      "path": "web/src/VehicleLayer.ts",
+      "type": "file",
+      "bytes": 13797,
+      "mode": 33206,
+      "cli_sha1": "6119fbb0b26bb58701352ea75b14a1b16ee3af18",
+      "sha256": "40f54e1e9d0342401c94cccf82457f6a60b8c1912045657dd7d1db5018c0747a"
+    },
+    {
+      "path": "web/src/cameraFit.ts",
+      "type": "file",
+      "bytes": 1270,
+      "mode": 33206,
+      "cli_sha1": "13073f2ec2228cfdbb0c0a792736bd5dfa4a1437",
+      "sha256": "0350c98f4bb31534f275cba40117437357b59f03f68220e6f0e206b4e0afcd21"
+    },
+    {
+      "path": "web/src/cameraFollow.ts",
+      "type": "file",
+      "bytes": 2295,
+      "mode": 33206,
+      "cli_sha1": "26a16625ba78de30779b6cdd8a5e1be7d973090e",
+      "sha256": "7d6ff1f063bb69d1349e0676f9b6f6d21cd5fca79ce818525caee8201441dfb1"
+    },
+    {
+      "path": "web/src/catalog.ts",
+      "type": "file",
+      "bytes": 2095,
+      "mode": 33206,
+      "cli_sha1": "161e8380635f2c8ee48c4df1a9b19b8f8950c046",
+      "sha256": "5b05f24eb1503cd565e1c127858c780f49c9282eff482fd3f50bb4d1cbf68ce3"
+    },
+    {
+      "path": "web/src/city.ts",
+      "type": "file",
+      "bytes": 1082,
+      "mode": 33206,
+      "cli_sha1": "bc8e830df4286bcb3c54c10f1f327622679e4877",
+      "sha256": "d806fed7b305c0340fddf024fda62d3f734c5427f53645eaed320326b7f54662"
+    },
+    {
+      "path": "web/src/civilianTail.ts",
+      "type": "file",
+      "bytes": 2449,
+      "mode": 33206,
+      "cli_sha1": "a33a360cd46870bdd3974be15219de78eeb6c501",
+      "sha256": "72b0b1b0eac13c4f774f01d3f34f473d0c2692da04b0f9b044f01d4712c58ed8"
+    },
+    {
+      "path": "web/src/generation.ts",
+      "type": "file",
+      "bytes": 3869,
+      "mode": 33206,
+      "cli_sha1": "350af397193354bf79f20922638266d081c2fb58",
+      "sha256": "ecbf0e558a02315cbfc5bcdf1ac426d92fff2d6807c12a107ca6b888c08b94e3"
+    },
+    {
+      "path": "web/src/main.tsx",
+      "type": "file",
+      "bytes": 272,
+      "mode": 33206,
+      "cli_sha1": "60cd33f8fb1f348f2ec61ca20f11ae234a8c2dda",
+      "sha256": "fd42f2908b72be024152b1e5afccdbc3806c7de378ea336f570c12b8fae612da"
+    },
+    {
+      "path": "web/src/recording.ts",
+      "type": "file",
+      "bytes": 2025,
+      "mode": 33206,
+      "cli_sha1": "57a8c0a767d31db55a4587e506f3a7e1fc698be8",
+      "sha256": "78ce248eed030c446ce545aa0ab21355ac30c52b6b1998a84d5d02fceff5469d"
+    },
+    {
+      "path": "web/src/recording.worker.ts",
+      "type": "file",
+      "bytes": 880,
+      "mode": 33206,
+      "cli_sha1": "bebd300104eb26a570bc3ea69651772122d6584f",
+      "sha256": "be3554a6eff6de2f04d193038d2589d6e1ddc511ac4be0c4a257f8f20d27f323"
+    },
+    {
+      "path": "web/src/recordingCore.ts",
+      "type": "file",
+      "bytes": 3328,
+      "mode": 33206,
+      "cli_sha1": "6792f0486b68f4cfd39fffb4478a356c33f8179c",
+      "sha256": "459fe85b50698f24f75393a477b1beefabe285f1a1a23a5f8e138a45399b99cf"
+    },
+    {
+      "path": "web/src/replay.ts",
+      "type": "file",
+      "bytes": 8376,
+      "mode": 33206,
+      "cli_sha1": "141464354a63cdd40c4d7f2c57fdc709a99a05b1",
+      "sha256": "0cd1281055cbe56ada3e39e003a9fb57812f42dc17b4078effef6894623ba046"
+    },
+    {
+      "path": "web/src/replayContracts.ts",
+      "type": "file",
+      "bytes": 2232,
+      "mode": 33206,
+      "cli_sha1": "32c24688a79f779797e5a4af130500da64d2dfa6",
+      "sha256": "eef5d3f3b1c1a2bef03d3bf2f22c69a4cee1cb39a68aecca71743970c0ae48e7"
+    },
+    {
+      "path": "web/src/response.ts",
+      "type": "file",
+      "bytes": 1227,
+      "mode": 33206,
+      "cli_sha1": "22e3e3feaa4ee951fa283b237c2f61ea4dc75a67",
+      "sha256": "69b0133a070b694962d2463749a0628c166a4a93b018cf590c6964a0b492d2f7"
+    },
+    {
+      "path": "web/src/selectionEvidence.ts",
+      "type": "file",
+      "bytes": 3639,
+      "mode": 33206,
+      "cli_sha1": "f4c67d34a32e7ee3d175b307c7a518225f03fe2c",
+      "sha256": "1ea0431cd6a1a2e4f0aa909d42b914d94978dacdcb29804d8b4788d2840ca51d"
+    },
+    {
+      "path": "web/src/signalTimeline.ts",
+      "type": "file",
+      "bytes": 3604,
+      "mode": 33206,
+      "cli_sha1": "7aac29d2a37bcebb9d3e18bdec534f26a69df03a",
+      "sha256": "bdf0336adbb425af20f2a8bc12af06b4c43877e05677474ccab914f9d71d374b"
+    },
+    {
+      "path": "web/src/strictJson.ts",
+      "type": "file",
+      "bytes": 2394,
+      "mode": 33206,
+      "cli_sha1": "d45105c9b5f291188aaad60b714113c5431b34bf",
+      "sha256": "778d19d5abcf63f884cf0db5c54fe7958f8ed6f1e0abc0739c0e0d2b093541a1"
+    },
+    {
+      "path": "web/src/studySummary.ts",
+      "type": "file",
+      "bytes": 15465,
+      "mode": 33206,
+      "cli_sha1": "441f27eb20fb5cdf46eae398b96103e283daa7db",
+      "sha256": "7548f0c6d26973f168fc91997960ba77f31ef896afee0b02d8efc58dff28b46f"
+    },
+    {
+      "path": "web/src/styles/app.css",
+      "type": "file",
+      "bytes": 31287,
+      "mode": 33206,
+      "cli_sha1": "5f72fb2f4e5d4105330a8ed69572b5a8cdba8487",
+      "sha256": "6abec70f468f507a283f903e3859d45c35ea92f9f91a1b38292b304c19f48a82"
+    },
+    {
+      "path": "web/src/styles/onboarding.css",
+      "type": "file",
+      "bytes": 2825,
+      "mode": 33206,
+      "cli_sha1": "4be45109c69de9469e40a687355b37fc0fd6e76b",
+      "sha256": "7f0cc64075f6c55454bb9e618d9f6257a819945cb0b6a59ae5c7eccab349d1dd"
+    },
+    {
+      "path": "web/src/styles/study.css",
+      "type": "file",
+      "bytes": 3868,
+      "mode": 33206,
+      "cli_sha1": "989b37f620bb466f54552bcece348f7254367b7c",
+      "sha256": "c9930dbb54bb5dfa7d56b831fa9a9568cf694d366055a143fb56347c017a4d9d"
+    },
+    {
+      "path": "web/src/styles/tokens.css",
+      "type": "file",
+      "bytes": 923,
+      "mode": 33206,
+      "cli_sha1": "49336a4070c51c8306661dff1626713119b4b3ab",
+      "sha256": "577d747c17a5d13440f0b1d30ac22ef7e1a8d25ac76a4699eb6cba3ade9f94ab"
+    },
+    {
+      "path": "web/src/types.ts",
+      "type": "file",
+      "bytes": 3320,
+      "mode": 33206,
+      "cli_sha1": "b950fa498ecc6ab445b878b7f256ec20e6995cb1",
+      "sha256": "41a60c00f9093a6296a8dd061fb96d0c57b24cc21e1135bf43f4c39dcc7e5c8b"
+    },
+    {
+      "path": "web/src/validation.ts",
+      "type": "file",
+      "bytes": 4745,
+      "mode": 33206,
+      "cli_sha1": "eaaa651110d4680a0a610b76196466800f702278",
+      "sha256": "f22dc8e7f228e0c5fcd53481e9cae453ec3f5c402d2205428745038b44e88b80"
+    },
+    {
+      "path": "web/src/vite-env.d.ts",
+      "type": "file",
+      "bytes": 38,
+      "mode": 33206,
+      "cli_sha1": "e2eac6bcc8767d416f859eb09486cc8709de95a5",
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "path": "web/tests",
+      "type": "empty_directory_marker",
+      "bytes": 0,
+      "mode": 16822
+    },
+    {
+      "path": "web/tsconfig.json",
+      "type": "file",
+      "bytes": 342,
+      "mode": 33206,
+      "cli_sha1": "2f19f7b04237c40622e3e276b6f70528277c21f9",
+      "sha256": "df27695479b83c1cfc627c07842a3bf77fd8f08d135e8e15bf1fb695cb1ec8c9"
+    },
+    {
+      "path": "web/tsconfig.tsbuildinfo",
+      "type": "file",
+      "bytes": 863,
+      "mode": 33206,
+      "cli_sha1": "5802a37032e1751f85ec3ff98f0aeb00a99a52ca",
+      "sha256": "d0d3bee56d8a76424cc9371cb51c79ffd126535249901196703b62ad76faf61b"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "type": "file",
+      "bytes": 337,
+      "mode": 33206,
+      "cli_sha1": "79bc510d97a7b7ab3515cc83bed72a692328a795",
+      "sha256": "211f3e3497f04aa05e834da364b0b746fce3b8838da53da884a8a3ed79b63a85"
+    }
+  ],
+  "notes": [
+    "Every export, map and preview copied by web/scripts/prepare-assets.mjs is included. The root assets/asset_manifest.json is also included.",
+    "This is the current pre-brand source snapshot. A later identity/source change requires a fresh preflight or exact explicit changed-file review before deployment."
+  ]
+}
