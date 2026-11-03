@@ -119,3 +119,28 @@ keyboard disclosure, legacy absence and malformed-evidence rejection. It does
 not run SUMO, train a model, produce real traffic, or establish a scientific
 result. It is authored but not yet accepted on Omen. Never register its fixtures
 in the public recording catalog.
+
+## Genuine city replay inspection (Omen only)
+
+After the complete traffic qualification chain succeeds, serve the committed
+preview and inspect its existing seed-7 city recording without rerunning SUMO:
+
+```powershell
+python -B web/tests/real_replay_smoke.py --run local-runtime/acceptance/ATTEMPT/traffic/city-sparse --base-url http://127.0.0.1:5173 --output local-runtime/real-city-visual-NEW
+```
+
+Replace `ATTEMPT` with the retained qualified attempt and use a fresh output
+folder outside its traffic evidence tree. The harness re-audits the original
+fixed/ordinary/city chain, verifies exact replay bytes before decoding, and binds
+served viewer hashes separately from the simulator source commit. It intercepts
+only the catalog/recording responses in its isolated browser context using those
+**genuine recorded bytes**; it neither publishes a recording nor generates one.
+
+The opt-in `?inspect=1` mode exposes actual instance-buffer matrices after render.
+Checks compare active traffic and the render-only baseline ambulance at the same
+absolute times, including interpolation when available, then verify ghost-off
+and baseline-view isolation. Ordinary browsing does not collect these snapshots.
+Do not benchmark performance in inspection mode. Matrix agreement is not visual
+certification of roads, lane positions, stop lines, vertical placement or
+occlusion: review the retained screenshots separately. The new harness and
+telemetry require Omen acceptance; cloud compilation alone is not a pass.

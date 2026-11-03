@@ -290,3 +290,27 @@ Compiled preview source: `b2a5e60`, artifact checkpoint `99083b2`.
 
 The original invalid fixture evidence is retained. The later qualified case
 does not erase that failure or turn source-only revisions into measured gains.
+
+
+## 2026-11-03, `11be524` traffic journal resolved (reported 07:35 UTC)
+
+The previous transport-gap entry is historical: the existing saved journal was
+inspected rather than treating disconnection as termination or blindly rerunning.
+All **nine traffic stages exited zero**, source fingerprints matched, and no
+active process remained. Total journal wall time was **94.98 s**; this is a
+qualification-run duration, not a benchmark or rendering performance measure.
+
+- Fixed fixture and ordinary/ordinary fixture pairs completed **120/120 civilians
+  in each world**. Sparse-city P001 → HOSP_EAST completed **37/37 in each world**.
+- Across all six worlds at 600 s: zero collisions, teleports, running civilians
+  and uninserted civilians. City counts at 240 s still included **21 and 20 running**;
+  do not substitute the earlier horizon for the common completed drain.
+- Signal/recovery, automated alignment, demand/tripinfo and causality audits
+  passed. The prior exact ordinary-controller negative control remains qualified.
+- City ambulance journeys: **210.5 s baseline, 182.5 s priority**. This is one
+  exploratory qualification pair, not aggregate benefit, learned improvement,
+  evidence across regimes, or a traffic-safety claim. Qualification seed 7 stays
+  excluded from scientific study data.
+- Actual rendered city replay/ghost alignment and a real local-generation API job
+  remain pending. No pilot, model training or held-out evaluation ran, and the
+  public recording catalog remains empty. Preserve all earlier invalid evidence.

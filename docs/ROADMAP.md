@@ -12,7 +12,7 @@ The original asset pack is published and verified: 25 primary junctions plus 32 
 
 Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
 
-## Updated progress — November 3, 12:51 IST
+## Updated progress — November 3, 13:05 IST
 
 Desktop remains the sole optimization/test target (`AGENTS.md`). Real 3D geometry,
 selective building fading and low-poly instanced civilian traffic are retained.
@@ -26,11 +26,15 @@ city pickup/hospital routes, with no conversion warnings.
 Fresh fixed-priority and ordinary/ordinary fixture pairs qualified: each world
 completed all 120 civilians with no running/uninserted vehicles, collisions or
 teleports; exact negative-control trace/control equality passed. This is software
-correctness evidence, not policy superiority. The sparse-city pair subsequently
-lost its Omen connection; its outcome is unknown pending process/journal review.
+correctness evidence, not policy superiority. The sparse-city transport gap has
+now been resolved from the existing journal: all nine traffic stages exited zero,
+source fingerprints matched, and no process remained active. Both sparse-city
+P001 → HOSP_EAST worlds completed all 37 civilians by 600 s, without collisions,
+teleports, running or uninserted vehicles. Signal/recovery, geometry alignment,
+demand/tripinfo and causality audits passed. This qualifies the recorded case,
+not every city route or regime.
 
-Next: resolve that existing city execution without blind retries; qualify city
-traffic and real replay/ghost alignment; complete one real local-generation API
+Next: inspect actual city replay/ghost rendering alignment; complete one real local-generation API
 flow; then measure pilot throughput/action diversity and freeze a feasible study.
 The public recording catalog remains empty. No trained model, held-out result or
 measured benefit is claimed. Keep the November 4 submission buffer; cut experiment
@@ -42,9 +46,9 @@ Documentation checkpoint → three-junction legal scheduler and accounting → c
 
 | Next gate | Work and required evidence |
 |---|---|
-| During transport gaps | Preserve the active city attempt and all failed/unknown evidence; continue scoped source work and documentation. No cloud testing, training or invented replay. The latest V3/map-picking/offline-evidence preview source and exact hashes are in `preview/manifest.json`; later source changes do not inherit its build. |
-| First reconnect | Inspect the existing sparse-city process/journal before any retry. Do not pull source underneath an active run. Current unit/build/desktop gates passed at `11be524`; rerun affected gates after later code changes. |
-| Traffic correctness | Fixed fixture and ordinary/ordinary control qualified at `11be524`. Sparse city outcome remains unknown. Complete city lane/stop-line and real replay alignment checks before claiming the city gate passed. |
+| During transport gaps | Preserve existing attempts and all failed/unknown evidence; continue scoped source work and documentation. No cloud testing, training or invented replay. The latest V3/map-picking/offline-evidence preview source and exact hashes are in `preview/manifest.json`; later source changes do not inherit its build. |
+| Source continuity | The existing sparse-city journal resolved successfully; no active process remained. Do not pull source underneath any future active run. Current unit/build/desktop and scoped traffic gates passed at `11be524`; rerun affected gates after later code changes. |
+| Traffic and visual acceptance | Fixed fixture, ordinary/ordinary control and the sparse-city pair qualified at `11be524`, including automated alignment audits. Actual rendered city lane/stop-line and replay/ghost alignment remain separate browser gates. |
 | Experiment feasibility | Measure runtime and useful lead diversity. Freeze feasible whole-realization splits, objective, model-selection rules and capture case IDs before collection. The source-implemented offline selected-replay bridge must pass acceptance using actual captured traces, preserving original fixed-candidate physics and separate selector provenance; it is not a live learned controller. |
 | Evaluation and replay | Only after valid collection: fit on training, choose on validation, freeze, evaluate untouched test. Retain invalid/censored cases and publish only audited real captures. No held-out gain means an honest inconclusive/non-learned result. |
 | Nov 4, by 13:00 | Capture the actual desktop product/demo and truthful results or limitations; reconcile reproduction, attribution, licensing and evidence links. Reduce experiment breadth before correctness. |

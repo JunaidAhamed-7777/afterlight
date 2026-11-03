@@ -15,7 +15,7 @@ Windows PC; cloud code review/build is not an acceptance result.
 
 The initial API served recordings only. The optional local-generation adapter now
 connects to the real runner when explicitly enabled, with one active job, bounded
-inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but real local-generation API acceptance remains pending city traffic qualification. It is not live streaming and
+inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but real local-generation API acceptance remains pending an actual API job. It is not live streaming and
 does not invent progress.
 
 ## Reproduction commands — use the existing pinned environment
@@ -50,10 +50,18 @@ running/uninserted vehicles, collisions or teleports. The negative control's
 trace/control equality passed. This resolves the previously observed insertion
 collision for this qualification case, not every possible traffic scenario.
 
-The sparse-city pair then lost the Omen connection. Its process/journal outcome
-is **unknown**, not a failed or successful simulation. Inspect saved records and
-process state before any retry; never infer termination from transport loss.
-City traffic, real city replay/ghost alignment, a real local-generation API job,
+The sparse-city pair temporarily lost its Omen connection; inspection of the
+existing journal has now resolved that unknown outcome. All nine traffic stages
+exited zero in 94.98 s wall time, with matching source fingerprints and no active
+process remaining. The sparse P001 → HOSP_EAST pair completed all 37 civilians
+per world by 600 s. Across all six qualification worlds, collisions, teleports,
+running and uninserted counts were zero at that endpoint. Signal/recovery,
+automated alignment, demand/tripinfo and causality audits passed. At 240 s the
+city worlds still had 21 and 20 running civilians; the common drain is essential.
+Ambulance journeys were 210.5 s baseline and 182.5 s priority in this one
+exploratory pair, not an aggregate policy-benefit estimate.
+
+Actual rendered city replay/ghost alignment, a real local-generation API job,
 pilot throughput/diversity and all learned evaluation remain open gates. The
 public recording catalog remains empty; no performance benefit is claimed.
 The [compiled preview](../preview/README.md) permits separate browser acceptance

@@ -338,8 +338,9 @@ export function CityView(props: Props) {
     selected.add(pickupMarker, hospitalMarker);
     pickupMarker.visible = false;
     hospitalMarker.visible = false;
-    const active = new VehicleLayer(),
-      ghosts = new VehicleLayer(true),
+    const inspectVehicles = new URLSearchParams(window.location.search).get("inspect") === "1";
+    const active = new VehicleLayer(false, inspectVehicles),
+      ghosts = new VehicleLayer(true, inspectVehicles),
       signalGroup = new THREE.Group();
     scene.add(active.group, ghosts.group, signalGroup);
     const models = new Map<string, THREE.Group>();
@@ -571,6 +572,12 @@ export function CityView(props: Props) {
           renderer.domElement.dataset.mapPickMode = p.pickMode ?? "none";
           renderer.domElement.dataset.mapAnchors = JSON.stringify(p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : []);
           renderer.render(scene, renderCamera);
+          if (inspectVehicles) {
+            renderer.domElement.dataset.vehicleInspection = JSON.stringify({
+              absoluteTime: p.clock.current, world: p.world,
+              ghostRequested: p.ghost, active: active.inspect(), ghost: ghosts.inspect(),
+            });
+          }
           if (assetsLoaded && !mapReady) {
             mapReady = true;
             current.current.onMapReady(true);

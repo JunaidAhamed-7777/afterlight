@@ -14,8 +14,10 @@ export class VehicleLayer {
   private batches = new Map<string, Batch>();
   private transform = new THREE.Object3D();
   private ghost: boolean;
-  constructor(ghost = false) {
+  private readonly inspectionEnabled: boolean;
+  constructor(ghost = false, inspectionEnabled = false) {
     this.ghost = ghost;
+    this.inspectionEnabled = inspectionEnabled;
   }
   update(
     vehicles: Vehicle[],
@@ -62,6 +64,63 @@ export class VehicleLayer {
         if (this.ghost) (mesh.material as THREE.Material).opacity = opacity;
       }
     }
+  }
+  /** Opt-in QA snapshot of render buffers, never input poses or simulation state. */
+  inspect() {
+    if (!this.inspectionEnabled) return null;
+    this.group.updateWorldMatrix(true, true);
+    const types: Record<string, { count: number; primitiveCounts: number[] }> = {};
+    const ambulances: Array<{
+      instance: number; consistentMatrices: boolean; center: number[] | null; nose: number[] | null; rear: number[] | null;
+      length: number | null; width: number | null; bounds: { min: number[]; max: number[] };
+      primitiveMatrices: number[][];
+    }> = [];
+    let layerVisible = true;
+    for (let node: THREE.Object3D | null = this.group; node; node = node.parent)
+      if (!node.visible) layerVisible = false;
+    for (const [type, batch] of this.batches) {
+      const visible = batch.meshes.filter(mesh => layerVisible && mesh.visible);
+      const primitiveCounts = batch.meshes.map(mesh => layerVisible && mesh.visible ? mesh.count : 0);
+      const count = Math.max(0, ...primitiveCounts);
+      types[type] = { count, primitiveCounts };
+      if (type !== "ambulance") continue;
+      for (let i = 0; i < count; i++) {
+        const localBounds = new THREE.Box3();
+        const worldBounds = new THREE.Box3();
+        const primitiveMatrices: number[][] = [];
+        let referenceMatrix: THREE.Matrix4 | null = null;
+        let consistentMatrices = true;
+        for (const mesh of visible) {
+          if (i >= mesh.count) continue;
+          if (!mesh.geometry.boundingBox) mesh.geometry.computeBoundingBox();
+          const baked = mesh.geometry.boundingBox!;
+          const matrix = new THREE.Matrix4();
+          mesh.getMatrixAt(i, matrix);
+          matrix.premultiply(mesh.matrixWorld);
+          if (referenceMatrix && !referenceMatrix.equals(matrix)) consistentMatrices = false;
+          referenceMatrix ??= matrix;
+          primitiveMatrices.push(matrix.toArray());
+          localBounds.union(baked);
+          worldBounds.union(baked.clone().applyMatrix4(matrix));
+        }
+        if (!referenceMatrix || localBounds.isEmpty()) continue;
+        if (!consistentMatrices) {
+          ambulances.push({ instance: i, consistentMatrices: false, center: null, nose: null, rear: null,
+            length: null, width: null, bounds: { min: worldBounds.min.toArray(), max: worldBounds.max.toArray() }, primitiveMatrices });
+          continue;
+        }
+        const localCenter = localBounds.getCenter(new THREE.Vector3());
+        const center = localCenter.clone().applyMatrix4(referenceMatrix);
+        const nose = new THREE.Vector3(localCenter.x, localCenter.y, localBounds.min.z).applyMatrix4(referenceMatrix);
+        const rear = new THREE.Vector3(localCenter.x, localCenter.y, localBounds.max.z).applyMatrix4(referenceMatrix);
+        const left = new THREE.Vector3(localBounds.min.x, localCenter.y, localCenter.z).applyMatrix4(referenceMatrix);
+        const right = new THREE.Vector3(localBounds.max.x, localCenter.y, localCenter.z).applyMatrix4(referenceMatrix);
+        ambulances.push({ instance: i, consistentMatrices: true, center: center.toArray(), nose: nose.toArray(), rear: rear.toArray(),
+          length: nose.distanceTo(rear), width: left.distanceTo(right),
+          bounds: { min: worldBounds.min.toArray(), max: worldBounds.max.toArray() }, primitiveMatrices });
+      }
+    }
+    return { source: "InstancedMesh matrices and baked geometry bounds", types, ambulances };
   }
   private create(template: THREE.Group, capacity: number): Batch {
     template.updateMatrixWorld(true);
