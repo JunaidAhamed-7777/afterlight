@@ -14,6 +14,7 @@ import time
 from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright, expect
+from browser_camera_checks import assert_overview_fits, assert_favicon_served
 
 
 def main() -> None:
@@ -54,6 +55,8 @@ def main() -> None:
             page.wait_for_function("!document.querySelector('.canvas-status')", timeout=30000)
             expect(page.locator(".city-fallback")).to_have_count(0)
             passed("original_city_glb_drawn_without_fallback")
+            passed("desktop_original_city_fits", assert_overview_fits(page))
+            passed("original_favicon_served", assert_favicon_served(page))
             canvas = page.locator(".three-host canvas")
             canvas.focus()
             original_zoom = float(canvas.get_attribute("data-camera-zoom"))
@@ -157,6 +160,7 @@ def main() -> None:
             page.evaluate("scrollTo(0,0)")
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Mobile horizontal overflow"
             assert page.locator(".stage").bounding_box()["y"] < 200, "Mobile city is buried below settings"
+            passed("mobile_original_city_fits", assert_overview_fits(page))
             page.screenshot(path=str(args.output / "mobile.png"), full_page=True)
             passed("mobile_city_first_no_overflow_reduced_motion")
             page.keyboard.press("Tab")

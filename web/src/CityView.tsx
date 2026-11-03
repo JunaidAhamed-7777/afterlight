@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
 import type { City, Frame, SignalGeometry } from "./types.ts";
 import { GeometryLayer } from "./GeometryLayer.ts";
+import { fitOrthographic } from "./cameraFit.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
 import { interpolatedFrame, vehiclePose } from "./replay.ts";
 
@@ -88,12 +89,45 @@ export function CityView(props: Props) {
     let viewportWidth = 1,
       viewportHeight = 1;
     const camera = new THREE.OrthographicCamera(-850, 850, 650, -650, 1, 5000);
-    const overview = () => {
-      camera.position.set(1050, 1250, 1100);
-      camera.zoom = 1;
+    let overviewMode = true;
+    let assetBounds: THREE.Box3 | null = null;
+    const cityBounds = () => {
+      if (assetBounds) return assetBounds;
+      const bounds = current.current.city?.bounds;
+      if (!bounds) return new THREE.Box3(
+        new THREE.Vector3(-650, 0, -650), new THREE.Vector3(650, 100, 650),
+      );
+      return new THREE.Box3(
+        new THREE.Vector3(bounds.min[0], bounds.min[2] ?? 0, -bounds.max[1]),
+        new THREE.Vector3(bounds.max[0], bounds.max[2] ?? 100, -bounds.min[1]),
+      );
+    };
+    const fitOverview = () => {
+      camera.updateMatrixWorld(true);
+      const bounds = cityBounds();
+      const points: Array<[number, number]> = [];
+      for (const x of [bounds.min.x, bounds.max.x])
+        for (const y of [bounds.min.y, bounds.max.y])
+          for (const z of [bounds.min.z, bounds.max.z]) {
+            const point = new THREE.Vector3(x, y, z).applyMatrix4(camera.matrixWorldInverse);
+            points.push([point.x, point.y]);
+          }
+      const fit = fitOrthographic(points, viewportWidth, viewportHeight);
+      camera.left = -fit.halfWidth;
+      camera.right = fit.halfWidth;
+      camera.top = fit.halfHeight;
+      camera.bottom = -fit.halfHeight;
       camera.updateProjectionMatrix();
-      controls.target.set(0, 0, 0);
+    };
+    const overview = () => {
+      overviewMode = true;
+      const center = cityBounds().getCenter(new THREE.Vector3());
+      camera.position.copy(center).add(new THREE.Vector3(1050, 1250, 1100));
+      camera.zoom = 1;
+      controls.target.copy(center);
       controls.update();
+      fitOverview();
+      dirty = true;
     };
     const controls = new MapControls(camera, renderer.domElement);
     controls.enableDamping = false;
@@ -103,7 +137,10 @@ export function CityView(props: Props) {
     controls.minPolarAngle = Math.PI * 0.12;
     overview();
     controls.listenToKeyEvents(renderer.domElement);
-    const manualCamera = () => current.current.onManualCamera();
+    const manualCamera = () => {
+      overviewMode = false;
+      current.current.onManualCamera();
+    };
     controls.addEventListener("start", manualCamera);
     const cameraKeys = (event: KeyboardEvent) => {
       if (
@@ -187,6 +224,10 @@ export function CityView(props: Props) {
         }
         // Preserve the authored root translation. Never center or replace glTF transforms.
         scene.add(gltf.scene);
+        gltf.scene.updateMatrixWorld(true);
+        const loadedBounds = new THREE.Box3().setFromObject(gltf.scene);
+        if (!loadedBounds.isEmpty()) assetBounds = loadedBounds;
+        if (overviewMode && !current.current.follow) overview();
         dirty = true;
         setStatus("Loading original vehicle assets…");
         await Promise.all(
@@ -216,15 +257,18 @@ export function CityView(props: Props) {
       try {
         dirty = true;
         const { width, height } = container.getBoundingClientRect();
+        if (width <= 0 || height <= 0) return;
         renderer.setSize(width, height, false);
         viewportWidth = width;
         viewportHeight = height;
-        const aspect = width / Math.max(height, 1);
-        camera.left = -670 * aspect;
-        camera.right = 670 * aspect;
-        camera.top = 670;
-        camera.bottom = -670;
-        camera.updateProjectionMatrix();
+        if (overviewMode && !current.current.follow) fitOverview();
+        else {
+          // Preserve the user's target, zoom and vertical scale during resizing.
+          const halfHeight = (camera.top - camera.bottom) / 2;
+          camera.left = -halfHeight * width / height;
+          camera.right = halfHeight * width / height;
+          camera.updateProjectionMatrix();
+        }
       } catch (error) {
         haltRuntime(
           `The 3D view could not resize. ${error instanceof Error ? error.message : "Retry the city."}`,
@@ -317,6 +361,7 @@ export function CityView(props: Props) {
             ); /* Neutral marker: multi-link phase is not a universal green. */
           }
           if (p.follow && !p.reducedMotion) {
+            overviewMode = false;
             if (!lastProps?.follow) {
               camera.zoom = 4;
               camera.updateProjectionMatrix();
@@ -343,6 +388,22 @@ export function CityView(props: Props) {
         if (dirty) {
           renderer.render(scene, camera);
           renderer.domElement.dataset.cameraZoom = String(camera.zoom);
+          // Inspectable actual asset bounds, for viewport-fit QA, never simulated evidence.
+          if (assetBounds) {
+            let maxX = 0, maxY = 0;
+            for (const x of [assetBounds.min.x, assetBounds.max.x])
+              for (const y of [assetBounds.min.y, assetBounds.max.y])
+                for (const z of [assetBounds.min.z, assetBounds.max.z]) {
+                  const corner = new THREE.Vector3(x, y, z).project(camera);
+                  maxX = Math.max(maxX, Math.abs(corner.x));
+                  maxY = Math.max(maxY, Math.abs(corner.y));
+                }
+            renderer.domElement.dataset.cityFit = JSON.stringify({
+              source: "world-transformed original glTF bounds",
+              overview: overviewMode, maxX, maxY,
+              viewportWidth, viewportHeight,
+            });
+          }
           renderer.domElement.dataset.cameraTarget = controls.target
             .toArray()
             .join(",");

@@ -96,3 +96,23 @@ replacement for exact command logs, generated evidence or future reruns.
   guarded atomic replacement, followed by exact file hashes and content-clean
   postconditions. Its five mocked guards are authored; actual Omen execution of
   the new helper and product browser acceptance remain pending.
+
+## 2026-11-03, `3f679def` first application acceptance (reported 00:30 UTC)
+
+Compiled application source: `1312e865`; preview/harness/refresh source: `3f679def`.
+
+- **Passed:** all 48 exact raw-byte manifest inputs, all nine preview tests,
+  and all 11 headed Chrome application smoke checks (5.59 s test elapsed), with
+  no uncaught page errors. Actual WebGL2 rendered on the Omen AMD integrated GPU.
+- **Passed:** synthetic local-generation protocol UI checks (3.90 s test elapsed).
+  These intercepted API responses tested UI request recovery, not a real job,
+  traffic run, or measured improvement.
+- **Visual findings:** city overview was horizontally cropped on mobile and the
+  taller local-generation layout; favicon request returned 404. Responsive fit
+  and favicon corrections are being authored and require a new browser cohort.
+- Index and content diffs were empty, but Git status retained stale stat metadata
+  for 38 refreshed paths. A scoped metadata-refresh diagnostic is separate from
+  the successful byte checks; no reset or global configuration change is implied.
+- Real paired playback, ghost timing against SUMO, loaded-traffic performance,
+  actual simulation and ML evaluation remain untested. Smoke elapsed times above
+  are test-run durations, not renderer frame-time or traffic-performance metrics.

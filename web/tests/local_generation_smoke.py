@@ -14,6 +14,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright, expect
+from browser_camera_checks import assert_overview_fits, assert_favicon_served
 
 
 def main() -> None:
@@ -103,6 +104,14 @@ def main() -> None:
             expect(page.locator(".generation-status")).to_contain_text("no simulator ran")
             expect(page.get_by_role("heading", name="No outcome claims yet")).to_be_visible()
             expect(page.get_by_role("button", name="Open completed recording")).to_have_count(0)
+            report["local_generation_city_fit"] = assert_overview_fits(page)
+            report["favicon"] = assert_favicon_served(page)
+            page.set_viewport_size({"width": 760, "height": 1200})
+            report["tall_generation_city_fit"] = assert_overview_fits(page)
+            page.set_viewport_size({"width": 390, "height": 844})
+            report["mobile_generation_city_fit"] = assert_overview_fits(page)
+            page.set_viewport_size({"width": 1440, "height": 1000})
+            assert_overview_fits(page)
             page.screenshot(path=str(args.output / "synthetic-protocol-only.png"), full_page=True)
             # Reload with a persisted job and deliberately hold its GET response.
             hold_recovery["enabled"] = True
