@@ -21,12 +21,21 @@ For the final, use the actual post-identity deployment URL and explicit mode:
 .\.venv\Scripts\python.exe web/tests/capture_desktop_demo.py `
   --mode final `
   --base-url https://YOUR-VERIFIED-DEPLOYMENT.vercel.app/ `
+  --study-manifest-sha256 $releasedManifestSha `
   --output local-runtime/final-desktop-demo-01
 ```
 
 `--build-manifest` optionally verifies an exact isolated build inventory before
 and after recording. The catalog and both original decoded replay checksums are
 always verified. Every invocation needs a fresh output directory.
+
+Set `$releasedManifestSha` to the exact manifest hash from the completed audited
+public Study release. Final mode independently verifies that real public pack
+and every physical companion under its 4 MiB bound before opening the browser.
+Lossless reproduction grids have explicit 128 MiB decoded/decoder-memory caps.
+It rejects
+unpublished, incomplete, mismatched or invalid evidence. There is no positive
+fixture or placeholder fallback. Default dry-run mode never fetches Study data.
 
 ## Walkthrough
 
@@ -46,8 +55,12 @@ roughly 70–85 seconds. The harness rejects a final video outside 60–90 secon
 6. **48–62s:** Open the Westhaven recording, seek within its actual ambulance
    journey, and follow the response to the other hospital. Real loading remains
    visible.
-7. **62–70s:** Pause and inspect full-run Results, civilian delay and vehicle
-   accounting in the independently scrolling sidebar.
+7. **62–67s:** Pause and inspect This run, civilian delay and vehicle accounting
+   in the independently scrolling sidebar.
+8. **67–70s:** Open Study and show only the actual released report. Its native
+   HTTP 200 responses, checksums, episode counts and comparison count must match
+   the independently verified publication. The ready report remains visible
+   for at least 2.5 seconds even if its real loading takes longer.
 
 Action times, real recording IDs, hashes, playback times and speed settings are
 saved in `report.json`. This is a returning-user walkthrough: only the completed

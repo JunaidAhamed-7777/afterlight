@@ -21,6 +21,7 @@ from urllib.request import urlopen
 
 from playwright.sync_api import expect, sync_playwright
 from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, decoded_recording, digest, open_recording, ready, returning_visit, seek, source_identity, verify_served_build
+from released_study_pack import load_released_public_pack
 
 
 def fetched(url):
@@ -76,6 +77,7 @@ def main():
     parser.add_argument('--mode',choices=('dry-run','final'),default='dry-run')
     parser.add_argument('--width',type=int,choices=(1280,1600),default=1280)
     parser.add_argument('--build-manifest',type=Path)
+    parser.add_argument('--study-manifest-sha256',help='Required for final mode: exact completed public Study manifest SHA-256')
     args=parser.parse_args()
     address=urlsplit(args.base_url)
     if address.username or address.password or not ((address.scheme=='http' and address.hostname in {'localhost','127.0.0.1'}) or (address.scheme=='https' and address.hostname and address.hostname.endswith('.vercel.app'))):
@@ -84,7 +86,11 @@ def main():
     if not output.is_relative_to((ROOT/'local-runtime').resolve()):parser.error('Use fresh local-runtime output')
     ffmpeg,ffprobe=shutil.which('ffmpeg'),shutil.which('ffprobe')
     if not ffmpeg or not ffprobe:parser.error('Install the official FFmpeg tooling before capturing; both ffmpeg and ffprobe must be on PATH')
+    if args.mode=='final' and not args.study_manifest_sha256:parser.error('Final mode requires the actual released Study manifest SHA-256; there is no placeholder fallback')
     output.mkdir(parents=True,exist_ok=False)
+    # Default capability checks do not open any Study data. Final mode is
+    # explicitly release-gated and independently verifies the real public pack.
+    study_pack=load_released_public_pack(args.base_url,args.study_manifest_sha256) if args.mode=='final' else None
     catalog_bytes=fetched(urljoin(args.base_url,'replays/catalog.json'));catalog=json.loads(catalog_bytes)
     entries=catalog['runs']
     assert len(entries)>=2,'Two genuine hospital recordings are required'
@@ -111,7 +117,8 @@ def main():
     report={'status':'pending','mode':args.mode,'publication':'UNPUBLISHED_CAPABILITY_CHECK' if args.mode=='dry-run' else 'FINAL_CAPTURE_AWAITING_PIXEL_REVIEW',
             'scope':__doc__,'started_utc':datetime.now(timezone.utc).isoformat(),'base_url':args.base_url,
             'source_before':source_identity(),'catalog_sha256':digest(catalog_bytes),'genuine_recordings':preflight,
-            'viewport_css':viewport,'device_pixel_ratio':1,'native_video_fps':25,'actions':[],'page_errors':[]}
+            'viewport_css':viewport,'device_pixel_ratio':1,'native_video_fps':25,'actions':[],'page_errors':[],
+            'released_Study':study_pack,'study_responses':[]}
     browser=playwright=context=page=None
     try:
         playwright=sync_playwright().start()
@@ -122,6 +129,10 @@ def main():
         manifest=json.loads(args.build_manifest.read_bytes()) if args.build_manifest else None
         if manifest:report['served_build_before']=verify_served_build(context,args.base_url,manifest)
         page=context.new_page();page.on('pageerror',lambda e:report['page_errors'].append(str(e)))
+        def study_response(response):
+            if study_pack and response.url in (study_pack['manifest_url'],study_pack['summary_url']):
+                data=response.body();report['study_responses'].append({'url':response.url,'status':response.status,'bytes':len(data),'sha256':digest(data)})
+        page.on('response',study_response)
         video=page.video;assert video
         capture_started=time.perf_counter()
         page.goto(args.base_url,wait_until='domcontentloaded');ready(page);open_recording(page,chosen[0])
@@ -167,9 +178,18 @@ def main():
             page.locator('.follow-ambulance').click();page.get_by_role('combobox',name='Playback speed',exact=True).select_option('2');play()
             note('Switch to the genuine Westhaven hospital recording');until(59);shot('05-westhaven-response');until(62)
             pause();page.get_by_role('button',name='Results',exact=True).click()
-            expect(page.locator('.evidence')).to_be_visible();note('Read actual full-run Results');shot('06-recorded-results');until(67)
+            page.get_by_role('button',name='This run',exact=True).click()
+            expect(page.locator('.evidence:not(.study-results)')).to_be_visible();note('Read actual This run results');shot('06-recorded-results');until(65)
             page.locator('.settings-scroll').evaluate("e=>e.scrollTo({top:Math.min(360,e.scrollHeight),behavior:'instant'})")
-            note('Inspect civilian delay and vehicle accounting');until(70);shot('07-traffic-accounting')
+            note('Inspect civilian delay and vehicle accounting');shot('07-traffic-accounting');until(67)
+            page.get_by_role('button',name='Study',exact=True).click()
+            expect(page.get_by_role('heading',name='Offline selector results' if study_pack['summary']['mode']=='learned' else 'Analytical baseline results',exact=True)).to_be_visible(timeout=30000)
+            expect(page.locator('.study-counts dd')).to_have_text([f"{study_pack['summary']['counts'][key]:,}" for key in ('test','test_demand_groups','test_worlds')])
+            expect(page.locator('.study-comparison')).to_have_count(len(study_pack['summary']['comparisons']))
+            for url,expected in ((study_pack['manifest_url'],study_pack['manifest_sha256']),(study_pack['summary_url'],study_pack['manifest']['sha256'])):
+                assert any(row['url']==url and row['status']==200 and row['sha256']==expected for row in report['study_responses']),('Final video did not load the real released Study',url)
+            note('Inspect the actual released Study report')
+            until(max(70,time.perf_counter()-started+2.5));shot('08-released-study')
         report['captured_wall_seconds']=time.perf_counter()-capture_started
         assert not report['page_errors'],report['page_errors']
         context.close();context=None
