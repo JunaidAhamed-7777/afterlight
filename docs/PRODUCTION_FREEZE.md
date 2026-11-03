@@ -1,8 +1,16 @@
 # Freeze a production acceptance candidate
 
-This workflow is prepared. The actual final build waits for the released Study
-pack and committed frontend/identity assets. Earlier QA12 remains evidence of
-its exact served files; it is not relabeled as this stricter build procedure.
+The strict freezer has been used for committed production candidates containing
+the real released Study proof. The two prehosting polish passes and the
+post-Canva desktop cohort each retain their own source and complete output
+inventory. See [prehosting acceptance](validation/prehosting-two-polish-passes.json)
+and [post-brand performance](validation/final-desktop-performance.json). Earlier
+QA12 remains historical evidence of its exact served files.
+
+The final media/README candidate is still pending. Freeze it only after its
+intended source and public assets are committed, then perform the final checks
+and hosted file/proof verification against that new inventory. Earlier
+acceptance does not automatically transfer to a later build.
 
 Run from the repository root after committing the complete intended source,
 public recordings/Study proof, notices, brand/media and deployment configuration.

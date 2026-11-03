@@ -1,8 +1,70 @@
 # Omen acceptance log
 
-Only actual execution reported by the designated Omen tester belongs here.
-Source compilation and cloud review are not acceptance tests. No benchmark or
-held-out dataset has yet been evaluated.
+Only actual execution on the designated Omen belongs in this log. Source review
+and compilation alone are not acceptance. Entries retain their original source
+and scope; newer evidence does not retroactively upgrade a historical checkpoint.
+
+## 2026-11-04 — released Study, hosting and post-brand desktop evidence
+
+- **Study publication passed.** The actual [28-file proof pack](study-v4/publication.json),
+  2,405,037 bytes, is published with manifest SHA
+  `f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9`.
+  [Real public CLI and headed Study UI acceptance](study-v4/public-browser-acceptance.json)
+  passed using the genuine released companions, with no valid positive-response
+  fixtures. Checks cover full original grids, selector choices, original claim
+  and collection metadata, every episode's failure accounting, conditional means,
+  grouped intervals, downloads, cancellation and real retry. Public metadata
+  does not independently prove human test nonaccess or absence of other private
+  attempts.
+
+- **Scientific result remains negative.** The frozen study uses 24 training,
+  12 validation and 20 test episodes. Its original single held-out attempt audited
+  140 worlds: 134 completed and six invalid. Learned and analytical chose the
+  same candidates in all 20 test cases, with one failure each and zero finite
+  objective difference. Learned versus tuned fixed 5 s has one
+  failure versus zero; the 19 finite pairs give objective delta +0.681 s, with
+  95% grouped interval −4.993 to +5.978 s. Component deltas are +0.632 s ambulance
+  journey and +0.049 s civilian mean excess. This establishes no learned improvement.
+  Keep the [original report](study-v4/report-checkpoint.json), pre-fit failure,
+  frozen amendment, model, exclusive attempt and raw evidence intact. No further
+  fitting, retry or outcome-dependent tuning follows from this release work.
+
+- **Two prehosting polish passes passed.** The separate passes are recorded at
+  checkpoint `5aec54b` in [their bound record](prehosting-two-polish-passes.json).
+  [First production Vercel acceptance](production-hosting-first-acceptance.json),
+  checkpoint `23765b7`, verified the original served file set and public proof.
+  Actual [Canva identity/frontend integration](canva-identity-implementation.json)
+  followed at `fa0d88c`, preserving the requested hosting-before-Canva sequence.
+  Post-brand deployment `dpl_Fg238DsG3ByVPPMGbP8yPqHWYHmY` is READY; this does not
+  complete the later media/README release.
+
+- **Post-brand desktop rendering passed within its measured scope.**
+  [The final performance record](final-desktop-performance.json) binds the
+  `fa0d88c` production cohort: 61 files / 39,870,637 bytes. Separate actual
+  visible/focused 30 s headed-Chrome windows measured 161.8 FPS overview and
+  127.7 FPS close follow on Ryzen 9 5900HX with AMD integrated graphics. There
+  were 373 vehicles at measurement start. The emulated CSS viewport was
+  1920×1080 at DPR 1, the native window 1724×978, and canvas buffer 1552×737.
+  These are render-cadence measurements, not completed GPU times, simulator
+  throughput, live selector latency or a cross-hardware guarantee. Earlier
+  failed/no-sample and unqualified cadence attempts are retained in the record.
+
+- **Independent post-brand pixels passed.** All 26 unique reviewed PNGs cover
+  seven camera angles at each of 1920×1080/DPR 1 and 2560×1440/DPR 1.5, both full
+  workspaces, six follow/notices views and four genuine Study views. No visible
+  striping, depth conflict, model inconsistency, horizontal overflow or dock
+  clipping was found. Identity, model legends, red/blue roof states, failure
+  denominators, provenance and notices are readable. This is screenshot review;
+  it does not independently prove temporal behavior or scientific arithmetic.
+  [The tracked post-identity review](postbrand-desktop-acceptance.json) retains the source and image bindings.
+
+- **Still pending:** the final complete test checkpoint, replacement native
+  walkthrough inspection after a narrow-desktop table-wrap correction, final README media facts,
+  final shipped-size check below 50 MB, final redeployment and exact hosted
+  file/proof verification. Do not infer these gates passed from the completed
+  prehosting passes or the two measured performance windows.
+
+## Historical Omen entries
 
 ## 2026-11-02, first local checks (reported 21:28 UTC)
 
