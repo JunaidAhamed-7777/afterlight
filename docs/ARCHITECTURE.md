@@ -1,4 +1,4 @@
-# Pass 2 — architecture and contracts
+# Architecture and contracts
 
 ## System boundary
 
@@ -20,7 +20,7 @@ Versioned network + explicit arrivals + seed manifest
        static React / Three.js replay viewer
 ```
 
-The browser consumes evidence; it does not generate experimental truth. Blender authors appearance, not traffic behavior. The explicitly enabled loopback adapter invokes Python and later opens a recorded result; the public static site has no simulator backend. The diagram describes the intended research system: no trained artifact or accepted traffic study exists yet.
+The browser consumes evidence; it does not generate experimental truth. Blender authors appearance, not traffic behavior. The explicitly enabled loopback adapter invokes Python and later opens a recorded result; the public static site has no simulator backend. The diagram describes the research architecture. The product has genuine exported city pairs; training and held-out conclusions require their own frozen study artifacts and are not established by a playable recording.
 
 ## Decision model
 
@@ -77,7 +77,7 @@ ETA uses current ambulance position, route geometry and observed queue estimates
 
 ## Expanded-city contract (post-three-pass revision)
 
-The map target is 20–25 intersections, with a working 25-node authoritative graph, two hospitals and about 100 pickup anchors. A graph manifest owns node/edge geometry, lanes, junction IDs, hospital access and pickup IDs. SUMO and Blender both derive from it; no independently drawn frontend road network. Validate every offered pickup-to-hospital route for connectivity, drivable direction and endpoint placement before enabling it. A pickup anchor is a route point, not an additional junction.
+The canonical map has 81 primary intersections in a 9×9 grid, two hospitals in diagonal quadrants and 100 pickup anchors. Its 2,040 × 2,010 m footprint is exactly four times the original area. A graph manifest owns node/edge geometry, lanes, junction IDs, hospital access and pickup IDs. SUMO and Blender both derive from it; no independently drawn frontend road network. Validate every offered pickup-to-hospital route for connectivity, drivable direction and endpoint placement before enabling it. A pickup anchor is a route point, not an additional junction.
 
 Maintain two scale tiers: (1) three-junction fixed-route correctness fixture and (2) the expanded city. Validate scheduling, route length, action diversity, transition timing and complete runtime on tier 2 before claiming the model works there. The original five-lead action and frozen ETA are corridor experiments; adapting them to variable-length routes requires a documented feature/action contract and newly appropriate held-out evaluation. Do not silently treat every city route as already covered by a three-junction model.
 
@@ -93,7 +93,9 @@ Ghost position may overlap active-world vehicles or appear to pass an active-wor
 
 ### Graph integration details
 
-The published canonical manifest defines an approximately 1 km² irregular 5×5 primary-junction district with service roads. Its graph/geometry checks pass, and fixture/city network conversion completed without warnings on Omen at `7ef8ffe`. Generated lane/stop-line alignment and actual city traffic acceptance remain separate open gates. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
+The canonical manifest defines 81 primary nodes, 120 additional access/service nodes, 233 roads and 77 signal controllers. All 200 pickup/hospital routes pass static network qualification; that is connectivity evidence, not 200 evaluated traffic cases. Two audited exploratory pairs are published at 0.5 s cadence. Their exact source, geometry, lifecycle and control checks are retained in [network qualification](validation/expanded-network-qualification.json) and [recording evidence](validation/expanded-city-recordings.json).
+
+Historical checkpoint: `7ef8ffe` converted the earlier approximately 1 km², 5×5 primary-junction map without warnings. Its acceptance does not transfer to the fourfold expansion.
 
 Use deterministic pickup/hospital IDs and valid network curb anchors rather than arbitrary building centroids. With 100 pickups and two hospitals, validate reachability for the 200 potential origin/destination pairs, including permitted vehicle access and endpoint placement. This is a graph-connectivity target, **not 200 benchmarked traffic cases**. Persist route availability and manifest revision for UI selection; do not expose a visually plausible but disconnected route.
 
@@ -111,7 +113,7 @@ than 0.5 m is an explicit geometry-review flag, not an outcome-dependent excuse 
 move vehicles or silently widen tolerance. Resolve the source/importer discrepancy
 or document an intentional map revision before accepting the city fixture.
 Numerical coordinate comparisons use 0.05 m tolerance; this is not a relaxation of
-the target-alignment gate. No generated lane/stop-line audit has yet run on Omen.
+the target-alignment gate. Current automated geometry/control audits are retained with the qualified recordings. They do not establish universal visual or sub-centimetre certification across every route and camera.
 
 Controller stage durations and maximum hold must be representable on the chosen
 simulation step, which must also use whole positive SUMO milliseconds;
@@ -132,7 +134,7 @@ with additional exact-controller-duration divisibility required by AFTERLIGHT.
 ## Desktop rendering and selection boundary
 
 The enhanced city preserves the original glTF root and canonical map. Per-building
-identity permits material batching with selective foreground transparency; ground
+identity permits material batching with optional foreground cutaway, off by default; ground
 and shared-color trees must never enter the building fade mask. True-perspective
 Explore and orthographic Full city are views of the same physical world. X tilt,
 Y heading and Z view-roll affect rendering only. Low-poly traffic stays instanced.
@@ -144,8 +146,42 @@ recordings and active/recovering/uncertain local requests; existing dropdowns ma
 still prepare a next journey without changing the immutable submitted request.
 Desktop controls retain keyboard alternatives and explicit failure/readiness states.
 
-A separate offline learned-selection replay bridge is pending. Its intended
-contract preserves the selected real fixed-lead world's policy, decision and
+The separate offline selected-replay bridge preserves the selected real fixed-lead world's policy, decision and
 trace, maps source world IDs explicitly, and adds model/protocol/report/trace
 provenance outside physical policy fields. It is not a new live learned controller;
-no trained model, selected capture or gain is claimed by this design.
+a selected replay alone does not establish a trained model’s held-out benefit. Model/report release status belongs to scientific study artifacts.
+
+## Dense recording transport and presentation
+
+Public city recordings use a 3 s all-red clearance and retain every 0.5 s
+simulation integration boundary. Both
+worlds cover the same absolute window and keep original physical poses, events
+and metrics. Coarse 2 s presentation previously moved three stopped cars across
+stop lines before their exact green. Failed captures were retained and replaced
+by fresh dense recordings; no guessed movement-specific trajectory gate was added.
+
+Catalog `bytes`/`sha256` bind original decoded JSON. Optional `encoding: gzip` and
+`transfer_bytes`/`transfer_sha256` describe its lossless wire container. The loader
+accepts HTTP-decoded bodies or decodes gzip magic bytes, bounds both reads to
+128 MiB, checks UTF-8/depth/finite numbers, validates the replay and binds selected
+metadata before exposing outcomes. A module worker performs this work and
+terminates on completion, failure or cancellation. Only the latest locally
+returned recording is cached by the UI.
+
+Signals use recorded states and exact audited control-event boundaries. A
+reconstructed timeline must reproduce every saved lamp state; incomplete legacy
+evidence falls back to sampled states. Movement arrows use imported lane/link
+geometry and the inspected world. The ghost never supplies active-world lamps.
+Pose interpolation remains presentational between adjacent real samples;
+metrics are not interpolated. The read-only `web/scripts/audit-presentation.mjs`
+checks exact public transport bytes, dense cadence and geometry-eligible
+front-bumper stop-line crossings against those production lamp timelines. Its
+red/unresolved result is separate from raw simulator correctness and scientific
+policy comparison.
+
+The renderer uses logarithmic depth for kilometre-scale perspective and thin
+road/facade layers. Canonical road top is 0.18 m; visual hospital plazas top out
+at 0.14 m to avoid equal-depth overlap. Vehicle colors are stable by ID and use
+existing instance batches. The 50 MB shipped-asset budget is separate from
+decoded replay memory. Measure desktop frame time and memory on the release
+build. Vercel serves static output only; SUMO and fitting stay local.

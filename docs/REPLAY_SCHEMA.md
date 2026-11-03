@@ -30,8 +30,10 @@ file and share an absolute clock. Each may contain physical id `ambulance`; no
 physical id `ghost` is created. Ghost is a renderer-only baseline ambulance clone.
 Interpolate poses only, not outcomes; never retime either world or omit failed runs.
 Both frame arrays cover zero through the declared duration at identical timestamps.
-Undeclared sample gaps fail validation. Insertion/removal and signals are left-held
-at recorded sample boundaries; pose interpolation uses only IDs present on both
+Undeclared sample gaps fail validation. Insertion/removal is left-held at
+recorded sample boundaries. Signals use those saved states or exact recorded
+control-event boundaries when the reconstructed timeline reproduces every saved
+state; incomplete legacy evidence falls back to sampled presentation; pose interpolation uses only IDs present on both
 adjacent frames and does not animate detected teleport discontinuities. No pose
 is extrapolated beyond trace support.
 
@@ -52,17 +54,33 @@ not live streaming. Static mode must not offer generation. See [API details](../
 
 ## Optional offline selector provenance extension
 
-The optional `afterlight.selection-evidence.v1` bridge is implemented in source,
-but actual selected-capture and desktop acceptance remain pending. The export
-retains a predeclared real
+The optional `afterlight.selection-evidence.v1` bridge is implemented in source.
+Selected-capture acceptance and any trained/held-out conclusion require their
+own frozen release artifacts. The export retains a predeclared real
 fixed-lead candidate and ordinary comparison, with original physical policy,
 raw dispatch decision and timestamps unchanged. Separate metadata identifies
 the frozen selector/model, study/protocol/release/report and exact source trace
 aliases/hashes. It must not relabel the physical controller as live learned
-inference or infer held-out benefit from one selected run. There is currently no
-released trained model, accepted selected replay or performance conclusion.
+inference or infer held-out benefit from one selected run. Release status belongs to the frozen study/report; this schema does not assert
+a trained-model performance conclusion. Historical owner-halt records had no
+released trained model or accepted selected replay, and remain source-specific.
 
 The viewer checks structural and cross-field consistency; it does not download
 or independently rehash referenced scientific artifacts. The offline exporter
 verifies the frozen report and original trace bindings before writing output.
 See [export usage and acceptance limits](../export/README.md).
+
+## Current dense public transport
+
+The current two exploratory city recordings use 3 s all-red clearance and retain
+every 0.5 s integration boundary through 900 s, with identical absolute sample
+times in both worlds.
+Fresh captures replaced earlier coarse presentation; original failed evidence
+was retained. See [recording evidence](validation/expanded-city-recordings.json).
+
+Catalog `encoding: gzip`, `transfer_bytes` and `transfer_sha256` describe the wire
+container. `bytes` and `sha256` always bind original decoded JSON. The viewer
+accepts HTTP-decoded responses or decodes gzip magic bytes itself, bounds wire
+and decoded reads to 128 MiB, and validates checksums/schema/selected metadata
+before showing outcomes. Its worker terminates on completion, error or cancel.
+The decoded reader guard is separate from the owner’s 50 MB shipped-asset budget.
