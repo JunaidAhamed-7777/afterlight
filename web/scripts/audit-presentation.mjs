@@ -7,6 +7,7 @@ import { buildSignalTimeline } from "../src/signalTimeline.ts";
 import { validateCatalog } from "../src/catalog.ts";
 import { validateReplay } from "../src/replay.ts";
 import { bindRecording } from "../src/recordingCore.ts";
+import { parseJsonBytes } from "../src/strictJson.ts";
 const args = process.argv.slice(2);
 function argument(name, fallback) {
   const index = args.indexOf(name);
@@ -29,7 +30,9 @@ const catalogPath = path.resolve(
 );
 const outputPath = argument("--output", null);
 const dir = path.dirname(catalogPath);
-const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
+if (fs.statSync(catalogPath).size > 1024 * 1024)
+  throw Error("Presentation catalog exceeds the 1 MiB metadata bound");
+const catalog = parseJsonBytes(fs.readFileSync(catalogPath), 1024 * 1024);
 validateCatalog(catalog, "http://127.0.0.1/catalog.json");
 if (
   catalog.schema !== "afterlight.catalog.v1" ||
@@ -138,7 +141,7 @@ for (const item of catalog.runs) {
     hash !== item.sha256
   )
     throw Error("Decoded public recording length/checksum differs: " + file);
-  const replay = bindRecording(validateReplay(JSON.parse(bytes)), item);
+  const replay = bindRecording(validateReplay(parseJsonBytes(bytes)), item);
   if (
     replay.scenario.network_kind !== "city" ||
     replay.provenance.source_dirty !== false ||

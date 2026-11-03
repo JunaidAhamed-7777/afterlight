@@ -1,7 +1,7 @@
 {
   "schema": "afterlight.presentation-crossing-review.v1",
   "method": "Incoming lane stop-line crossing of the production linear interpolated SUMO front-bumper pose, within1.5m lateral lane center and incoming heading alignment>.90. Exact lamp timelines use production buildSignalTimeline and reproduce all saved frames. Mixed movement classification is separately labeled inferred when a unique future outgoing-lane pose+heading matches; unresolved movement is never guessed. These are presentation checks, not raw physics/safety certification. Teleport-like, same-position, missing-neighbor and differently typed pose pairs are ineligible. Yellow crossings are counted separately from red and are not a braking-acceptance certificate.",
-  "auditSourceSha256": "d09384c8ec5047850694770b93fda598616cd3ba0d586ceb6b06c571e0b74ea2",
+  "auditSourceSha256": "033904c84e35e23a65d72f8283ee9247091c060cbb3754cba3d8a634ed78f962",
   "signalTimelineSourceSha256": "bdf0336adbb425af20f2a8bc12af06b4c43877e05677474ccab914f9d71d374b",
   "moduleSourceSha256": {
     "BuildingCutaway.ts": "6cbbb1f2e69be7179434def68a0734b65ca51cbc4ab33f8a782c9def87d463de",
