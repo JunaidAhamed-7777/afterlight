@@ -1,5 +1,11 @@
 # Source-bound application preview
 
+> **Handoff warning:** the latest desktop redesign was frozen without a new build.
+> This preview remains compiled from `975dd295`; current source differs, so its
+> strict verification must fail until the owner rebuilds and commits a matching
+> preview. Use a separate `3060716` checkout for the previously accepted artifact.
+> Do not bypass hash checks. See [HANDOFF.md](../HANDOFF.md).
+
 This is a compiled AFTERLIGHT application, not an offline package cache. It lets a
 Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored

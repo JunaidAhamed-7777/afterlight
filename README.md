@@ -4,7 +4,7 @@
 
 A Python-first AI traffic-signal prototype under active validation for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
-> **Status: desktop and fixture correctness gates passed; city traffic remains open.** At `11be524`, Omen passed 500 Python checks (four skips), 85 Node checks, the desktop suites and static network qualification. Fresh fixed-priority and ordinary/ordinary fixture pairs qualified with complete civilian accounting and no collisions or teleports. The sparse-city run lost its test connection; its outcome is unknown until the saved process/journal is inspected. No accepted city replay, pilot, trained model or measured improvement is claimed. The public recording catalog remains empty. See the [exact acceptance log](docs/validation/OMEN_LOG.md).
+> **Owner handoff — cloud work halted November 3.** See [HANDOFF.md](HANDOFF.md) before running or updating anything. Genuine fixture/city qualification and the corrected `3060716` viewer passed scoped Omen checks. The latest fixed-right-map / scrollable-left-settings redesign, follow-camera changes and intersection-symbol changes are now preserved in source but **have not been built or tested**. The committed preview is older; its integrity guard must not be bypassed. No trained model, held-out gain or public replay catalog is claimed. [Exact evidence](docs/validation/OMEN_LOG.md).
 
 ## Why Afterlight stands out
 

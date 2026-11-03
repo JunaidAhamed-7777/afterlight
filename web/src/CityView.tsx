@@ -7,9 +7,10 @@ import { MapSelectionLayer, type MapPickMode } from "./MapSelectionLayer.ts";
 import { GeometryLayer } from "./GeometryLayer.ts";
 import { BuildingCutaway } from "./BuildingCutaway.ts";
 import { CameraControls, type CameraAction } from "./CameraControls.tsx";
+import { AmbulanceCameraTrack, cameraSeek, followBlend, MAX_CAMERA_ZOOM } from "./cameraFollow.ts";
 import { fitOrthographic } from "./cameraFit.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
-import { interpolatedFrame, vehiclePose } from "./replay.ts";
+import { interpolatedFrame } from "./replay.ts";
 
 interface Props {
   city: City | null;
@@ -154,7 +155,7 @@ export function CityView(props: Props) {
     let viewportWidth = 1,
       viewportHeight = 1;
     const camera = new THREE.OrthographicCamera(-850, 850, 650, -650, 1, 5000);
-    const perspectiveCamera = new THREE.PerspectiveCamera(42, 1, 1, 10000);
+    const perspectiveCamera = new THREE.PerspectiveCamera(42, 1, 0.1, 10000);
     let renderCamera: THREE.Camera = camera;
     let perspectiveMode = true;
     let roll = 0;
@@ -212,7 +213,7 @@ export function CityView(props: Props) {
     controls.enableDamping = false;
     controls.screenSpacePanning = true;
     controls.minZoom = 0.65;
-    controls.maxZoom = 12;
+    controls.maxZoom = MAX_CAMERA_ZOOM;
     controls.maxPolarAngle = Math.PI * 0.44;
     controls.minPolarAngle = Math.PI * 0.12;
     const explore = () => {
@@ -233,16 +234,27 @@ export function CityView(props: Props) {
     controls.touches.ONE = preferences.current.pan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
     controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
     controls.listenToKeyEvents(renderer.domElement);
-    const manualCamera = () => {
+    const manualCamera = (breakFollow = false) => {
       navigationTouched = true;
       overviewMode = false;
-      current.current.onManualCamera();
+      if (breakFollow) current.current.onManualCamera();
     };
-    controls.addEventListener("start", manualCamera);
+    const cameraGesture = (event: PointerEvent) => {
+      // Orbit and zoom adjust the locked view; deliberate pan releases it.
+      manualCamera(event.button === 2 || (event.button === 0 &&
+        (preferences.current.pan || event.ctrlKey || event.metaKey || event.shiftKey)));
+    };
+    const cameraGestureStart = () => manualCamera();
+    renderer.domElement.addEventListener("pointerdown", cameraGesture, true);
+    controls.addEventListener("start", cameraGestureStart);
     cameraAction.current = (action) => {
-      manualCamera();
+      manualCamera(action === "overview" || action === "explore");
       if (action === "overview") { overview(); return; }
       if (action === "explore") { explore(); return; }
+      if (action === "zoom-in" || action === "zoom-out") {
+        camera.zoom = THREE.MathUtils.clamp(camera.zoom * (action === "zoom-in" ? 1.35 : 1 / 1.35), controls.minZoom, controls.maxZoom);
+        camera.updateProjectionMatrix(); updateNavigation(); dirty = true; return;
+      }
       const direction = action.endsWith("+") ? 1 : -1;
       if (action.startsWith("z")) roll += direction * Math.PI / 18;
       else {
@@ -268,12 +280,12 @@ export function CityView(props: Props) {
       if (
         ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)
       ) {
-        manualCamera();
+        manualCamera(true);
         return;
       }
       if (!["+", "=", "-", "0"].includes(event.key)) return;
       event.preventDefault();
-      manualCamera();
+      manualCamera(event.key === "0");
       if (event.key === "0") overview();
       else {
         camera.zoom = THREE.MathUtils.clamp(
@@ -434,8 +446,15 @@ export function CityView(props: Props) {
       lastTime = -1,
       lastPan = pan,
       lastCutaway = cutaway;
+    let followTrack = new AmbulanceCameraTrack(current.current.followFrames);
+    let previousFollowTime: number | null = null;
+    let previousTick = performance.now();
+    let wasFollowing = false;
     const loop = () => {
       if (disposed || halted) return;
+      const tick = performance.now();
+      const elapsed = Math.max(0, (tick - previousTick) / 1000);
+      previousTick = tick;
       try {
         const p = current.current;
         if (lastPan !== preferences.current.pan || lastCutaway !== preferences.current.cutaway) {
@@ -511,30 +530,29 @@ export function CityView(props: Props) {
               "#B4C1CE",
             ); /* Neutral marker: multi-link phase is not a universal green. */
           }
-          if (p.follow && !p.reducedMotion) {
-            overviewMode = false;
-            if (!lastProps?.follow) {
-              camera.zoom = 4;
-              camera.updateProjectionMatrix();
-            }
-            const followFrame =
-              p.world === "afterlight"
-                ? frame
-                : interpolatedFrame(p.followFrames, p.clock.current);
-            const ambulance = followFrame?.vehicles.find(
-              (v) => v.type === "ambulance" || v.id === "ambulance",
-            );
-            if (ambulance) {
-              const [x, , z] = vehiclePose(ambulance);
-              const delta = new THREE.Vector3(x, 0, z).sub(controls.target);
-              camera.position.add(delta);
-              controls.target.add(delta);
-            }
-          }
           lastProps = p;
           lastModelsRevision = modelsRevision;
           lastTime = p.clock.current;
         }
+        const replacedTrack = followTrack.frames !== p.followFrames;
+        if (replacedTrack) followTrack = new AmbulanceCameraTrack(p.followFrames);
+        const following = p.follow && !p.reducedMotion;
+        if (following) {
+          overviewMode = false;
+          const point = followTrack.target(p.clock.current);
+          if (point) {
+            const destination = new THREE.Vector3(...point);
+            const delta = destination.sub(controls.target);
+            const discontinuity = replacedTrack || cameraSeek(previousFollowTime, p.clock.current, elapsed);
+            if (!discontinuity) delta.multiplyScalar(followBlend(elapsed));
+            if (delta.lengthSq() > 1e-8) {
+              camera.position.add(delta); controls.target.add(delta); dirty = true;
+            }
+          }
+        }
+        previousFollowTime = following ? p.clock.current : null;
+        if (wasFollowing !== following) dirty = true;
+        wasFollowing = following;
         updateNavigation();
         if (dirty) {
           // Navigation stays unrolled; the presentation camera adds perspective and roll.
@@ -571,6 +589,7 @@ export function CityView(props: Props) {
           if (!p.pickMode) showHover("");
           renderer.domElement.dataset.mapPickMode = p.pickMode ?? "none";
           renderer.domElement.dataset.mapAnchors = JSON.stringify(p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : []);
+          geometryLayer.updatePresentation(renderCamera, viewportHeight);
           renderer.render(scene, renderCamera);
           if (inspectVehicles) {
             renderer.domElement.dataset.vehicleInspection = JSON.stringify({
@@ -646,6 +665,8 @@ export function CityView(props: Props) {
       cancelAnimationFrame(raf);
       observer.disconnect();
       cameraAction.current = () => {};
+      renderer.domElement.removeEventListener("pointerdown", cameraGesture, true);
+      controls.removeEventListener("start", cameraGestureStart);
       controls.dispose();
       renderer.domElement.removeEventListener("pointerdown", pointerDown);
       renderer.domElement.removeEventListener("pointermove", pointerMove);

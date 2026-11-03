@@ -1,4 +1,4 @@
-export type CameraAction = "explore" | "overview" | "x-" | "x+" | "y-" | "y+" | "z-" | "z+";
+export type CameraAction = "explore" | "overview" | "x-" | "x+" | "y-" | "y+" | "z-" | "z+" | "zoom-in" | "zoom-out";
 interface Props {
   exploring: boolean;
   pan: boolean;
@@ -15,9 +15,14 @@ export function CameraControls(props: Props) {
       <button disabled={props.disabled} aria-pressed={props.exploring} onClick={() => props.onAction("explore")}>Explore 2.5×</button>
       <button disabled={props.disabled} aria-pressed={!props.exploring} onClick={() => props.onAction("overview")}>Full city</button>
     </div>
+    <div className="camera-zoom" role="group" aria-label="Map zoom">
+      <button disabled={props.disabled} aria-label="Zoom out" onClick={() => props.onAction("zoom-out")}>−</button>
+      <span>Zoom</span>
+      <button disabled={props.disabled} aria-label="Zoom in" onClick={() => props.onAction("zoom-in")}>+</button>
+    </div>
     <details>
       <summary>Turn the camera</summary>
-      <p>Drag to {props.pan ? "pan" : "orbit"}. Pinch or scroll to zoom. X tilts, Y turns around the city, Z rolls the view.</p>
+      <p>Drag to {props.pan ? "pan" : "orbit"}. Pinch or scroll to zoom. Zoom and orbit keep ambulance follow active. Panning releases it. X tilts, Y turns around the city, Z rolls the view.</p>
       <div className="camera-axes">
         {([['x', 'Tilt'], ['y', 'Turn'], ['z', 'Roll']] as const).map(([axis, label]) =>
           <div key={axis} role="group" aria-label={`${label} camera (${axis.toUpperCase()} axis)`}>

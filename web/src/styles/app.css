@@ -1304,3 +1304,80 @@ footer {
 .offline-selection-evidence dl > div { padding: 8px 0; }
 .offline-selection-evidence dt { color: var(--muted); font-size: 12px; }
 .offline-selection-evidence dd { margin: 4px 0 0; font: 12px var(--mono); overflow-wrap: anywhere; }
+
+/* Persistent desktop instrument: only the settings/evidence pane scrolls. */
+.settings-scroll { min-width: 0; }
+.settings-scroll:focus-visible,
+#city-workspace:focus-visible,
+#experiment-controls:focus-visible {
+  outline: 2px solid var(--clearance);
+  outline-offset: -4px;
+}
+.settings-scroll .evidence {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px 24px;
+  border-top: 1px solid var(--line);
+  min-width: 0;
+}
+.settings-scroll .evidence > * { min-width: 0; }
+.settings-scroll .evidence-empty { flex-direction: column; align-items: flex-start; gap: 20px; }
+.settings-scroll .evidence-table-wrap { flex-shrink: 0; }
+.settings-scroll th,
+.settings-scroll td { padding: 10px 8px; vertical-align: top; overflow-wrap: anywhere; }
+.settings-scroll td p { margin-top: 6px; font: 11px/1.5 var(--sans); color: var(--muted); }
+.settings-scroll .provenance dl > div { grid-template-columns: 1fr; gap: 5px; }
+.settings-scroll footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+@media (min-width: 1000px) {
+  html, body, #root { height: 100%; }
+  body { overflow: hidden; }
+  .app-shell { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { height: 64px; flex: 0 0 64px; padding: 0 24px; }
+  .app-shell > main { flex: 1; min-height: 0; overflow: hidden; }
+  .workspace {
+    height: 100%; min-height: 0;
+    grid-template-columns: clamp(360px, 30vw, 440px) minmax(0, 1fr);
+    border-bottom: 0;
+  }
+  .settings-scroll {
+    height: 100%; overflow-y: auto; overflow-x: hidden;
+    scrollbar-gutter: stable; scrollbar-width: auto;
+    overscroll-behavior-y: contain;
+    border-right: 1px solid var(--line);
+    scroll-padding-block: 20px;
+  }
+  .control-panel { border-right: 0; padding: 24px; }
+  .intro h1 { font-size: 32px; }
+  .stage-column { height: 100%; min-height: 0; overflow: hidden; }
+  .stage-toolbar { flex: 0 0 auto; min-height: 64px; padding: 10px 20px; flex-wrap: nowrap; }
+  .stage-toolbar > div:first-child { min-width: 0; }
+  .stage-subtitle { overflow-wrap: anywhere; }
+  .stage-actions { flex-shrink: 0; gap: 8px; }
+  .map-location { flex: 0 0 auto; padding: 8px 20px; }
+  .map-location small { margin-top: 2px; }
+  .stage { min-height: 0; flex: 1 1 0; }
+  .city-view { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+  .three-host { position: relative; inset: auto; min-height: 0; grid-row: 1; }
+  .camera-console {
+    position: static; grid-row: 2; width: auto; margin: 0;
+    border: 0; border-top: 1px solid var(--line); border-radius: 0;
+    padding: 8px 16px; display: flex; align-items: flex-start; gap: 16px;
+  }
+  .camera-presets { flex: 0 0 240px; }
+  .camera-console > details { flex: 1; min-width: 0; }
+  .camera-console summary { min-height: 40px; padding: 10px 4px; }
+  .camera-console details[open] { max-height: 180px; overflow: auto; scrollbar-gutter: stable; }
+  .legend { flex: 0 0 auto; padding: 10px 20px; gap: 12px; }
+  .transport { flex: 0 0 auto; padding: 12px 20px; gap: 12px; }
+  .transport > .icon-button { display: inline-flex; }
+  .fixture-view { height: 100%; overflow: auto; }
+  .canvas-status { max-height: calc(100% - 32px); overflow: auto; top: 16px; }
+}
+.camera-zoom { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.camera-zoom button { min-width: 40px; min-height: 40px; padding: 8px; }
+.camera-zoom span { font-size: 12px; color: var(--muted); }
+@media (min-width: 1000px) {
+  .camera-console { gap: 12px; }
+  .camera-presets { flex-basis: 220px; }
+}

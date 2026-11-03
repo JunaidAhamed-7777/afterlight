@@ -1,10 +1,13 @@
-# AFTERLIGHT roadmap — implementation checkpoint
+# AFTERLIGHT roadmap — owner handoff
+
+> **Paused at owner request, November 3, 14:17 IST.** Cloud development and delegated work are halted. Existing written changes are preserved for the owner to continue locally. Read [HANDOFF.md](../HANDOFF.md): the final desktop redesign is unbuilt/untested, while `3060716` remains the last accepted corrected viewer. No further cloud builds, tests or experiments are scheduled.
 
 All times **IST (UTC+05:30)**. Target submission-ready November 4 at 16:00;
 recorded organizer deadline November 4 at 20:00, subject to the final rules check.
-The morning checkpoint is not completion. The owner authorized continued work
-while Omen is off; cloud development continues, but tests and experiments stay on
-Omen. Scope depends on actual acceptance and measured pilot runtime.
+The morning checkpoint was not completion. The owner has now stopped cloud work
+and will continue on their device. The remaining plan below is a handoff checklist,
+not an instruction to resume autonomous work. Scope depends on actual acceptance
+and measured pilot runtime.
 
 ## Original documentation checkpoint — November 3, 02:30 IST
 

@@ -1,5 +1,10 @@
 # Implementation checkpoints
 
+> **Owner handoff:** cloud work stopped at the explicit November 3 halt. See
+> [HANDOFF.md](../HANDOFF.md). The final split-scroll/follow/zoom/signal source is
+> preserved but unbuilt and untested; the existing compiled preview remains
+> bound to `975dd295` and was accepted in artifact commit `3060716`.
+
 This document distinguishes source implementation from execution evidence. All
 acceptance testing and simulation experiments are performed on the owner's Omen
 Windows PC; cloud code review/build is not an acceptance result.

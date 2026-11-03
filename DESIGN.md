@@ -43,7 +43,7 @@ System sans for controls and concise interpretation; system monospace with tabul
 
 ## Layout
 
-Desktop: shared top control rail, one primary city canvas with a baseline ghost; optional paired inspection, a shared timeline and compact evidence strip. The city occupies roughly two-thirds of the initial viewport; results remain reachable without hiding controls. Small laptop views reduce ornament before shrinking text. Desktop is the only optimization and acceptance target. Preserve existing responsive behavior, but do not spend work on mobile-specific optimization or testing; see `AGENTS.md`. Use a four-pixel spacing unit, 16–24px section gaps and no wall of interchangeable cards.
+Desktop: a viewport-bound two-pane instrument. Settings, local generation and evidence scroll independently in the left pane; the right pane retains the 3D city, journey/world labels and playback transport without document scrolling. The city occupies roughly two-thirds of the width. Keyboard users can focus the named settings scroll region or skip directly to the city; scrollbars remain visible and stable. At 720px laptop height, reduce spacing before shrinking labels or moving playback out of view. Small laptop views reduce ornament before shrinking text. Desktop is the only optimization and acceptance target. Preserve existing responsive behavior, but do not spend work on mobile-specific optimization or testing; see `AGENTS.md`. Use a four-pixel spacing unit, 16–24px section gaps and no wall of interchangeable cards.
 
 ## Elevation & Depth
 
@@ -70,7 +70,7 @@ Do use original Blender-authored modular assets, coherent lighting, instanced ve
 
 Do not use previous car-film assets, unknown-license music, stock emergency footage or decorative fake metrics. Do not spend the deadline on photoreal façades or offline Cycles rendering. A polished demo video captured from the real browser experience remains a core deliverable.
 
-Validation status: earlier enhanced desktop geometry, camera, cutaway and usability checks passed on Omen through `7ef8ffe`. Current V3/map-selection revisions require a new pinned cohort; a complete contrast audit and loaded-traffic performance measurements remain open. An offline attempt to run the one-off design linter was blocked because its package was not cached (`ENOTCACHED`); no dependency was installed and no lint success is claimed.
+Validation status: scoped Omen checks through `3060716` accepted the corrected V3 viewer, real replay matrices/ghost isolation and numerical road contact. The later fixed-right viewport/left-scroller, follow-camera and intersection-symbol changes were frozen at the owner’s halt without a new build or test pass. A complete contrast audit, exact stop-line visual certification and loaded-traffic performance measurements remain open. The earlier offline design-linter attempt was blocked because its package was not cached (`ENOTCACHED`); no lint success is claimed.
 
 ## Post-review city and ghost revision
 
@@ -105,3 +105,17 @@ while the submitted immutable request remains distinguishable from the next run.
 Opt-in map markers are actual canonical anchors, with click-versus-drag protection
 and complete search/dropdown alternatives. No change to palette, typography or
 runtime tokens is needed for this hierarchy.
+
+
+## Persistent desktop workspace
+
+The desktop shell at widths of 1000px and above occupies the viewport, not the
+combined height of settings and evidence. The left pane is the sole long-form
+vertical scroller; its footer and evidence stay reachable without moving the
+ambulance out of view. The right pane reserves separate rows for world controls,
+journey status, the city, comparison legend and playback. Camera controls use an
+in-flow dock rather than covering the vehicle; expanded advanced controls must
+remain bounded. Preserve native keyboard focus, complete accessible settings,
+visible scrollbars and independent horizontal scrolling for dense evidence.
+This is an explicit user-requested layout evolution, not a palette or typography
+redesign. New layout acceptance requires the pinned desktop Omen cohort.
