@@ -1,0 +1,2844 @@
+{
+  "schema": "afterlight.desktop-v4-acceptance.v1",
+  "recorded_utc": "2026-11-03T11:31:07.451724+00:00",
+  "status": "passed_scoped_desktop_checks_awaiting_post_identity_polish",
+  "scope": "Desktop only. Each gate identifies its own immutable served build and real recording hashes. Final3s signal, tour, heavy local transport, and dual-follow/beacon checks passed. Earlier renderer-FPS observations are historical; final post-identity performance and polish remain to be run. Not universal traffic-law, accessibility, GPU, or real-world safety certification.",
+  "build": {
+    "manifest_file_sha256": "76e409a975c7d636477c502cdba9064a550e47a535a3b3886a34cd1dae51f735",
+    "served_inventory_binding_sha256": "d642c83cb9c3115cfb8298d01b0057038b595556363615834cb5fad3225533f8",
+    "file_count": 27,
+    "shipped_bytes": 36579032,
+    "git_head_at_snapshot": "19f1bb5f0ab977d04055a0a26454f60166968ab3",
+    "frontend_source_inventory_sha256": "2465610eae10cd7a8a30d434dbf622fd0a472278979df2511c88341d485bf52a",
+    "source_binding": "Exact source and output file inventories bind this snapshot; Git HEAD alone does not identify uncommitted UI changes."
+  },
+  "camera_stability": [
+    {
+      "artifact": "local-runtime/camera-depth-1920-04/report.json",
+      "artifact_sha256": "56dd3803bd087b85de9394226f1a6c7147d8d2f325677395933791f3492b8ffd",
+      "status": "passed_paused_camera_stability_pending_pixel_review",
+      "source_stable_during_run": true,
+      "samples": [
+        {
+          "pose": "1920x1080-dpr1-overview",
+          "camera": {
+            "mode": "orthographic",
+            "zoom": 1,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.6880093420302718,
+            "roll": 0,
+            "target": [
+              20,
+              23.012500047683716,
+              -15
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "63469445161ee0b2de65688029196fd98fc50cb5f9f4e4b5b36da24b624ca286",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-explore",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 2.5,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              20,
+              23.012500047683716,
+              -15
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "66beaf6cf9ddad1d589fa4a282f79b6d1605be29968cb9ccbd64517e2ecdcb92",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-near",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "82605d8677d77a57fc29e2df7eb4277667aa86b38ea30a5303b2c2c6ae36ced8",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-yaw",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "8401e1faf898d024332a41a8e32e641a4f7e4c61eab4e05753bcfa7dcc38bb62",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-tilt-up",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 0.18849555921538763,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "c6fa98a00b4f3ad42d860b330fbdc3e3b2ae3d0fce13429d4155297c089101b3",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-tilt-down",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 1.061160185212552,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "b4c712046cb83b7b524d084057e84a530d4bcb92dbe401b2d8763021a20a2df7",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "1920x1080-dpr1-reverse-yaw",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 0.06401483978925344,
+            "elevation": 1.0611601852125518,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "2fb7a2acf1e908dcb9ba1ac342d902883f3db6d4f05ed7fb86092f9ab7340640",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        }
+      ],
+      "load_observations": [
+        {
+          "viewport": [
+            1920,
+            1080
+          ],
+          "dpr": 1,
+          "ready_seconds": 3.6015294999997423,
+          "js_heap_used_bytes": 146159408,
+          "js_heap_total_bytes": 189227008,
+          "gl_renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21925.1001)",
+          "main_thread_load_tasks": {
+            "count": 5,
+            "maximum_ms": 457
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "local-runtime/camera-depth-2560-03/report.json",
+      "artifact_sha256": "ce60e7e9c5ef8e77e3390b8a422f2bbdb7008438ff7a7f2ec2f24187e435f62b",
+      "status": "passed_paused_camera_stability_pending_pixel_review",
+      "source_stable_during_run": true,
+      "samples": [
+        {
+          "pose": "2560x1440-dpr1.5-overview",
+          "camera": {
+            "mode": "orthographic",
+            "zoom": 1,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.6880093420302718,
+            "roll": 0,
+            "target": [
+              20,
+              23.012500047683716,
+              -15
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "90ba4e036c466b291137636d2785591902b11b6084cdd6dfbcda156e56a08b55",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-explore",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 2.5,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              20,
+              23.012500047683716,
+              -15
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "bfe908dd3a1dd2e5faa22e54d70371d620888c444c4ea840900a17e8b3e85e9f",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-near",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 0.7621465405869854,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "8f6d033352ad56723b3c1ef91981e59f5ee0e26cf1922d5ab8738651bc7b172d",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-yaw",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 0.4581903822728599,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "d2d952f15ba6eaac25622af36a31a47833a52102dd1419a5e96518e57b407f8d",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-tilt-up",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 0.18849555921538763,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "cc1165ba86a8d51a385c1cfe3da0a9a1b55272384a7efd7448b160b3e2fea43b",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-tilt-down",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 1.8093440917835832,
+            "elevation": 1.061160185212552,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "3e7b3fa10839b167dac11ce0860a0a2ad0f25ac11e552447f037253883fee1f7",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        },
+        {
+          "pose": "2560x1440-dpr1.5-reverse-yaw",
+          "camera": {
+            "mode": "perspective",
+            "zoom": 12,
+            "azimuth": 0.06401483978925344,
+            "elevation": 1.0611601852125518,
+            "roll": 0,
+            "target": [
+              -668.38,
+              1.5,
+              309.4024
+            ]
+          },
+          "same_camera_png_identical": true,
+          "png_sha256": "a537ff0c3644979fbbf0708321c0d86b1d9cc6dca8161f8fec158fc03aa62abf",
+          "faded_buildings": 0,
+          "logarithmic_depth": true
+        }
+      ],
+      "load_observations": [
+        {
+          "viewport": [
+            2560,
+            1440
+          ],
+          "dpr": 1.5,
+          "ready_seconds": 3.7868158999990555,
+          "js_heap_used_bytes": 130794676,
+          "js_heap_total_bytes": 194387968,
+          "gl_renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21925.1001)",
+          "main_thread_load_tasks": {
+            "count": 6,
+            "maximum_ms": 413
+          }
+        }
+      ]
+    }
+  ],
+  "pixel_review": {
+    "reviewers": [
+      "verification agent",
+      "independent asset reviewer"
+    ],
+    "reviewed": [
+      "overview",
+      "explore",
+      "near",
+      "yaw",
+      "reverse-yaw",
+      "high tilt",
+      "low tilt"
+    ],
+    "result": "No broad road/park striping, unstable material colors, missing building masses, or unexpected clipping observed in the reviewed final-asset poses. All 14 repeated paused pairs are byte-identical; default building fading is zero.",
+    "limit": "Scoped to the recorded poses at 1920x1080 DPR1 and 2560x1440 DPR1.5 on the reported integrated AMD renderer."
+  },
+  "rendered_stop_lines": {
+    "artifact": "local-runtime/final3s-real-stoplines-01/report.json",
+    "artifact_sha256": "b592c00d7ede79f293d93948aa2883f5aa9c056e37b2579f0bb26a5e367c2f61",
+    "status": "passed_actual_civilian_buffers_and_signal_stop_lines",
+    "served_build_before": {
+      "files": 29,
+      "bytes": 37087567,
+      "manifest_sha256": "57ebe743d99abfbf6d6815e94641844dc96301fc3490851e593d0b5b3ddf00f5"
+    },
+    "served_build_after": {
+      "files": 29,
+      "bytes": 37087567,
+      "manifest_sha256": "57ebe743d99abfbf6d6815e94641844dc96301fc3490851e593d0b5b3ddf00f5"
+    },
+    "recording_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "decoded_replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "samples": [
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "afterlight",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          8.251000032565173,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0010000325651731,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#ed8b82",
+          "3": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "afterlight",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          8.251000032565173,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0010000325651731,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "afterlight",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          7.882500276705798,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -0.6325002767057981,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "afterlight",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          7.2265001393766966,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": 0.023499860623303448,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "baseline",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          8.251000032565173,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0010000325651731,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#ed8b82",
+          "3": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "baseline",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          8.251000032565173,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0010000325651731,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "baseline",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          7.882500276705798,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": -0.6325002767057981,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00022",
+        "type": "bike",
+        "world": "baseline",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          7.2265001393766966,
+          -868.3800048828125
+        ],
+        "signed_stop_line_progress_m": 0.023499860623303448,
+        "actual_controlled_link_colors": {
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "afterlight",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -648.4988281213348
+        ],
+        "signed_stop_line_progress_m": -1.0011718786652182,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#ed8b82",
+          "3": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "afterlight",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -648.498889156491
+        ],
+        "signed_stop_line_progress_m": -1.0011108435089682,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "afterlight",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -649.1096069299285
+        ],
+        "signed_stop_line_progress_m": -0.3903930700714682,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "afterlight",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          918.270694475231,
+          -650.2471091630232
+        ],
+        "signed_stop_line_progress_m": 0.7471091630231967,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "baseline",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -648.4988281213348
+        ],
+        "signed_stop_line_progress_m": -1.0011718786652182,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#ed8b82",
+          "3": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "baseline",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -648.498889156491
+        ],
+        "signed_stop_line_progress_m": -1.0011108435089682,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "baseline",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          918.3800048828125,
+          -649.1096069299285
+        ],
+        "signed_stop_line_progress_m": -0.3903930700714682,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00076",
+        "type": "car",
+        "world": "baseline",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          918.270694475231,
+          -650.2471091630232
+        ],
+        "signed_stop_line_progress_m": 0.7471091630231967,
+        "actual_controlled_link_colors": {
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "2": "#78d9cb",
+          "3": "#78d9cb",
+          "0": "#78d9cb",
+          "1": "#78d9cb"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "afterlight",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          -221.74900192419688,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0009980758031247,
+        "actual_controlled_link_colors": {
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "12": "#ed8b82",
+          "13": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "afterlight",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          -221.74900192419688,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0009980758031247,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "afterlight",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          -222.12070602575938,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -0.6292939742406247,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "afterlight",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          -222.8653022925056,
+          -223.4023960672438
+        ],
+        "signed_stop_line_progress_m": 0.11530229250558932,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "baseline",
+        "time_s": 61.8,
+        "front_xy_from_actual_matrices": [
+          -221.74900192419688,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0009980758031247,
+        "actual_controlled_link_colors": {
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "12": "#ed8b82",
+          "13": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "baseline",
+        "time_s": 62.0,
+        "front_xy_from_actual_matrices": [
+          -221.74900192419688,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -1.0009980758031247,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "baseline",
+        "time_s": 62.5,
+        "front_xy_from_actual_matrices": [
+          -222.12070602575938,
+          -223.3800048828125
+        ],
+        "signed_stop_line_progress_m": -0.6292939742406247,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00065",
+        "type": "truck",
+        "world": "baseline",
+        "time_s": 63.0,
+        "front_xy_from_actual_matrices": [
+          -222.8653022925056,
+          -223.4023960672438
+        ],
+        "signed_stop_line_progress_m": 0.11530229250558932,
+        "actual_controlled_link_colors": {
+          "10": "#78d9cb",
+          "11": "#78d9cb",
+          "12": "#78d9cb",
+          "13": "#78d9cb",
+          "3": "#78d9cb",
+          "4": "#78d9cb",
+          "5": "#78d9cb",
+          "6": "#78d9cb",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": false,
+        "require_green": true
+      },
+      {
+        "id": "civilian_00001",
+        "type": "car",
+        "world": "afterlight",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          253.25100403198547,
+          431.6199951171875
+        ],
+        "signed_stop_line_progress_m": -1.0010040319854738,
+        "actual_controlled_link_colors": {
+          "9": "#ed8b82",
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00016",
+        "type": "bike",
+        "world": "afterlight",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          -221.7489990137605,
+          666.6199951171875
+        ],
+        "signed_stop_line_progress_m": -1.0010009862394895,
+        "actual_controlled_link_colors": {
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "12": "#ed8b82",
+          "13": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00027",
+        "type": "truck",
+        "world": "afterlight",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          703.3800048828125,
+          8.250999983151758
+        ],
+        "signed_stop_line_progress_m": -1.0009999831517575,
+        "actual_controlled_link_colors": {
+          "9": "#ed8b82",
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00001",
+        "type": "car",
+        "world": "baseline",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          253.25100403198547,
+          431.6199951171875
+        ],
+        "signed_stop_line_progress_m": -1.0010040319854738,
+        "actual_controlled_link_colors": {
+          "9": "#ed8b82",
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00016",
+        "type": "bike",
+        "world": "baseline",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          -221.7489990137605,
+          666.6199951171875
+        ],
+        "signed_stop_line_progress_m": -1.0010009862394895,
+        "actual_controlled_link_colors": {
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "12": "#ed8b82",
+          "13": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "9": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      },
+      {
+        "id": "civilian_00027",
+        "type": "truck",
+        "world": "baseline",
+        "time_s": 60.2,
+        "front_xy_from_actual_matrices": [
+          703.3800048828125,
+          8.250999983151758
+        ],
+        "signed_stop_line_progress_m": -1.0009999831517575,
+        "actual_controlled_link_colors": {
+          "9": "#ed8b82",
+          "10": "#ed8b82",
+          "11": "#ed8b82",
+          "3": "#ed8b82",
+          "4": "#ed8b82",
+          "5": "#ed8b82",
+          "6": "#ed8b82",
+          "7": "#ed8b82",
+          "8": "#ed8b82",
+          "0": "#ed8b82",
+          "1": "#ed8b82",
+          "2": "#ed8b82"
+        },
+        "require_red": true,
+        "require_green": false
+      }
+    ],
+    "coverage": {
+      "sample_count": 30,
+      "types": [
+        "bike",
+        "car",
+        "truck"
+      ],
+      "worlds": [
+        "afterlight",
+        "baseline"
+      ],
+      "declared_green_s": 62,
+      "sample_times_s": [
+        61.8,
+        62,
+        62.5,
+        63
+      ],
+      "additional_red_held_samples": 6,
+      "method": "Read actual selected InstancedMesh matrices and displayed controlled-link instance colors. Compare transformed front bumper with incoming stop line and independent interpolation of the genuine recording. New3s cases replace earlier1s-clearance crossing times."
+    }
+  },
+  "source_pose_crossing_review": {
+    "artifact": "local-runtime/asset-authoring/presentation-crossings-final3s-full.json",
+    "artifact_sha256": "d145ddfae17007f049a6d08dba1d18ea08239f85ef166946d833cd234d684e4a",
+    "method": "Incoming lane stop-line crossing of the production linear interpolated SUMO front-bumper pose, within1.5m lateral lane center and incoming heading alignment>.90. Exact lamp timelines use production buildSignalTimeline and reproduce all saved frames. Mixed movement classification is separately labeled inferred when a unique future outgoing-lane pose+heading matches; unresolved movement is never guessed. These are presentation checks, not raw physics/safety certification.",
+    "worlds": [
+      {
+        "recording_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+        "decoded_replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+        "world": "afterlight",
+        "crossings": 2449,
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 0,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 2449
+      },
+      {
+        "recording_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+        "decoded_replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+        "world": "baseline",
+        "crossings": 2441,
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 0,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 2441
+      },
+      {
+        "recording_id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+        "decoded_replay_sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+        "world": "afterlight",
+        "crossings": 2474,
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 0,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 2474
+      },
+      {
+        "recording_id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+        "decoded_replay_sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+        "world": "baseline",
+        "crossings": 2475,
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 0,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 2475
+      }
+    ],
+    "eligible_crossings": 9839,
+    "red_artifacts": 0,
+    "unresolved_movements": 0,
+    "scope": "Independent source-pose presentation review over final3s public traces; GPU subset is recorded separately above. Does not certify every possible browser or real-world traffic behavior."
+  },
+  "recording_lifecycle": {
+    "artifact": "local-runtime/dense-recording-lifecycle-01/report.json",
+    "artifact_sha256": "284c3b16e465ee54258e8cc98911e0414822fee79a118a04e09b8c6193281543",
+    "status": "passed_genuine_evidence_only_boot_and_worker_cancel",
+    "checks": [
+      {
+        "case": "fixture",
+        "genuine_replay_sha256": "baec735736ea1cf3e97d7b475c894c832e774f48fcc31fd67ce8d1d24b7ecf53",
+        "bytes": 9728716,
+        "city_glb_deliberately_held": true,
+        "boot_unblocked": true,
+        "timeline_and_actual_results_accessible": true
+      },
+      {
+        "case": "historical-map",
+        "genuine_replay_sha256": "3dcd5d659d5a941a5cb85813f125701059f99807f76a1d38c5cb250b08c2ae4c",
+        "bytes": 6951750,
+        "city_glb_deliberately_held": true,
+        "boot_unblocked": true,
+        "timeline_and_actual_results_accessible": true
+      },
+      {
+        "canceled": {
+          "created": 1,
+          "terminated": 1,
+          "messages": 0
+        },
+        "loaded": {
+          "created": 2,
+          "terminated": 2,
+          "messages": 1
+        },
+        "no_stale_replay_or_error": true
+      }
+    ],
+    "scope": "Genuine retained recordings in an isolated GET-only browser fixture. Deliberately held assets and cancellation are test conditions, not simulated traffic evidence."
+  },
+  "dense_performance": {
+    "status": "passed",
+    "artifact": "local-runtime/desktop-dense-production-pass-02/report.json",
+    "artifact_sha256": "b21df0775a2bf3d6bb18965f098258c7992e859f9e2c47725078e186c296538f",
+    "browser_version": "156.0.8078.80",
+    "headless": false,
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "viewport_css": [
+      1920,
+      1080
+    ],
+    "dpr": 1,
+    "recording_id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+    "recording_sha256": "60598c709d0e31a21fb112a07b740e25905e2608e58866c553781ab1212c6e41",
+    "recording_decoded_bytes": 70357627,
+    "recording_transfer_bytes": 6410430,
+    "start_s": 181.0,
+    "vehicles_at_start": 371,
+    "loopback_map_ready_ms": 2126.2000000011176,
+    "overview": {
+      "rendered_frames": 2692,
+      "observed_seconds": 30.012,
+      "rendered_fps": 89.66413434626149,
+      "render_interval_ms": {
+        "median": 12.0,
+        "p95": 24.299999999999272,
+        "maximum": 48.29999999999927
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 7.099999999627471,
+        "p95": 10.099999999627471,
+        "maximum": 32.899999998509884
+      },
+      "long_tasks": [],
+      "interpretation": "Headed Chrome render cadence and JavaScript/draw-submission callback duration. These are not completed GPU times, simulator throughput, or a cross-hardware guarantee.",
+      "start": {
+        "counters": {
+          "calls": 75,
+          "triangles": 379964,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "orthographic",
+          "position": [
+            1069.9999999999995,
+            1273.0125000476837,
+            1084.9999999999995
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            20,
+            23.012500047683716,
+            -15
+          ],
+          "zoom": 1,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            738
+          ]
+        },
+        "buffer": [
+          1552,
+          738
+        ]
+      },
+      "end": {
+        "counters": {
+          "calls": 75,
+          "triangles": 375128,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "orthographic",
+          "position": [
+            1069.9999999999995,
+            1273.0125000476837,
+            1084.9999999999995
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            20,
+            23.012500047683716,
+            -15
+          ],
+          "zoom": 1,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            738
+          ]
+        },
+        "buffer": [
+          1552,
+          738
+        ]
+      },
+      "camera_orientation_and_zoom_stable": true
+    },
+    "locate_12x_follow": {
+      "rendered_frames": 1883,
+      "observed_seconds": 30.000200000000003,
+      "rendered_fps": 62.73291511389923,
+      "render_interval_ms": {
+        "median": 18.099999999998545,
+        "p95": 24.39999999999418,
+        "maximum": 36.5
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 6.5,
+        "p95": 8.200000001117587,
+        "maximum": 23.09999999962747
+      },
+      "long_tasks": [],
+      "interpretation": "Headed Chrome render cadence and JavaScript/draw-submission callback duration. These are not completed GPU times, simulator throughput, or a cross-hardware guarantee.",
+      "start": {
+        "counters": {
+          "calls": 69,
+          "triangles": 373840,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -540.9994499888896,
+            153.14351191798886,
+            449.6069904878302
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            -668.3800000000002,
+            1.5000000000000004,
+            316.1607000000001
+          ],
+          "zoom": 12,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            738
+          ]
+        },
+        "buffer": [
+          1552,
+          738
+        ]
+      },
+      "end": {
+        "counters": {
+          "calls": 69,
+          "triangles": 368864,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -540.9994499888895,
+            153.14351191798895,
+            372.84745958648216
+          ],
+          "quaternion": [
+            -0.3130668345109636,
+            0.35012694516255977,
+            0.12543265204621992,
+            0.8738803860947278
+          ],
+          "target": [
+            -668.3800000000002,
+            1.5000000000000002,
+            239.40116909865216
+          ],
+          "zoom": 12,
+          "roll": 0,
+          "azimuth": 0.7621465405869862,
+          "elevation": 0.688009342030272,
+          "viewport": [
+            1552,
+            738
+          ]
+        },
+        "buffer": [
+          1552,
+          738
+        ]
+      },
+      "camera_orientation_and_zoom_stable": true
+    },
+    "served_build_before": {
+      "files": 27,
+      "bytes": 36579472,
+      "manifest_sha256": "ed0e399fddb7acfa52eb62fa8e75b752de9f7d2af97a06d054ddf28ad22a15d0"
+    },
+    "served_build_after": {
+      "files": 27,
+      "bytes": 36579472,
+      "manifest_sha256": "ed0e399fddb7acfa52eb62fa8e75b752de9f7d2af97a06d054ddf28ad22a15d0"
+    },
+    "functional_checks": {
+      "camera": {
+        "full_city_fit": {
+          "source": "world-transformed original glTF bounds",
+          "overview": true,
+          "maxX": 0.6528140759138098,
+          "maxY": 0.8474576271186439,
+          "viewportWidth": 1552,
+          "viewportHeight": 777.6666870117188
+        },
+        "keyboard_zoom_pan_reset": true,
+        "camera_options_overlay": {
+          "x": 1586,
+          "y": 647.875,
+          "width": 310,
+          "height": 297.7083740234375
+        },
+        "axis_controls": {
+          "Tilt": {
+            "before": 0.4581903822728599,
+            "after": 0.28365745707342693
+          },
+          "Turn": {
+            "before": 0.7621465405869853,
+            "after": 0.9366794657864183
+          },
+          "Roll": {
+            "before": 0.0,
+            "after": 0.17453292519943295
+          }
+        }
+      },
+      "play_pause_world_switch": true,
+      "desktop_layout": [
+        {
+          "viewport": [
+            1920,
+            1080
+          ],
+          "right_pane_stationary_on_left_scroll": true,
+          "canvas_css": [
+            1552,
+            738
+          ],
+          "document_css": [
+            1920,
+            1080
+          ]
+        },
+        {
+          "viewport": [
+            1440,
+            810
+          ],
+          "right_pane_stationary_on_left_scroll": true,
+          "canvas_css": [
+            1088,
+            468
+          ],
+          "document_css": [
+            1440,
+            810
+          ]
+        },
+        {
+          "viewport": [
+            1280,
+            720
+          ],
+          "right_pane_stationary_on_left_scroll": true,
+          "canvas_css": [
+            956,
+            408
+          ],
+          "document_css": [
+            1280,
+            720
+          ]
+        },
+        {
+          "viewport": [
+            2560,
+            1440
+          ],
+          "right_pane_stationary_on_left_scroll": true,
+          "canvas_css": [
+            2192,
+            1098
+          ],
+          "document_css": [
+            2560,
+            1440
+          ]
+        }
+      ],
+      "text_contrast_run": {
+        "checked_text_nodes": 72,
+        "minimum_ratio": 5.496329842700491,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_results": {
+        "checked_text_nodes": 88,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_settings": {
+        "checked_text_nodes": 71,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      },
+      "canonical_map_controls": {
+        "selected_canonical_ids": {
+          "pickup": "P002",
+          "hospital": "HOSP_WEST"
+        },
+        "no_results_clear_focus": true,
+        "escape_does_not_change_route": true
+      },
+      "recovery": {
+        "catalog_error_retry": true,
+        "webgl_context_loss_retry": true,
+        "system_reduced_motion": true
+      }
+    },
+    "excluded": "Earlier coarse-capture FPS and the interrupted dense run are excluded. Render cadence and drawing-callback CPU times are not completed GPU timings.",
+    "cohort_status": "historical_pre_final3s_and_beacon_integration",
+    "current_release_claim": "Do not cite these FPS values as final release performance. Repeat30s overview plus30s actual Follow Ambulance after final identity; current harness requires pressed state and pose-derived camera target."
+  },
+  "history": [
+    {
+      "checkpoint": "coarse 2-second capture",
+      "status": "rejected_for_release",
+      "reason": "Three displayed red crossings caused by pose interpolation across signal transitions; replaced by audited real 0.5-second recaptures without changing metrics."
+    },
+    {
+      "checkpoint": "initial live dev camera sweep",
+      "status": "incomplete",
+      "reason": "Second browser cohort lost its target while the source dev server had also exited with Windows EBUSY on replay file replacement; no GPU/memory cause was established. Fresh isolated production cohorts passed."
+    },
+    {
+      "checkpoint": "first dense performance attempt",
+      "status": "excluded",
+      "reason": "The camera changed during a no-input sampling interval and the test browser was closed. The subsequent explicitly labeled untouched-window run passed with stable orientation and zoom; no GPU/memory cause was established."
+    },
+    {
+      "status": "superseded_physics_cohort",
+      "reason": "Final public recordings use3-second all-red clearance. Earlier dense recordings and their old crossing times are retained as history and do not substitute for the final3s gates.",
+      "rendered_stop_lines": {
+        "artifact": "local-runtime/dense-real-stoplines-02/report.json",
+        "artifact_sha256": "21c586f7933329fee521ddddf857bb3976bf613e7257858684643584a7c3d98c",
+        "status": "passed_actual_civilian_buffers_and_signal_stop_lines",
+        "served_build_before": {
+          "files": 27,
+          "bytes": 36579032,
+          "manifest_sha256": "d642c83cb9c3115cfb8298d01b0057038b595556363615834cb5fad3225533f8"
+        },
+        "served_build_after": {
+          "files": 27,
+          "bytes": 36579032,
+          "manifest_sha256": "d642c83cb9c3115cfb8298d01b0057038b595556363615834cb5fad3225533f8"
+        },
+        "recording_id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+        "decoded_replay_sha256": "60598c709d0e31a21fb112a07b740e25905e2608e58866c553781ab1212c6e41",
+        "samples": [
+          {
+            "id": "civilian_00107",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 144.9,
+            "front_xy_from_actual_matrices": [
+              237.2424957238739,
+              -1.6200000047683711
+            ],
+            "signed_stop_line_progress_m": -0.5075042761260988,
+            "actual_controlled_link_colors": {
+              "9": "#ed8b82",
+              "10": "#ed8b82",
+              "11": "#ed8b82"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00107",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 145.0,
+            "front_xy_from_actual_matrices": [
+              237.2424957238739,
+              -1.6200000047683711
+            ],
+            "signed_stop_line_progress_m": -0.5075042761260988,
+            "actual_controlled_link_colors": {
+              "9": "#78d9cb",
+              "10": "#78d9cb",
+              "11": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00107",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 145.5,
+            "front_xy_from_actual_matrices": [
+              237.7861952362066,
+              -1.6148999648632958
+            ],
+            "signed_stop_line_progress_m": 0.03619523620659493,
+            "actual_controlled_link_colors": {
+              "9": "#78d9cb",
+              "10": "#78d9cb",
+              "11": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00245",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 202.9,
+            "front_xy_from_actual_matrices": [
+              712.8709228552277,
+              431.6199951171875
+            ],
+            "signed_stop_line_progress_m": -0.6209228552277182,
+            "actual_controlled_link_colors": {
+              "3": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00245",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 203.0,
+            "front_xy_from_actual_matrices": [
+              712.8709228552277,
+              431.6199951171875
+            ],
+            "signed_stop_line_progress_m": -0.6209228552277182,
+            "actual_controlled_link_colors": {
+              "3": "#78d9cb",
+              "4": "#78d9cb",
+              "5": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00245",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 203.5,
+            "front_xy_from_actual_matrices": [
+              712.3515136755402,
+              431.6199951171875
+            ],
+            "signed_stop_line_progress_m": -0.10151367554021817,
+            "actual_controlled_link_colors": {
+              "3": "#78d9cb",
+              "4": "#78d9cb",
+              "5": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00185",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 434.9,
+            "front_xy_from_actual_matrices": [
+              -671.6199951171875,
+              -862.5585815393035
+            ],
+            "signed_stop_line_progress_m": -0.19141846069646817,
+            "actual_controlled_link_colors": {
+              "0": "#ed8b82",
+              "1": "#ed8b82"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00185",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 435.0,
+            "front_xy_from_actual_matrices": [
+              -671.6199951171875,
+              -862.5585815393035
+            ],
+            "signed_stop_line_progress_m": -0.19141846069646817,
+            "actual_controlled_link_colors": {
+              "0": "#78d9cb",
+              "1": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00185",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 435.5,
+            "front_xy_from_actual_matrices": [
+              -671.6761235532093,
+              -863.133109577062
+            ],
+            "signed_stop_line_progress_m": 0.3831095770619868,
+            "actual_controlled_link_colors": {
+              "0": "#78d9cb",
+              "1": "#78d9cb"
+            },
+            "require_red": false,
+            "require_green": true
+          },
+          {
+            "id": "civilian_00001",
+            "type": "car",
+            "world": "afterlight",
+            "time_s": 60.2,
+            "front_xy_from_actual_matrices": [
+              253.25100403198547,
+              431.6199951171875
+            ],
+            "signed_stop_line_progress_m": -1.0010040319854738,
+            "actual_controlled_link_colors": {
+              "9": "#ed8b82",
+              "10": "#ed8b82",
+              "11": "#ed8b82",
+              "3": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#78d9cb",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00058",
+            "type": "bike",
+            "world": "afterlight",
+            "time_s": 60.2,
+            "front_xy_from_actual_matrices": [
+              478.4989990137605,
+              428.3800048828125
+            ],
+            "signed_stop_line_progress_m": -1.0010009862394895,
+            "actual_controlled_link_colors": {
+              "11": "#ed8b82",
+              "12": "#ed8b82",
+              "13": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#ed8b82",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "9": "#78d9cb",
+              "10": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb",
+              "3": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00011",
+            "type": "truck",
+            "world": "afterlight",
+            "time_s": 63.2,
+            "front_xy_from_actual_matrices": [
+              253.2510133345922,
+              1.6200000047683707
+            ],
+            "signed_stop_line_progress_m": -1.0010133345921872,
+            "actual_controlled_link_colors": {
+              "9": "#ed8b82",
+              "10": "#ed8b82",
+              "11": "#ed8b82",
+              "3": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#78d9cb",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00001",
+            "type": "car",
+            "world": "baseline",
+            "time_s": 60.2,
+            "front_xy_from_actual_matrices": [
+              253.25100403198547,
+              431.6199951171875
+            ],
+            "signed_stop_line_progress_m": -1.0010040319854738,
+            "actual_controlled_link_colors": {
+              "9": "#ed8b82",
+              "10": "#ed8b82",
+              "11": "#ed8b82",
+              "3": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#78d9cb",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00058",
+            "type": "bike",
+            "world": "baseline",
+            "time_s": 60.2,
+            "front_xy_from_actual_matrices": [
+              478.4989990137605,
+              428.3800048828125
+            ],
+            "signed_stop_line_progress_m": -1.0010009862394895,
+            "actual_controlled_link_colors": {
+              "11": "#ed8b82",
+              "12": "#ed8b82",
+              "13": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#ed8b82",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "9": "#78d9cb",
+              "10": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb",
+              "3": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          },
+          {
+            "id": "civilian_00011",
+            "type": "truck",
+            "world": "baseline",
+            "time_s": 63.2,
+            "front_xy_from_actual_matrices": [
+              253.2510133345922,
+              1.6200000047683707
+            ],
+            "signed_stop_line_progress_m": -1.0010133345921872,
+            "actual_controlled_link_colors": {
+              "9": "#ed8b82",
+              "10": "#ed8b82",
+              "11": "#ed8b82",
+              "3": "#ed8b82",
+              "4": "#ed8b82",
+              "5": "#ed8b82",
+              "6": "#78d9cb",
+              "7": "#78d9cb",
+              "8": "#78d9cb",
+              "0": "#78d9cb",
+              "1": "#78d9cb",
+              "2": "#78d9cb"
+            },
+            "require_red": true,
+            "require_green": false
+          }
+        ],
+        "coverage": "Three predeclared coarse-capture red-crossing regressions before/exactly at/after green; additional red-held car, bike and truck in both independent worlds. Front bumper comes from actual instance matrices; lamp colors from actual instanceColor buffers."
+      },
+      "source_pose_crossing_review": {
+        "artifact": "local-runtime/asset-authoring/presentation-crossings-dense-full.json",
+        "artifact_sha256": "bf030df8484e9ed26e087349b4398943e5dfcd6e9bb94784ab76a0e0d3210db7",
+        "method": "Incoming lane stop-line crossing of the production linear interpolated SUMO front-bumper pose, within1.5m lateral lane center and incoming heading alignment>.90. Exact lamp timelines use production buildSignalTimeline and reproduce all saved frames. Mixed movement classification is separately labeled inferred when a unique future outgoing-lane pose+heading matches; unresolved movement is never guessed. These are presentation checks, not raw physics/safety certification.",
+        "worlds": [
+          {
+            "recording": "cross-city-dense-7",
+            "world": "afterlight",
+            "crossings": 2448,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2448
+          },
+          {
+            "recording": "cross-city-dense-7",
+            "world": "baseline",
+            "crossings": 2451,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2451
+          },
+          {
+            "recording": "westhaven-dense-8",
+            "world": "afterlight",
+            "crossings": 2474,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2474
+          },
+          {
+            "recording": "westhaven-dense-8",
+            "world": "baseline",
+            "crossings": 2474,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2474
+          }
+        ],
+        "eligible_crossings": 9847,
+        "red_artifacts": 0,
+        "unresolved_movements": 0
+      }
+    }
+  ],
+  "latest_loader_and_performance_build": {
+    "manifest_file_sha256": "adbf6fd4dd83940857484661a6874a4f457b643578cd933d9e9d80c77b5f2f8b",
+    "served_inventory_binding_sha256": "ed0e399fddb7acfa52eb62fa8e75b752de9f7d2af97a06d054ddf28ad22a15d0",
+    "file_count": 27,
+    "shipped_bytes": 36579472,
+    "git_head_at_snapshot": "29389a823087d68047ddb5a76a53250c0cdad424",
+    "frontend_source_inventory_sha256": "7e0004283014b80744705ceb224b1445a6538ede80b8f69b771e27c690136a7c",
+    "files": {
+      "assets/CityView-DiulG0ZA.js": {
+        "sha256": "59ae23ebb4c27bb3614f4c060d69466e0d840cc9fcf03f62e7095d4ffa28f869",
+        "bytes": 661337
+      },
+      "assets/exports/ambulance.glb": {
+        "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1",
+        "bytes": 161212
+      },
+      "assets/exports/bike.glb": {
+        "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236",
+        "bytes": 18848
+      },
+      "assets/exports/building_clay.glb": {
+        "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb",
+        "bytes": 3944
+      },
+      "assets/exports/building_sage.glb": {
+        "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd",
+        "bytes": 3924
+      },
+      "assets/exports/building_sand.glb": {
+        "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e",
+        "bytes": 3940
+      },
+      "assets/exports/building_slate.glb": {
+        "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56",
+        "bytes": 3944
+      },
+      "assets/exports/car.glb": {
+        "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591",
+        "bytes": 32596
+      },
+      "assets/exports/city_enhanced.glb": {
+        "sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+        "bytes": 14380920
+      },
+      "assets/exports/city_enhanced_manifest.json": {
+        "sha256": "942244524a0e1ecf24a474d2c80efc1d83eaff145a8b98fa59b332af5e5bcf18",
+        "bytes": 734926
+      },
+      "assets/exports/city_instances.json": {
+        "sha256": "9d7d3cac13f6844f4921fd909175b6f468c297aac2a997c921f99690f3350213",
+        "bytes": 65011
+      },
+      "assets/exports/city_static.glb": {
+        "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe",
+        "bytes": 1010792
+      },
+      "assets/exports/ghost_material.json": {
+        "sha256": "ada5a2c2eb41d91d7faa72a8b9e2af47c22c82f79171f932b2b66ab27645cc58",
+        "bytes": 704
+      },
+      "assets/exports/truck.glb": {
+        "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4",
+        "bytes": 29384
+      },
+      "assets/index-J2XgD7xH.js": {
+        "sha256": "5efd0a433a12934744d60c864c802b8fac15f4f0418115acccbf29d626b9c25b",
+        "bytes": 238745
+      },
+      "assets/index-VivNqhO4.css": {
+        "sha256": "ea3cb4317b9a6b109b7842bf9afd11c1126f1d531973af559645a66467de9183",
+        "bytes": 24723
+      },
+      "assets/map/city_manifest.json": {
+        "sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+        "bytes": 1042452
+      },
+      "assets/previews/city_expanded.png": {
+        "sha256": "17bb1814cb7c58c30fb6850a5294e3a115e06d9e07f1450e410b2e77a8bd47ae",
+        "bytes": 3125704
+      },
+      "assets/previews/city_overview.png": {
+        "sha256": "1633cf1fcfdfe3d6ab6502c08e86ae5addb78eab3fc179e8c3950071c3908037",
+        "bytes": 1596667
+      },
+      "assets/recording.worker-GFWpF9fO.js": {
+        "sha256": "ee9795a1f0844dba4bdae3c3498b8dfb2dcea25f3d2976e2b955b27ce8193f48",
+        "bytes": 12302
+      },
+      "favicon.svg": {
+        "sha256": "061cc433d226c139b132e79d0d373db8f9d3f8192993eb34fdbce2cd87bc4a44",
+        "bytes": 261
+      },
+      "index.html": {
+        "sha256": "8a7770f9979a99e641c3af3bea638a82e793134144bd65b2b89d9b975134d652",
+        "bytes": 611
+      },
+      "replays/catalog.json": {
+        "sha256": "a729b31492f7f6b1a52497d1484876b3b538e7a51dc7fb4b0df04578837a4c7c",
+        "bytes": 1949
+      },
+      "replays/city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.evidence.json": {
+        "sha256": "316defc6b43efcfa1ce9824f6d92094311fbe1045fa7a73f6843e313a5a1449d",
+        "bytes": 278622
+      },
+      "replays/city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.json.gz": {
+        "sha256": "9da0f708693251f3613678b750b5d30a51e11eb12c29fa6928b6dfacbf7b1f10",
+        "bytes": 6410430
+      },
+      "replays/city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.evidence.json": {
+        "sha256": "3ed6411a797600ae4f5df9593908bbf1e3ac310757a34984843a3b899d033ce8",
+        "bytes": 278229
+      },
+      "replays/city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.json.gz": {
+        "sha256": "68cef7a32427ccda22e33080eb68c6106612925bffad78eedacbb2e7e68f188e",
+        "bytes": 6457295
+      }
+    }
+  },
+  "native_asset_timeout": {
+    "artifact": "local-runtime/stalled-city-asset-native-02/report.json",
+    "artifact_sha256": "45a0dd3fe1ff09dea1eb9f0ebf8409844185bfaefe88212136282f786be00944",
+    "status": "passed_real_asset_deadline_and_retry",
+    "method": "Native HTTP response headers sent; actual model body deliberately stalled",
+    "deadline_seconds": 60.03100000000086,
+    "boot_recovery_actions_visible": true,
+    "workspace_fallback_accessible": true,
+    "retry_loaded_real_city": true,
+    "source_stable": true
+  },
+  "current_map_api_saved_job_recovery": {
+    "artifact": "local-runtime/expanded-api-ui-recovery-03/report.json",
+    "artifact_sha256": "c2731ca62171018c9d5128ccdd91c6dc197474d034e362a48749db71c7a1ebc2",
+    "status": "passed_current_ui_retained_job_recovery",
+    "simulator_source_commit": "a3d49efa0c540842c3ad1eb6aa13c3c2b1cea9e6",
+    "job_id": "e800050c020c43e1bab69816d6f0d612",
+    "replay_sha256": "fcc6acd9ccd7540cadf2d5ee5ac3961b9b07ec27711e84ebb953dced3c29ecb2",
+    "replay_bytes": 31584716,
+    "original_journal_sha256": "c1bd60a69febb14e7c2832b3f4137514b421f42ece8d7ffc40bbff30466b4e46",
+    "checks": [
+      {
+        "pass": "initial saved job recovery",
+        "job_gets": 2,
+        "exact_replay_gets": 1,
+        "browser_response_body_capture_available": false,
+        "expected_sha_bound_to_successful_worker": true,
+        "historical_traffic_hidden_for_different_map": false
+      },
+      {
+        "pass": "same-tab reload recovery",
+        "job_gets": 2,
+        "exact_replay_gets": 1,
+        "browser_response_body_capture_available": false,
+        "expected_sha_bound_to_successful_worker": true,
+        "historical_traffic_hidden_for_different_map": false
+      }
+    ],
+    "browser_post_count": 0,
+    "raw_files_unchanged": true,
+    "journal_unchanged": true,
+    "exact_independent_server_bytes_verified_before_after": true,
+    "identity_method": "Observed successful worker requests bind the original job SHA. Independent GETs verify exact raw bytes before/after. Some Chrome worker response bodies are unavailable after worker termination.",
+    "frontend_source_stable": true,
+    "scope": "Initial saved-job recovery and same-tab reload after the independent genuine API terminal/restart gate. Does not prove the UI originally submitted the request."
+  },
+  "dense_replay_heap_retention": {
+    "artifact": "local-runtime/dense-replay-memory-01/report.json",
+    "artifact_sha256": "a5d1c7592189b7f7936f20fc3cf3ee333c2f9e4bffc740e95c16a901c63f87b7",
+    "status": "passed_dense_replay_loading_and_bounded_retention",
+    "headless": true,
+    "samples": [
+      {
+        "label": "initial",
+        "recording_id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+        "load_seconds": 3.0915711000016017,
+        "natural_js_heap_used_bytes": 146068164,
+        "forced_gc_retained_js_heap_bytes": 131064772,
+        "render": {
+          "calls": 53,
+          "triangles": 294452,
+          "geometries": 56,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "main_thread_load_tasks": {
+          "count": 6,
+          "maximum_ms": 423
+        }
+      },
+      {
+        "label": "switch-1",
+        "recording_id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5",
+        "load_seconds": 3.1500410999997257,
+        "natural_js_heap_used_bytes": 243583256,
+        "forced_gc_retained_js_heap_bytes": 132451924,
+        "render": {
+          "calls": 55,
+          "triangles": 299352,
+          "geometries": 56,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "main_thread_load_tasks": {
+          "count": 2,
+          "maximum_ms": 618
+        }
+      },
+      {
+        "label": "switch-2",
+        "recording_id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+        "load_seconds": 2.9918070000003354,
+        "natural_js_heap_used_bytes": 240668492,
+        "forced_gc_retained_js_heap_bytes": 131586428,
+        "render": {
+          "calls": 53,
+          "triangles": 294452,
+          "geometries": 56,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "main_thread_load_tasks": {
+          "count": 2,
+          "maximum_ms": 608
+        }
+      },
+      {
+        "label": "switch-3",
+        "recording_id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5",
+        "load_seconds": 3.0942321000002266,
+        "natural_js_heap_used_bytes": 241323408,
+        "forced_gc_retained_js_heap_bytes": 132703484,
+        "render": {
+          "calls": 55,
+          "triangles": 299352,
+          "geometries": 56,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "main_thread_load_tasks": {
+          "count": 2,
+          "maximum_ms": 689
+        }
+      },
+      {
+        "label": "switch-4",
+        "recording_id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+        "load_seconds": 3.165584200000012,
+        "natural_js_heap_used_bytes": 240796288,
+        "forced_gc_retained_js_heap_bytes": 131778544,
+        "render": {
+          "calls": 53,
+          "triangles": 294452,
+          "geometries": 56,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "main_thread_load_tasks": {
+          "count": 2,
+          "maximum_ms": 610
+        }
+      }
+    ],
+    "scope": "Supplementary headless JavaScript heap/loading observations. Forced-GC retained samples are separately labeled; not total process/GPU memory or headed frame-rate evidence."
+  },
+  "latest_feature_and_signal_build": {
+    "manifest_file_sha256": "7204aa4dc886d5976336683893443c5e74247e15a57dc4076d9308b1928d84c0",
+    "served_inventory_binding_sha256": "57ebe743d99abfbf6d6815e94641844dc96301fc3490851e593d0b5b3ddf00f5",
+    "file_count": 29,
+    "shipped_bytes": 37087567,
+    "git_head_at_snapshot": "bb708d1c14e7f7f24ff2a7ddeee05feb5a8e9837",
+    "frontend_source_inventory_sha256": "4904b5957c8045fb9213b7324a993cd4fc42da12bf93cbfe96b20b8318d7babe",
+    "catalog_sha256": "b69d26f06a6b002c5a904b65f288144672f96bf8eb0568d78656471f3c4820f9",
+    "city_glb_sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+    "source_binding": "All served files verified before and after each bound test. Git HEAD alone does not identify uncommitted frontend files."
+  },
+  "first_visit_onboarding": {
+    "artifact": "local-runtime/onboarding-acceptance-04/report.json",
+    "artifact_sha256": "218a47585e5e06affcabaf5e5f46c7981571594c0989a152244e191ceccd4994",
+    "status": "passed",
+    "browser_version": "156.0.8078.80",
+    "served_build_before": {
+      "files": 29,
+      "bytes": 37087719,
+      "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+    },
+    "served_build_after": {
+      "files": 29,
+      "bytes": 37087719,
+      "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+    },
+    "viewport_css": [
+      [
+        1440,
+        810
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1600,
+        900
+      ]
+    ],
+    "checks": [
+      "Genuine first recording GET held: tour waits for readiness",
+      "Five coachmarks fit; highlighted control, camera row and transport remain uncovered",
+      "18 forward/reverse Tab presses contained in dialog; Back/Next/Done",
+      "Real background click cannot start playback; recorded time unchanged",
+      "Done, Skip and Escape persist version1 state; reload does not reopen",
+      "Settings reopening and visible focus restoration",
+      "Malformed and blocked localStorage do not trap user"
+    ],
+    "source_scope": "Snapshot08 exact bytes including final guide availability predicate and visible-world follow wording.",
+    "unavailable_states": [
+      {
+        "case": "renderer-unavailable-guide",
+        "guide_disabled": true,
+        "accessible_reason": "Open a city recording with the 3D view ready to use the guide.",
+        "disabled_pointer_click_did_not_open_tour": true,
+        "retry_reenabled_guide_and_reopen_passed": true
+      },
+      {
+        "case": "empty-library-guide",
+        "guide_disabled": true,
+        "accessible_reason": "Open a city recording with the 3D view ready to use the guide.",
+        "disabled_pointer_click_did_not_open_tour": true
+      },
+      {
+        "case": "genuine-fixture-guide",
+        "guide_disabled": true,
+        "accessible_reason": "Open a city recording with the 3D view ready to use the guide.",
+        "disabled_pointer_click_did_not_open_tour": true,
+        "genuine_fixture_sha256": "baec735736ea1cf3e97d7b475c894c832e774f48fcc31fd67ce8d1d24b7ecf53"
+      }
+    ]
+  },
+  "heavy_local_job_transport": {
+    "artifact": "local-runtime/heavy-job-ui-01/report.json",
+    "artifact_sha256": "1dbca71a80057c5921734968d81b533aa9319f433126aa39da589f7ef5856c41",
+    "status": "passed_heavy_GET_only_recovery_and_bounded_retention",
+    "browser_version": "156.0.8078.80",
+    "viewport_css": [
+      1440,
+      810
+    ],
+    "device_pixel_ratio": 1,
+    "job_id": "62b6c50631914272a909e4066529d17b",
+    "recording": {
+      "bytes": 157189187,
+      "sha256": "e7c0ac997fcca51b2a25ea73f291d4b0d563dc0c4264fe273892ef0f71272adc",
+      "scenario_id": "city-heavy-11010-8bde2df198dbf8f2-fixed-20-0d63fcec4c36-dt0p5",
+      "world_status": {
+        "baseline": "censored",
+        "afterlight": "censored"
+      }
+    },
+    "journal_sha256": "9ad916a37cb510560749cd914f7460500ab23a71bef514f5e7a448332490bda9",
+    "served_build_before": {
+      "files": 29,
+      "bytes": 37125153,
+      "manifest_sha256": "bd21c4e5af9113f03af834fad07d9bfc9974022ebe785e752ce29d934ad8b940"
+    },
+    "served_build_after": {
+      "files": 29,
+      "bytes": 37125153,
+      "manifest_sha256": "bd21c4e5af9113f03af834fad07d9bfc9974022ebe785e752ce29d934ad8b940"
+    },
+    "explicit_local_decoded_limit_bytes": 268435456,
+    "public_decoded_limit_bytes": 134217728,
+    "public_limit_verified": true,
+    "GET_verified_before_after": [
+      {
+        "bytes": 157189187,
+        "sha256": "e7c0ac997fcca51b2a25ea73f291d4b0d563dc0c4264fe273892ef0f71272adc",
+        "method": "GET",
+        "streamed_without_retaining_trace": true
+      },
+      {
+        "bytes": 157189187,
+        "sha256": "e7c0ac997fcca51b2a25ea73f291d4b0d563dc0c4264fe273892ef0f71272adc",
+        "method": "GET",
+        "streamed_without_retaining_trace": true
+      }
+    ],
+    "browser_POST_attempts": 0,
+    "original_job_files_unchanged": true,
+    "original_journal_unchanged": true,
+    "recovery": [
+      {
+        "label": "initial-heavy-recovery",
+        "worker_ready_seconds": 25.158294699998805,
+        "open_to_results_seconds": 0.569835599999351,
+        "explicit_256MiB_local_limit": true,
+        "exact_expected_sha_bound": true,
+        "world_statuses_censored": true,
+        "undefined_civilian_mean_is_dash_and_tail_unavailable": true,
+        "no_completed_run_benefit_claim": true
+      },
+      {
+        "label": "same-tab-heavy-reload",
+        "worker_ready_seconds": 22.172956700000213,
+        "open_to_results_seconds": 0.36613820000275155,
+        "explicit_256MiB_local_limit": true,
+        "exact_expected_sha_bound": true,
+        "world_statuses_censored": true,
+        "undefined_civilian_mean_is_dash_and_tail_unavailable": true,
+        "no_completed_run_benefit_claim": true
+      }
+    ],
+    "samples": [
+      {
+        "label": "initial-heavy-recovery",
+        "load_seconds": 25.728136099998665,
+        "natural_js_heap_used_bytes": 265174380,
+        "forced_gc_retained_js_heap_bytes": 248062756,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 947
+      },
+      {
+        "label": "switch-1-public",
+        "load_seconds": 10.7409622999985,
+        "natural_js_heap_used_bytes": 357707020,
+        "forced_gc_retained_js_heap_bytes": 353736636,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 662
+      },
+      {
+        "label": "switch-2-heavy",
+        "load_seconds": 0.08196089999910328,
+        "natural_js_heap_used_bytes": 355559356,
+        "forced_gc_retained_js_heap_bytes": 248339308,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 0
+      },
+      {
+        "label": "switch-3-public",
+        "load_seconds": 10.856447900001513,
+        "natural_js_heap_used_bytes": 361774440,
+        "forced_gc_retained_js_heap_bytes": 355636988,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 587
+      },
+      {
+        "label": "switch-4-heavy",
+        "load_seconds": 0.07239869999830262,
+        "natural_js_heap_used_bytes": 357414944,
+        "forced_gc_retained_js_heap_bytes": 248514148,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 0
+      },
+      {
+        "label": "same-tab-heavy-reload",
+        "load_seconds": 22.53909890000068,
+        "natural_js_heap_used_bytes": 282283480,
+        "forced_gc_retained_js_heap_bytes": 248128680,
+        "geometries": 56,
+        "textures": 2,
+        "maximum_observed_main_thread_task_ms": 986
+      }
+    ],
+    "scope": "Natural and forced-GC main JavaScript heap only; not total browser/GPU memory. Censored heavy traffic is an explored transport fixture, not a completed-run benchmark."
+  },
+  "dual_follow_playback_and_beacons": {
+    "artifact": "local-runtime/desktop-follow-beacons-01/report.json",
+    "artifact_sha256": "cb0cb717f8b86b3766fd92e73b415527c62a8e25ef694a090ffa8ad07d0b86ee",
+    "status": "passed_headed_dual_follow_playback_beacon_materials_and_pixel_review",
+    "browser_version": "156.0.8078.80",
+    "served_build_before": {
+      "files": 29,
+      "bytes": 37087567,
+      "manifest_sha256": "57ebe743d99abfbf6d6815e94641844dc96301fc3490851e593d0b5b3ddf00f5"
+    },
+    "served_build_after": {
+      "files": 29,
+      "bytes": 37087567,
+      "manifest_sha256": "57ebe743d99abfbf6d6815e94641844dc96301fc3490851e593d0b5b3ddf00f5"
+    },
+    "recording_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "decoded_replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "checks": {
+      "follow-visible-afterlight": {
+        "expected_from_genuine_pose": [
+          -650.5321200000001,
+          1.5,
+          229.88
+        ],
+        "actual_camera_target": [
+          -650.5321200000002,
+          1.5000000000000002,
+          229.88
+        ],
+        "world": "afterlight"
+      },
+      "follow-visible-ordinary": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "baseline"
+      },
+      "ghost-follow-activates-afterlight-scene": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "afterlight"
+      },
+      "ghost-follow-restores-hidden-ghost": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "afterlight"
+      },
+      "ambulance-follow-replaces-ghost-follow": {
+        "expected_from_genuine_pose": [
+          -650.5321200000001,
+          1.5,
+          229.88
+        ],
+        "actual_camera_target": [
+          -650.5321200000002,
+          1.5000000000000002,
+          229.88
+        ],
+        "world": "afterlight"
+      },
+      "10x-playback": {
+        "wall_seconds_including_clicks": 1.9804000000022353,
+        "recorded_seconds_advanced": 18.865000000008877,
+        "observed_ratio": 9.52585336295071
+      },
+      "20x-playback": {
+        "wall_seconds_including_clicks": 1.938300000000745,
+        "recorded_seconds_advanced": 36.85399999999959,
+        "observed_ratio": 19.01356859102586
+      },
+      "paused-steady-blue": {
+        "actual_material": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#2288ff",
+            "emissive": "#2288ff",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "same_pixels_over_900ms": true
+      },
+      "reduced-motion": {
+        "both_follow_controls_disabled": true,
+        "actual_material_samples": [
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff"
+        ],
+        "playback_remains_available": true
+      },
+      "authored-model-thumbnails": [
+        {
+          "src": "/assets/previews/ambulance_model.png",
+          "width": 320,
+          "height": 200
+        },
+        {
+          "src": "/assets/previews/ghost_model.png",
+          "width": 320,
+          "height": 200
+        }
+      ]
+    },
+    "natural_beacon_phases": [
+      {
+        "label": "roof-playing-red",
+        "material_before": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#ff304d",
+            "emissive": "#ff304d",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "material_after": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#ff304d",
+            "emissive": "#ff304d",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "png_sha256": "e1eb00169cd341fef65a023c66f84f17b7b7488d5dfc87dc4e168aaa00dc95db",
+        "observed_time_s": 232.5634000000024,
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -601.9074147512731,
+            12.687059919848014,
+            272.3009123369277
+          ],
+          "quaternion": [
+            -0.08735754784038327,
+            0.3702663831044389,
+            0.03500047815345979,
+            0.9241463254848234
+          ],
+          "target": [
+            -642.4001038001585,
+            1.5000000000000009,
+            229.8800000000001
+          ],
+          "zoom": 48,
+          "roll": 0,
+          "azimuth": 0.7621465405869853,
+          "elevation": 0.18849555921538763,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "render": {
+          "calls": 69,
+          "triangles": 361632,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        }
+      },
+      {
+        "label": "roof-playing-blue",
+        "material_before": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#2288ff",
+            "emissive": "#2288ff",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "material_after": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#2288ff",
+            "emissive": "#2288ff",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "png_sha256": "6eca6d225ba4ceb0bb17ac8a0f1ce8adc2878b79722a39d7127a10b9b3906bf6",
+        "observed_time_s": 232.98390000000268,
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -597.415276742163,
+            12.687059919848014,
+            272.3009123369277
+          ],
+          "quaternion": [
+            -0.08735754784038327,
+            0.3702663831044389,
+            0.03500047815345979,
+            0.9241463254848234
+          ],
+          "target": [
+            -637.9079657910484,
+            1.5000000000000009,
+            229.88000000000008
+          ],
+          "zoom": 48,
+          "roll": 0,
+          "azimuth": 0.7621465405869853,
+          "elevation": 0.18849555921538763,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "render": {
+          "calls": 69,
+          "triangles": 361632,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        }
+      }
+    ],
+    "pixel_review": {
+      "scope": "Actual headed1920x1080 browser PNGs inspected after automated capture. Roof bar visibly red and blue while playing; blue while paused and while reduced motion is enabled. This is a scoped presentation review, not a traffic-performance result.",
+      "reviewed_files": [
+        "roof-playing-red.png",
+        "roof-playing-blue.png",
+        "roof-paused-steady-blue.png",
+        "roof-reduced-motion-steady-blue.png"
+      ],
+      "result": "passed"
+    },
+    "scope": "Headed1920x1080DPR1 actual camera targets agree with genuine ambulance poses in both worlds. Assigned roof material is read only under explicit QA inspection and paired with actual PNGs; no extra geometry or altered physics."
+  },
+  "current_main_harness_smoke": {
+    "artifact": "local-runtime/current-main-harness-smoke-01/report.json",
+    "artifact_sha256": "a59584f1e9c2f2a1e43722623ee812721c91c0db47578e87abe3ceeb31a578f9",
+    "status": "passed",
+    "served_build_before": {
+      "files": 29,
+      "bytes": 37087719,
+      "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+    },
+    "served_build_after": {
+      "files": 29,
+      "bytes": 37087719,
+      "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+    },
+    "actual_follow_setup": {
+      "control": ".follow-ambulance",
+      "pressed": true,
+      "world": "afterlight",
+      "time_s": 180.5,
+      "expected_target_from_genuine_pose": [
+        -668.38,
+        1.5,
+        318.5918
+      ],
+      "actual_camera": {
+        "mode": "perspective",
+        "position": [
+          -540.9994499888894,
+          153.14351191798886,
+          452.0380904878301
+        ],
+        "quaternion": [
+          -0.3130668345109635,
+          0.35012694516255943,
+          0.12543265204621973,
+          0.8738803860947282
+        ],
+        "target": [
+          -668.38,
+          1.5,
+          318.5918
+        ],
+        "zoom": 12,
+        "roll": 0,
+        "azimuth": 0.7621465405869854,
+        "elevation": 0.6880093420302718,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      }
+    },
+    "follow_orientation_and_zoom_stable": true,
+    "scope": "5-second overview and5-second actual Follow Ambulance exercise verifies current harness mode binding, alongside full product checks. Short-window FPS is not promoted as final release performance.",
+    "text_contrast": {
+      "text_contrast_run": {
+        "checked_text_nodes": 73,
+        "minimum_ratio": 5.496329842700491,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_results": {
+        "checked_text_nodes": 89,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_settings": {
+        "checked_text_nodes": 73,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      }
+    },
+    "other_checks_passed": [
+      "camera",
+      "play_pause_world_switch",
+      "desktop_layout",
+      "genuine_instance_matrices",
+      "canonical_map_controls",
+      "recovery"
+    ]
+  }
+}
