@@ -119,6 +119,8 @@ export function validateReplay(value: unknown): Replay {
       !w.frames.length
     )
       throw new Error(`The ${name} world has no recorded frames.`);
+    if (Object.hasOwn(w.metrics, "status") && w.metrics.status !== w.status)
+      throw new Error(`The ${name} metrics status does not match its world status.`);
     validateEvents(w.events, r.duration_s);
     if (w.decision !== undefined) validateOptionalDecision(w.decision, r.duration_s);
     let previous = -Infinity;

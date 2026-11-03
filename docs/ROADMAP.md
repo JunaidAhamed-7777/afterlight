@@ -40,7 +40,7 @@ Documentation checkpoint → three-junction legal scheduler and accounting → c
 
 | Next gate | Work and required evidence |
 |---|---|
-| While Omen is off | Finish scoped source fixes, preserve failed/unknown evidence, reconcile docs and prepare pinned acceptance commands. No cloud testing, training or invented replay. Latest V3/map-picking preview is source `a6b2c12`, aggregate `2710cd6`; later backend changes do not inherit its build. |
+| While Omen is off | Finish scoped source fixes, preserve failed/unknown evidence, reconcile docs and prepare pinned acceptance commands. No cloud testing, training or invented replay. Latest V3/map-picking/offline-evidence preview is source `93e375f`, aggregate `37d2313`; later source changes do not inherit its build. |
 | First reconnect | Resolve the interrupted Python batch from saved records/process state before retry. Run the selected source cohort's unit/build/desktop checks, V3 geometry and canonical map-picking regressions. |
 | Traffic correctness | Fresh three-junction pair and ordinary/ordinary negative control; retain failures. Audit city lane/stop-line placement, then sparse city traffic. Clean conversion alone does not pass this gate. |
 | Experiment feasibility | Measure runtime and useful lead diversity. Freeze feasible whole-realization splits, objective, model-selection rules and capture case IDs before collection. The source-implemented offline selected-replay bridge must pass acceptance using actual captured traces, preserving original fixed-candidate physics and separate selector provenance; it is not a live learned controller. |

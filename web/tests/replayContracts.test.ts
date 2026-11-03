@@ -65,3 +65,19 @@ test("required string identities reject objects and numbers before React renderi
   const link = signalRecording(); link.network_geometry!.signals[0].links[0].from_edge = {} as unknown as string;
   assert.throws(() => validateReplay(link), /controlled-link geometry/);
 });
+
+
+test("optional metrics status must match its physical world status", () => {
+  assert.doesNotThrow(() => validateReplay(structuralReplay()));
+  for (const name of ["afterlight", "baseline"] as const) {
+    const matching = structuralReplay();
+    matching.worlds[name].metrics.status = matching.worlds[name].status;
+    assert.doesNotThrow(() => validateReplay(matching));
+    for (const status of ["invalid", "censored", "infrastructure_error", null, true, {}]) {
+      const replay = structuralReplay();
+      replay.worlds[name].status = "completed";
+      replay.worlds[name].metrics.status = status;
+      assert.throws(() => validateReplay(replay), /metrics status does not match/);
+    }
+  }
+});
