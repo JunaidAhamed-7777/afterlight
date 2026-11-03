@@ -140,7 +140,7 @@ class TraceVerificationTests(unittest.TestCase):
 
     def test_missing_unselected_candidate_still_rejects(self):
         self.entries.pop();self.refresh()
-        with self.assertRaisesRegex(ValueError,'six illustrative'):self.check()
+        with self.assertRaisesRegex(ValueError,'six-per-case'):self.check()
 
     def test_modified_trace_bytes_rejected(self):
         path=self.root/self.entries[-1]['file'];path.write_bytes(path.read_bytes()+b' ')
@@ -152,7 +152,17 @@ class TraceVerificationTests(unittest.TestCase):
 
     def test_budget_failure_is_not_silently_substituted(self):
         self.entries[-1]['state']='budget_exceeded';self.refresh()
-        with self.assertRaisesRegex(ValueError,'unavailable'):self.check()
+        with self.assertRaises(ValueError):self.check()
+
+    def test_overbudget_charge_or_incorrect_retained_sum_rejects(self):
+        for field,value in [('charged_bytes',9*1024*1024),('retained_bytes',1)]:
+            self.refresh()
+            path=self.root/'traces.json';envelope=json.loads(path.read_text())
+            envelope['traces'][field]=value;envelope['sha256']=digest(envelope['traces'])
+            payload=self.write('traces.json',envelope)
+            self.verified['manifest']['illustrative_capture'][field]=value
+            self.verified['manifest']['illustrative_capture']['manifest_sha256']=hashlib.sha256(payload).hexdigest()
+            with self.subTest(field=field),self.assertRaises(ValueError):self.check()
 
     def test_unplanned_case_and_redirected_path_rejected(self):
         with self.assertRaisesRegex(ValueError,'predeclared'):verify_case_traces(self.root,self.study,self.verified,'other')

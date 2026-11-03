@@ -45,9 +45,25 @@ def verify_case_traces(collection:Path,study_envelope:dict,verified:dict,case_id
     for key in ('charged_bytes','retained_bytes'):
         value=traces.get(key)
         if isinstance(value,bool) or not isinstance(value,int) or value<0:raise ValueError('Malformed trace byte accounting')
-    if traces['retained_bytes']>contract['max_total_bytes'] or traces['retained_bytes']>traces['charged_bytes']:
+    if traces['charged_bytes']>contract['max_total_bytes'] or traces['retained_bytes']>traces['charged_bytes']:
         raise ValueError('Trace retained byte budget exceeded')
     entries=traces['entries'];required={('ordinary',None),*(('fixed',lead) for lead in LEADS)}
+    planned={(e['episode_id'],e['case_id'],policy,lead) for e in study['episodes']
+             if e['split']=='test' and e['case_id'] in contract['case_ids'] for policy,lead in required}
+    if not isinstance(entries,list) or any(not isinstance(e,dict) for e in entries):raise ValueError('Malformed global trace inventory')
+    actual=[(e.get('episode_id'),e.get('case_id'),e.get('policy'),e.get('lead_s')) for e in entries]
+    if len(actual)!=len(planned) or len(set(actual))!=len(actual) or set(actual)!=planned:
+        raise ValueError('Global trace inventory differs from predeclared six-per-case plan')
+    retained=0
+    for entry in entries:
+        if entry.get('state') not in {'unattempted','retained','budget_exceeded','capture_failed'}:raise ValueError('Unknown trace capture state')
+        if entry['state']=='retained':
+            size=entry.get('bytes')
+            if isinstance(size,bool) or not isinstance(size,int) or not 0<size<=contract['max_world_bytes']:raise ValueError('Invalid retained trace size')
+            retained+=size
+    if retained!=traces['retained_bytes']:raise ValueError('Retained trace byte sum does not reconcile')
+    complete=all(e['state']=='retained' for e in entries)
+    if traces['status']!=('complete' if complete else 'incomplete'):raise ValueError('Trace completion state does not reconcile')
     selected=[e for e in entries if e['case_id']==case_id]
     if len(selected)!=6 or {(e['policy'],e['lead_s']) for e in selected}!=required:raise ValueError('All six illustrative traces required without duplicates')
     result={}
