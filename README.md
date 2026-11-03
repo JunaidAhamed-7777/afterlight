@@ -64,7 +64,7 @@ Research prototype; real-world deployment and safety certification are outside i
 
 ## 03 · Benchmarks
 
-![Benchmark dashboard: two exploratory ambulance journey reductions, desktop rendering cadence and warm offline selector latency. Full values and measurement scopes follow.](docs/images/readme-benchmarks.svg)
+![Benchmark dashboard: two exploratory ambulance journey reductions, desktop rendering cadence and warm offline selector latency. Full values and measurement scopes follow.](docs/images/readme-benchmarks.png)
 
 **128 s / 104 s saved in two recorded examples · 152.5 FPS overview · 0.2241 ms median learned selection**
 
@@ -134,7 +134,7 @@ flowchart LR
 
 **28 public proof files · 2.41 MB pack · 170.70 MB original JSON preserved · 40 paired comparison rows**
 
-Predictive performance is reported as paired objectives and uncertainty in the [complete study results](docs/validation/study-v4/report-checkpoint.json). [Model details](models/README.md) · [Protocol](docs/BENCHMARK_PROTOCOL.md) · [Per-case CSV](https://afterlight-gamma.vercel.app/study/paired-records.csv)
+Policy performance is reported as paired objectives and uncertainty in the [complete study results](docs/validation/study-v4/report-checkpoint.json). [Model details](models/README.md) · [Protocol](docs/BENCHMARK_PROTOCOL.md) · [Per-case CSV](https://afterlight-gamma.vercel.app/study/paired-records.csv)
 
 <details>
 <summary><strong>Recompute the public proof with standard-library Python</strong></summary>
