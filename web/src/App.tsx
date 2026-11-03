@@ -7,6 +7,7 @@ import { LocalGeneration } from "./LocalGeneration.tsx";
 import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
 import { selectionLabel } from "./selectionEvidence.ts";
+import { civilianTailDisplay } from "./civilianTail.ts";
 import { DecisionInspector } from "./DecisionInspector.tsx";
 import { QueueChart } from "./QueueChart.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
@@ -891,6 +892,7 @@ export default function App() {
                       ]),
                     )
                       .filter((key) => {
+                        if (key === "civilian_excess_p95_s" || key === "civilian_excess_p95_population") return false;
                         const a = replay.worlds.afterlight.metrics[key],
                           b = replay.worlds.baseline.metrics[key];
                         return (
@@ -908,6 +910,18 @@ export default function App() {
                           ))}
                         </tr>
                       ))}
+                    <tr>
+                      <th scope="row">Civilian excess time · individual-vehicle 95th percentile</th>
+                      {(["afterlight", "baseline"] as const).map((name) => {
+                        const tail = civilianTailDisplay(replay.worlds[name]);
+                        return (
+                          <td key={name} aria-describedby="civilian-tail-help">
+                            {tail.value}
+                            <p>{tail.population}</p>
+                          </td>
+                        );
+                      })}
+                    </tr>
                     {[
                       "scheduled",
                       "inserted",
@@ -935,6 +949,14 @@ export default function App() {
                   </tbody>
                 </table>
               </div>
+              <p id="civilian-tail-help" className="outcome-caveat">
+                This is the 95th percentile across individual civilians in each world,
+                not a percentile across episode-mean policy comparisons. Nearest rank
+                selects the sorted vehicle value at ceiling(0.95 × population), without
+                interpolation. Excess time includes insertion wait: arrival minus
+                scheduled departure minus that vehicle’s saved free-flow reference,
+                floored at zero. The reference excludes internal junctions and acceleration.
+              </p>
               {(["afterlight", "baseline"] as const).some(
                 (w) => replay.worlds[w].status !== "completed",
               ) && (
