@@ -49,6 +49,8 @@ export async function loadRecordingDirect(
   entry: PublishedEntry | null,
   url: string,
   signal: AbortSignal,
+  expectedSha256?: string,
+  decodedLimit = MAX_JSON_BYTES,
 ): Promise<Replay> {
   const response = await fetch(url, {
     signal: AbortSignal.any([signal, AbortSignal.timeout(30000)]),
@@ -58,23 +60,24 @@ export async function loadRecordingDirect(
     throw new Error(
       `Recording request failed (${response.status}). Retry the selected experiment.`,
     );
-  const bytes = await recordingBytes(response);
+  const bytes = await recordingBytes(response, decodedLimit);
   if (entry?.bytes !== undefined && entry.bytes !== bytes.byteLength)
     throw new Error(
       "The recording byte count does not match its published manifest.",
     );
-  if (entry?.sha256 !== undefined) {
-    if (!/^[a-f0-9]{64}$/i.test(entry.sha256))
+  const checksum = entry?.sha256 ?? expectedSha256;
+  if (checksum !== undefined) {
+    if (!/^[a-f0-9]{64}$/i.test(checksum))
       throw new Error("The recording catalog has an invalid checksum.");
     const digest = await crypto.subtle.digest("SHA-256", bytes);
     const actual = Array.from(new Uint8Array(digest), (b) =>
       b.toString(16).padStart(2, "0"),
     ).join("");
-    if (actual !== entry.sha256.toLowerCase())
+    if (actual !== checksum.toLowerCase())
       throw new Error(
         "The recording checksum does not match its published manifest. No outcomes will be displayed.",
       );
   }
-  const replay = validateReplay(parseJsonBytes(bytes));
+  const replay = validateReplay(parseJsonBytes(bytes, decodedLimit));
   return entry ? bindRecording(replay, entry) : replay;
 }

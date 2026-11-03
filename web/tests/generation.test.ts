@@ -28,6 +28,15 @@ test("invalid seeds and unsupported route/policy values do not reach POST", () =
   );
 });
 test("only known job state and safe ID accepted for polling", () => {
+  for (const replay_sha256 of ["bad", {}, "f".repeat(63)])
+    assert.throws(() =>
+      validateJob({
+        id: "a".repeat(32),
+        status: "completed",
+        parameters: {},
+        replay_sha256,
+      }),
+    );
   assert.throws(() =>
     validateJob({ id: "../../secret", status: "running", parameters: {} }),
   );

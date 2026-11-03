@@ -129,6 +129,23 @@ test("checksum-verified structural fixture remains bound to selected metadata", 
         new AbortController().signal,
       );
       assert.equal(loaded.scenario.id, entry.id);
+      const local = await loadRecording(
+        null,
+        "http://127.0.0.1/fixture",
+        new AbortController().signal,
+        hash,
+      );
+      assert.equal(local.scenario.id, entry.id);
+      await assert.rejects(loadRecording(null, "http://127.0.0.1/fixture", new AbortController().signal, hash, bytes.byteLength - 1), /size limit/);
+      await assert.rejects(
+        loadRecording(
+          null,
+          "http://127.0.0.1/fixture",
+          new AbortController().signal,
+          "0".repeat(64),
+        ),
+        /checksum/,
+      );
     }
   } finally {
     globalThis.fetch = original;

@@ -53,14 +53,23 @@ export function LocalGeneration(props: Props) {
   const sessionKey = `afterlight.local-job:${props.apiBase}`;
   const active =
     requesting || job?.status === "queued" || job?.status === "running";
-  const savedSettings = active || recovering || uncertain
-    ? requestRecord?.parameters ?? job?.parameters
-    : undefined;
+  const savedSettings =
+    active || recovering || uncertain
+      ? (requestRecord?.parameters ?? job?.parameters)
+      : undefined;
   const summarySettings = savedSettings ?? {
-    pickup: props.pickup, hospital: props.hospital, policy, lead, seed,
+    pickup: props.pickup,
+    hospital: props.hospital,
+    policy,
+    lead,
+    seed,
   };
-  const destinationName = summarySettings.hospital === "HOSP_WEST" ? "Westhaven"
-    : summarySettings.hospital === "HOSP_EAST" ? "Eastbank" : summarySettings.hospital;
+  const destinationName =
+    summarySettings.hospital === "HOSP_WEST"
+      ? "Westhaven"
+      : summarySettings.hospital === "HOSP_EAST"
+        ? "Eastbank"
+        : summarySettings.hospital;
   useEffect(() => () => postAbort.current?.abort(), []);
   useEffect(() => {
     const c = new AbortController(),
@@ -144,11 +153,14 @@ export function LocalGeneration(props: Props) {
     callbacks.current.onBusy(Boolean(active));
   }, [active]);
   useEffect(() => {
-    callbacks.current.onSelectionLocked(Boolean(active || recovering || uncertain));
+    callbacks.current.onSelectionLocked(
+      Boolean(active || recovering || uncertain),
+    );
   }, [active, recovering, uncertain]);
   useEffect(() => {
     if (!job?.id) return;
-    const c = new AbortController(), token = recoveryToken.current;
+    const c = new AbortController(),
+      token = recoveryToken.current;
     const current = () => !c.signal.aborted && token === recoveryToken.current;
     let timer: ReturnType<typeof setTimeout> | undefined;
     setPollError("");
@@ -170,16 +182,27 @@ export function LocalGeneration(props: Props) {
           if (!next.replay_url)
             throw new Error("The completed job has no replay link.");
           const url = recordingUrl(next.replay_url, `${props.apiBase}/`);
-          const replay = await loadRecording(null, url, c.signal);
+          const replay = await loadRecording(
+            null,
+            url,
+            c.signal,
+            next.replay_sha256,
+            256 * 1024 * 1024,
+          );
           if (!current()) return;
-          if (replay.scenario.network_kind !== next.parameters.network ||
-              replay.scenario.seed !== next.parameters.seed ||
-              replay.scenario.regime !== next.parameters.regime ||
-              replay.scenario.pickup_id !== next.parameters.pickup ||
-              replay.scenario.hospital_id !== next.parameters.hospital ||
-              replay.worlds.afterlight.policy !== next.parameters.policy ||
-              (next.parameters.policy === "fixed" && replay.worlds.afterlight.lead_s !== next.parameters.lead))
-            throw new Error("The completed recording does not match this job's requested experiment.");
+          if (
+            replay.scenario.network_kind !== next.parameters.network ||
+            replay.scenario.seed !== next.parameters.seed ||
+            replay.scenario.regime !== next.parameters.regime ||
+            replay.scenario.pickup_id !== next.parameters.pickup ||
+            replay.scenario.hospital_id !== next.parameters.hospital ||
+            replay.worlds.afterlight.policy !== next.parameters.policy ||
+            (next.parameters.policy === "fixed" &&
+              replay.worlds.afterlight.lead_s !== next.parameters.lead)
+          )
+            throw new Error(
+              "The completed recording does not match this job's requested experiment.",
+            );
           setReady({ replay, url });
         }
       } catch (e) {
@@ -345,52 +368,61 @@ export function LocalGeneration(props: Props) {
           </select>
           <details className="advanced-experiment" ref={advancedSettings}>
             <summary>Advanced experiment settings</summary>
-            <p>Keep these defaults for a first run. The same seed and demand setting repeat traffic demand; the policy changes how signals clear the route.</p>
-          <label htmlFor="generation-seed">Random seed</label>
-          <input
-            ref={seedInput}
-            id="generation-seed"
-            inputMode="numeric"
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
-            aria-describedby={error ? "generation-error" : undefined}
-            aria-invalid={Boolean(error)}
-          />
-          <label htmlFor="generation-policy">AFTERLIGHT policy</label>
-          <select
-            id="generation-policy"
-            value={policy}
-            onChange={(e) => setPolicy(e.target.value)}
-          >
-            <option value="fixed">Fixed clearance lead</option>
-            <option value="analytical">Analytical · no learned model</option>
-            <option value="immediate">Immediate priority</option>
-            <option value="ordinary">Ordinary signals · control</option>
-          </select>
-          {policy === "fixed" && (
-            <>
-              <label htmlFor="generation-lead">Clearance lead</label>
-              <select
-                id="generation-lead"
-                value={lead}
-                onChange={(e) => setLead(Number(e.target.value))}
-              >
-                {[0, 5, 10, 20, 30].map((n) => (
-                  <option value={n} key={n}>
-                    {n} seconds
-                  </option>
-                ))}
-              </select>
-              <span className="field-note">
-                Zero lead requests at predicted arrival, not at dispatch.
-              </span>
-            </>
-          )}
+            <p>
+              Keep these defaults for a first run. The same seed and demand
+              setting repeat traffic demand; the policy changes how signals
+              clear the route.
+            </p>
+            <label htmlFor="generation-seed">Random seed</label>
+            <input
+              ref={seedInput}
+              id="generation-seed"
+              inputMode="numeric"
+              value={seed}
+              onChange={(e) => setSeed(e.target.value)}
+              aria-describedby={error ? "generation-error" : undefined}
+              aria-invalid={Boolean(error)}
+            />
+            <label htmlFor="generation-policy">AFTERLIGHT policy</label>
+            <select
+              id="generation-policy"
+              value={policy}
+              onChange={(e) => setPolicy(e.target.value)}
+            >
+              <option value="fixed">Fixed clearance lead</option>
+              <option value="analytical">Analytical · no learned model</option>
+              <option value="immediate">Immediate priority</option>
+              <option value="ordinary">Ordinary signals · control</option>
+            </select>
+            {policy === "fixed" && (
+              <>
+                <label htmlFor="generation-lead">Clearance lead</label>
+                <select
+                  id="generation-lead"
+                  value={lead}
+                  onChange={(e) => setLead(Number(e.target.value))}
+                >
+                  {[0, 5, 10, 20, 30].map((n) => (
+                    <option value={n} key={n}>
+                      {n} seconds
+                    </option>
+                  ))}
+                </select>
+                <span className="field-note">
+                  Zero lead requests at predicted arrival, not at dispatch.
+                </span>
+              </>
+            )}
           </details>
           <p className="experiment-summary">
             <strong>{savedSettings ? "Saved request" : "Next run"}</strong>
-            <br />{summarySettings.pickup} → {destinationName}
-            <br />{summarySettings.policy === "fixed" ? `Fixed clearance · ${summarySettings.lead} s lead` : summarySettings.policy} · seed {summarySettings.seed}
+            <br />
+            {summarySettings.pickup} → {destinationName}
+            <br />
+            {summarySettings.policy === "fixed"
+              ? `Fixed clearance · ${summarySettings.lead} s lead`
+              : summarySettings.policy}{" "}
+            · seed {summarySettings.seed}
           </p>
           <button
             className="generate-button"
@@ -442,8 +474,12 @@ export function LocalGeneration(props: Props) {
             {job.parameters.pickup} → {job.parameters.hospital} · seed{" "}
             {job.parameters.seed}
           </p>
-          <p>{job.parameters.regime} traffic · {job.parameters.policy}
-            {job.parameters.policy === "fixed" ? ` · ${job.parameters.lead} s lead` : ""}</p>
+          <p>
+            {job.parameters.regime} traffic · {job.parameters.policy}
+            {job.parameters.policy === "fixed"
+              ? ` · ${job.parameters.lead} s lead`
+              : ""}
+          </p>
           <p>{job.status === "failed" ? job.error : job.message}</p>
           {active && (
             <small>

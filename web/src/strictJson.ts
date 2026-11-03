@@ -2,8 +2,8 @@
 export const MAX_JSON_BYTES = 128 * 1024 * 1024;
 export const MAX_JSON_DEPTH = 64;
 
-export function parseJsonBytes(bytes: Uint8Array): unknown {
-  if (bytes.byteLength > MAX_JSON_BYTES)
+export function parseJsonBytes(bytes: Uint8Array, limit = MAX_JSON_BYTES): unknown {
+  if (bytes.byteLength > limit)
     throw new Error("This response exceeds the supported trace size limit.");
   let text: string;
   try {

@@ -15,6 +15,7 @@ export interface GenerationJob {
   message?: string;
   error?: string;
   replay_url?: string;
+  replay_sha256?: string;
 }
 export function generationParameters(
   seed: string,
@@ -61,7 +62,10 @@ export function validateJob(value: unknown): GenerationJob {
     !job ||
     !/^([a-f0-9]{32})$/.test(job.id) ||
     !["queued", "running", "completed", "failed"].includes(job.status) ||
-    !job.parameters
+    !job.parameters ||
+    (job.replay_sha256 !== undefined &&
+      (typeof job.replay_sha256 !== "string" ||
+        !/^[a-f0-9]{64}$/i.test(job.replay_sha256)))
   )
     throw new Error("The local server returned an invalid job record.");
   return job;
@@ -81,7 +85,10 @@ export async function localRequest(
   const value = await boundedJson(response);
   if (!response.ok)
     throw new LocalResponseError(
-      value && typeof value === "object" && "error" in value && typeof value.error === "string"
+      value &&
+      typeof value === "object" &&
+      "error" in value &&
+      typeof value.error === "string"
         ? value.error
         : `Local server returned ${response.status}.`,
       response.status,
