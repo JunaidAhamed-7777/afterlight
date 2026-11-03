@@ -1,0 +1,84 @@
+{
+  "schema": "afterlight.demo-capture-capability.v1",
+  "recorded_utc": "2026-11-03T11:44:44.752182+00:00",
+  "status": "passed_unpublished_capture_capability",
+  "final_media_recorded": false,
+  "public_media_published": false,
+  "artifact": "local-runtime/demo-capability-02/report.json",
+  "artifact_sha256": "141de4a748b2aca232c1f9f94d687e3658a73b0c398a8a53980afec472c4d3bb",
+  "browser_version": "156.0.8078.80",
+  "viewport_css": {
+    "width": 1280,
+    "height": 720
+  },
+  "device_pixel_ratio": 1,
+  "video": {
+    "duration_s": 6.84,
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "fps": "25/1",
+    "bytes": 853884,
+    "sha256": "cb3da27e087fd3ca02ed369af3a556724f3569c0f4239287af4119da07cd8b5b",
+    "audio_streams": 0
+  },
+  "catalog_sha256": "b69d26f06a6b002c5a904b65f288144672f96bf8eb0568d78656471f3c4820f9",
+  "genuine_recordings": [
+    {
+      "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+      "decoded_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+      "decoded_bytes": 72828179,
+      "step_s": 0.5,
+      "hospital_id": "HOSP_EAST",
+      "overview_time_s": 180.5,
+      "comparison_time_s": 218.0
+    },
+    {
+      "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+      "decoded_sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+      "decoded_bytes": 74074010,
+      "step_s": 0.5,
+      "hospital_id": "HOSP_WEST",
+      "overview_time_s": 180.5,
+      "comparison_time_s": 168.0
+    }
+  ],
+  "served_build_before": {
+    "files": 29,
+    "bytes": 37087719,
+    "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+  },
+  "served_build_after": {
+    "files": 29,
+    "bytes": 37087719,
+    "manifest_sha256": "8d0b357c3993b0566f6fc7b06751ca9ff1cf4d3418fcf770b527a3bcc5dd29af"
+  },
+  "pixel_review": {
+    "result": "passed",
+    "scope": "First, middle and last frames decoded from the encoded MP4 and visually inspected. Actual loader, readable desktop controls and real WebGL city are present; native Recorded and2x labels remain visible when playback begins. This is an unpublished pre-identity capability check, not final media.",
+    "frames": [
+      {
+        "name": "review-first.png",
+        "sha256": "ddc9572e4d03c884e603bddc0e1293141483e92b8037df5f22f4c9ee7e65d4fa"
+      },
+      {
+        "name": "review-middle.png",
+        "sha256": "29b8d59e16666e90e2a7f548fdf4a3a7d6430e67cfd84005a3a1a5ab2b7307c4"
+      },
+      {
+        "name": "review-last.png",
+        "sha256": "a24071b35192da82475a2e1b903b19b09cd774908d9d014baff298b9dc54e49a"
+      }
+    ]
+  },
+  "empty_prefix_regression": {
+    "artifact": "local-runtime/demo-prefix-regression-01/encoding.json",
+    "artifact_sha256": "4825f5116d2dbaa0c54c156d4d5216f7326cb6085633697160a5555f40d0fbac",
+    "actual_original_clip": "local-runtime/demo-capability-01/native/page@e4e49e50dd00bc813f19197adbec9e6f.webm",
+    "empty_frames_removed": 1,
+    "empty_prefix_removed_seconds": 0.04,
+    "subsequent_product_loading_retained": true,
+    "first_output_frame_visually_reviewed": true,
+    "raw_native_video_sha256": "325d76f4277146f71e06e0acb134bef48e4f78b3b1ca9b0710266b0a0169b628"
+  },
+  "final_workflow": "Explicit final mode after hosting and Canva frontend; actual70-second controls/recording walkthrough, silent native-resolution25fps H.264, maximum8MB. Full final-mode timing/size is still to be verified on the final recording."
+}
