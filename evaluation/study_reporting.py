@@ -47,6 +47,12 @@ def verify_collection(study_directory: Path, collection_directory: Path, expecte
     """
     if expected_split not in {'train', 'validation'}:
         raise ValueError('Selection verifier accepts train/validation only; test remains unreleased')
+    return _verify_collection_evidence(study_directory, collection_directory, expected_split)
+
+
+def _verify_collection_evidence(study_directory: Path, collection_directory: Path, expected_split: str,
+                                *, required_manifest: Mapping | None = None) -> dict:
+    """Internal shared audit; the public test entry point verifies release first."""
     from sim.audit import audit_lifecycle, audit_world_signals
     from sim.network import read_network
     from models.residual import validate_candidate_rows
@@ -56,6 +62,8 @@ def verify_collection(study_directory: Path, collection_directory: Path, expecte
     manifest = read_json(manifest_path)
     if manifest.get('split') != expected_split:
         raise ValueError('Collection split differs from requested train/validation role; outcomes not opened')
+    if required_manifest is not None and any(manifest.get(key)!=value for key,value in required_manifest.items()):
+        raise ValueError('Test collection does not match exclusive release/attempt; outcomes not opened')
     if manifest.get('schema') != 'afterlight.collection.v1' or manifest.get('status') != 'completed':
         raise ValueError('Selection requires one completed collection attempt; never pool partial retries')
     for key, expected in {'study_sha256':envelope['sha256'], 'protocol_sha256':digest(study['protocol']),
@@ -339,4 +347,134 @@ def verify_selection_artifacts(study_directory: Path, selection_directory: Path)
                        'selected':chosen,'comparator':comparator}
         if artifacts[name]!={'sha256':digest(expected_pair),'selectors':expected_pair}:
             raise ValueError('Comparison freeze differs from declared selectors')
+    return envelope
+
+
+def _released_test_context(study_directory: Path, collection_directory: Path) -> dict:
+    """Authenticate release/claim/path before opening any held-out outcomes."""
+    from sim.network import ROOT
+    from .study_release import load_test_release
+    root = study_directory.resolve()
+    release_envelope = load_test_release(root)
+    release = release_envelope['release']
+    runtime = (ROOT/'local-runtime').resolve()
+    claim_path = _contained(root,'test-attempt.json')
+    claim_envelope = read_json(claim_path)
+    claim = claim_envelope['attempt']
+    if claim_envelope.get('sha256')!=digest(claim) or claim.get('schema')!='afterlight.test-attempt.v1':
+        raise ValueError('Test attempt claim hash/schema mismatch; outcomes not opened')
+    expected = {'release_sha256':release_envelope['sha256'],'study_sha256':release['study_sha256'],
+        'protocol_sha256':release['protocol_sha256'],'expected_worlds':release['expected_worlds'],
+        'state':'claimed_before_first_test_world'}
+    if any(claim.get(key)!=value for key,value in expected.items()):
+        raise ValueError('Test attempt does not match frozen release; outcomes not opened')
+    claimed_output = _contained(runtime,claim['output_directory'])
+    if collection_directory.resolve()!=claimed_output:
+        raise ValueError('Requested test collection differs from exclusive claimed output; outcomes not opened')
+    selection_directory = _contained(runtime,release['selection_directory'])
+    return {'release':release_envelope,'attempt':claim_envelope,'selection_directory':selection_directory,
+        'release_file_sha256':file_hash(_contained(root,'test-release.json')),
+        'attempt_file_sha256':file_hash(claim_path)}
+
+
+def verify_released_test_collection(study_directory: Path, collection_directory: Path) -> dict:
+    """Explicit held-out verifier. It never creates a release, claim or run."""
+    context = _released_test_context(study_directory,collection_directory)
+    required = {'release_sha256':context['release']['sha256'],'test_attempt_sha256':context['attempt']['sha256'],
+                'release_mode':context['release']['release']['mode']}
+    verified = _verify_collection_evidence(study_directory,collection_directory,'test',required_manifest=required)
+    if len(verified['rows'])!=context['release']['release']['expected_worlds']:
+        raise ValueError('Released test inventory does not match expected world count')
+    if _released_test_context(study_directory,collection_directory)!=context:
+        raise ValueError('Test release/claim changed during evidence verification')
+    return {**verified,'release_context':context}
+
+
+def _context_policy(rows: list, policy: str, civilian_weight: float) -> dict:
+    from collections import Counter
+    from statistics import mean
+    matching = [row for row in rows if row['policy']==policy]
+    records=[]
+    for row in matching:
+        value=objective(row,civilian_weight)
+        records.append({'episode_id':row['episode_id'],'demand_group_id':row['demand_group_id'],
+            'regime':row['regime'],'status':row['status'],'validity_reasons':row['validity_reasons'],
+            'infeasible':value is None,'j_s':value,'accounting':row['accounting'],
+            'ambulance_journey_s':row['ambulance_journey_s'],'civilian_mean_excess_s':row['civilian_mean_excess_s'],
+            'recovery_excess_queue_area_vehicle_s':row['recovery_excess_queue_area_vehicle_s']})
+    feasible=[row['j_s'] for row in records if row['j_s'] is not None]
+    return {'policy':policy,'episodes':len(records),'status_counts':dict(Counter(row['status'] for row in records)),
+        'failures':sum(row['infeasible'] for row in records),'finite_episodes':len(feasible),
+        'conditional_mean_j_s':finite(mean(feasible),'context conditional mean objective',nonnegative=False) if feasible else None,
+        'records':records,'interpretation':'Descriptive contextual policy, not a replacement for either frozen strong comparator. Finite objective means are conditional on validity and complete drain.'}
+
+
+def report_study(study_directory: Path, collection_directory: Path, output: Path) -> dict:
+    """Write a reproducible descriptive report from the single released test run.
+
+    No fitting, model selection, simulator execution or automatic benefit label.
+    """
+    from collections import Counter
+    from statistics import mean
+    from sim.network import ROOT
+    from .comparison import paired_decision_report, grouped_bootstrap_interval
+    from .selectors import recompute_frozen_decisions
+    root = study_directory.resolve()
+    study_envelope = load_study(root,require_frozen=True)
+    study=study_envelope['study']
+    assert_study_runtime(study)
+    verified=verify_released_test_collection(root,collection_directory)
+    context=verified['release_context'];release=context['release']['release']
+    selection_directory=context['selection_directory']
+    output=output.resolve();runtime_path=ROOT/'local-runtime';runtime=runtime_path.resolve()
+    if runtime_path.is_symlink() or not runtime.is_relative_to(ROOT.resolve()) or output==runtime or not output.is_relative_to(runtime):
+        raise ValueError('Report output must stay inside real ignored checkout local-runtime')
+    for protected in (root,collection_directory.resolve(),selection_directory):
+        if output==protected or output.is_relative_to(protected) or protected.is_relative_to(output):
+            raise ValueError('Report output cannot overlap frozen study, collection or selection')
+    protocol={'sha256':digest(study['protocol']),'protocol':study['protocol']}
+    comparisons={}
+    rows=verified['candidate_rows']
+    lookup={(row['episode_id'],row['lead_s']):row for row in rows}
+    for name,expected_hash in release['comparison_artifacts_sha256'].items():
+        path=_contained(selection_directory,name)
+        if file_hash(path)!=expected_hash:raise ValueError('Frozen comparator artifact changed')
+        selectors=read_json(path)
+        selected,comparator=recompute_frozen_decisions(rows,protocol,selectors)
+        report=paired_decision_report(rows,selected,comparator,civilian_weight=study['spec']['civilian_weight'],
+            frozen_protocol=protocol,frozen_selectors=selectors)
+        for record in report['records']:
+            chosen=lookup[(record['episode_id'],record['selected_lead_s'])]
+            reference=lookup[(record['episode_id'],record['comparator_lead_s'])]
+            paired=not record['selected_infeasible'] and not record['comparator_infeasible']
+            record['conditional_delta_ambulance_s']=finite(chosen['ambulance_journey_s']-reference['ambulance_journey_s'],
+                'paired ambulance difference',nonnegative=False) if paired else None
+            record['conditional_delta_recovery_vehicle_s']=finite(chosen['recovery_excess_queue_area_vehicle_s']-
+                reference['recovery_excess_queue_area_vehicle_s'],'paired recovery difference',nonnegative=False) if paired else None
+        report['uncertainty']=grouped_bootstrap_interval(report['records'],seed=0,resamples=2000,min_groups=10)
+        report['recovery_uncertainty']=grouped_bootstrap_interval(report['records'],field='conditional_delta_recovery_vehicle_s',seed=0,resamples=2000,min_groups=10)
+        recovery=[record['conditional_delta_recovery_vehicle_s'] for record in report['records'] if record['conditional_delta_recovery_vehicle_s'] is not None]
+        report['conditional_mean_delta_recovery_vehicle_s']=finite(mean(recovery),'conditional recovery difference',nonnegative=False) if recovery else None
+        report['recovery_window_s']=study['protocol']['recovery_window_s']
+        comparisons[name.removesuffix('.json')]=report
+    result={'schema':'afterlight.study-report.v1','study_sha256':study_envelope['sha256'],
+        'protocol_sha256':protocol['sha256'],'source':study['source'],'dependencies':study['dependencies'],
+        'sumo_version':study['pilot_evidence']['sumo_version'],'release_sha256':context['release']['sha256'],
+        'test_attempt_sha256':context['attempt']['sha256'],'selection_sha256':release['selection_sha256'],
+        'mode':release['mode'],'status':'audited_released_test_evidence','automatic_benefit_claim':False,
+        'collection_files_sha256':verified['files_sha256'],'release_file_sha256':context['release_file_sha256'],
+        'attempt_file_sha256':context['attempt_file_sha256'],'comparison_artifacts_sha256':release['comparison_artifacts_sha256'],
+        'all_world_status_counts':dict(Counter(row['status'] for row in verified['rows'])),
+        'candidate_status_counts':dict(Counter(row['status'] for row in rows)),
+        'comparisons':comparisons,'context_policies':{policy:_context_policy(verified['rows'],policy,study['spec']['civilian_weight']) for policy in ('ordinary','immediate')},
+        'uncertainty_specification':{'seed':0,'resamples':2000,'minimum_independent_groups':10,
+            'method':'whole-demand-group percentile bootstrap, finite paired cohort only; no multiplicity-adjusted significance claim'},
+        'created_utc':datetime.now(timezone.utc).isoformat(),
+        'interpretation':'Failures and censoring cover every declared episode. Finite paired differences and intervals are conditional on both policies completing validly. Negative objective deltas favor the selected policy on this simulated cohort, not evidence of deployed safety or lives saved. No automatic improvement badge; metadata guards do not prove human test nonaccess.'}
+    assert_study_runtime(study)
+    if _released_test_context(root,collection_directory)!=context or any(file_hash(_contained(collection_directory,name))!=value for name,value in verified['files_sha256'].items()):
+        raise ValueError('Frozen report inputs changed during analysis')
+    envelope={'sha256':digest(result),'report':result}
+    output.mkdir(parents=True,exist_ok=False)
+    _write(output/'report.json',envelope)
     return envelope

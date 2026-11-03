@@ -1,6 +1,6 @@
-"""Collect one frozen train/validation split from saved inputs, on Omen only.
+"""Collect one frozen split from saved inputs, on Omen only.
 
-No demand regeneration, model fitting, test release, or automatic retries.
+No demand regeneration, model fitting, implicit test release, or automatic retries.
 Every planned world remains inventoried even when collection stops early.
 """
 from __future__ import annotations
@@ -39,9 +39,13 @@ def _input_directory(root: Path, relative: str) -> Path:
     return resolved
 
 
-def collect_split(study_directory: Path, split: str, output: Path) -> dict:
-    if split not in {'train', 'validation'}:
-        raise ValueError('Only train/validation collection is enabled; test requires a future verified selector-release gate')
+def collect_split(study_directory: Path, split: str, output: Path, *, expected_release_sha256: str | None = None) -> dict:
+    if split not in {'train', 'validation', 'test'}:
+        raise ValueError('Unknown collection split')
+    if split == 'test' and (not isinstance(expected_release_sha256,str) or not expected_release_sha256):
+        raise ValueError('test requires an explicit verified selector-release digest')
+    if split != 'test' and expected_release_sha256 is not None:
+        raise ValueError('Release digest is only applicable to explicit test collection')
     from sim.network import ROOT, read_network
     from sim.run import run_world
     from models.analytical import AnalyticalConfig, estimate_candidates
@@ -82,6 +86,20 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
     expected_budget_s = study['budget']['max_wall_time_s'] * len(episodes) / len(study['episodes'])
     if split_budget_s != expected_budget_s:
         raise ValueError('Frozen split allocation differs from proportional whole-study start budget')
+    release = claim = None
+    if split == 'test':
+        from .study_release import claim_test_attempt, load_test_release
+        release = load_test_release(root)
+        binding = release['release']
+        if release['sha256'] != expected_release_sha256:
+            raise ValueError('Explicit release digest differs from verified release')
+        if binding['study_sha256'] != envelope['sha256'] or binding['protocol_sha256'] != digest(study['protocol']):
+            raise ValueError('Test release belongs to another frozen study')
+        if binding['test_episode_ids'] != [episode['episode_id'] for episode in episodes] or binding['expected_worlds'] != len(planned):
+            raise ValueError('Test collection must cover the complete released episode/world inventory')
+        # Last preflight operation, before output creation or any test world.
+        # Failure after this claim intentionally consumes the attempt marker.
+        claim = claim_test_attempt(root,output,expected_release_sha256=expected_release_sha256)
     output.mkdir(parents=True, exist_ok=False)
     start = time.perf_counter()
     manifest = {'schema': 'afterlight.collection.v1', 'study_sha256': envelope['sha256'],
@@ -92,7 +110,19 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                 'retry_policy': 'No automatic retries or pooling; retain this attempt and diagnose before a new explicit attempt',
                 'split_start_budget_s': split_budget_s,
                 'wall_budget_scope': 'Start-budget gate, not a hard cap: frozen whole-study allowance allocated in proportion to split episode count; one explicit attempt only, retries are not automatically pooled or budgeted; current world may overrun before collection stops'}
+    if release is not None:
+        manifest.update(release_sha256=release['sha256'],test_attempt_sha256=claim['sha256'],release_mode=release['release']['mode'],
+                        retry_policy='Test attempt already claimed; no automatic retry or crash recovery')
     rows = []
+
+    def assert_test_access() -> None:
+        if release is not None:
+            from .study_release import load_test_release
+            marker = root/'test-attempt.json'
+            if marker.is_symlink() or not marker.resolve().is_relative_to(root):
+                raise ValueError('Test attempt marker redirected')
+            if load_test_release(root) != release or read_json(marker) != claim:
+                raise ValueError('Test release/claim changed during collection')
 
     def save() -> None:
         _checkpoint(output / 'outcomes.json', rows)
@@ -126,6 +156,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                 try:
                     assert_study_runtime(study)
                     assert_saved_inputs(root, study)
+                    assert_test_access()
                     item['state'] = 'running'
                     save()
                     item['runner_invoked'] = True
@@ -135,6 +166,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                         sample_s=timing['sample_s'], sensor_lag_s=timing['sensor_lag_s'])
                     assert_study_runtime(study)
                     assert_saved_inputs(root, study)
+                    assert_test_access()
                     if world.get('sumo_version') != expected_version:
                         raise RuntimeError('Actual SUMO version differs from frozen measured pilot runtime')
                     # Retain only the sampled signal portion needed to reproduce
@@ -201,6 +233,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
             save()
         assert_study_runtime(study)
         assert_saved_inputs(root, study)
+        assert_test_access()
         manifest['status'] = 'completed'
         return manifest
     except Exception as error:
@@ -214,10 +247,11 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--study', required=True, type=Path)
-    parser.add_argument('--split', required=True, choices=('train', 'validation'))
+    parser.add_argument('--split', required=True, choices=('train', 'validation', 'test'))
     parser.add_argument('--output', required=True, type=Path)
+    parser.add_argument('--release-sha256', help='Explicit immutable release digest; required only for test')
     args = parser.parse_args()
-    result = collect_split(args.study, args.split, args.output)
+    result = collect_split(args.study, args.split, args.output, expected_release_sha256=args.release_sha256)
     print(json.dumps({key: result[key] for key in ('status', 'split', 'recorded_worlds', 'unattempted_worlds', 'runtime_total_s')}, indent=2))
 
 

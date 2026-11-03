@@ -51,16 +51,17 @@ A test-mode report now requires this selector freeze and recomputes every select
 
 Pilot execution also requires clean committed source, records the source-file hash snapshot, and checks that snapshot before/after worlds. A mid-pilot edit/pull stops and retains the failed/unfinished attempt rather than stamping changed code with the initial commit. Official portable SUMO is supported: the eclipse-sumo wheel metadata is optional, but actual binary version is recorded per successful world.
 
-The initial study protocol must also freeze a complete `episode_inventory`: each entry includes `episode_id`, `demand_group_id`, `split`, full `demand_sha256`, `network_sha256`, and `dispatch_s`. This inventory is prepared from saved exogenous demand before outcome generation, not inferred from whichever runs finished. It covers every declared group and dispatch variant. Training fit, validation fixed-lead selection and held-out reporting reject missing/extra episodes or changed input identities—even when another episode from the same group is present. Failed/censored candidate rows remain required; infrastructure failures need explicit resolution, not omission.
+The initial study protocol must also freeze a complete `episode_inventory`: each entry includes `episode_id`, `demand_group_id`, `split`, full `demand_sha256`, `network_sha256`, `regime`, and `dispatch_s`. This inventory is prepared from saved exogenous demand before outcome generation, not inferred from whichever runs finished. It covers every declared group and dispatch variant. Training fit, validation fixed-lead selection and held-out reporting reject missing/extra episodes or changed input identities—even when another episode from the same group is present. Failed/censored candidate rows remain required; infrastructure failures need explicit resolution, not omission.
 
 ## Saved-input study workflow
 
 [Study preparation and collection](STUDY.md) now provides explicit, bounded input
 preparation, a frozen episode inventory, and audited train/validation collection.
-It requires a genuine matching pilot and refuses pilot-group reuse. The initial
-collector deliberately rejects test: selector freeze, explicit test release and
-final reporting are separate gates still being implemented. New tooling has not
-yet been accepted on Omen; source compilation is not a study result.
+It requires a genuine matching pilot and refuses pilot-group reuse. Test collection requires an explicit immutable release digest and a one-attempt
+claim after selector freezing; ordinary train/validation commands cannot open
+test outcomes. The report revalidates the full claimed test inventory and both
+strong comparators without fitting. New tooling has not yet been accepted on
+Omen; source compilation is not a study result.
 
 The study `select` command now verifies complete audited train/validation evidence,
 selects the validation-best fixed lead, and optionally fits one declared residual

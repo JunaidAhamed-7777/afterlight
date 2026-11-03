@@ -66,12 +66,11 @@ are preserved; do not overwrite directories to retry.
 ## Collection handoff and budget semantics
 
 `evaluation.collector.collect_split(study_directory, split, output_directory)`
-consumes only the saved, frozen inputs. Initially only train and validation are
-accepted; **test is explicitly rejected** until a reviewed selector-release gate
-exists. The collector retains ordinary, immediate and all five fixed worlds,
+consumes only the saved, frozen inputs. Train and validation collection need no release. Test requires the explicit
+selector-release and single-attempt gate described below. The collector retains ordinary, immediate and all five fixed worlds,
 raw evidence and all failed/unattempted inventory entries. `outcomes.json` holds
 all worlds; `candidate-outcomes.json` holds the fixed candidates for later fitting.
-No default training, selector freeze, test release or report CLI is implied here.
+No collection command implicitly trains a model, selects a policy or releases test.
 
 The wall-time budget is a **whole-study planned start allowance**, allocated to
 splits in proportion to episode count. Each collection attempt checks its split
@@ -84,7 +83,7 @@ Later stages must fit only train, select fixed/tree configuration only validatio
 freeze selector artifacts separately (avoiding a protocol/model hash cycle), then
 explicitly release test once. Cached demo traces must come from the exact declared
 study episode/policy/source—not an unrelated earlier replay with a model label.
-Rich trace retention and test-release orchestration are subsequent checkpoints.
+Rich trace retention remains a subsequent checkpoint; the explicit test-release workflow is below.
 
 Hashes and metadata guards detect drift and inconsistent artifacts. They cannot
 prove a human never inspected test information or that reported files are truthful
@@ -119,4 +118,51 @@ Too few finite training labels produce `baseline_only`, with a reason and no mod
 No common feasible validation cohort produces `inconclusive`, with no invented
 best fixed comparator. A fitted tree yields `learned_ready`, **not** a performance
 claim, and separately freezes comparisons against both analytical and best fixed
-lead. Selection never releases test; that requires a separate reviewed gate.
+lead. Selection never releases test; that requires the separate explicit gate below.
+
+
+## Explicit held-out release, one attempt, descriptive reporting
+
+These commands are **not** part of preparation or routine tests. Run them only
+when development-data review is complete and the selection artifact is ready.
+The mode is mandatory: `learned` requires the learned model plus both strong
+comparators. `baseline_only` is a deliberate alternative, never a silent fallback
+from an inconclusive learned selection. An inconclusive fixed comparator blocks
+both modes.
+
+```powershell
+python -m evaluation.study_release --study local-runtime/study --selection local-runtime/selection --mode learned
+# Copy the printed release_sha256 exactly; do not substitute a guessed hash.
+python -m evaluation.collector --study local-runtime/study --split test --release-sha256 RELEASE_SHA256 --output local-runtime/test-attempt
+python -m evaluation.study report --study local-runtime/study --collection local-runtime/test-attempt --output local-runtime/test-report
+```
+
+Use `--mode baseline_only` only for the explicit analytical-versus-best-fixed
+study. Release writes immutable `test-release.json`; collection reserves immutable
+`test-attempt.json` before its first world. A crash or failed attempt leaves the
+claim in place and does **not** authorize automatic retries, deleting markers,
+changing seeds or silently replacing the protocol. Preserve evidence and review
+any future revised protocol explicitly. The report cannot create a release,
+claim, simulation run or model.
+
+The held-out verifier checks the release, selector artifacts, exclusive claim,
+exact claimed output directory and full declared inventory before reading
+outcomes. It then repeats the raw evidence audits used for development data.
+Incomplete or infrastructure-failed attempts are retained but cannot be promoted
+to a complete decision report. Audited policy failures and censored outcomes
+remain in the completed inventory and failure counts; no finite cost is invented.
+
+`report.json` binds original raw bytes, source/runtime, release, claim and selector
+hashes. Choices are recomputed from frozen observations—not picked from test
+outcomes. Learned studies report both learned-versus-best-validation-fixed and
+learned-versus-analytical comparisons. Ordinary/immediate results are descriptive
+context, not replacements for those stronger comparators.
+
+The report exposes all policy status counts, paired failures, finite-cohort
+objective/ambulance/civilian differences and common-absolute-window excess queue
+area differences. Grouped 95% percentile bootstrap intervals use a fixed seed 0,
+2,000 resamples and a minimum of 10 independent demand groups. Below that support,
+the interval is null with an explicit reason. Finite comparisons remain
+conditional on both policies completing validly; no multiplicity-adjusted
+significance, automatic performance badge, deployed safety or lives-saved claim
+is produced. Read failures and cohort sizes alongside any interval.

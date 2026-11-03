@@ -20,12 +20,21 @@ def main() -> None:
     select.add_argument("--validation", type=Path, required=True)
     select.add_argument("--output", type=Path, required=True)
     select.add_argument("--fit-model", action="store_true", help="explicitly fit the one frozen tree specification if eligible")
+    report = commands.add_parser("report", help="verify the released test attempt and write a descriptive report; no fitting or simulation")
+    report.add_argument("--study", type=Path, required=True)
+    report.add_argument("--collection", type=Path, required=True)
+    report.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "prepare":
         result = prepare_study(read_json(args.spec), args.pilot_dir, args.output)
         study = result["study"]
         summary = {"study_sha256": result["sha256"], "episodes": study["budget"]["episodes"],
                    "expected_rollouts": study["budget"]["expected_rollouts"], "status": "inputs prepared; no traffic outcomes generated; protocol not yet frozen"}
+    elif args.command == "report":
+        from .study_reporting import report_study
+        result = report_study(args.study, args.collection, args.output)
+        summary = {"report_sha256": result["sha256"], "status": result["report"]["status"],
+                   "mode": result["report"]["mode"], "automatic_benefit_claim": False}
     elif args.command == "select":
         from .study_reporting import select_study
         result = select_study(args.study, args.train, args.validation, args.output, fit_model=args.fit_model)

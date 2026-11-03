@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from evaluation.collector import collect_split, _input_directory
 from evaluation.pilot import PilotAuditError
+from evaluation.protocol import digest
 from models.analytical import AnalyticalConfig
 from dataclasses import asdict
 
@@ -174,6 +175,81 @@ class CollectorTests(unittest.TestCase):
             return True if path==runtime_path else original_is_symlink(path)
         with patch.object(Path,'is_symlink',redirected),self.assertRaisesRegex(ValueError,'must not redirect'):
             collect_split(self.study_dir,'train',self.output)
+        self.assertFalse(self.output.exists())
+
+    def released_test(self):
+        self.study['episodes'][0]['split']='test'
+        self.study['budget']['split_start_budgets_s']={'test':1000}
+        binding={'study_sha256':'study','protocol_sha256':digest(self.study['protocol']),
+                 'test_episode_ids':['episode'],'expected_worlds':7,'mode':'baseline_only'}
+        release={'sha256':digest(binding),'release':binding}
+        stack=ExitStack();self.addCleanup(stack.close)
+        stack.enter_context(patch('evaluation.study_release.load_test_release',return_value=release))
+        def claim(root,output,**kwargs):
+            self.assertFalse(output.exists())
+            content={'output_directory':output.relative_to(self.root/'local-runtime').as_posix()}
+            envelope={'sha256':digest(content),'attempt':content}
+            with (root/'test-attempt.json').open('x') as stream:json.dump(envelope,stream)
+            return envelope
+        claimed=stack.enter_context(patch('evaluation.study_release.claim_test_attempt',side_effect=claim))
+        return release,claimed
+
+    def test_released_test_binds_manifest_and_claims_before_first_world(self):
+        runner,_,_=self.mocks();release,claimed=self.released_test()
+        original=runner.side_effect
+        def check_claim(**kwargs):
+            self.assertTrue((self.study_dir/'test-attempt.json').exists())
+            return original(**kwargs)
+        runner.side_effect=check_claim
+        result=collect_split(self.study_dir,'test',self.output,expected_release_sha256=release['sha256'])
+        self.assertEqual(claimed.call_count,1);self.assertEqual(runner.call_count,7)
+        self.assertEqual(result['release_sha256'],release['sha256'])
+        self.assertEqual(result['release_mode'],'baseline_only')
+        self.assertEqual(result['test_attempt_sha256'],json.loads((self.study_dir/'test-attempt.json').read_text())['sha256'])
+
+    def test_wrong_release_digest_never_claims_or_creates_output(self):
+        runner,_,_=self.mocks();_,claimed=self.released_test()
+        with self.assertRaisesRegex(ValueError,'Explicit release digest'):
+            collect_split(self.study_dir,'test',self.output,expected_release_sha256='wrong')
+        self.assertEqual(claimed.call_count,0);self.assertEqual(runner.call_count,0)
+        self.assertFalse(self.output.exists())
+
+    def test_release_inventory_mismatch_never_claims(self):
+        runner,_,_=self.mocks();release,claimed=self.released_test()
+        release['release']['test_episode_ids']=[]
+        with self.assertRaisesRegex(ValueError,'complete released'):
+            collect_split(self.study_dir,'test',self.output,expected_release_sha256=release['sha256'])
+        self.assertEqual(claimed.call_count,0);self.assertEqual(runner.call_count,0)
+        self.assertFalse(self.output.exists())
+
+    def test_existing_claim_prevents_second_test_attempt(self):
+        runner,_,_=self.mocks();release,claimed=self.released_test()
+        (self.study_dir/'test-attempt.json').write_text('{"preserve":true}')
+        with self.assertRaises(FileExistsError):
+            collect_split(self.study_dir,'test',self.output,expected_release_sha256=release['sha256'])
+        self.assertEqual(runner.call_count,0);self.assertFalse(self.output.exists())
+        self.assertEqual(json.loads((self.study_dir/'test-attempt.json').read_text()),{'preserve':True})
+
+    def test_claim_mutation_after_world_stops_without_finite_target(self):
+        runner,_,_=self.mocks();release,_=self.released_test()
+        original=runner.side_effect
+        def mutate(**kwargs):
+            world=original(**kwargs)
+            (self.study_dir/'test-attempt.json').write_text('{}')
+            return world
+        runner.side_effect=mutate
+        with self.assertRaises(RuntimeError):
+            collect_split(self.study_dir,'test',self.output,expected_release_sha256=release['sha256'])
+        rows,manifest=self.records()
+        self.assertEqual(runner.call_count,1)
+        self.assertEqual(rows[0]['status'],'infrastructure_error')
+        self.assertIsNone(rows[0]['ambulance_journey_s'])
+        self.assertIn('release/claim changed',rows[0]['failure_reason'])
+        self.assertEqual(manifest['unattempted_worlds'],6)
+
+    def test_training_rejects_release_argument_without_mutation(self):
+        with self.assertRaisesRegex(ValueError,'only applicable'):
+            collect_split(self.study_dir,'train',self.output,expected_release_sha256='release')
         self.assertFalse(self.output.exists())
 
     def test_input_paths_cannot_escape_frozen_directory(self):
