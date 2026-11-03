@@ -5,6 +5,17 @@ from evaluation.protocol import digest, pilot_summary
 
 
 class PilotTests(unittest.TestCase):
+    def test_route_variants_require_both_endpoints(self):
+        envelope = prepare_plan(network='city')
+        case = envelope['plan']['cases'][0]
+        case['pickup_id'] = 'P034'
+        envelope['sha256'] = digest(envelope['plan'])
+        with self.assertRaisesRegex(ValueError, 'both nonempty'):
+            validate_plan(envelope)
+        case['hospital_id'] = 'HOSP_EAST'
+        envelope['sha256'] = digest(envelope['plan'])
+        self.assertEqual(validate_plan(envelope)['cases'][0]['pickup_id'], 'P034')
+
     def test_default_plan_is_twelve_whole_episodes_seven_worlds(self):
         envelope = prepare_plan()
         plan = envelope["plan"]

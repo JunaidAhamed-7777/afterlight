@@ -282,6 +282,9 @@ def validate_pilot_evidence(directory: Path, spec: Mapping, source: Mapping) -> 
         for field in ("seed", "regime", "dispatch_s", "demand_end_s"):
             if demand.get(field) != case[field]:
                 raise ValueError(f"saved pilot demand differs from declared case: {field}")
+        for field in ('pickup_id', 'hospital_id'):
+            if field in case and demand.get(field) != case[field]:
+                raise ValueError(f'saved pilot route differs from declared case: {field}')
         realization = [v for v in demand["vehicles"] if v["id"] != "ambulance"]
         demand_hash, group_hash = file_hash(demand_dir / "demand.rou.xml"), digest(realization)
         for name in ("demand.json", "demand.rou.xml"):
