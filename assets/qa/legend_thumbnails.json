@@ -1,0 +1,52 @@
+{
+  "schema": "afterlight.legend-thumbnails.v1",
+  "source": "exports/ambulance.glb",
+  "source_sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1",
+  "generator": "src/render_legend_thumbnails.py",
+  "generator_sha256": "03235ec34870c1abced78532cc7b1e0551a4cb797892f75e390751943af231f8",
+  "blender_version": "5.2.2 LTS",
+  "bridge": "MCP for Blender 1.8 on loopback",
+  "same_camera": true,
+  "geometry_unchanged": true,
+  "camera": {
+    "position": [
+      8.0,
+      10.0,
+      7.0
+    ],
+    "rotation": [
+      1.1487747430801392,
+      4.084586890940045e-08,
+      2.4668519496917725
+    ],
+    "orthographic_scale": 7.599999904632568
+  },
+  "ghost": {
+    "color_srgb": "#87D7FF",
+    "opacity": 0.38,
+    "material": "unlit transparent emission; front faces"
+  },
+  "images": [
+    {
+      "file": "previews/ambulance_model.png",
+      "bytes": 44991,
+      "sha256": "1748907a1c7771e322fcaaf4057c237c27bc5357618a0b5ef346263622d2d6ad",
+      "width": 320,
+      "height": 200,
+      "alpha_min": 0.0,
+      "alpha_max": 1.0,
+      "nontransparent_pixels": 23633
+    },
+    {
+      "file": "previews/ghost_model.png",
+      "bytes": 38534,
+      "sha256": "26b814f3094c37620194c0ae6f030492d7f0b494a1636efc647e79edef4f2a31",
+      "width": 320,
+      "height": 200,
+      "alpha_min": 0.0,
+      "alpha_max": 0.9647059440612793,
+      "nontransparent_pixels": 23580
+    }
+  ],
+  "scope": "Actual original model cutouts for the UI legend; Blender rendering is distinct from WebGL screenshots."
+}
