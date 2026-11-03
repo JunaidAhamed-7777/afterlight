@@ -335,3 +335,49 @@ test("ambulance and ghost never receive civilian paint and owned paint materials
   assert.equal(released,1);
   assert.equal(originalReleased,0,"Disposing instance pools must preserve shared GLB materials");
 });
+
+test("actual roof beacons alternate without changing the source, vehicle pose or ghost", async () => {
+  const template = await actualTemplate("ambulance");
+  const templates = new Map([["ambulance", template]]);
+  const originals: THREE.MeshStandardMaterial[] = [];
+  template.traverse(node => {
+    if (node instanceof THREE.Mesh) originals.push(node.material as THREE.MeshStandardMaterial);
+  });
+  const sourceColors = originals.map(material => material.color.toArray());
+  const active = new VehicleLayer(false, true), ghost = new VehicleLayer(true);
+  const vehicle = civilian("ambulance", "ambulance");
+  active.update([vehicle], templates);
+  ghost.update([vehicle], templates);
+  const meshes = active.group.children as THREE.InstancedMesh[];
+  assert.equal(meshes.length, originals.length, "Roof lights reuse original model primitives");
+  const lights = meshes.filter(mesh => (mesh.material as THREE.Material).name === "AFTERLIGHT_EMERGENCY_BEACON");
+  assert.equal(lights.length, 1, "The authored roof bar is the only animated material");
+  const material = lights[0].material as THREE.MeshStandardMaterial;
+  const before = active.inspect()!.ambulances[0];
+  assert.equal(active.updateBeacons(0, true), true);
+  assert.equal(material.color.getHex(), 0x2288ff);
+  assert.equal(active.updateBeacons(.2, true), false);
+  assert.equal(active.updateBeacons(.41, true), true);
+  assert.equal(material.color.getHex(), 0xff304d);
+  assert.equal(material.emissive.getHex(), 0xff304d);
+  assert.equal(active.updateBeacons(.81, true), true);
+  assert.equal(material.color.getHex(), 0x2288ff);
+  active.updateBeacons(1.21, true);
+  assert.equal(active.updateBeacons(1.21, false), true, "Paused or reduced-motion playback uses steady blue");
+  assert.equal(active.updateBeacons(9.21, false), false);
+  assert.equal(material.color.getHex(), 0x2288ff);
+  assert.deepEqual(active.inspect()!.ambulances[0], before);
+  for (const [index, mesh] of meshes.entries()) {
+    assert.deepEqual(originals[index].color.toArray(), sourceColors[index]);
+    if (mesh !== lights[0]) assert.equal(mesh.material, originals[index]);
+  }
+  assert.equal(ghost.updateBeacons(.41, true), false);
+  for (const mesh of ghost.group.children as THREE.InstancedMesh[])
+    assert.equal((mesh.material as THREE.MeshBasicMaterial).color.getHex(), 0x87d7ff);
+  active.update([], templates);
+  assert.equal(active.updateBeacons(.41, true), false, "An absent ambulance must not request animation frames");
+  let disposed = 0;
+  material.addEventListener("dispose", () => disposed++);
+  active.dispose(); ghost.dispose();
+  assert.equal(disposed, 1);
+});

@@ -27,6 +27,8 @@ interface Batch {
   geometry: THREE.BufferGeometry[];
   paintedMeshes: THREE.InstancedMesh[];
   ownedMaterials: THREE.Material[];
+  beaconMaterials: THREE.MeshStandardMaterial[];
+  beaconColor: number | null;
   length: number;
   width: number;
   minY: number;
@@ -119,6 +121,20 @@ export class VehicleLayer {
       for (const mesh of batch.paintedMeshes)
         mesh.instanceColor!.needsUpdate = true;
     }
+  }
+  /** Presentation-only roof lights; wall time keeps playback speed independent of flashing. */
+  updateBeacons(wallSeconds: number, flashing: boolean): boolean {
+    const batch = this.batches.get("ambulance");
+    if (!batch?.beaconMaterials.length || !batch.meshes.some(mesh => mesh.count > 0))
+      return false;
+    const color = flashing && Math.floor(wallSeconds * 2.5) % 2 ? 0xff304d : 0x2288ff;
+    if (batch.beaconColor === color) return false;
+    batch.beaconColor = color;
+    for (const material of batch.beaconMaterials) {
+      material.color.setHex(color);
+      material.emissive.setHex(color);
+    }
+    return true;
   }
   /** Opt-in QA snapshot of render buffers, never input poses or simulation state. */
   inspect() {
@@ -246,6 +262,8 @@ export class VehicleLayer {
       geometry: [],
       paintedMeshes: [],
       ownedMaterials: [],
+      beaconMaterials: [],
+      beaconColor: null,
       length: size.z,
       width: size.x,
       minY: Infinity,
@@ -269,6 +287,18 @@ export class VehicleLayer {
       let paint = false;
       if (this.ghost) batch.ownedMaterials.push(material as THREE.Material);
       else if (
+        type === "ambulance" &&
+        material instanceof THREE.MeshStandardMaterial &&
+        material.name === "beacon_cyan"
+      ) {
+        const beacon = material.clone();
+        beacon.name = "AFTERLIGHT_EMERGENCY_BEACON";
+        beacon.toneMapped = false;
+        beacon.emissiveIntensity = 3;
+        material = beacon;
+        batch.beaconMaterials.push(beacon);
+        batch.ownedMaterials.push(beacon);
+      } else if (
         !Array.isArray(material) &&
         PAINT_MATERIAL_NAMES[type]?.includes(material.name) &&
         (material instanceof THREE.MeshStandardMaterial ||
