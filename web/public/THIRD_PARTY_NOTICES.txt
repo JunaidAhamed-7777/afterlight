@@ -1,4 +1,4 @@
-AFTERLIGHT - Third-party runtime notices
+﻿AFTERLIGHT - Third-party runtime notices
 
 The following full notices apply to the listed third-party runtime components.
 This file does not specify a license for AFTERLIGHT source code or original assets.

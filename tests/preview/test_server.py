@@ -37,6 +37,9 @@ class PreviewPaths(unittest.TestCase):
 
     def test_full_retained_notices_are_present_under_their_locked_package_headings(self):
         container = (ROOT / 'web/public/THIRD_PARTY_NOTICES.txt').read_bytes()
+        # A signature keeps the plain-text download readable on servers that
+        # omit a charset; each original license body below remains untouched.
+        self.assertTrue(container.startswith(b'\xef\xbb\xbf'))
         locked = json.loads((ROOT / 'web/package-lock.json').read_bytes())['packages']
         self.assertNotIn(b'\r', container)
         self.assertEqual(container.count(b'Permission is hereby granted'), 5)
