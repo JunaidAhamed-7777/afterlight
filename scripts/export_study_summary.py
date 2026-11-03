@@ -203,6 +203,8 @@ def main() -> None:
     parser.add_argument('--train', type=Path, required=True, help='Original complete training collection')
     parser.add_argument('--validation', type=Path, required=True, help='Original complete validation collection')
     parser.add_argument('--output', type=Path, required=True, help='Fresh directory within pinned local-runtime')
+    parser.add_argument('--analysis-amendment', type=Path,
+                        help='Explicit pre-test frozen analysis descriptor, when the selection/report declares one')
     parser.add_argument('--max-pack-bytes', type=int, default=4*1024*1024,
                         help='Physical proof-pack ceiling; default 4 MiB, never omit required rows to fit')
     args = parser.parse_args()
@@ -219,6 +221,15 @@ def main() -> None:
 
     study_dir, collection, report_dir, output = map(local, (args.study, args.collection, args.report, args.output))
     train_dir, validation_dir = map(local, (args.train, args.validation))
+    amendment_binding = amendment_envelope = amendment_path = None
+    if args.analysis_amendment:
+        from run_analysis_amendment import load_amended_analysis
+        amendment_path = local(args.analysis_amendment)
+        amended, amendment_binding, amendment_envelope = load_amended_analysis(checkout, study_dir, amendment_path)
+        assert_no_overlap(output, (amendment_path.parent,))
+        def verify_report_artifacts(study, collection, report):
+            return amended.verify_report_artifacts(study, collection, report, analysis_amendment=amendment_binding)
+        verify_released_test_collection = amended.verify_released_test_collection
     assert_no_overlap(output, (study_dir, collection, report_dir, train_dir, validation_dir))
     if not 0 < args.max_pack_bytes <= 32*1024*1024:
         raise ValueError('An explicit positive proof-pack bound of at most 32 MiB is required')
@@ -231,6 +242,9 @@ def main() -> None:
     assert_no_overlap(output, (selection_dir,))
     study = load_study(study_dir, require_frozen=True, verify_inputs=True)
     selection = read_json(selection_dir/'selection.json')
+    if (report['report'].get('analysis_amendment') != amendment_binding or
+            selection['selection'].get('analysis_amendment') != amendment_binding):
+        raise ValueError('Explicit analysis amendment differs from selection/report provenance')
     sources = {
         'report': report_dir/'report.json', 'study': study_dir/'study.json',
         'protocol': study_dir/'frozen-protocol.json', 'selection': selection_dir/'selection.json',
@@ -244,6 +258,23 @@ def main() -> None:
         sources['comparison_learned_vs_analytical'] = selection_dir/'learned-vs-analytical.json'
     else:
         sources['comparison_analytical_vs_fixed'] = selection_dir/'analytical-vs-fixed.json'
+    amendment_kinds = set()
+    if amendment_envelope is not None:
+        amendment = amendment_envelope['amendment']
+        sources['analysis_amendment'] = amendment_path
+        for kind, item in [
+            ('analysis_verifier_source', amendment['analysis_files']['verifier']),
+            ('analysis_binding_source', amendment['analysis_files']['binding_helper']),
+            ('analysis_entrypoint_source', amendment['analysis_files']['entrypoint']),
+            ('analysis_diff', amendment['analysis_files']['diff']),
+            ('analysis_failure_log', amendment['failed_attempt']['log']),
+            ('analysis_failure_journal', amendment['failed_attempt']['journal']),
+        ]:
+            source = _contained(amendment_path.parent, item['filename'])
+            if file_sha256(source) != item['sha256']:
+                raise ValueError('Amendment source/failure companion changed before export')
+            sources[kind] = source
+        amendment_kinds = {kind for kind in sources if kind.startswith('analysis_')}
     payloads = {}
     artifacts = []
     filenames = {}
@@ -268,7 +299,7 @@ def main() -> None:
         raise ValueError('Copied selection bytes differ from the pre-test release')
     if hashlib.sha256(payloads['release.json']).hexdigest() != context['release_file_sha256']:
         raise ValueError('Copied release bytes differ from verified report evidence')
-    for kind in set(sources) - set(verified_contents):
+    for kind in set(sources) - set(verified_contents) - amendment_kinds:
         if kind in sources:
             filename = filenames[kind]
             expected = release['selection_artifacts_sha256'][sources[kind].name]
@@ -329,6 +360,10 @@ def main() -> None:
         with (output/'summary.json').open('xb') as stream:
             stream.write(summary_bytes)
         assert_study_runtime(study['study'])
+        if amendment_path is not None:
+            _, final_binding, final_envelope = load_amended_analysis(checkout, study_dir, amendment_path)
+            if final_binding != amendment_binding or final_envelope != amendment_envelope:
+                raise ValueError('Frozen analysis amendment identity changed during export')
         for kind, source in sources.items():
             artifact = next(item for item in artifacts if item['kind'] == kind)
             if file_sha256(source) != artifact['sha256'] or file_sha256(output/artifact['url']) != artifact['sha256']:
