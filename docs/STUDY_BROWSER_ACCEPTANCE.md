@@ -58,6 +58,38 @@ fixed choice and the frozen model/comparator choices from the released lagged
 observations and candidate grids, then reconciles the complete report against
 the full seven-world scalar inventory. It does not refit a model or run SUMO.
 
+## Explicit analysis amendment
+
+The original simulation checkout and frozen study/protocol stay unchanged. A
+documented pre-test correction may use the exact frozen estimator configuration
+when validating collected analytical predictions, instead of reconstructing a
+default configuration with a different JSON numeric representation. It must not
+coerce hashes, rewrite collected data, or replace the original scientific helpers.
+
+An amended publication must include its original descriptor, statically vendored
+verifier and binding helper, entrypoint, reviewed diff, and original failed-attempt
+log and journal. The public verifier checks all seven companions' exact bytes and
+hashes. The descriptor must bind the original study/protocol/simulation source,
+the exact whole-estimator hash, both original module hashes, and the failed
+verification before model fitting. Integer `1` and float `1.0` are not treated as
+the same frozen JSON identity.
+
+Failure references may retain their original basenames while their byte-exact
+public copies use `analysis-failure.txt` and
+`analysis-failed-selection-journal.json`; the descriptor's hashes bind those
+copies independently of the explicit rename.
+
+Selection and report must bind the same descriptor and implementation hashes.
+The original release must bind the complete amended selection envelope and its
+original file bytes. Declared creation times must put the amendment before
+selection, then release, then report. These metadata checks do not independently
+prove human nonaccess or when fitting actually began.
+
+Downloaded analysis sources are hashed, never imported or executed. Frozen
+decision recomputation still uses only the original nine byte- and origin-bound
+pure scientific modules. The browser must show the amendment disclosure and its
+downloads, with the original Git link labeled **Simulation source commit**.
+
 The isolated guard checks can run before publication. They use synthetic
 temporary modules and JSON bytes, with no Study pack or outcome inputs:
 

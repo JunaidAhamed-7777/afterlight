@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 import csv
+from datetime import datetime
 import gzip
 import hashlib
 from importlib.util import module_from_spec, spec_from_file_location
@@ -44,6 +45,15 @@ PURE_HELPER_FILES = {
     'models.analytical': 'models/analytical.py',
     'evaluation.selectors': 'evaluation/selectors.py',
     'evaluation.comparison': 'evaluation/comparison.py',
+}
+ANALYSIS_ARTIFACTS = {
+    'analysis_amendment': 'analysis-amendment.json',
+    'analysis_verifier_source': 'afterlight_analysis_amendment_v1.py',
+    'analysis_binding_source': 'afterlight_analysis_binding_v1.py',
+    'analysis_entrypoint_source': 'run_analysis_amendment.py',
+    'analysis_diff': 'analysis-amendment.patch',
+    'analysis_failure_log': 'analysis-failure.txt',
+    'analysis_failure_journal': 'analysis-failed-selection-journal.json',
 }
 
 
@@ -200,6 +210,90 @@ def interval_from_records(records):
         means.append(mean(value for name in selected for value in groups[name]))
     means.sort()
     return [means[int(.025 * 1999)], means[int(.975 * 1999)]], len(names)
+
+
+def verify_analysis_amendment(documents, raw, artifacts):
+    """Bind the explicit pre-test audit correction without executing its code."""
+    selection = documents['selection']['selection']; report = documents['report']['report']
+    present = set(ANALYSIS_ARTIFACTS) & artifacts.keys()
+    declared = 'analysis_amendment' in selection or 'analysis_amendment' in report
+    if not declared and not present: return {'present': False}
+    assert present == set(ANALYSIS_ARTIFACTS), 'Amended analysis requires every declared public proof companion'
+    for kind, filename in ANALYSIS_ARTIFACTS.items():
+        artifact = artifacts[kind]
+        assert artifact['url'] == filename, ('Unexpected analysis companion URL', kind)
+        assert len(raw[kind]) == artifact['bytes'] <= COMPANION_LIMIT and sha(raw[kind]) == artifact['sha256'], ('Analysis companion bytes/hash mismatch', kind)
+    descriptor = documents['analysis_amendment']
+    assert canonical_sha(strict_json(raw['analysis_amendment'])) == canonical_sha(descriptor), 'Descriptor object differs from original published bytes'
+    amendment = envelope(descriptor, 'amendment', 'afterlight.analysis-amendment.v1')
+    assert set(amendment) == {'schema', 'id', 'created_utc', 'original_study_sha256', 'original_protocol_sha256',
+                              'original_source', 'frozen_analytical_estimator', 'frozen_analytical_estimator_sha256',
+                              'correction', 'unchanged_design', 'failed_attempt', 'analysis_files'}
+    assert amendment['id'] == 'frozen-estimator-config-v1'
+    study = documents['study']['study']; protocol = documents['protocol']['protocol']
+    assert amendment['original_study_sha256'] == documents['study']['sha256']
+    assert amendment['original_protocol_sha256'] == documents['protocol']['sha256']
+    assert canonical_sha(amendment['original_source']) == canonical_sha(study['source']), 'Analysis amendment changed original simulation provenance'
+    estimator_hash = canonical_sha(protocol['analytical_estimator'])
+    assert amendment['frozen_analytical_estimator_sha256'] == estimator_hash
+    # Numeric equality is insufficient here: JSON int1 and float1.0 deliberately
+    # retain different frozen identities even when Python compares them equal.
+    assert canonical_sha(amendment['frozen_analytical_estimator']) == estimator_hash, 'Analysis amendment changed exact frozen estimator representation'
+    assert isinstance(amendment['correction'], str) and amendment['correction'].strip()
+    unchanged = amendment['unchanged_design']
+    assert isinstance(unchanged, list) and unchanged and all(isinstance(item, str) and item.strip() for item in unchanged)
+    assert len(set(unchanged)) == len(unchanged)
+
+    def file_binding(value, kind, original=None):
+        expected_keys = {'filename', 'sha256'} | ({'original_path', 'original_sha256'} if original else set())
+        assert isinstance(value, dict) and set(value) == expected_keys
+        assert isinstance(value['filename'], str) and LOCAL_PATH.fullmatch(value['filename']) and '/' not in value['filename']
+        assert SHA.fullmatch(value['sha256']) and value['sha256'] == sha(raw[kind]), ('Descriptor companion binding mismatch', kind)
+        if original:
+            assert value['original_path'] == original
+            assert value['original_sha256'] == study['source']['source_files'][original], ('Analysis amendment original source mismatch', original)
+            assert value['filename'] == ANALYSIS_ARTIFACTS[kind]
+
+    failed = amendment['failed_attempt']
+    assert isinstance(failed, dict) and set(failed) == {'state', 'model_fit_reached', 'journal', 'log'}
+    assert failed['state'] == 'verification_failed_before_model_fit' and failed['model_fit_reached'] is False
+    # Failure references retain original basenames; the exporter gives their
+    # byte-exact copies the fixed public aliases checked above. SHA binds the
+    # original reference to its public companion independently of that rename.
+    file_binding(failed['journal'], 'analysis_failure_journal')
+    file_binding(failed['log'], 'analysis_failure_log')
+    strict_json(raw['analysis_failure_journal'])
+    files = amendment['analysis_files']
+    assert isinstance(files, dict) and set(files) == {'verifier', 'binding_helper', 'entrypoint', 'diff'}
+    file_binding(files['verifier'], 'analysis_verifier_source', 'evaluation/study_reporting.py')
+    file_binding(files['binding_helper'], 'analysis_binding_source', 'evaluation/study_manifest.py')
+    file_binding(files['entrypoint'], 'analysis_entrypoint_source')
+    file_binding(files['diff'], 'analysis_diff')
+    assert files['entrypoint']['filename'] == ANALYSIS_ARTIFACTS['analysis_entrypoint_source']
+    assert files['diff']['filename'] == ANALYSIS_ARTIFACTS['analysis_diff']
+    expected_binding = {
+        'schema': 'afterlight.analysis-amendment-binding.v1', 'id': amendment['id'], 'sha256': descriptor['sha256'],
+        'file_sha256': sha(raw['analysis_amendment']), 'implementation_sha256': files['verifier']['sha256'],
+        'binding_helper_sha256': files['binding_helper']['sha256'], 'entrypoint_sha256': files['entrypoint']['sha256'],
+    }
+    assert selection.get('analysis_amendment') == expected_binding, 'Selection does not bind the exact pre-test analysis amendment'
+    assert report.get('analysis_amendment') == expected_binding, 'Report differs from the pre-test analysis amendment'
+    release = documents['release']['release']
+    assert release['selection_sha256'] == documents['selection']['sha256'], 'Original release does not bind amended selection identity'
+    assert release['selection_file_sha256'] == sha(raw['selection']), 'Original release does not bind original amended selection bytes'
+
+    def instant(value):
+        assert isinstance(value, str)
+        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        assert parsed.utcoffset() is not None, 'Analysis provenance timestamps require explicit time zones'
+        return parsed
+    created, selected, released, reported = map(instant, (amendment['created_utc'], selection['created_utc'], release['created_utc'], report['created_utc']))
+    assert created <= selected <= released <= reported, 'Analysis correction was not frozen before selection and test release'
+    return {'present': True, 'id': amendment['id'], 'descriptor_sha256': descriptor['sha256'],
+            'descriptor_file_sha256': expected_binding['file_sha256'], 'frozen_estimator_sha256': estimator_hash,
+            'original_simulation_source_unchanged': True, 'selection_report_and_original_release_bound': True,
+            'all_analysis_companions_hash_verified': sorted(ANALYSIS_ARTIFACTS), 'downloaded_analysis_code_executed': False,
+            'scope': 'Checks exact public pre-test descriptor/source/failure evidence identities and declared chronology; metadata does not independently prove human nonaccess or the time model fitting actually began.'}
 
 
 def verify_reproduction(summary, documents, raw, artifacts):
@@ -492,12 +586,14 @@ def load_released_public_pack(base_url: str, expected_manifest_sha256: str):
         assert len(data) == entry['bytes'] and sha(data) == entry['sha256'], ('Public companion byte/hash mismatch', kind)
         artifacts[kind] = entry; paths.add(entry['url'])
         observed.append({'kind': kind, 'url': url, 'bytes': len(data), 'sha256': sha(data)})
-        if kind in required:
+        if kind in required or kind in ANALYSIS_ARTIFACTS:
             raw[kind] = data
-            if kind != 'paired_records' and kind not in GRID_KINDS: documents[kind] = strict_json(data)
+            if (kind in required and kind != 'paired_records' and kind not in GRID_KINDS) or kind == 'analysis_amendment':
+                documents[kind] = strict_json(data)
     assert required <= artifacts.keys(), ('Missing required public companions', required - artifacts.keys())
     if summary['mode'] == 'baseline_only': assert 'model' not in artifacts
     verified = verify_accounting(summary, documents, raw)
+    verified['analysis_amendment'] = verify_analysis_amendment(documents, raw, artifacts)
     verified['public_reproduction'] = verify_reproduction(summary, documents, raw, artifacts)
     return {'manifest_url': manifest_url, 'manifest_sha256': sha(manifest_bytes), 'manifest': manifest,
             'summary_url': summary_url, 'summary': summary, 'companions': observed, 'verification': verified}

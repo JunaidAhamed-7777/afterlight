@@ -52,6 +52,8 @@ def check_actual_study(page, pack, output):
     expect(page.locator('.study-sign-rule')).to_contain_text('selected choice minus comparator')
     expect(page.locator('.study-sign-rule')).to_contain_text('Negative is lower; positive is higher')
     expect(page.locator('.study-mode-note')).to_have_count(1 if summary['mode'] == 'baseline_only' else 0)
+    amended = pack['verification']['analysis_amendment']['present']
+    expect(page.locator('.study-analysis-note')).to_have_count(1 if amended else 0)
     comparisons = page.locator('.study-comparison')
     expect(comparisons).to_have_count(len(summary['comparisons']))
     checked = []
@@ -88,13 +90,16 @@ def check_actual_study(page, pack, output):
     assert float(method['Tuned fixed lead'].removesuffix(' s')) == summary['fixed_lead_s']
     assert method['Objective, civilian weight 1'] == summary['objective']['definition']
     page.locator('.study-provenance > summary').click()
+    if amended:
+        expect(page.locator('.study-analysis-note')).to_be_visible()
+        expect(page.locator('.study-analysis-note')).to_contain_text('documented pre-test correction')
     provenance = dl_values(page.locator('.study-provenance dl'))
     assert provenance['Summary SHA-256'] == pack['manifest']['sha256']
     for key, value in summary['provenance'].items():
         assert provenance[key.replace('_', ' ')] == (value if value is not None else 'No learned model in this release')
     links = page.locator('.study-downloads a').evaluate_all("items=>items.map(a=>({label:a.textContent,href:a.href,download:a.hasAttribute('download')}))")
     assert links[:3] == [
-        {'label': 'Scientific source commit', 'href': 'https://github.com/JunaidAhamed-7777/afterlight/tree/' + summary['provenance']['source_commit'], 'download': False},
+        {'label': 'Simulation source commit', 'href': 'https://github.com/JunaidAhamed-7777/afterlight/tree/' + summary['provenance']['source_commit'], 'download': False},
         {'label': 'Publication manifest', 'href': pack['manifest_url'], 'download': True},
         {'label': 'Verified study summary', 'href': pack['summary_url'], 'download': True},
     ]

@@ -6,13 +6,15 @@ from __future__ import annotations
 
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
+import json
 import os
 import py_compile
 import sys
 from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
-from released_study_pack import PURE_HELPER_FILES, bound_scientific_modules, sha, strict_json
+from released_study_pack import ANALYSIS_ARTIFACTS, PURE_HELPER_FILES, bound_scientific_modules, canonical_sha, sha, strict_json, verify_analysis_amendment
 
 
 def scientific(name):
@@ -39,6 +41,126 @@ class StrictJSONTests(unittest.TestCase):
     def test_duplicate_nested_keys_are_still_rejected(self):
         with self.assertRaisesRegex(ValueError, 'Duplicate published JSON key'):
             strict_json(b'{"object":{"key":1,"key":2}}')
+
+
+class AnalysisAmendmentGuards(unittest.TestCase):
+    """Synthetic metadata/bytes only; no positive Study summary or outcomes."""
+    def setUp(self):
+        original = {'source_commit': 'a' * 40, 'source_code_sha256': 'b' * 64, 'source_dirty': False,
+                    'source_files': {'evaluation/study_reporting.py': 'c' * 64, 'evaluation/study_manifest.py': 'd' * 64}}
+        estimator = {'version': 'synthetic-estimator', 'config': {'civilian_weight': 1.0}}
+        study = {'source': original}; protocol = {'analytical_estimator': estimator}
+        self.documents = {'study': {'sha256': canonical_sha(study), 'study': study},
+                          'protocol': {'sha256': canonical_sha(protocol), 'protocol': protocol},
+                          'selection': {'selection': {'created_utc': '2026-01-01T00:01:00+00:00'}},
+                          'report': {'report': {'created_utc': '2026-01-01T00:03:00+00:00'}},
+                          'release': {'release': {'created_utc': '2026-01-01T00:02:00+00:00'}}}
+        self.raw = {kind: b'raise RuntimeError("DOWNLOADED SOURCE MUST NEVER EXECUTE")\n' for kind in
+                    ('analysis_verifier_source', 'analysis_binding_source', 'analysis_entrypoint_source')}
+        self.raw.update(analysis_diff=b'SYNTHETIC reviewed diff\n', analysis_failure_log=b'SYNTHETIC pre-fit verifier failure\n',
+                        analysis_failure_journal=b'{"state":"verification_failed_before_model_fit","model_fit_reached":false}')
+        def item(kind): return {'filename': ANALYSIS_ARTIFACTS[kind], 'sha256': sha(self.raw[kind])}
+        files = {'verifier': {**item('analysis_verifier_source'), 'original_path': 'evaluation/study_reporting.py', 'original_sha256': 'c' * 64},
+                 'binding_helper': {**item('analysis_binding_source'), 'original_path': 'evaluation/study_manifest.py', 'original_sha256': 'd' * 64},
+                 'entrypoint': item('analysis_entrypoint_source'), 'diff': item('analysis_diff')}
+        self.amendment = {'schema': 'afterlight.analysis-amendment.v1', 'id': 'frozen-estimator-config-v1',
+                          'created_utc': '2026-01-01T00:00:00+00:00', 'original_study_sha256': self.documents['study']['sha256'],
+                          'original_protocol_sha256': self.documents['protocol']['sha256'], 'original_source': original,
+                          'frozen_analytical_estimator': json.loads(json.dumps(estimator)), 'frozen_analytical_estimator_sha256': canonical_sha(estimator),
+                          'correction': 'Synthetic exact-config verifier correction; no estimator or outcome change.',
+                          'unchanged_design': ['Synthetic original simulation and estimator remain frozen.'],
+                          'failed_attempt': {'state': 'verification_failed_before_model_fit', 'model_fit_reached': False,
+                                             'journal': item('analysis_failure_journal'), 'log': item('analysis_failure_log')},
+                          'analysis_files': files}
+        self.artifacts = {}; self.seal()
+
+    def seal(self):
+        descriptor = {'sha256': canonical_sha(self.amendment), 'amendment': self.amendment}
+        self.documents['analysis_amendment'] = descriptor
+        self.raw['analysis_amendment'] = json.dumps(descriptor, indent=2, allow_nan=False).encode()
+        files = self.amendment['analysis_files']
+        binding = {'schema': 'afterlight.analysis-amendment-binding.v1', 'id': self.amendment['id'], 'sha256': descriptor['sha256'],
+                   'file_sha256': sha(self.raw['analysis_amendment']), 'implementation_sha256': files['verifier']['sha256'],
+                   'binding_helper_sha256': files['binding_helper']['sha256'], 'entrypoint_sha256': files['entrypoint']['sha256']}
+        for key in ('selection', 'report'):
+            self.documents[key][key]['analysis_amendment'] = dict(binding)
+            self.documents[key]['sha256'] = canonical_sha(self.documents[key][key])
+        self.raw['selection'] = json.dumps(self.documents['selection'], indent=2).encode()
+        self.documents['release']['release'].update(selection_sha256=self.documents['selection']['sha256'], selection_file_sha256=sha(self.raw['selection']))
+        for kind, filename in ANALYSIS_ARTIFACTS.items():
+            self.artifacts[kind] = {'kind': kind, 'url': filename, 'sha256': sha(self.raw[kind]), 'bytes': len(self.raw[kind])}
+
+    def verify(self): return verify_analysis_amendment(self.documents, self.raw, self.artifacts)
+
+    def test_exact_metadata_and_source_companions_bind_without_executing_any_code(self):
+        with patch('builtins.exec', side_effect=AssertionError('Analysis source execution forbidden')), \
+             patch('released_study_pack.bound_scientific_modules', side_effect=AssertionError('Original helper imports not part of this metadata probe')):
+            result = self.verify()
+        self.assertTrue(result['present'])
+        self.assertFalse(result['downloaded_analysis_code_executed'])
+        self.assertEqual(result['all_analysis_companions_hash_verified'], sorted(ANALYSIS_ARTIFACTS))
+
+    def test_original_frozen_estimator_int_float_identity_is_not_coerced(self):
+        self.amendment['frozen_analytical_estimator']['config']['civilian_weight'] = 1
+        self.seal()
+        with self.assertRaisesRegex(AssertionError, 'representation'): self.verify()
+
+    def test_foreign_original_source_is_rejected_even_after_resealing_descriptor(self):
+        self.amendment['original_source'] = {**self.amendment['original_source'], 'source_commit': 'f' * 40}
+        self.seal()
+        with self.assertRaisesRegex(AssertionError, 'simulation provenance'): self.verify()
+
+    def test_wrong_original_reporting_or_binding_source_hash_is_rejected(self):
+        for key in ('verifier', 'binding_helper'):
+            with self.subTest(key=key):
+                original = self.amendment['analysis_files'][key]['original_sha256']
+                self.amendment['analysis_files'][key]['original_sha256'] = 'e' * 64; self.seal()
+                with self.assertRaisesRegex(AssertionError, 'original source mismatch'): self.verify()
+                self.amendment['analysis_files'][key]['original_sha256'] = original; self.seal()
+
+    def test_amended_report_cannot_drop_or_change_selection_binding(self):
+        self.documents['report']['report']['analysis_amendment']['sha256'] = 'e' * 64
+        with self.assertRaisesRegex(AssertionError, 'Report differs'): self.verify()
+
+    def test_original_release_must_bind_selection_logical_and_original_byte_hash(self):
+        for key in ('selection_sha256', 'selection_file_sha256'):
+            with self.subTest(key=key):
+                original = self.documents['release']['release'][key]
+                self.documents['release']['release'][key] = 'e' * 64
+                with self.assertRaisesRegex(AssertionError, 'Original release'): self.verify()
+                self.documents['release']['release'][key] = original
+
+    def test_missing_companion_and_wrong_public_alias_are_rejected(self):
+        removed = self.artifacts.pop('analysis_diff')
+        with self.assertRaisesRegex(AssertionError, 'every declared public proof'): self.verify()
+        self.artifacts['analysis_diff'] = {**removed, 'url': 'different.patch'}
+        with self.assertRaisesRegex(AssertionError, 'companion URL'): self.verify()
+
+    def test_failure_original_basenames_can_bind_byte_exact_public_aliases(self):
+        self.amendment['failed_attempt']['journal']['filename'] = 'original-client-journal.json'
+        self.amendment['failed_attempt']['log']['filename'] = 'original-selection-error.txt'
+        self.seal()
+        self.assertTrue(self.verify()['present'])
+
+    def test_companion_transfer_hash_cannot_replace_descriptor_source_identity(self):
+        self.raw['analysis_verifier_source'] += b'# substituted source\n'; self.seal()
+        with self.assertRaisesRegex(AssertionError, 'Descriptor companion binding'): self.verify()
+
+    def test_failed_attempt_must_explicitly_precede_any_model_fit(self):
+        self.amendment['failed_attempt']['model_fit_reached'] = True; self.seal()
+        with self.assertRaises(AssertionError): self.verify()
+
+    def test_descriptor_created_after_selection_is_rejected(self):
+        self.amendment['created_utc'] = '2026-01-01T00:01:01+00:00'; self.seal()
+        with self.assertRaisesRegex(AssertionError, 'before selection'): self.verify()
+
+    def test_unamended_metadata_cannot_smuggle_an_orphan_descriptor(self):
+        for key in ('selection', 'report'): self.documents[key][key].pop('analysis_amendment')
+        with self.assertRaisesRegex(AssertionError, 'Selection does not bind'): self.verify()
+
+    def test_unamended_legacy_context_requires_no_analysis_artifacts_or_binding(self):
+        for key in ('selection', 'report'): self.documents[key][key].pop('analysis_amendment')
+        self.assertEqual(verify_analysis_amendment(self.documents, {}, {}), {'present': False})
 
 
 class BoundModuleTests(unittest.TestCase):
