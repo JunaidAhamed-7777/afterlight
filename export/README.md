@@ -64,3 +64,19 @@ cannot be promoted to a public city demo for a 0.5 s simulation: interpolation
 can otherwise move stopped vehicles across a red stop line before an actual
 green event. Coarse scalar-study evidence is retained locally; fresh exploratory
 visual captures use `--sample 0.5`. Compression preserves every actual sample.
+
+The read-only presentation audit checks the deployed catalog's transfer and
+decoded hashes, every actual 0.5 s pose sample, exact recorded signal timelines,
+and geometrically eligible interpolated front-bumper stop-line crossings:
+
+```powershell
+node --experimental-strip-types web/scripts/audit-presentation.mjs --output local-runtime/new-presentation-review.json
+```
+
+It exits unsuccessfully for red crossings, unresolved controlled movements,
+missing exact timelines, corrupt files or an existing report destination.
+The report binds the catalog, audit source and production timeline helper hashes.
+Mixed movements use the declared ambulance route or a uniquely matching future
+outgoing-lane pose and heading; unresolved cases remain failures. This checks the
+replay presentation, while the separate raw SUMO tripinfo/lifecycle audit checks
+scientific artifact consistency. Neither is a real-world safety certification.
