@@ -21,7 +21,7 @@ class StudyReleaseTests(unittest.TestCase):
         self.study={'source':{'source_commit':'unit','source_dirty':False},'dependencies':{'sumo':'unit'},
                     'protocol':{'synthetic':True},'episodes':[{'episode_id':'test-a','split':'test'},{'episode_id':'train-a','split':'train'}]}
         self.study_envelope={'sha256':digest(self.study),'study':self.study}
-        self.selection={'schema':'afterlight.study-selection.v1','status':'baseline_only',
+        self.selection={'schema':'afterlight.study-selection.v2','status':'baseline_only',
             'validation_fixed_selection':{'conclusive':True},'source':self.study['source'],
             'simulation_dependencies':self.study['dependencies'],'study_sha256':self.study_envelope['sha256'],
             'protocol_sha256':digest(self.study['protocol']),'test_outcomes_accessed':False,'test_release_authorized':False,

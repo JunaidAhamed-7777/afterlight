@@ -120,6 +120,10 @@ class SelectionTests(unittest.TestCase):
             'protocol':{'schema':'afterlight.protocol.v1','feature_schema':[]}}
         self.envelope={'sha256':'unit','study':self.study}
         self.verified={'files_sha256':{},'candidate_rows':[{'unit':True}]*5}
+        for split in ('train','validation'):
+            directory=self.root/split;directory.mkdir()
+            path=directory/'candidate-outcomes.json';path.write_text(json.dumps(self.verified['candidate_rows']))
+            self.verified['files_sha256']['candidate-outcomes.json']=file_hash(path)
         stack=ExitStack();self.addCleanup(stack.close)
         stack.enter_context(patch('sim.network.ROOT',self.root))
         stack.enter_context(patch('evaluation.study_reporting.load_study',return_value=self.envelope))
@@ -170,21 +174,37 @@ class SelectionTests(unittest.TestCase):
 
 class SelectionArtifactTests(unittest.TestCase):
     def setUp(self):
-        from evaluation.selectors import analytical_artifact
+        from evaluation.selectors import analytical_artifact, fixed_lead_artifact
+        from models.analytical import ESTIMATOR_VERSION, estimate_candidates
+        from models.residual import DEFAULT_FEATURES, select_fixed_lead
         temp=tempfile.TemporaryDirectory();self.addCleanup(temp.cleanup);self.root=Path(temp.name)
         self.protocol={'schema':'afterlight.protocol.v1','group_assignments':{'train':'train','validation':'validation'},
+            'source_commit':'unit','civilian_weight':1,'horizon_s':100,'drain_end_s':200,
+            'feature_schema':[{'name':name,'unit':'unit','source':'unit','sensor_lag_s':1} for name in DEFAULT_FEATURES],
+            'analytical_estimator':{'version':ESTIMATOR_VERSION,'config':asdict(AnalyticalConfig())},
+            'episode_inventory':[{'episode_id':split,'demand_group_id':split,'split':split,
+                'demand_sha256':'demand-'+split,'network_sha256':'network','dispatch_s':20} for split in ('train','validation')],
             'model_specification':{'max_depth':3,'min_samples_leaf':5}}
         frozen={'sha256':digest(self.protocol),'protocol':self.protocol}
         self.study={'protocol':self.protocol,'source':{'source_commit':'unit'},'dependencies':{},
-            'spec':{'model_specification':self.protocol['model_specification']},
+            'spec':{'model_specification':self.protocol['model_specification'],'civilian_weight':1},
             'episodes':[{'split':split,'case_id':split} for split in ('train','validation')]}
+        observation={'dispatch_s':20,'sensor_lag_s':1,'observed_at_s':19,'values':{
+            'queue_sum_veh':10,'queue_max_veh':10,'downstream_occupancy':0,'route_distance_m':500,
+            'route_junction_count':3,'eta_remaining_s':40,'phase_elapsed_s':2}}
+        costs={row['lead_s']:row['analytical_cost_s'] for row in estimate_candidates(observation)['scores']}
+        validation=[{'episode_id':'validation','demand_group_id':'validation','split':'validation','policy':'fixed','lead_s':lead,
+            'demand_sha256':'demand-validation','network_sha256':'network','source_commit':'unit','horizon_s':100,'drain_end_s':200,
+            'status':'completed','validity_reasons':[],'ambulance_journey_s':20+(lead-5)**2,'civilian_mean_excess_s':0,
+            'accounting':{'scheduled':1,'inserted':1,'completed':1,'running':0,'not_inserted':0},
+            'observation':observation,'analytical_cost_s':costs[lead],
+            'analytical_config_sha256':digest(self.protocol['analytical_estimator'])} for lead in (0,5,10,20,30)]
         analytical=analytical_artifact(frozen)
-        fixed_result={'conclusive':True,'lead_s':5}
-        content={'schema':'afterlight.selector.v1','kind':'fixed','protocol_sha256':frozen['sha256'],'lead_s':5,
-            'validation_groups':['validation'],'validation_data_sha256':digest([]),'validation_selection':fixed_result}
-        fixed={'sha256':digest(content),'selector':content}
+        fixed_result=select_fixed_lead(validation,1)
+        fixed=fixed_lead_artifact(validation,frozen)
         pair={'schema':'afterlight.selector-freeze.v1','protocol_sha256':frozen['sha256'],'selected':analytical,'comparator':fixed}
         for name,value in [('analytical-selector.json',analytical),('fixed-selector.json',fixed),
+                           ('validation-candidates.json',validation),
                            ('analytical-vs-fixed.json',{'sha256':digest(pair),'selectors':pair})]:
             (self.root/name).write_text(json.dumps(value))
         collections={}
@@ -194,10 +214,11 @@ class SelectionArtifactTests(unittest.TestCase):
                 directory=f'worlds/{split}/{policy}'+(f'-{lead}' if lead is not None else '')
                 names.update(directory+'/'+name for name in RAW_FILES)
             collections[split]={name:'a'*64 for name in names}
-        self.selection={'schema':'afterlight.study-selection.v1','study_sha256':'study','protocol_sha256':frozen['sha256'],
+        collections['validation']['candidate-outcomes.json']=file_hash(self.root/'validation-candidates.json')
+        self.selection={'schema':'afterlight.study-selection.v2','study_sha256':'study','protocol_sha256':frozen['sha256'],
             'source':self.study['source'],'simulation_dependencies':{},'model_specification':self.protocol['model_specification'],
             'test_outcomes_accessed':False,'test_release_authorized':False,'status':'baseline_only',
-            'collections':collections,'candidate_data_sha256':{'train':digest([]),'validation':digest([])},
+            'collections':collections,'candidate_data_sha256':{'train':digest([]),'validation':digest(validation)},
             'finite_training_labels':5,'infeasible_training_rows':0,'validation_fixed_selection':fixed_result,
             'artifacts_sha256':{p.name:file_hash(p) for p in self.root.iterdir()}}
         stack=ExitStack();self.addCleanup(stack.close)
@@ -217,7 +238,7 @@ class SelectionArtifactTests(unittest.TestCase):
 
     def test_rehashed_inconsistent_fixed_comparator_rejected(self):
         self.selection['validation_fixed_selection']['lead_s']=30;self.save()
-        with self.assertRaisesRegex(ValueError,'validation provenance'):self.verify()
+        with self.assertRaisesRegex(ValueError,'validation-only argmin'):self.verify()
 
     def test_rehashed_incomplete_collection_inventory_rejected(self):
         self.selection['collections']['train'].pop('outcomes.json');self.save()
@@ -226,6 +247,32 @@ class SelectionArtifactTests(unittest.TestCase):
     def test_extra_or_changed_artifacts_rejected(self):
         (self.root/'unexpected.json').write_text('{}')
         with self.assertRaisesRegex(ValueError,'unexpected artifacts'):self.verify()
+
+    def test_consistently_rehashed_weaker_fixed_baseline_rejected(self):
+        self.selection['validation_fixed_selection']['lead_s']=30
+        fixed=json.loads((self.root/'fixed-selector.json').read_text())
+        fixed['selector']['lead_s']=30
+        fixed['selector']['validation_selection']['lead_s']=30
+        fixed['sha256']=digest(fixed['selector'])
+        (self.root/'fixed-selector.json').write_text(json.dumps(fixed))
+        pair=json.loads((self.root/'analytical-vs-fixed.json').read_text())
+        pair['selectors']['comparator']=fixed;pair['sha256']=digest(pair['selectors'])
+        (self.root/'analytical-vs-fixed.json').write_text(json.dumps(pair))
+        for name in self.selection['artifacts_sha256']:
+            self.selection['artifacts_sha256'][name]=file_hash(self.root/name)
+        self.save()
+        with self.assertRaisesRegex(ValueError,'validation-only argmin'):self.verify()
+
+    def test_same_rows_different_bytes_cannot_replace_original_validation_snapshot(self):
+        path=self.root/'validation-candidates.json'
+        path.write_text(json.dumps(json.loads(path.read_text()),indent=2))
+        self.selection['artifacts_sha256'][path.name]=file_hash(path);self.save()
+        with self.assertRaisesRegex(ValueError,'original verified collection bytes'):self.verify()
+
+    def test_legacy_selection_without_retained_evidence_rejected_explicitly(self):
+        self.selection['schema']='afterlight.study-selection.v1';self.save()
+        with self.assertRaisesRegex(ValueError,'schema v2'):self.verify()
+
 
 class ArtifactPathTests(unittest.TestCase):
     def test_containment_checked_before_outcomes_read(self):

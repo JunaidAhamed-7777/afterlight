@@ -17,7 +17,7 @@ Only valid fully drained completed outcomes receive finite `J = ambulance_journe
 
 Freeze creates a new content-addressed protocol file exclusively; it cannot overwrite an existing file. The protocol records source, whole-group assignments, held-out regimes, features, five leads, weight, horizon/drain, recovery window, tie-break, invalid rules and model specification. Freeze is not evidence that the experiment was executed or that the held-out data stayed untouched. Preserve the frozen artifact and raw outcomes in a reproducible run record.
 
-`paired_decision_report` compares explicit episode→lead maps against all five real cached outcomes without fitting or oracle action selection. It retains every episode and headlines selected/comparator failures before conditional finite deltas, changed-action rate, empirical civilian-harm p95 and hindsight regret (diagnostic only). `grouped_bootstrap_interval` resamples whole demand-realization groups, keeping dispatch variants together; fewer than ten supported groups defaults to no confidence interval. Neither conditional statistics nor a narrow interval alone establish ML promotion.
+`paired_decision_report` compares explicit episode→lead maps against all five real cached outcomes without fitting or oracle action selection. It retains every episode and headlines selected/comparator failures before conditional finite deltas, changed-action rate, empirical p95 across paired-feasible episode-level civilian mean-delay differences (not an individual-vehicle tail percentile) and hindsight regret (diagnostic only). `grouped_bootstrap_interval` resamples whole demand-realization groups, keeping dispatch variants together; fewer than ten supported groups defaults to no confidence interval. Neither conditional statistics nor a narrow interval alone establish ML promotion.
 
 ## Deliberate pilot execution (Omen only)
 
@@ -68,3 +68,11 @@ selects the validation-best fixed lead, and optionally fits one declared residua
 tree with explicit ML-version guards. It freezes comparisons against both the
 fixed and analytical selectors before any test release. Baseline-only and
 inconclusive outputs remain explicit; fitting is not evidence of held-out gain.
+
+
+The operational study selection schema is now `afterlight.study-selection.v2`:
+release and report verification regenerate the validation-best fixed comparator
+from retained exact validated candidate bytes, not only its claimed lead/hash.
+Legacy selection artifacts without that evidence are rejected. Comparison schema
+v2 names the episode-mean percentile explicitly and records its eligibility and
+population metadata; the former ambiguous civilian-harm p95 key is not reused.

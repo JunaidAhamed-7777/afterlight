@@ -68,6 +68,25 @@ class ComparisonTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             paired_decision_report(rows, {"e": 0}, {"e": 5}, civilian_weight=1)
 
+    def test_civilian_percentile_explicitly_uses_episode_means_not_vehicle_tail(self):
+        rows=candidates('test')
+        # Two civilians could have excess [0,100] versus [0,0]. Their mean
+        # difference is 50 seconds; an individual-vehicle p95 would be 100.
+        rows[0]['civilian_mean_excess_s']=50
+        rows[1]['civilian_mean_excess_s']=0
+        report=paired_decision_report(rows,{'e':0},{'e':5},civilian_weight=1)
+        self.assertEqual(report['schema'],'afterlight.decision-comparison.v2')
+        self.assertEqual(report['conditional_episode_mean_civilian_delta_p95_s'],50)
+        population=report['civilian_delta_percentile_population']
+        self.assertEqual(population['sample_unit'],'episode')
+        self.assertEqual(population['eligible_episodes'],1)
+        self.assertFalse(population['individual_vehicle_percentile'])
+        self.assertNotIn('conditional_civilian_harm_p95_s',report)
+        rows[0]['status']='censored'
+        censored=paired_decision_report(rows,{'e':0},{'e':5},civilian_weight=1)
+        self.assertIsNone(censored['conditional_episode_mean_civilian_delta_p95_s'])
+        self.assertEqual(censored['civilian_delta_percentile_population']['eligible_episodes'],0)
+
     def test_group_uncertainty_refuses_per_second_pseudoreplication(self):
         records = [{"demand_group_id": "same", "paired_delta_j_s": i} for i in range(100)]
         self.assertIsNone(grouped_bootstrap_interval(records)["interval"])

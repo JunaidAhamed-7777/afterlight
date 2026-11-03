@@ -79,7 +79,7 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
     civilian_deltas = sorted(r["civilian_delta_s"] for r in finite_pairs)
     # Nearest-rank empirical p95, explicitly conditional on paired feasibility.
     p95 = civilian_deltas[max(0, (95 * len(civilian_deltas) + 99) // 100 - 1)] if civilian_deltas else None
-    return {"schema": "afterlight.decision-comparison.v1", "split": expected_split,
+    return {"schema": "afterlight.decision-comparison.v2", "split": expected_split,
             "evaluation_mode": "test_protocol_bound" if expected_split == "test" else "exploratory",
             "protocol_sha256": protocol_sha256,
             "selector_freeze_sha256": frozen_selectors["sha256"] if frozen_selectors else None,
@@ -96,9 +96,14 @@ def paired_decision_report(rows: Sequence[Mapping], selected_leads: Mapping[str,
             "conditional_mean_delta_j_s": finite(mean(deltas), "conditional mean objective delta", nonnegative=False) if deltas else None,
             "conditional_improved_fraction": mean(d < 0 for d in deltas) if deltas else None,
             "conditional_worsened_fraction": mean(d > 0 for d in deltas) if deltas else None,
-            "conditional_civilian_harm_p95_s": p95,
+            "conditional_episode_mean_civilian_delta_p95_s": p95,
+            "civilian_delta_percentile_population": {
+                "sample_unit": "episode", "value": "selected minus comparator all-demand mean civilian excess seconds",
+                "eligibility": "both policies valid and complete through common drain",
+                "eligible_episodes": len(finite_pairs), "percentile": 95, "method": "nearest_rank",
+                "individual_vehicle_percentile": False},
             "records": records,
-            "interpretation": "Protocol binding checks metadata; it is not independent proof of untouched test data. Failures cover all episodes. Finite differences and civilian harm are conditional on BOTH decisions completing validly; not an unconditional policy benefit."}
+            "interpretation": "Protocol binding checks metadata; it is not independent proof of untouched test data. Failures cover all episodes. Finite differences and the p95 of episode-level civilian mean deltas are conditional on BOTH decisions completing validly; this is not an individual-vehicle tail percentile; not an unconditional policy benefit."}
 
 
 def grouped_bootstrap_interval(records: Sequence[Mapping], *, field: str = "paired_delta_j_s", seed: int = 0,

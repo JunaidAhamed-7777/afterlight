@@ -219,3 +219,31 @@ does not apply to traces. A model-selected presentation must independently verif
 all six retained worlds and choose solely from the frozen lagged observation,
 retaining physical policy `fixed` and an explicit cached-selector provenance
 record. It must not relabel an unrelated recording as a learned simulation.
+
+
+## Selection and percentile schema revision
+
+New selections use `afterlight.study-selection.v2`. They retain
+`validation-candidates.json` as the **exact bytes** of the already-audited
+validation collection's `candidate-outcomes.json`. The file is bound both to that
+original file SHA-256 and the canonical candidate-row digest. Release/report
+verification reads this validation-only snapshot and recomputes the failure-first,
+common-feasible best-fixed argmin and full selector artifact. Merely repeating a
+weaker lead in consistently rehashed metadata cannot certify it as best-fixed.
+There is no held-out access or model refit in this check.
+
+Version 1 selections or missing snapshots are rejected explicitly; do not guess,
+relabel, silently upgrade or reconstruct evidence from test outcomes. No actual
+scientific study has yet been executed. Once actual artifacts exist, changing
+source/protocol requires preserving the prior evidence and reviewing a fresh
+study, not recycling an exposed test set.
+
+Decision comparisons now use `afterlight.decision-comparison.v2`. The ambiguous
+`conditional_civilian_harm_p95_s` key is removed, not redefined. Its explicitly
+named replacement is `conditional_episode_mean_civilian_delta_p95_s`, with a
+population descriptor: nearest-rank p95 across **episode-level differences in
+all-demand civilian mean excess time**, conditional on both policies completing
+validly through the common drain. It is **not** a percentile of individual
+civilian journeys or individual harms. No per-vehicle tail statistic is inferred
+from means. Older comparison outputs remain historical artifacts, not silently
+converted claims.

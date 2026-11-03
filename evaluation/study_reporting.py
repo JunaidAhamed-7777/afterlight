@@ -7,6 +7,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from importlib import metadata
 import json
+import hashlib
 from pathlib import Path
 import platform
 from typing import Mapping
@@ -186,6 +187,11 @@ def select_study(study_directory: Path, train_directory: Path, validation_direct
     train = verify_collection(root,train_directory,'train')
     validation = verify_collection(root,validation_directory,'validation')
     assert_study_runtime(study)
+    # Preserve the exact already-verified validation evidence, not merely a
+    # self-asserted winning lead or an opaque hash with no recoverable rows.
+    validation_bytes=_contained(validation_directory,'candidate-outcomes.json').read_bytes()
+    if hashlib.sha256(validation_bytes).hexdigest()!=validation['files_sha256']['candidate-outcomes.json'] or json.loads(validation_bytes)!=validation['candidate_rows']:
+        raise ValueError('Verified validation candidate bytes changed before selection')
     protocol = {'sha256':digest(study['protocol']),'protocol':study['protocol']}
     fixed_result = select_fixed_lead(validation['candidate_rows'],study['spec']['civilian_weight'])
     finite_labels = sum(objective(row,study['spec']['civilian_weight']) is not None for row in train['candidate_rows'])
@@ -193,6 +199,8 @@ def select_study(study_directory: Path, train_directory: Path, validation_direct
     runtime = ml_runtime() if fit_model and enough and fixed_result['conclusive'] else None
     output.mkdir(parents=True,exist_ok=False)
     try:
+        with (output/'validation-candidates.json').open('xb') as stream:
+            stream.write(validation_bytes)
         analytical = analytical_artifact(protocol)
         _write(output/'analytical-selector.json',analytical)
         fixed = fixed_lead_artifact(validation['candidate_rows'],protocol) if fixed_result['conclusive'] else None
@@ -222,7 +230,7 @@ def select_study(study_directory: Path, train_directory: Path, validation_direct
         if runtime is not None and ml_runtime()!=runtime:
             raise ValueError('Optional ML runtime changed before selection freeze')
         artifacts = {p.name:file_hash(p) for p in output.iterdir() if p.is_file()}
-        selection = {'schema':'afterlight.study-selection.v1','study_sha256':envelope['sha256'],
+        selection = {'schema':'afterlight.study-selection.v2','study_sha256':envelope['sha256'],
             'protocol_sha256':protocol['sha256'],'source':study['source'],'simulation_dependencies':study['dependencies'],
             'status':'learned_ready' if model else ('baseline_only' if fixed else 'inconclusive'),
             'reason':reason,'fit_model_requested':fit_model,'finite_training_labels':finite_labels,
@@ -244,18 +252,18 @@ def select_study(study_directory: Path, train_directory: Path, validation_direct
 def verify_selection_artifacts(study_directory: Path, selection_directory: Path) -> dict:
     """Verify selector freeze content/bytes for an explicit later release gate.
 
-    Reads selection artifacts only, never train/validation/test outcome files.
-    Returns the original verified envelope; caller must enforce its release mode.
+    Reads only the selection directory, including its bound validation snapshot.
+    Never opens original collection outcome paths or held-out outcomes and never
+    fits a model. Returns the verified envelope; caller enforces its release mode.
     """
-    from models.residual import CANDIDATES
     study_envelope = load_study(study_directory, require_frozen=True)
     study = study_envelope['study']
     assert_study_runtime(study)
     root = selection_directory.resolve()
     envelope = read_json(_contained(root,'selection.json'))
     selection = envelope['selection']
-    if envelope.get('sha256') != digest(selection) or selection.get('schema') != 'afterlight.study-selection.v1':
-        raise ValueError('Selection envelope hash/schema mismatch')
+    if envelope.get('sha256') != digest(selection) or selection.get('schema') != 'afterlight.study-selection.v2':
+        raise ValueError('Selection envelope requires schema v2 with retained validation evidence; legacy/hash mismatch rejected')
     expected = {'study_sha256':study_envelope['sha256'],'protocol_sha256':digest(study['protocol']),
         'source':study['source'],'simulation_dependencies':study['dependencies'],
         'model_specification':study['spec']['model_specification'],
@@ -263,7 +271,7 @@ def verify_selection_artifacts(study_directory: Path, selection_directory: Path)
     if any(selection.get(key) != value for key,value in expected.items()):
         raise ValueError('Selection source/protocol/configuration provenance mismatch')
     status = selection.get('status')
-    filenames = {'analytical-selector.json'}
+    filenames = {'analytical-selector.json','validation-candidates.json'}
     if status in {'baseline_only','learned_ready'}:filenames.add('fixed-selector.json')
     if status == 'baseline_only':filenames.add('analytical-vs-fixed.json')
     elif status == 'learned_ready':filenames.update(('model.json','learned-selector.json','learned-vs-fixed.json','learned-vs-analytical.json'))
@@ -304,20 +312,29 @@ def verify_selection_artifacts(study_directory: Path, selection_directory: Path)
     expected_rows = 5*sum(episode['split']=='train' for episode in study['episodes'])
     if finite_labels+excluded != expected_rows:
         raise ValueError('Selection training-label inventory differs from study')
-    fixed_result = selection['validation_fixed_selection']
+    validation_rows=artifacts['validation-candidates.json']
+    if (hashes['validation-candidates.json']!=selection['collections']['validation']['candidate-outcomes.json']
+            or digest(validation_rows)!=selection['candidate_data_sha256']['validation']):
+        raise ValueError('Retained validation evidence differs from original verified collection bytes or canonical rows')
+    assert_disjoint(validation_rows,study['protocol']['group_assignments'])
+    assert_episode_coverage(validation_rows,study['protocol'],'validation')
+    validate_prediction_inputs(validation_rows,protocol)
+    for row in validation_rows:
+        if (row.get('source_commit')!=study['source']['source_commit']
+                or row.get('source_code_sha256')!=study['source'].get('source_code_sha256')
+                or row.get('horizon_s')!=study['protocol']['horizon_s']
+                or row.get('drain_end_s')!=study['protocol']['drain_end_s']):
+            raise ValueError('Retained validation row source/windows differ from study')
+    from models.residual import select_fixed_lead
+    fixed_result=select_fixed_lead(validation_rows,study['spec']['civilian_weight'])
+    if fixed_result!=selection['validation_fixed_selection']:
+        raise ValueError('Best-fixed selection differs from recomputed original validation-only argmin')
     fixed = artifacts.get('fixed-selector.json')
     if fixed is None:
-        if fixed_result.get('conclusive'):raise ValueError('Inconclusive status contradicts fixed comparator')
+        if fixed_result['conclusive']:raise ValueError('Inconclusive status contradicts recomputed fixed comparator')
         return envelope
-    content = fixed['selector']
-    validation_groups = sorted(g for g,split in study['protocol']['group_assignments'].items() if split=='validation')
-    if (fixed.get('sha256')!=digest(content) or content.get('schema')!='afterlight.selector.v1' or content.get('kind')!='fixed'
-            or content.get('protocol_sha256')!=protocol['sha256'] or not fixed_result.get('conclusive')
-            or content.get('validation_selection')!=fixed_result or content.get('lead_s')!=fixed_result.get('lead_s')
-            or isinstance(content.get('lead_s'),bool) or content.get('lead_s') not in CANDIDATES
-            or content.get('validation_groups')!=validation_groups
-            or content.get('validation_data_sha256')!=selection['candidate_data_sha256']['validation']):
-        raise ValueError('Fixed comparator validation provenance mismatch')
+    if not fixed_result['conclusive'] or fixed!=fixed_lead_artifact(validation_rows,protocol):
+        raise ValueError('Fixed comparator differs from original validation-only selection artifact')
     selected = analytical
     comparisons = [('analytical-vs-fixed.json',analytical,fixed)]
     if status=='learned_ready':
