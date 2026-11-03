@@ -105,8 +105,16 @@ Decision-comparison v2 reports the nearest-rank p95 of **episode-level mean
 civilian excess-delay differences**, conditional on both selected and comparator
 policies completing validly through the common drain. It records the eligible
 episode count and population explicitly. This is not the p95 of individual
-vehicle delays; that planned distributional view remains separate and must not
-be inferred from the episode-mean statistic. Failed/censored episodes remain in
+vehicle delays and must not be interpreted as an individual-vehicle tail.
+The source now separately records `civilian_excess_p95_s`: nearest-rank
+`ceil(0.95*n)` of individual excess delays over every scheduled civilian in
+one valid completed, fully drained world. Its population metadata binds
+scheduled/completed/included counts, units, method and saved free-flow reference.
+Invalid/censored/incomplete worlds and empty civilian populations yield null,
+not a completed-only percentile. Insertion wait is included through scheduled
+departure time; the ambulance is excluded. This descriptive implementation is
+pending Omen acceptance, changes no objective or selector, and adds no paired
+individual-harm inference. Failed/censored episodes remain in
 the full failure accounting rather than entering a finite percentile.
 
 The validation-best fixed comparator is re-derived from retained exact

@@ -344,6 +344,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         metrics = {'status': status, 'validity_reasons': sorted(set(reasons)),
                    'ambulance_journey_s': ledger.completed.get('ambulance', 0)-demand['dispatch_s'] if 'ambulance' in ledger.completed else None,
                    'civilian_mean_excess_s': ledger.completed_civilian_mean_excess() if status == 'completed' else None,
+                   **ledger.civilian_excess_tail(status),
                    'accounting': counts, 'horizon_accounting': horizon_accounting,
                    'horizon_s': horizon_s, 'drain_end_s': end_s, 'simulation_step_s': step_s, 'queue_samples': queue_samples,
                    'common_horizon_burden_vehicle_s': burden_vehicle_s,

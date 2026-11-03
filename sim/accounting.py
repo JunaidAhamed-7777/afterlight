@@ -49,6 +49,42 @@ class Accounting:
         return sum(r['excess_s'] for r in rows) / len(rows) if rows else 0.0
 
 
+    def civilian_excess_tail(self, status: str) -> dict:
+        """Descriptive individual-vehicle tail, never a completion-only sample."""
+        counts = self.counts()
+        count = counts['scheduled']
+        eligible = status == 'completed' and counts['completed'] == count and count > 0
+        value = None
+        if eligible:
+            values = []
+            for vid, vehicle in self.scheduled.items():
+                if vid == 'ambulance':
+                    continue
+                inputs = (self.completed[vid], vehicle['depart_s'], vehicle['reference_s'])
+                try:
+                    if any(isinstance(item, bool) or not isinstance(item, (int, float)) or not math.isfinite(item) for item in inputs):
+                        raise ValueError('Individual civilian tail requires finite lifecycle inputs')
+                    excess = inputs[0] - inputs[1] - inputs[2]
+                    if not math.isfinite(excess):
+                        raise ValueError('Individual civilian tail arithmetic is nonfinite')
+                except OverflowError as error:
+                    raise ValueError('Individual civilian tail arithmetic exceeds finite range') from error
+                values.append(max(0, excess))
+            values.sort()
+            # Exact nearest rank: ceil(0.95*n), one-based; no interpolation.
+            value = values[(95 * count + 99) // 100 - 1]
+        return {'civilian_excess_p95_s': value,
+                'civilian_excess_p95_population': {
+                    'scope': 'all_scheduled_civilian_vehicles_in_this_world',
+                    'scheduled_count': count, 'completed_count': counts['completed'],
+                    'included_count': count if eligible else 0,
+                    'eligibility': 'valid_completed_world_all_civilians_completed_nonempty',
+                    'percentile': 95, 'method': 'nearest_rank_ceil_p_times_n_no_interpolation',
+                    'value_definition': 'max(0, arrival_s - scheduled_departure_s - per_vehicle_reference_s)',
+                    'reference': 'saved demand external-lane free-flow lower bound; excludes internal junctions and acceleration',
+                    'units': 'seconds', 'ambulance_excluded': True}}
+
+
 def reconcile_tripinfo(ledger: Accounting, path) -> list[str]:
     """Replace discovery-step timestamps with SUMO's authoritative trip times.
 

@@ -86,3 +86,26 @@ first simulation boundary where route-index advancement is observed (or arrival
 notification for an unsampled final advancement), not an exact continuous-time
 crossing or rear-bumper clearance. These events improve release/expiry inspection
 without changing controller decisions, physics or the shared simulation clock.
+
+
+## Individual-civilian descriptive tail
+
+New runs retain `civilian_excess_p95_s`, the **within-world individual vehicle**
+95th percentile of `max(0, arrival − scheduled departure − reference_s)` across
+**every scheduled civilian**. It excludes the ambulance and includes insertion
+waiting. The estimator is nearest rank `ceil(0.95 × n)` (one-based), without
+interpolation. `civilian_excess_p95_population` records the scheduled/completed/
+included counts, eligibility, method, units and reference convention.
+
+The value is null for invalid or censored worlds, incomplete civilian demand,
+or an empty civilian population; no completed-only subset is substituted. The
+existing mean's empty-population convention remains unchanged. The underlying
+reference is the saved external-lane free-flow lower bound, excluding internal
+junctions and acceleration—not a calibrated no-traffic journey.
+
+This is descriptive, not a paired individual harm metric, not the percentile
+of episode-level mean differences in evaluation reports, and not a real-world
+safety claim. It does not alter the objective J, selector, recovery metric or
+any comparison inference. Raw lifecycle/tripinfo audit recomputes the value
+and population whenever these optional new fields occur; legacy recordings
+without either field remain compatible.

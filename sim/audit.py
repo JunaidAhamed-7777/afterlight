@@ -38,6 +38,16 @@ def audit_lifecycle(demand: dict, rows: list[dict], tripinfo_path: Path, metrics
     expected_mean=ledger.completed_civilian_mean_excess() if metrics['status']=='completed' else None
     if expected_mean!=metrics['civilian_mean_excess_s']:
         raise ValueError('Published civilian mean differs from raw lifecycle/reference')
+    tail_keys = {'civilian_excess_p95_s', 'civilian_excess_p95_population'}
+    if tail_keys & metrics.keys():
+        expected_tail = ledger.civilian_excess_tail(metrics['status'])
+        tail_value = metrics.get('civilian_excess_p95_s')
+        population = metrics.get('civilian_excess_p95_population')
+        expected_population = expected_tail['civilian_excess_p95_population']
+        if isinstance(tail_value, bool) or not isinstance(population, dict) or any(type(population.get(key)) is not type(value) for key,value in expected_population.items()):
+            raise ValueError('Published individual civilian tail/population has invalid field types')
+        if not tail_keys <= metrics.keys() or any(metrics[key] != value for key,value in expected_tail.items()):
+            raise ValueError('Published individual civilian tail/population differs from raw lifecycle/reference')
 
 
 def audit_outcomes(replay: dict, rows: list[dict]) -> None:
