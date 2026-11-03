@@ -5,10 +5,10 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `f54dc39768be86f98682e49f0a51a5e7a0837971`.
+**Compiled source:** `a6b2c122c85d41cf714c10bf7df00acc29e8e9f0`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
-Compilation succeeded in the cloud. This desktop-first usability, true-perspective camera and enhanced 3D map build still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
+Compilation succeeded in the cloud. This V3 modeled city and canonical map-selection build still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
 acceptance is recorded in `docs/validation/OMEN_LOG.md`.
 A successful preview test does not establish npm installation reproducibility,
 SUMO correctness, performance improvement, or a trained model.
@@ -35,7 +35,10 @@ rebuilding JavaScript. Do not register synthetic test fixtures as real runs.
 
 ## Reproducing the compilation
 
-With the locked frontend dependencies installed, from repository root:
+The preferred cloud/Linux source-bound helper is documented in
+[development workflow](../docs/DEVELOPMENT_WORKFLOW.md). It builds both entries
+and assembles the manifest without running tests. The equivalent underlying
+compilation commands, with locked dependencies installed, are:
 
 ```sh
 npm run build --prefix web
