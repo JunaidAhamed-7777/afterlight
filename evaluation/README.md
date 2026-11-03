@@ -24,7 +24,7 @@ Freeze creates a new content-addressed protocol file exclusively; it cannot over
 First pass the three-junction correctness tests and inspect one real paired run. Then prepare a pilot plan without starting SUMO:
 
 ```powershell
-.\.venv\Scripts\python.exe -m evaluation.pilot pilot-plan.json --network fixture
+.\.venv\Scripts\python.exe -m evaluation.pilot local-runtime/pilot-plan.json --network fixture
 ```
 
 The default predeclares 12 whole episodes (three seeds each across sparse, moderate, asymmetric and heavy regimes), seven worlds per episode (ordinary, immediate, five leads), one shared network and one saved demand realization per episode. A later city pilot must use `--network city`; fixture runtime is not a city-runtime estimate. These are exploratory pilot groups only, never train/validation/test data.
@@ -32,8 +32,28 @@ The default predeclares 12 whole episodes (three seeds each across sparse, moder
 Execute only after checking the plan and local correctness gates:
 
 ```powershell
-.\.venv\Scripts\python.exe -m evaluation.pilot pilot-plan.json --execute --output local-runtime/pilot-fixture-001
+.\.venv\Scripts\python.exe -m evaluation.pilot local-runtime/pilot-plan.json --execute --output local-runtime/pilot-fixture-001
 ```
+
+For a smaller **runtime scout**, prepare a separate city plan with
+`--network city --seed-start 1001 --seeds-per-regime 1`: four episodes (one per
+regime), 28 worlds, seeds 1001–1004. Inspect the saved plan before execution.
+This scout is too small to authorize a study: study preparation requires 12–20
+completed audited pilot episodes spanning all four regimes. If later using a
+separate 12-case city pilot starting at 1101, keep scout seeds 1001–1004 in the
+study's explicit `declared_exploration_seeds`; the selected pilot's own seeds
+1101–1112 are excluded automatically. These example blocks must first be checked
+against known prior exploration. Seed 7 remains reserved. Never relabel scout or
+pilot outcomes as train/validation/test, or infer city throughput from the sparse
+qualification pair's wall time.
+
+There is no pilot wall-time timeout or resume feature. Supervise the finite
+plan. A caught Ctrl+C (`KeyboardInterrupt`) records `status: interrupted`, the
+current world (if any), full attempted/remaining inventory and wall time, then
+re-raises. Prior rows and raw files stay intact; an interrupted world gets no
+invented outcome or finite target. Inspect process state and retained evidence
+before any new attempt. Hard termination, a second interrupt or storage failure
+can prevent final journaling; this is not a crash-proof checkpoint guarantee.
 
 The output directory must not already exist. Source commit, dependencies, hardware/runtime, expected/recorded/unattempted worlds, demand hashes, scalar rows and raw per-world SUMO/lifecycle files are retained. No automatic retry: the first infrastructure failure is retained and stops the pilot; after diagnosis, repeat the unchanged plan in a **new** directory and preserve the failed attempt. Traffic invalidity/censoring is an outcome, not infrastructure, so those worlds remain in the full pilot.
 

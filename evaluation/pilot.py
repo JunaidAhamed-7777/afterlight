@@ -109,6 +109,13 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                 "python_version": platform.python_version(), "processor": platform.processor(),
                 "expected_worlds": len(plan["cases"]) * len(plan["policies"]),
                 "split": "pilot", "status": "running"}
+    inventory = [{"episode_id": case["id"], "policy": policy["policy"], "lead_s": policy["lead_s"],
+                  "state": "unattempted", "runner_invoked": False,
+                  "raw_world_directory": case["id"] + "/" + policy["policy"] +
+                      (f"-{policy['lead_s']}" if policy['lead_s'] is not None else "")}
+                 for case in plan["cases"] for policy in plan["policies"]]
+    manifest["world_inventory"] = inventory
+    current_world = None
     write_json(output / "execution.json", manifest)
     rows = []
     write_json(output / "outcomes.json", rows)
@@ -132,6 +139,10 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                             "demand_sha256": hashes["demand_sha256"], "network_sha256": netmanifest["network_sha256"],
                             "source_commit": manifest["source_commit"], "source_code_sha256": source["source_code_sha256"], "split": "pilot", "regime": case["regime"],
                             "seed": case["seed"], "policy": policy["policy"], "lead_s": policy["lead_s"]}
+                current_world = next(item for item in inventory
+                                     if item["episode_id"] == case["id"] and item["policy"] == policy["policy"]
+                                     and item["lead_s"] == policy["lead_s"])
+                current_world["state"] = "preflight"
                 call_start = time.perf_counter()
                 world = None
                 signal_hash = None
@@ -145,6 +156,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                     if dependencies_before != manifest["dependencies"]:
                         raise RuntimeError("Dependencies changed before pilot world; mixed-runtime outcomes refused")
                     runner_invoked = True
+                    current_world.update(state="running", runner_invoked=True)
                     world = run_world(world_id=name, policy=policy["policy"], lead_s=policy["lead_s"] or 0,
                                       network_dir=netdir, demand_dir=case_dir / "demand", demand=demand, network=network,
                                       output=world_dir, horizon_s=case["horizon_s"], drain_s=case["drain_s"],
@@ -217,6 +229,8 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                 if row["audit_status"]=="passed":
                     Accounting.from_mapping(row["accounting"])
                 rows.append(row)
+                current_world.update(state="recorded", outcome_status=row["status"], audit_status=row["audit_status"])
+                current_world = None
                 case_rows.append(row)
                 write_json(output / "outcomes.json", rows)
                 if row["audit_status"] == "failed":
@@ -237,12 +251,21 @@ def execute_plan(envelope: dict, output: Path) -> dict:
         report = pilot_summary(rows, civilian_weight=plan["civilian_weight"], useful_action_margin_s=plan["useful_action_margin_s"])
         write_json(output / "pilot-summary.json", report)
         return report
+    except KeyboardInterrupt:
+        # A partial world is not an outcome. Preserve its identity/raw files and
+        # prior rows; never invent accounting, a finite target or a resumable run.
+        if current_world is not None:
+            current_world["state"] = "interrupted"
+        manifest.update(status="interrupted", reason="KeyboardInterrupt; attempt is incomplete and cannot resume",
+                        interrupted_world=dict(current_world) if current_world is not None else None)
+        write_json(output / "outcomes.json", rows)
+        raise
     except Exception as error:
         manifest.update(status="invalid_evidence" if isinstance(error,PilotAuditError) else "infrastructure_error", reason=str(error))
         raise
     finally:
         manifest["recorded_worlds"] = len(rows)
-        manifest["runner_invocations"] = sum(bool(row.get("runner_invoked")) for row in rows)
+        manifest["runner_invocations"] = sum(item["runner_invoked"] for item in inventory)
         manifest["preflight_rejected_worlds"] = sum(not row.get("runner_invoked",False) for row in rows)
         manifest["unattempted_worlds"] = manifest["expected_worlds"] - manifest["runner_invocations"]
         manifest["unrecorded_worlds"] = manifest["expected_worlds"] - len(rows)
