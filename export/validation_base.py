@@ -122,7 +122,9 @@ def validate_base_replay(value: object) -> None:
         if world.get('world_id') != name or world.get('status') not in ('completed', 'censored', 'invalid', 'infrastructure_error'):
             raise ValueError('Invalid world identity/status')
         _string(world.get('policy'), 'world policy')
-        _object(world.get('metrics'), 'world metrics')
+        metrics = _object(world.get('metrics'), 'world metrics')
+        if 'status' in metrics and metrics['status'] != world['status']:
+            raise ValueError('outer world status differs from metric status')
         if 'decision' in world:
             _decision(world['decision'], duration)
         for item_event in _array(world.get('events'), 'world events'):

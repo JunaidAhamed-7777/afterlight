@@ -400,6 +400,12 @@ def audit(directory: Path, *, write_result: bool = True) -> dict:
     demand=json.loads(demand_path.read_text(encoding='utf-8'))
     checks = []
     for name, world in replay['worlds'].items():
+        if world.get('status') != world.get('metrics', {}).get('status'):
+            raise ValueError(f'{name}: outer world status differs from audited metric status')
+        if world['status'] in {'completed','censored'} and world['metrics'].get('validity_reasons'):
+            raise ValueError(f'{name}: non-invalid world carries validity reasons')
+        if world['status'] == 'completed' and any(event.get('kind') in {'collision','teleport'} for event in world['events']):
+            raise ValueError(f'{name}: completed world records a collision or teleport')
         signal_audit=audit_world_signals(world,network,replay['scenario']['dispatch_s'])
         lifecycle=json.loads((directory/name/'lifecycle.json').read_text(encoding='utf-8'))
         audit_lifecycle(demand,lifecycle,directory/name/'tripinfo.xml',world['metrics'])
