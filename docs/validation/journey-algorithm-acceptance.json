@@ -1,0 +1,426 @@
+{
+  "schema": "afterlight.journey-algorithm-desktop-acceptance.v1",
+  "status": "passed",
+  "scope": "New desktop journey locking, keyboard unlocking and source-backed Algorithm subview. Actual public recordings only; no scientific model changes, replacement replay responses or new benchmark measurement.",
+  "compiled_source_commit": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+  "strict_build_manifest": {
+    "path": "local-runtime/production-journey-algorithm-02/manifest.json",
+    "raw_sha256": "d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81",
+    "canonical_report_binding_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6",
+    "served_files": 63,
+    "served_bytes": 46973555,
+    "all_served_files_verified_over_HTTP_before_and_after": true,
+    "source_identity_unchanged": true,
+    "report_source_files_match_frozen_build_source": 62
+  },
+  "browser_report": {
+    "path": "local-runtime/journey-algorithm-browser-05/report.json",
+    "sha256": "8d4d5e584b863f57ddc99bc3c8fe3503618cb9e07a345d47f93dbaa1e7316d91",
+    "browser": "156.0.8078.80",
+    "device_scale_factor": 1,
+    "viewports": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "started_utc": "2026-11-03T21:24:38.390781+00:00",
+    "finished_utc": "2026-11-03T21:25:14.769596+00:00",
+    "native_test_window_restored": true,
+    "page_errors": []
+  },
+  "journey_controls": {
+    "native_summary_prominent_at_both_desktop_sizes": true,
+    "all_five_journey_controls_effectively_disabled_while_recording_selected": true,
+    "computed_blur_px": 3,
+    "unblurred_enabled_leave_button_precedes_and_is_outside_disabled_fieldset": true,
+    "native_Tab_skips_locked_controls": true,
+    "Enter_on_Leave_unlocks_and_focuses_pickup_search": true,
+    "real_select_options": {
+      "#pickup": {
+        "before": "P001",
+        "selected": "P002"
+      },
+      "#hospital": {
+        "before": "HOSP_EAST",
+        "selected": "HOSP_WEST"
+      }
+    },
+    "search_no_matches_clear_and_canonical_map_markers": {
+      "selected_canonical_ids": {
+        "pickup": "P001",
+        "hospital": "HOSP_EAST"
+      },
+      "no_results_clear_focus": true,
+      "escape_does_not_change_route": true
+    },
+    "pending_genuine_GET_stays_locked": true,
+    "Leave_terminates_loading_worker_before_QA_request_cleanup": true,
+    "held_GET_received_no_invented_response": true,
+    "reselecting_both_hospitals_and_reloading_locks_again": true,
+    "full_Leave_button_and_at_least_32px_blurred_fields_visible_after_native_keyboard_open": true,
+    "right_pane_and_document_stationary_during_user_open": true,
+    "tested_conditional_search_clear_button_disabled_with_all_five_regular_controls": true,
+    "measured_user_open_placements": {
+      "locked-1920x1080": {
+        "outside": true,
+        "ctaTop": 421.3125,
+        "ctaBottom": 461.3125,
+        "fieldsTop": 477.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 118,
+        "leftScrollerVisibleBottom": 1080,
+        "visibleBlurredFieldsPx": 316.59375
+      },
+      "locked-1280x720": {
+        "outside": true,
+        "ctaTop": 257.3125,
+        "ctaBottom": 297.3125,
+        "fieldsTop": 313.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 104,
+        "leftScrollerVisibleBottom": 720,
+        "visibleBlurredFieldsPx": 316.59375
+      },
+      "loading-recording-lock": {
+        "outside": true,
+        "ctaTop": 581.3125,
+        "ctaBottom": 621.3125,
+        "fieldsTop": 637.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 118,
+        "leftScrollerVisibleBottom": 1080,
+        "visibleBlurredFieldsPx": 316.59375
+      }
+    }
+  },
+  "algorithm_evidence": [
+    {
+      "recording": {
+        "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+        "url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+        "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+        "decoded_bytes": 72828179,
+        "response_body_bytes": 6585636,
+        "frame_arrays_skipped_by_metadata_reader": 2
+      },
+      "scenario_route_edges_in_original_order": [
+        "H00_1_R",
+        "H00_0_R",
+        "V00_0_F",
+        "H10_0_F",
+        "H10_1_F",
+        "V11_0_F",
+        "V12_0_F",
+        "H31_0_F",
+        "H31_1_F",
+        "H31_2_F",
+        "H32_0_F",
+        "H33_0_F",
+        "H33_1_F",
+        "H33_2_F",
+        "H34_0_F",
+        "V53_0_F",
+        "V54_0_F",
+        "H55_0_F",
+        "H55_1_F",
+        "H55_2_F",
+        "H56_0_F",
+        "V75_0_F",
+        "H67_0_F",
+        "HOSP_EAST_DRIVEWAY_0_F"
+      ],
+      "capture_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "source_fingerprints": {
+        "sim/network.py": "9fc5578664b00ef4e5a307998133c605786378a2f794fbee4b5421a15e33b779",
+        "sim/demand.py": "b9cb1c63db28b2ab4df243d4a07563147cd412d072a911be4f0921b5783bd925",
+        "sim/run.py": "eccde802007afabd76106d8fc6b0466f8b697fbff233282af99601fd59ce6b45"
+      },
+      "source_links": [
+        {
+          "file": "sim/network.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/network.py#L74",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "sim/demand.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/demand.py#L108",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "sim/run.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/run.py#L440",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/replay.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/replay.ts#L10",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/replay.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/replay.ts#L198",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/GeometryLayer.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/GeometryLayer.ts#L24",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/CityView.tsx",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/CityView.tsx#L703",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ],
+      "shared_saved_route": true,
+      "ordinary_ghost_explained": true,
+      "distance_objective_text": "Search cost: Σ canonical edge length_m. The whole starting edge is included. The replay does not supply those edge lengths, so no numeric search total is reconstructed here.",
+      "saved_external_lane_reference_m": {
+        "afterlight": 2824.7999999999997,
+        "baseline": 2824.7999999999997
+      }
+    },
+    {
+      "recording": {
+        "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+        "url": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.json.gz",
+        "sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+        "decoded_bytes": 74074010,
+        "response_body_bytes": 6718803,
+        "frame_arrays_skipped_by_metadata_reader": 2
+      },
+      "scenario_route_edges_in_original_order": [
+        "V82_0_R",
+        "H27_0_R",
+        "H26_2_R",
+        "H26_1_R",
+        "H26_0_R",
+        "H25_0_R",
+        "H24_2_R",
+        "H24_1_R",
+        "H24_0_R",
+        "H23_0_R",
+        "H22_2_R",
+        "H22_1_R",
+        "H22_0_R",
+        "V21_0_R",
+        "H11_2_R",
+        "H11_1_R",
+        "H11_0_R",
+        "H10_1_R",
+        "HOSP_WEST_DRIVEWAY_0_F"
+      ],
+      "capture_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "source_fingerprints": {
+        "sim/network.py": "9fc5578664b00ef4e5a307998133c605786378a2f794fbee4b5421a15e33b779",
+        "sim/demand.py": "b9cb1c63db28b2ab4df243d4a07563147cd412d072a911be4f0921b5783bd925",
+        "sim/run.py": "eccde802007afabd76106d8fc6b0466f8b697fbff233282af99601fd59ce6b45"
+      },
+      "source_links": [
+        {
+          "file": "sim/network.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/network.py#L74",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "sim/demand.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/demand.py#L108",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "sim/run.py",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3/sim/run.py#L440",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/replay.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/replay.ts#L10",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/replay.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/replay.ts#L198",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/GeometryLayer.ts",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/GeometryLayer.ts#L24",
+          "target": "_blank",
+          "rel": "noreferrer"
+        },
+        {
+          "file": "web/src/CityView.tsx",
+          "href": "https://github.com/JunaidAhamed-7777/afterlight/blob/9fafa929e377203d3a4d33ca23065f608a736a52/web/src/CityView.tsx#L703",
+          "target": "_blank",
+          "rel": "noreferrer"
+        }
+      ],
+      "shared_saved_route": true,
+      "ordinary_ghost_explained": true,
+      "distance_objective_text": "Search cost: Σ canonical edge length_m. The whole starting edge is included. The replay does not supply those edge lengths, so no numeric search total is reconstructed here.",
+      "saved_external_lane_reference_m": {
+        "afterlight": 1741.9999999999998,
+        "baseline": 1741.9999999999998
+      }
+    }
+  ],
+  "subview_behavior": {
+    "empty_recording_has_helpful_prompt_without_invented_route_or_world_metrics": true,
+    "This_run_Algorithm_and_actual_Study_preserve_paused_clock_follow_and_full_camera_state": true,
+    "Study_publication_fetched_only_after_explicit_Study_selection": true,
+    "right_map_camera_dock_and_transport_remain_fixed_while_left_scrolls": true,
+    "document_and_right_pane_have_no_scroll_at_both_desktop_sizes": true
+  },
+  "default_reveal": {
+    "checked_after_reload": true,
+    "scope": "Default control state only; the dedicated camera suite owns reveal pixel/angle coverage."
+  },
+  "screenshots": [
+    {
+      "file": "algorithm-1280x720.png",
+      "sha256": "57d9d5db8e6fdc48f766ea0a3eff19814a30e1e0a20501ea502b6fc61f6e2f00",
+      "bytes": 298670,
+      "path": "local-runtime/journey-algorithm-browser-05/algorithm-1280x720.png",
+      "pixel_review": "Inspected this actual saved image; no new unintended clipping, broad road/park stripes or missing city masses were observed in this specific view."
+    },
+    {
+      "file": "algorithm-other-hospital.png",
+      "sha256": "f0b27c9d1b2094d3934dae1182976ed3c6603a87196568d09dd8f6dff73536b1",
+      "bytes": 418102,
+      "path": "local-runtime/journey-algorithm-browser-05/algorithm-other-hospital.png",
+      "pixel_review": "Inspected this actual saved image; no new unintended clipping, broad road/park stripes or missing city masses were observed in this specific view."
+    },
+    {
+      "file": "algorithm-overview.png",
+      "sha256": "dae7ee6a73c26ea9085d886f3f080b7bcf61887e47603de1a380940daffec1bc",
+      "bytes": 494020,
+      "path": "local-runtime/journey-algorithm-browser-05/algorithm-overview.png",
+      "pixel_review": "Inspected this actual saved image; no new unintended clipping, broad road/park stripes or missing city masses were observed in this specific view."
+    },
+    {
+      "file": "algorithm-saved-route.png",
+      "sha256": "0c3f8603e20b81d2578c0215fd27f5fc55ce3e9d9d91533521ff039a4662f832",
+      "bytes": 437484,
+      "path": "local-runtime/journey-algorithm-browser-05/algorithm-saved-route.png",
+      "pixel_review": "Inspected this actual saved image; no new unintended clipping, broad road/park stripes or missing city masses were observed in this specific view."
+    },
+    {
+      "file": "algorithm-source-details.png",
+      "sha256": "ac53baf4776008a6578f50a695190b23d1b926ff3d2e7f20a4dcd1a6ec263148",
+      "bytes": 492443,
+      "path": "local-runtime/journey-algorithm-browser-05/algorithm-source-details.png",
+      "pixel_review": "Inspected this actual saved image; no new unintended clipping, broad road/park stripes or missing city masses were observed in this specific view."
+    },
+    {
+      "file": "journey-explore-enabled.png",
+      "sha256": "d16d37afc1650ce8f9ae1f052e3abb993c2c8bdedd261256943631323444c328",
+      "bytes": 1199715,
+      "path": "local-runtime/journey-algorithm-browser-05/journey-explore-enabled.png",
+      "pixel_review": "Inspected actual keyboard Leave result: no recording selected, search focus visibly restored, journey controls unblurred/enabled and playback unavailable."
+    },
+    {
+      "file": "journey-loading-lock.png",
+      "sha256": "5fcd7be80fbe4f37ef8bd78e52ab7e0bb0157c1038bb93810ce90a3ba59c995e",
+      "bytes": 415372,
+      "path": "local-runtime/journey-algorithm-browser-05/journey-loading-lock.png",
+      "pixel_review": "Inspected actual held-GET loading state: selected other-hospital recording, enabled Leave CTA above blurred controls, product loading status and disabled playback. No replacement response was supplied."
+    },
+    {
+      "file": "journey-locked-1280x720.png",
+      "sha256": "f60a9bf809f946981f3c87252e58537d09726876308c3638bf27d783890690b8",
+      "bytes": 564480,
+      "path": "local-runtime/journey-algorithm-browser-05/journey-locked-1280x720.png",
+      "pixel_review": "Inspected after actual close and keyboard Enter-open, with no QA scroll afterward. The full unblurred Leave button and blurred field group are visible; the right map and transport remain fixed."
+    },
+    {
+      "file": "journey-locked-1920x1080.png",
+      "sha256": "0d2126f4ac61332d05d44595b6be3f0b539a960a4d42eaa6578bf9956347e072",
+      "bytes": 1203350,
+      "path": "local-runtime/journey-algorithm-browser-05/journey-locked-1920x1080.png",
+      "pixel_review": "Inspected after actual close and keyboard Enter-open, with no QA scroll afterward. The full unblurred Leave button and blurred field group are visible; the right map and transport remain fixed."
+    }
+  ],
+  "retained_history": [
+    {
+      "report": "local-runtime/journey-algorithm-browser-01/report.json",
+      "sha256": "cc8ce187828f20dbc810ee07105e6c87471f192c1d018ed8d83f1e6265e9281a",
+      "status": "retained_harness_criterion_failure",
+      "explanation": "Playwright to_be_disabled does not classify FIELDSET itself; native disabled attribute and all five disabled descendants were present. Fixed the harness to check fieldset.disabled && matches(:disabled), retaining independent effective-disabled checks for every child.",
+      "failure_png_reviewed": true,
+      "product_source_changed_for_this_failure": false
+    },
+    {
+      "report": "local-runtime/journey-algorithm-browser-02/report.json",
+      "sha256": "519b37503e78586cbdfa43abfc002b6d5389a6d3cad1ac815629a5dcfdb3661e",
+      "status": "retained_harness_criterion_failure",
+      "explanation": "An arbitrary 270 px minimum rejected a full-width 266 px native summary at 1280 desktop. Fixed the harness to require at least 95% of the disclosure width, at least 200 px, 14 px strong text and 12 px vertical padding.",
+      "failure_png_reviewed": true,
+      "product_source_changed_for_this_failure": false
+    },
+    {
+      "report": "local-runtime/journey-algorithm-browser-03/report.json",
+      "sha256": "b00424e3132275b264796f0ad028954b0df1d899fa8828e1f44ff95af89ad7bf",
+      "status": "retained_scoped_functional_pass",
+      "explanation": "Candidate01 functional checks passed; screenshot review found the laptop-height Leave button partly below the left scroller. Root added a user-open left-pane scroll in4126b4f. Also retained the canceled-interception teardown warning; no product page error."
+    },
+    {
+      "report": "local-runtime/journey-algorithm-browser-04/report.json",
+      "sha256": "ba8b66bc1bc78ba4713e3230f294525535ec0a6a759a06305b9d306d2305bd3b",
+      "status": "retained_scoped_functional_pass",
+      "explanation": "Candidate02 strengthened full-CTA/visible-blur checks passed with clean teardown. A later QA layout probe reset left scroll before screenshots, so final05 repeats the native user-open immediately before captures; no further product source change."
+    }
+  ],
+  "harness_teardown_observation": {
+    "process_exit_code": 0,
+    "warning": null,
+    "final_teardown_clean": true,
+    "owned_interception_cleanup": "Product worker termination is verified before the harness resolves its held interception through public fallback. No new request, replacement response or private Playwright patch is used.",
+    "historical_warning": "Run03 printed a Playwright asyncio CancelledError callback at teardown for its canceled interception; its product page errors were empty. Retained separately; final05 has no warning."
+  },
+  "limits": [
+    "Pixel review covers these nine final05 images plus the retained prior workspace/history images, not all camera positions.",
+    "The reveal default is a checked-control assertion after reload. A separate camera suite owns reveal/dither and angle stability evidence.",
+    "Capture implementation identification matches exported whole-file hashes to the reviewed implementation; this browser harness does not fetch or independently audit the linked source.",
+    "The Algorithm formula is distance in canonical edge meters. Saved external-lane references are separate data, not a reconstructed numeric Dijkstra cost.",
+    "No new scientific outcome, path solve, traffic-law certification or rendering performance claim is made by this interaction harness.",
+    "The actual published Study is used only after selection; no positive scientific fixture is supplied."
+  ],
+  "resolved_visual_polish_finding": {
+    "prior_candidate": "442d912a711e4768bc8bc079a2ff9ddd2e0b1aea",
+    "prior_observation": "At1280x720, opening the journey section near the bottom left the Leave CTA partly below view and the blur group out of view.",
+    "correction": "Only a user-triggered native summary open scrolls its owning left pane to reveal the CTA and fields; no initial automatic opening jump or right/document movement.",
+    "verified_final_candidate": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+    "corrected_final_images": [
+      "journey-locked-1280x720.png",
+      "journey-locked-1920x1080.png"
+    ]
+  },
+  "harness": {
+    "path": "web/tests/journey_algorithm_acceptance.py",
+    "sha256": "af122f65f969fa05245beeabc783355d390b6c0715637acf16cdf55ae545c642",
+    "bytes": 29528,
+    "execution_report": "local-runtime/journey-algorithm-browser-05/report.json",
+    "verification": "This exact harness completed final run05 with exit0 and clean teardown."
+  },
+  "sanitized_review_record": {
+    "path": "local-runtime/journey-algorithm-review-02/journey-algorithm-acceptance.json",
+    "sha256": "e294417e947258ffa683d7d24e83760117d8f7f0ca8a6e06be494ee21fec2b2a"
+  }
+}
