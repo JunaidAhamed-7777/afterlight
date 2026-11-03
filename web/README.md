@@ -144,3 +144,22 @@ Do not benchmark performance in inspection mode. Matrix agreement is not visual
 certification of roads, lane positions, stop lines, vertical placement or
 occlusion: review the retained screenshots separately. The new harness and
 telemetry require Omen acceptance; cloud compilation alone is not a pass.
+
+## Recover the same genuine API job (Omen only)
+
+After `scripts/api_real_acceptance.py` records `terminal_verified` or
+`recovery_verified`, keep its generation-enabled API server and job directory
+available. Serve the matching committed preview, then use a fresh output folder:
+
+```powershell
+python -B web/tests/real_job_recovery_smoke.py --acceptance local-runtime/api-real-ATTEMPT --base-url http://127.0.0.1:5173/local.html --output local-runtime/api-ui-recovery-NEW
+```
+
+This headed desktop check seeds a fresh browser session with the **actual saved
+job ID and parameters**, observes genuine GET responses without interception,
+opens the completed recording, and repeats recovery after a same-tab reload.
+It binds the served viewer/assets, raw replay bytes and unchanged before/after
+job identity to the original accepted seed-7 pilot. It submits no POST, launches
+no SUMO process, and does not consume held-out data. This is seeded saved-job
+recovery coverage, **not proof the UI originally submitted the job**. It requires
+Omen execution; authoring or cloud compilation is not a pass.
