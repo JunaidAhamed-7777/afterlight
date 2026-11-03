@@ -60,8 +60,11 @@ are rejected as controlled errors, including nested metadata values. JSON is
 UTF-8 (an optional UTF-8 BOM is accepted), with at most **64 nested object/array
 containers including the root**. A quote/escape-aware linear scan enforces this
 bound before structure decoding, independently of interpreter recursion limits.
-The same bound covers requests, catalogs, replay bytes, recovered job records
-and generated HTTP metadata. Exact-byte replay responses remain unchanged.
+The same depth bound covers requests, catalogs, replay bytes, recovered job
+records and generated HTTP metadata. Byte limits remain context-specific: replay
+and catalog reads default to 64 MiB, persisted job metadata to 1 MiB, and POST
+bodies to 16 KiB. An explicit context cap is honored by both the reader and
+parser rather than being replaced by the replay cap. Exact-byte replay responses remain unchanged.
 
 Generation rechecks the server's startup source identity after the runner and
 again before recording completion. A mismatch is an explicit infrastructure

@@ -61,6 +61,15 @@ class BoundedArtifactTests(unittest.TestCase):
             with self.assertRaisesRegex(ArtifactError,'depth'):parse_json_object(payload)
             loads.assert_not_called()
 
+    def test_explicit_metadata_cap_is_not_replaced_by_dynamic_replay_cap(self):
+        payload=json.dumps({'metadata':'x'*100}).encode()
+        with patch('api.artifacts.MAX_REPLAY_BYTES',32):
+            with self.assertRaisesRegex(ArtifactError,'size limit'):parse_json_object(payload)
+            self.assertEqual(parse_json_object(payload,limit=1024),{'metadata':'x'*100})
+            with self.assertRaisesRegex(ArtifactError,'size limit'):parse_json_object(payload,limit=64)
+            deep=b'{"x":'+b'['*MAX_JSON_DEPTH+b'0'+b']'*MAX_JSON_DEPTH+b'}'
+            with self.assertRaisesRegex(ArtifactError,'depth'):parse_json_object(deep,limit=1024)
+
     def test_shared_read_json_uses_canonical_cap(self):
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory)/'object.json';path.write_text(json.dumps({'payload':'long enough'}))

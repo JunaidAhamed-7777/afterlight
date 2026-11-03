@@ -199,7 +199,7 @@ class JobManager:
         try:
             if path.resolve().parent != (self.output_root / job_id) or path.parent.resolve().parent != self.output_root:
                 return None
-            record = parse_json_object(read_bytes(path,limit=1024*1024))
+            record = parse_json_object(read_bytes(path,limit=1024*1024),limit=1024*1024)
             if not isinstance(record, dict) or record.get("id") != job_id or record.get("status") not in {"completed", "failed"}:
                 return None
             if parameters(record["parameters"]) != record["parameters"]:

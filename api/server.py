@@ -197,7 +197,7 @@ def make_handler(replay_dir: Path, jobs=None):
                 raw = self.rfile.read(length)
                 if len(raw) != length:
                     raise ValueError("Incomplete request body")
-                body = parse_json_object(raw)
+                body = parse_json_object(raw,limit=16384)
                 self.send_json(202, jobs.submit(body))
             except (socket.timeout, TimeoutError):
                 self.send_json(408, {"error": "Request body timed out"})

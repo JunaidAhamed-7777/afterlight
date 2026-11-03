@@ -249,3 +249,18 @@ the failed unit checkpoint into a pass.
   boundaries, with fresh Omen acceptance required.
 - The remaining six journal stages, browser acceptance and traffic were not run
   in this cohort. No real paired-run, pilot, model or held-out result is claimed.
+
+## 2026-11-03, independent `38ae571` checks and focused `f4b665d` API (reported 07:02 UTC)
+
+- Independent checks on `38ae571` passed: **64 Python checks, 79 frontend Node
+  checks and four desktop suites**. These were separate scoped checks, not a
+  successful full journal or traffic qualification. Detailed suite attribution
+  remains to be reconciled from the local reports.
+- Focused API on `f4b665d`: **49 passed, 1 error**. The original four depth
+  failures and five new boundary checks passed. The remaining error exposed a
+  contextual byte-cap regression: a persisted job record's explicit 1 MiB
+  reader cap was incorrectly replaced during parsing by the replay cap lowered
+  to 100 bytes in the regression test. The fix threads the explicit context cap
+  through both stages without relaxing depth, UTF-8 or finite-number checks.
+- No full `f4b665d` journal or traffic run started. A fresh pinned cohort is
+  required; no new paired-run/pilot/model result is claimed.

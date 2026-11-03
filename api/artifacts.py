@@ -45,14 +45,15 @@ def read_bytes(path: Path, *, limit: int | None = None) -> bytes:
     return payload
 
 
-def bounded_json_text(payload: bytes) -> str:
+def bounded_json_text(payload: bytes, *, limit: int | None = None) -> str:
     """Reject deep UTF-8 JSON before decoding structures, with O(1) scan state.
 
     Brackets inside quoted strings are data. A backslash escapes precisely the
     next string character, so odd/even backslash runs and escaped quotes do not
     alter container depth. Full syntax validation remains json.loads' job.
     """
-    if len(payload) > MAX_REPLAY_BYTES:
+    maximum = MAX_REPLAY_BYTES if limit is None else limit
+    if len(payload) > maximum:
         raise ArtifactError('Artifact exceeds the local API size limit')
     try:
         text = payload.decode('utf-8-sig')
@@ -82,8 +83,8 @@ def bounded_json_text(payload: bytes) -> str:
     return text
 
 
-def parse_json_object(payload: bytes) -> dict:
-    text = bounded_json_text(payload)
+def parse_json_object(payload: bytes, *, limit: int | None = None) -> dict:
+    text = bounded_json_text(payload,limit=limit)
     try:
         value = json.loads(text,parse_constant=reject_nonfinite,parse_float=finite_float)
     except (UnicodeError,ValueError,RecursionError) as error:
