@@ -20,6 +20,7 @@ from urllib.parse import urljoin, urlsplit
 from urllib.request import urlopen
 
 from playwright.sync_api import expect, sync_playwright
+from capture_budget import project_release_budget
 from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, decoded_recording, digest, open_recording, ready, returning_visit, seek, source_identity, verify_served_build
 from released_study_pack import load_released_public_pack
 
@@ -243,7 +244,10 @@ def main():
         if args.mode=='final':
             duration=float(encoding['encoded']['format']['duration'])
             assert 60<=duration<=90,('Final walkthrough must remain60–90s including actual loading',duration)
-            if manifest:assert manifest['total_bytes']+encoding['bytes']<50_000_000,'Combined build and video exceed50MB'
+            if manifest:
+                budget=project_release_budget(manifest,encoding['bytes'])
+                report['projected_release_budget']=budget
+                assert budget['within_limit'],('Projected release must remain below50MB',budget)
         report['status']='passed_unpublished_capture_capability' if args.mode=='dry-run' else 'captured_final_walkthrough_pending_pixel_review'
     except Exception as error:
         report.update(status='failed',error=str(error))
