@@ -1,0 +1,181 @@
+{
+  "rollouts": 84,
+  "episodes": 12,
+  "demand_groups": 12,
+  "runtime_total_s": 4408.727803400001,
+  "runtime_median_s": 52.66433314999995,
+  "runtime_max_s": 92.18942560000141,
+  "effective_schedules_by_episode": {
+    "asymmetric-11007": 5,
+    "asymmetric-11008": 5,
+    "asymmetric-11009": 5,
+    "heavy-11010": 5,
+    "heavy-11011": 5,
+    "heavy-11012": 5,
+    "moderate-11004": 5,
+    "moderate-11005": 5,
+    "moderate-11006": 5,
+    "sparse-11001": 5,
+    "sparse-11002": 5,
+    "sparse-11003": 5
+  },
+  "status_counts": {
+    "completed": 84
+  },
+  "outcome_diversity_by_episode": {
+    "sparse-11001": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 0,
+      "equivalent_best_leads_s": [
+        0
+      ],
+      "runner_up_margin_j_s": 0.0,
+      "useful_margin_observed": false
+    },
+    "sparse-11002": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 5,
+      "equivalent_best_leads_s": [
+        5
+      ],
+      "runner_up_margin_j_s": 0.5241935483870748,
+      "useful_margin_observed": false
+    },
+    "sparse-11003": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 2.886597938144348,
+      "useful_margin_observed": true
+    },
+    "moderate-11004": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 20,
+      "equivalent_best_leads_s": [
+        20
+      ],
+      "runner_up_margin_j_s": 4.17334905660374,
+      "useful_margin_observed": true
+    },
+    "moderate-11005": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 0.5777777777777828,
+      "useful_margin_observed": false
+    },
+    "moderate-11006": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 9.322139303482572,
+      "useful_margin_observed": true
+    },
+    "asymmetric-11007": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 0,
+      "equivalent_best_leads_s": [
+        0
+      ],
+      "runner_up_margin_j_s": 0.0,
+      "useful_margin_observed": false
+    },
+    "asymmetric-11008": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 0.3103448275861638,
+      "useful_margin_observed": false
+    },
+    "asymmetric-11009": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 11.095617529880428,
+      "useful_margin_observed": true
+    },
+    "heavy-11010": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 20,
+      "equivalent_best_leads_s": [
+        20
+      ],
+      "runner_up_margin_j_s": 0.4086378737541736,
+      "useful_margin_observed": false
+    },
+    "heavy-11011": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 10,
+      "equivalent_best_leads_s": [
+        10
+      ],
+      "runner_up_margin_j_s": 3.781142857142868,
+      "useful_margin_observed": true
+    },
+    "heavy-11012": {
+      "status": "observed",
+      "feasible_candidates": 5,
+      "distinct_candidate_schedules": 5,
+      "feasible_schedules": 5,
+      "oracle_lead_s": 20,
+      "equivalent_best_leads_s": [
+        20
+      ],
+      "runner_up_margin_j_s": 8.703086419753106,
+      "useful_margin_observed": true
+    }
+  },
+  "distinct_useful_oracle_leads": [
+    10,
+    20
+  ],
+  "useful_margin_episodes": 6,
+  "common_useful_best_leads": [],
+  "multiple_useful_actions_observed": true,
+  "civilian_weight": 1.0,
+  "useful_action_margin_s": 1.0,
+  "interpretation": "Exploratory pilot oracle diagnostics only, not held-out selector performance. Margins compare distinct request schedules with lowest-lead representatives. Diversity requires at least two useful-margin episodes with no common best lead across their equivalent-best sets; it is not selector decision gain. Conflicting duplicate outcomes are rejected."
+}

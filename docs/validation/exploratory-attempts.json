@@ -1,0 +1,122 @@
+{
+  "schema": "afterlight.exploratory-attempts.v1",
+  "scope": "Exploratory history only. These attempts are neither train/validation/test data nor a held-out performance result. Original statuses, failed attempts and raw journals are retained unchanged.",
+  "attempts": [
+    {
+      "attempt": "city900-original-accounting",
+      "original_directory": "C:\\Github\\afterlight-engine-v4\\local-runtime\\city-pilot-v4",
+      "original_execution_status": "completed",
+      "source_commit": "2dfb894f4263ada225f6a8bd7e53aa4d9c7ab5b4",
+      "source_code_sha256": "1b68722e5297d1e4b3d4740a8eb3b9dd41348563fcef34e19c783cd25c745aa5",
+      "expected_worlds": 84,
+      "retained_outcome_rows": 84,
+      "original_status_counts": {
+        "completed": 53,
+        "invalid": 31
+      },
+      "original_reason_counts": {
+        "vaporized_vehicle": 28,
+        "collision": 10
+      },
+      "full_wall_time_s_if_terminal": 2941.1240896,
+      "interpretation": "Superseded. The original accounting incorrectly treated SUMO end-of-window unfinished rows as vaporized removals. Original rows are unchanged; some heavy cases also had real collisions.",
+      "retained_evidence_sha256": {
+        "execution.json": "f2eecccf78d1c8553a6ba41c075327230cde3bb3c57c1da4d73ede7bcecbec0b",
+        "outcomes.json": "ceaab0110ccaa56819a5a969451befb378cadc20897efce30a1bfb6526036b6f",
+        "pilot-plan.json": "a10627643a2634beb11104df05606f2ab06586e5f173912756e3df893d4fab94",
+        "pilot-summary.json": "94df5cf3377b295b7c2b8f3199b79680343a5227c623bed8e2f7dd2b3fa4adbb",
+        "network/network-manifest.json": "5180efe6f8398c5f89b1fd8c992fcb910b91b8920958773b648e79cbec545a61"
+      }
+    },
+    {
+      "attempt": "city900-corrected-interrupted",
+      "original_directory": "C:\\Github\\afterlight-study-v4\\local-runtime\\city-pilot-v4-corrected",
+      "original_execution_status": "running",
+      "source_commit": "c6812950c8fc67dad277c85cdded051d15a58d25",
+      "source_code_sha256": "779ba6d007f165911a5b1900eb91bb59ccbf1cce4bf60406e80f322aacd41cec",
+      "expected_worlds": 84,
+      "retained_outcome_rows": 54,
+      "original_status_counts": {
+        "completed": 42,
+        "censored": 12
+      },
+      "original_reason_counts": {},
+      "full_wall_time_s_if_terminal": null,
+      "interpretation": "Superseded and operator-interrupted. The original execution journal still says running because Windows process-group termination prevented final journaling. Separate operator-halt.json records the halt; this incomplete attempt is not eligible for study budgeting.",
+      "retained_evidence_sha256": {
+        "execution.json": "013a936328817ad4e35ed0ea792a6401cb1cb1840ee0e0dcfda277405dcdcee8",
+        "outcomes.json": "1c93334c73980e84ccaca6ff7285e5b2be029e1d37e601310381bff300ebe63b",
+        "pilot-plan.json": "a10627643a2634beb11104df05606f2ab06586e5f173912756e3df893d4fab94",
+        "network/network-manifest.json": "7ceca573c4e2db9cd9520f04671fba0e2f16b7a7193f213ca30c513343b91470",
+        "operator-halt.json": "585632c006aa9235870b618f1dbafaa8b674c5b2db559384b5f83eefcc2bcfa7"
+      }
+    },
+    {
+      "attempt": "city2400-original-clearance",
+      "original_directory": "C:\\Github\\afterlight-engine-opt-v4\\local-runtime\\city-pilot-long-v4",
+      "original_execution_status": "completed",
+      "source_commit": "19f1bb5f0ab977d04055a0a26454f60166968ab3",
+      "source_code_sha256": "e244375a758de4745da8de735e5b87b43fa2e8e2f1ef20a6152eb57e42aea693",
+      "expected_worlds": 84,
+      "retained_outcome_rows": 84,
+      "original_status_counts": {
+        "completed": 74,
+        "invalid": 10
+      },
+      "original_reason_counts": {
+        "collision": 10
+      },
+      "full_wall_time_s_if_terminal": 4198.2520728,
+      "interpretation": "Superseded longer-drain exploration. Original one-second city all-red profile; all invalid rows retain their actual heavy-traffic collisions. Not pooled into the final study.",
+      "retained_evidence_sha256": {
+        "execution.json": "584203ed470db4fd292fb624a470473fbd4a06dd37996f0e59943f5ab1022168",
+        "outcomes.json": "2b612acbe13993fa9ec5abc067f1f8cdf9b97aa76ad717dcdc436d3e69744563",
+        "pilot-plan.json": "8f0326224ce3624425459c05513d64398f6ad237f88eeaae94c0466588fbdb89",
+        "pilot-summary.json": "758a4db1fe441a9b29c24beb98c991a204693c83ae4bf68c3678844608fb0c63",
+        "network/network-manifest.json": "86f181e3a183aaaba30934bf17fd3473cd935ebe835f3319958417d17857b82f"
+      }
+    },
+    {
+      "attempt": "city3000-native-argument-preflight",
+      "original_directory": "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-city-pilot",
+      "original_execution_status": "infrastructure_error",
+      "source_commit": "29568acfb0957bb799153f27f950635aa26325d0",
+      "source_code_sha256": "d1601fcd5674a5a8a85d1bba2868ddeaafe3f6ecee5d40d71dd7de43771b1789",
+      "expected_worlds": 84,
+      "retained_outcome_rows": 0,
+      "original_status_counts": {},
+      "original_reason_counts": {},
+      "full_wall_time_s_if_terminal": 1.4756342000000586,
+      "interpretation": "Failed before any world: netconvert rejected 3.0 for an integer phase-time option. The formatter was corrected in fa39f8a and a new directory was used; no failed files were overwritten.",
+      "retained_evidence_sha256": {
+        "execution.json": "2df24c6e67e5b9503531b54fb2c5a3f74b4445742f6f62cf74401eca0a7502a4",
+        "outcomes.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+        "pilot-plan.json": "39df56db7e9344bcc31be1be8bf6e33fc24fe7f1de29f6bf9514d19e3bc9d483"
+      }
+    },
+    {
+      "attempt": "city3000-final-three-second-clearance",
+      "original_directory": "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-city-pilot-r2",
+      "original_execution_status": "completed",
+      "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
+      "expected_worlds": 84,
+      "retained_outcome_rows": 84,
+      "original_status_counts": {
+        "completed": 84
+      },
+      "original_reason_counts": {},
+      "full_wall_time_s_if_terminal": 4517.119780100002,
+      "interpretation": "Final matched exploratory pilot. Original SUMO driver settings, three-second all-red city profile. Only this complete source/resolution/horizon-matched attempt is the study budgeting basis.",
+      "retained_evidence_sha256": {
+        "execution.json": "a317356e6c3c04a61f2f25c240ec4783038f5722dfeb7131f81a0fff0e816aa9",
+        "outcomes.json": "8d411530331f3d5f484176860e65f014969f938cc9f42f06d6d590f03cd898b1",
+        "pilot-plan.json": "39df56db7e9344bcc31be1be8bf6e33fc24fe7f1de29f6bf9514d19e3bc9d483",
+        "pilot-summary.json": "d84dfb6825119bc45b2ec0792a1cfd8d19d09adb01e927298c9b36da55441a3f",
+        "network/network-manifest.json": "54a8e993b38b42450a12e23231eedcdf52198183758a8805e8b89aaa9702770e"
+      }
+    }
+  ],
+  "driver_calibration": "Private exploratory alternatives that disabled minor-junction dawdling or added conservative driver gap settings still collided. Those driver changes were not shipped. The final profile instead retains original drivers and uses three seconds all-red in both ordinary and priority controllers.",
+  "raw_retention": "All original worktree journals, raw SUMO/lifecycle/tripinfo and packed historical public captures remain on the designated Omen machine. Obsolete shipped copies were removed only after byte-for-byte retained-backup verification."
+}

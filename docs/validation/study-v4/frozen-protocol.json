@@ -1,0 +1,1132 @@
+{
+  "sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+  "protocol": {
+    "schema": "afterlight.protocol.v1",
+    "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+    "source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
+    "group_assignments": {
+      "69916983add0e87915bb32484324a4496edae1912fc69157b4ff3132f80b8edd": "train",
+      "87a5a4376e407598e0a1b17806143295ce9829499f214ae4285411299fdf366c": "train",
+      "bafc882e8682434a46fcc602fcdd2e6e67917365017c4f4cd0c5c7414ccaecef": "train",
+      "1baef6df69e0617133f568cb0e8344f2155e7b76df72d54cfea1af85792d52dc": "train",
+      "d6e1f5821a2ea39713c3ed00a3dcfef4550ec3cbf074aa8499d04f3be27dd15f": "train",
+      "e4dfb211b8c67cf98c8b1f7fed69212ffa40e17dd34aad4e82e221725245c432": "train",
+      "a358410a8e5be83fb8ae8692b68b45c5ebefb274ca20bac4b2590346516aacf7": "train",
+      "05c867f6eb96ef793ccd5f2bd8d9a0ec5fb39507912a47985d187a489302eac2": "train",
+      "4c927c8c38752f07aa01dd90a88dbbd6126bb85fef8b889545ee35df184fda79": "train",
+      "19836d8619ca57ca34413987a84d2e1e4c0b5f309634343bd7e4df57f37920dc": "train",
+      "a85985fd9467cfcc0f44654eed1ff6c5c4c50b66af71d0123f6cca625992054c": "train",
+      "ad4a0b2806da52e52071727c1a18a5628b37d56f2dbdf375037a04a9f9c301e4": "train",
+      "9d06f62478b8dac62f8d965d3e497d5dc53399995cb7dd0058e799c88a38a703": "train",
+      "56a5ad0d642a7d2d3e09fb0b874f7b39fdba3b668f1cff030ec4ddae9a2e6485": "train",
+      "04f5c046227298ff3dc5d6c9eef9985eab3460e93fa68bf0b0d0b2956c627032": "train",
+      "5b0afd44e9982c51b6667a548df20b6ad968f62a6f98e5b91e63aeb6c6dd59d3": "train",
+      "9344e5da0a99a0f02d70643096fb1be914b887c04ed99b6f7089eb448f75a4db": "train",
+      "dd63f5725bd030cee0b78c2e125529a301719458039129032d55cfe1cd963c05": "train",
+      "c98ae78bd2a9bae25739521df077f6349fac79bf0d3bec060fc0f19d3a6cffcd": "train",
+      "834befe3efe1f0be7a81ea5dbd49a08412fdd0e3230209a454bcff64909c3919": "train",
+      "b9b6108a4f03fd0933fd446964d64903058bbaa92f30beec85fe5c07440e6007": "train",
+      "42d6f645b739c922fabbb09ef1a7798fc1b2772642ace950a186c33c096084a1": "train",
+      "dd3eb74f0546115677cfbefc5686df799dace738ab8143db6af48b0fefe0295f": "train",
+      "392b38eebc16a1faeafbefcb787704ade20afb4e0a24a3e420833e800ce70e38": "train",
+      "9ac35f7cccac1ce4b8f3582e06b7dcb0c7a8c1de08ecc506bdee066d93f95120": "validation",
+      "053f1703f8d915ccb6065b4d742c1ddc8ccd53e2b59e35b6e3f0814de16ccf2c": "validation",
+      "b88600a2b9ef1401051d7be02ab9d308e0038f9ef3563eca33c4a4effb89f413": "validation",
+      "692add019afbcf7e2ac88472335f76027ac79b93dbd96b0227ed62f710e5ffcf": "validation",
+      "419721a91fe2570ec6ada8cdfbe945c36e5aa1ffab81451b707e94fd032f9fb5": "validation",
+      "c170a04761993185254540e2b7f739fe05cd87747bfaeca5dc9bd8f1f8e60bcc": "validation",
+      "19a8d3eaec1ce212fa3c2f96a9d3261d142e6d0f0fe1b259b9c22cd34bbbba6d": "validation",
+      "7450bc2e8745690446e90e22c1a3ce7a2ac69b6d20029f268c62b39155a5d8f1": "validation",
+      "23a801a2249e5b2f1c765dfb836ef0e05129f73ac7677c3e38ab63cf37db092a": "validation",
+      "b5cb8f6c848b7bffa0c3bef000d1a444dd81c47c525a808f37d7214bed6ffca6": "validation",
+      "a813b70e6764e5f119683ffc83b7a73ab4cecad28f7d2605244cebd8f2470d91": "validation",
+      "19183e614a4934f68e7d526dd5f35f5cddadf882b33714a9d49cbb1ac16d5f25": "validation",
+      "d3abbd79ef4d5b6c57841df1ecc3455c2a0833ef10308aba027dd23a4175154c": "test",
+      "7b55211a1c013eace0903c3291327770b48c6a3705dbc4df9bb211c732c08c36": "test",
+      "97c49ba1d04f9453852699f2a25d84c3c44ab6d4cc9326cc176e30158e948326": "test",
+      "6d0d35e91a4bd40fb6a69d2039354c71bce450cbd7aa7f7ab64fe5665fba7add": "test",
+      "4733de3d362bd3be70796974ce50c66bf4ef05698ee065277c1303bcdc4e9df9": "test",
+      "bf8524cad29f2ba81ff9310db384a9d7ccda0fb7cc4c647339134064b7ad61c1": "test",
+      "616d29bb61bf18f88e43bf60be3fe27daf05185a1395128617bcd4dcd38cfe7a": "test",
+      "912bf4abfb3a0ac08530ce7ee77e2be6c0594c51c976daf42d0c2959b3cab9a5": "test",
+      "592215aa5b1e5e407e6213c712486cc87369e0be237a6f0785530c504b8d314c": "test",
+      "b99e2f21e63a1c560f143d13c9355d9d64dd7b7869d885e9630d1b910a5996af": "test",
+      "63fff37365b11fc9d9820d31f863176813cf6dfb8357b0d3993092833dd38d42": "test",
+      "51bed354a55bdfab020b0f65b46bc7c7e032513b120e1807bf132d68abc46c7a": "test",
+      "0247393d64101cd0156ea9b5a9736d387cc2529b63bbcf4648f930a9cb9b5478": "test",
+      "7efeec53e39d01cb1078d179974a0acae105263b74152e359d186e109fa8fa56": "test",
+      "65c5afa47eabf331780c757a42a95651f8f9779ed510112b46ad9fd73587df4e": "test",
+      "8c88421beeae302ff7fca6b8836757137b01a54a7e877e9f86f62e06ac16c2c0": "test",
+      "ed5c397639e307eaee435d7dad92be0d68c904d788f5a9bd4a42ee580a8bbf77": "test",
+      "f0e3d81dc057888d27a8f09aae6b8adb3629821e97d0e811303ca081f0218bfc": "test",
+      "faafddb94d140a5bf50794d3d74ec4eaf553bf5e6d5bbef96868b7fb2eccfc9f": "test",
+      "8ca225f97a5f9eaa0935a725aa0c8966a69ca8d9661ad141051e69fbde65c5ff": "test"
+    },
+    "seed_assignments": {
+      "22001": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22002": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22003": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22004": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22005": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22006": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22007": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22008": {
+        "split": "train",
+        "regime": "sparse"
+      },
+      "22009": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22010": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22011": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22012": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22013": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22014": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22015": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22016": {
+        "split": "train",
+        "regime": "moderate"
+      },
+      "22017": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22018": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22019": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22020": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22021": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22022": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22023": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22024": {
+        "split": "train",
+        "regime": "asymmetric"
+      },
+      "22025": {
+        "split": "validation",
+        "regime": "sparse"
+      },
+      "22026": {
+        "split": "validation",
+        "regime": "sparse"
+      },
+      "22027": {
+        "split": "validation",
+        "regime": "sparse"
+      },
+      "22028": {
+        "split": "validation",
+        "regime": "sparse"
+      },
+      "22029": {
+        "split": "validation",
+        "regime": "moderate"
+      },
+      "22030": {
+        "split": "validation",
+        "regime": "moderate"
+      },
+      "22031": {
+        "split": "validation",
+        "regime": "moderate"
+      },
+      "22032": {
+        "split": "validation",
+        "regime": "moderate"
+      },
+      "22033": {
+        "split": "validation",
+        "regime": "asymmetric"
+      },
+      "22034": {
+        "split": "validation",
+        "regime": "asymmetric"
+      },
+      "22035": {
+        "split": "validation",
+        "regime": "asymmetric"
+      },
+      "22036": {
+        "split": "validation",
+        "regime": "asymmetric"
+      },
+      "22037": {
+        "split": "test",
+        "regime": "sparse"
+      },
+      "22038": {
+        "split": "test",
+        "regime": "sparse"
+      },
+      "22039": {
+        "split": "test",
+        "regime": "sparse"
+      },
+      "22040": {
+        "split": "test",
+        "regime": "sparse"
+      },
+      "22041": {
+        "split": "test",
+        "regime": "moderate"
+      },
+      "22042": {
+        "split": "test",
+        "regime": "moderate"
+      },
+      "22043": {
+        "split": "test",
+        "regime": "moderate"
+      },
+      "22044": {
+        "split": "test",
+        "regime": "moderate"
+      },
+      "22045": {
+        "split": "test",
+        "regime": "asymmetric"
+      },
+      "22046": {
+        "split": "test",
+        "regime": "asymmetric"
+      },
+      "22047": {
+        "split": "test",
+        "regime": "asymmetric"
+      },
+      "22048": {
+        "split": "test",
+        "regime": "asymmetric"
+      },
+      "22049": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22050": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22051": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22052": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22053": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22054": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22055": {
+        "split": "test",
+        "regime": "heavy"
+      },
+      "22056": {
+        "split": "test",
+        "regime": "heavy"
+      }
+    },
+    "declared_exploration_seeds": [
+      7,
+      8
+    ],
+    "illustrative_capture": {
+      "case_ids": [
+        "test-sparse-01"
+      ],
+      "max_world_bytes": 8388608,
+      "max_total_bytes": 50331648
+    },
+    "reserved_qualification_seeds": [
+      7
+    ],
+    "episode_inventory": [
+      {
+        "episode_id": "city-sparse-22001-786f67b5b08bdf01",
+        "demand_group_id": "69916983add0e87915bb32484324a4496edae1912fc69157b4ff3132f80b8edd",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22001,
+        "demand_sha256": "f11dbd144e0f7a8e740cc6cff8db25857aa2557ac1e7b999479d1b434e72ccf9",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22002-484e25ef0274e4e8",
+        "demand_group_id": "87a5a4376e407598e0a1b17806143295ce9829499f214ae4285411299fdf366c",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22002,
+        "demand_sha256": "2b46dccbec1b8fcf87bf431c74f78ddcfcb20620e4792d569d47ba0f456b17ac",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22003-f3ac42406b208e16",
+        "demand_group_id": "bafc882e8682434a46fcc602fcdd2e6e67917365017c4f4cd0c5c7414ccaecef",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22003,
+        "demand_sha256": "ed74bfe24b6db4cc02bf1f4b591efb73cefc00d7fa8b0aa9ccb589a8783b2383",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22004-97f21675e896ec6d",
+        "demand_group_id": "1baef6df69e0617133f568cb0e8344f2155e7b76df72d54cfea1af85792d52dc",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22004,
+        "demand_sha256": "136747af863676fdb0f87e74916a6a55b34837099643d06b7ab69839f392a05c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22005-b40aabd7a7db57b0",
+        "demand_group_id": "d6e1f5821a2ea39713c3ed00a3dcfef4550ec3cbf074aa8499d04f3be27dd15f",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22005,
+        "demand_sha256": "c7fcc41d01dd1d2231eb87d32ac22b50a30b1a9d9425488e41efd3c900eff3ed",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22006-bb37df5a101815c6",
+        "demand_group_id": "e4dfb211b8c67cf98c8b1f7fed69212ffa40e17dd34aad4e82e221725245c432",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22006,
+        "demand_sha256": "9a35f8b931dcef4097566083238ccfabc6ac838537799459332cba5a5db0aba1",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22007-c11b00010a2f58c3",
+        "demand_group_id": "a358410a8e5be83fb8ae8692b68b45c5ebefb274ca20bac4b2590346516aacf7",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22007,
+        "demand_sha256": "080cbf164cf8b65ce71a8dc86c76c463bfd7f80ce479e8a2446cc4f4ee2c068f",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22008-b913d3077fda2b9f",
+        "demand_group_id": "05c867f6eb96ef793ccd5f2bd8d9a0ec5fb39507912a47985d187a489302eac2",
+        "split": "train",
+        "regime": "sparse",
+        "seed": 22008,
+        "demand_sha256": "82043d604e36616d547171effc7f2211031388162403f706fde46171f4cebb49",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22009-ea1177ab19b9816b",
+        "demand_group_id": "4c927c8c38752f07aa01dd90a88dbbd6126bb85fef8b889545ee35df184fda79",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22009,
+        "demand_sha256": "f65e8c09ba035b63fd9dc4c07e9c08376fa6868e168177d3173ae92ee5e8d04a",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22010-b06938ef7436797e",
+        "demand_group_id": "19836d8619ca57ca34413987a84d2e1e4c0b5f309634343bd7e4df57f37920dc",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22010,
+        "demand_sha256": "cfb229a55290f29e8954d738be2a21c17a1bc4fa211781d5c42ed16ca0e5a971",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22011-82e63f47ebf532cc",
+        "demand_group_id": "a85985fd9467cfcc0f44654eed1ff6c5c4c50b66af71d0123f6cca625992054c",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22011,
+        "demand_sha256": "782bbd2dfe74da8daa4e3bc84b566c8723255d570dd8c307e3966f41f701c2c2",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22012-407c5d279f3dd950",
+        "demand_group_id": "ad4a0b2806da52e52071727c1a18a5628b37d56f2dbdf375037a04a9f9c301e4",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22012,
+        "demand_sha256": "f0e81b4f0bafc80e4c25e259a2bf768fc20a64d28628f11dd0a737cfba3e222d",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22013-dff872f0a3a86e51",
+        "demand_group_id": "9d06f62478b8dac62f8d965d3e497d5dc53399995cb7dd0058e799c88a38a703",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22013,
+        "demand_sha256": "0e8d1880e19b2c6a1116b454768aa2b739e9c52d997d9881b672a31738a6d55c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22014-9d709e4f98a22828",
+        "demand_group_id": "56a5ad0d642a7d2d3e09fb0b874f7b39fdba3b668f1cff030ec4ddae9a2e6485",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22014,
+        "demand_sha256": "72c22f0033a401c64557d292044369372fa6faf4fcdf693d5f5f5aa58e1828f4",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22015-fdaf5dd5f797eb20",
+        "demand_group_id": "04f5c046227298ff3dc5d6c9eef9985eab3460e93fa68bf0b0d0b2956c627032",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22015,
+        "demand_sha256": "aa3b8f12db2328306d888647455960cfbe63fd1ce26da2fc2c2ccb2985c2fb04",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22016-a2a8dd9fe8fe6d6c",
+        "demand_group_id": "5b0afd44e9982c51b6667a548df20b6ad968f62a6f98e5b91e63aeb6c6dd59d3",
+        "split": "train",
+        "regime": "moderate",
+        "seed": 22016,
+        "demand_sha256": "a15d03bbb9bd8f1a3e70ff471cf9264ba7b0eec973168ff7ab1b58f110085b64",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22017-d0676de498d98bb2",
+        "demand_group_id": "9344e5da0a99a0f02d70643096fb1be914b887c04ed99b6f7089eb448f75a4db",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22017,
+        "demand_sha256": "1b4235b9efc5cb01702ce0bba1d9ce7bbe06b980774de333fbd7e4efce38fbb1",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22018-d06e3d3b994ca1b8",
+        "demand_group_id": "dd63f5725bd030cee0b78c2e125529a301719458039129032d55cfe1cd963c05",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22018,
+        "demand_sha256": "28d6e1e87a9703a29f58618f38f6716eb0e222df63da4e9c585569a6ddffcf10",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22019-a8e4f77d3e98f662",
+        "demand_group_id": "c98ae78bd2a9bae25739521df077f6349fac79bf0d3bec060fc0f19d3a6cffcd",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22019,
+        "demand_sha256": "9debec353c2aca5301c6cd088adaaf2fa2e267e0e27df63ef0425ceeb05b2343",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22020-d342140b2d00d27d",
+        "demand_group_id": "834befe3efe1f0be7a81ea5dbd49a08412fdd0e3230209a454bcff64909c3919",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22020,
+        "demand_sha256": "82b2fb71cb9fe0252e25f2c235076d860435757d07eeb5facc742c65337d799e",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22021-a31ad024272eba87",
+        "demand_group_id": "b9b6108a4f03fd0933fd446964d64903058bbaa92f30beec85fe5c07440e6007",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22021,
+        "demand_sha256": "4ec383e1171bb0d202564ad4f83c464394a8ab9db8e7e88c17909400bbd3b378",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22022-9f1d7ba234842c39",
+        "demand_group_id": "42d6f645b739c922fabbb09ef1a7798fc1b2772642ace950a186c33c096084a1",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22022,
+        "demand_sha256": "1fd2fbbbd26f52c21167a533a4c6f18e1fedff5ce92e3a0ec4913cbdef252d4c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22023-99ec8ce02ccae346",
+        "demand_group_id": "dd3eb74f0546115677cfbefc5686df799dace738ab8143db6af48b0fefe0295f",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22023,
+        "demand_sha256": "9ccbd886e99a0f02b0294249ff38cee82281faea3f28cba3dc08d140f30c18e5",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22024-f2e8018ccf4fc9b0",
+        "demand_group_id": "392b38eebc16a1faeafbefcb787704ade20afb4e0a24a3e420833e800ce70e38",
+        "split": "train",
+        "regime": "asymmetric",
+        "seed": 22024,
+        "demand_sha256": "c3067f809474452dbe36ca29cb634e7cbab9280441d6b516b78f094f8b721163",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22025-417304d7c12ef42f",
+        "demand_group_id": "9ac35f7cccac1ce4b8f3582e06b7dcb0c7a8c1de08ecc506bdee066d93f95120",
+        "split": "validation",
+        "regime": "sparse",
+        "seed": 22025,
+        "demand_sha256": "80442e3de04503d7682ff5ea3eba470624a4dfde1a5a866ed6e079c665120e32",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22026-74386cb905de8e39",
+        "demand_group_id": "053f1703f8d915ccb6065b4d742c1ddc8ccd53e2b59e35b6e3f0814de16ccf2c",
+        "split": "validation",
+        "regime": "sparse",
+        "seed": 22026,
+        "demand_sha256": "26e2061a6f2b71aa936116c2c1907f5807be9854353a5dfd9d321da6bc5cc292",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22027-1aa4805dbbeb4b87",
+        "demand_group_id": "b88600a2b9ef1401051d7be02ab9d308e0038f9ef3563eca33c4a4effb89f413",
+        "split": "validation",
+        "regime": "sparse",
+        "seed": 22027,
+        "demand_sha256": "ada696f5532877a91c6aad5887a3222a2ffda6aa8134f9aaa37dd307a1fb3435",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22028-de606e2165f5d1eb",
+        "demand_group_id": "692add019afbcf7e2ac88472335f76027ac79b93dbd96b0227ed62f710e5ffcf",
+        "split": "validation",
+        "regime": "sparse",
+        "seed": 22028,
+        "demand_sha256": "599e5f51ef6047c9bd936302ea53c4a5652221fdacd314fa066ea2c3a41417f1",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22029-3db65c2e7212d102",
+        "demand_group_id": "419721a91fe2570ec6ada8cdfbe945c36e5aa1ffab81451b707e94fd032f9fb5",
+        "split": "validation",
+        "regime": "moderate",
+        "seed": 22029,
+        "demand_sha256": "1bc5d2569f9d89e6a9e788d8a0978183c12165e11a10547f39ad54487906dc54",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22030-644b6b28712a0797",
+        "demand_group_id": "c170a04761993185254540e2b7f739fe05cd87747bfaeca5dc9bd8f1f8e60bcc",
+        "split": "validation",
+        "regime": "moderate",
+        "seed": 22030,
+        "demand_sha256": "cb8edde9e3c5c5f2950ed3841fcaf30e39f39a2cb92101fe83d41398c35cfcdf",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22031-dcc8ef55e1504257",
+        "demand_group_id": "19a8d3eaec1ce212fa3c2f96a9d3261d142e6d0f0fe1b259b9c22cd34bbbba6d",
+        "split": "validation",
+        "regime": "moderate",
+        "seed": 22031,
+        "demand_sha256": "5ff0d1a3d8da0f5a73d6f48a89b02036b26c46b6dc1d3a09507db8eec32f6820",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22032-ae33cbe2151b9d1f",
+        "demand_group_id": "7450bc2e8745690446e90e22c1a3ce7a2ac69b6d20029f268c62b39155a5d8f1",
+        "split": "validation",
+        "regime": "moderate",
+        "seed": 22032,
+        "demand_sha256": "4beb4a68a6262b17a17cf288d26c8736e535fda5046a90a67243882a794abb4c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22033-aee028a0cc7dbeb9",
+        "demand_group_id": "23a801a2249e5b2f1c765dfb836ef0e05129f73ac7677c3e38ab63cf37db092a",
+        "split": "validation",
+        "regime": "asymmetric",
+        "seed": 22033,
+        "demand_sha256": "1dae67bed1e9689fe0d74ee0ff27d7888f483c1576f1d4018f135f0afdc50eb2",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22034-f10c3377f762e21d",
+        "demand_group_id": "b5cb8f6c848b7bffa0c3bef000d1a444dd81c47c525a808f37d7214bed6ffca6",
+        "split": "validation",
+        "regime": "asymmetric",
+        "seed": 22034,
+        "demand_sha256": "ef6451be0b3455af2d51ec280389982f478b4c29b038c5c443ae804f6c2f54ba",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22035-f1c70674e11d59c9",
+        "demand_group_id": "a813b70e6764e5f119683ffc83b7a73ab4cecad28f7d2605244cebd8f2470d91",
+        "split": "validation",
+        "regime": "asymmetric",
+        "seed": 22035,
+        "demand_sha256": "a96321f87512def2b6c4789b39929dd917860de5e939561c261548bcafcc8fa5",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22036-b5945fde598e1595",
+        "demand_group_id": "19183e614a4934f68e7d526dd5f35f5cddadf882b33714a9d49cbb1ac16d5f25",
+        "split": "validation",
+        "regime": "asymmetric",
+        "seed": 22036,
+        "demand_sha256": "835b059be5ba191d13c5cd60df7b0a1317fa47d71ea43c235a3ba124654c7a7b",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "northeast-local",
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22037-4cbb3af3b2da27e3",
+        "demand_group_id": "d3abbd79ef4d5b6c57841df1ecc3455c2a0833ef10308aba027dd23a4175154c",
+        "split": "test",
+        "regime": "sparse",
+        "seed": 22037,
+        "demand_sha256": "2d2d78ea8d27448f806433cd4496312ad85c1fab6548c68c949c7df4acc905c9",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22038-cd6bf4d3b87b557d",
+        "demand_group_id": "7b55211a1c013eace0903c3291327770b48c6a3705dbc4df9bb211c732c08c36",
+        "split": "test",
+        "regime": "sparse",
+        "seed": 22038,
+        "demand_sha256": "08a0f9ac2ca14134f510f40d3c10524828763e8ed76fe60117cc5c48a66679f2",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-sparse-22039-9c7cbaf561550ece",
+        "demand_group_id": "97c49ba1d04f9453852699f2a25d84c3c44ab6d4cc9326cc176e30158e948326",
+        "split": "test",
+        "regime": "sparse",
+        "seed": 22039,
+        "demand_sha256": "f3e8369bc0a3ade75932f32382088d2febf5f5a702dfe6dcb33a809cf38fd49b",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-sparse-22040-bb5e618c260934a4",
+        "demand_group_id": "6d0d35e91a4bd40fb6a69d2039354c71bce450cbd7aa7f7ab64fe5665fba7add",
+        "split": "test",
+        "regime": "sparse",
+        "seed": 22040,
+        "demand_sha256": "b9b32dc2b192d1cdb96dad0c3b27814d888aad1405ae3dbd0e6db7237f4e18eb",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "north-to-west-unseen",
+        "pickup_id": "P095",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22041-c256fa219a3864d5",
+        "demand_group_id": "4733de3d362bd3be70796974ce50c66bf4ef05698ee065277c1303bcdc4e9df9",
+        "split": "test",
+        "regime": "moderate",
+        "seed": 22041,
+        "demand_sha256": "d0580a18172663b110fc3634bc2d02761f372ca6f120760549f15cb785b4ab18",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22042-cfbc0300afe4cd90",
+        "demand_group_id": "bf8524cad29f2ba81ff9310db384a9d7ccda0fb7cc4c647339134064b7ad61c1",
+        "split": "test",
+        "regime": "moderate",
+        "seed": 22042,
+        "demand_sha256": "a0af6e6325eb6773152be5f679e247e06a87d0e3ac388b584eaa8ae6ad546362",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-moderate-22043-8d7c6b5b5aa7a032",
+        "demand_group_id": "616d29bb61bf18f88e43bf60be3fe27daf05185a1395128617bcd4dcd38cfe7a",
+        "split": "test",
+        "regime": "moderate",
+        "seed": 22043,
+        "demand_sha256": "ff47b0f01fb59851e841b6104bf12d56e70743c0a7dc4f28d48b6f2415a27e54",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-moderate-22044-a10d7ac5f5fe8c92",
+        "demand_group_id": "912bf4abfb3a0ac08530ce7ee77e2be6c0594c51c976daf42d0c2959b3cab9a5",
+        "split": "test",
+        "regime": "moderate",
+        "seed": 22044,
+        "demand_sha256": "e3d34cfe1d593e4a677a6a41f07d932a0ef14cfe1df4381e2c6a53dbe4c08ae6",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "north-to-west-unseen",
+        "pickup_id": "P095",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22045-d2a08b8117a88eda",
+        "demand_group_id": "592215aa5b1e5e407e6213c712486cc87369e0be237a6f0785530c504b8d314c",
+        "split": "test",
+        "regime": "asymmetric",
+        "seed": 22045,
+        "demand_sha256": "caf0b88d165c54bcea13242c7ece4223e94d5d8aea57c2dcf8742445bf158fd5",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22046-07bdf6c037dbf9bb",
+        "demand_group_id": "b99e2f21e63a1c560f143d13c9355d9d64dd7b7869d885e9630d1b910a5996af",
+        "split": "test",
+        "regime": "asymmetric",
+        "seed": 22046,
+        "demand_sha256": "8ffe2cd674664589f3880711f8eed8f8b128fb5d3e013c338b05f25c6c75447c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-asymmetric-22047-a220b912d17f4d47",
+        "demand_group_id": "63fff37365b11fc9d9820d31f863176813cf6dfb8357b0d3993092833dd38d42",
+        "split": "test",
+        "regime": "asymmetric",
+        "seed": 22047,
+        "demand_sha256": "ed4fd4f111c4961f2ec6b62e3abe32489bc9f00273812fb9ba015b4ea003f1e9",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-asymmetric-22048-be1c0e4193b29edb",
+        "demand_group_id": "51bed354a55bdfab020b0f65b46bc7c7e032513b120e1807bf132d68abc46c7a",
+        "split": "test",
+        "regime": "asymmetric",
+        "seed": 22048,
+        "demand_sha256": "99bf70ba6e2db6b4e0874b61865bd4db1cf3a10a13cd1b00e712a24391f1f441",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "north-to-west-unseen",
+        "pickup_id": "P095",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22049-44e906f5e6699b38",
+        "demand_group_id": "0247393d64101cd0156ea9b5a9736d387cc2529b63bbcf4648f930a9cb9b5478",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22049,
+        "demand_sha256": "00159fd767c817cb0e2273805f6158bc3bccd9a1ad2016fd6c599681107815c7",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22050-4c00e3673bf5c6ce",
+        "demand_group_id": "7efeec53e39d01cb1078d179974a0acae105263b74152e359d186e109fa8fa56",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22050,
+        "demand_sha256": "7ecb028b7c87e74e14123c98112914c15de0287d501bb592b798f94bf352849c",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-heavy-22051-d3bb5470174525a7",
+        "demand_group_id": "65c5afa47eabf331780c757a42a95651f8f9779ed510112b46ad9fd73587df4e",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22051,
+        "demand_sha256": "bc7d8749b9dade19274a2af2eb9fef28b27e6e58e4452ab8092bfcd528326203",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22052-32ed322379cb38d4",
+        "demand_group_id": "8c88421beeae302ff7fca6b8836757137b01a54a7e877e9f86f62e06ac16c2c0",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22052,
+        "demand_sha256": "8069f41cb898a0c9dc04e0907ab8bdee684795373041650a284d3ccbce13b6a6",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "north-to-west-unseen",
+        "pickup_id": "P095",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22053-1ae5d3192deb01ab",
+        "demand_group_id": "ed5c397639e307eaee435d7dad92be0d68c904d788f5a9bd4a42ee580a8bbf77",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22053,
+        "demand_sha256": "5a2adce0702ba206b1b7f8020428b2af26784b0e1a00372aaeec05477757d484",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 60,
+        "route_family": "southwest-local",
+        "pickup_id": "P010",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22054-b9cb0001c14fa5ad",
+        "demand_group_id": "f0e3d81dc057888d27a8f09aae6b8adb3629821e97d0e811303ca081f0218bfc",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22054,
+        "demand_sha256": "3003426eef995635b48522ca0c44ec32b200c81077b0a1389e3b0446d7843fe3",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 90,
+        "route_family": "cross-city-east",
+        "pickup_id": "P030",
+        "hospital_id": "HOSP_EAST"
+      },
+      {
+        "episode_id": "city-heavy-22055-5077724d897cd880",
+        "demand_group_id": "faafddb94d140a5bf50794d3d74ec4eaf553bf5e6d5bbef96868b7fb2eccfc9f",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22055,
+        "demand_sha256": "96ef1adb2d4ab87adf6351acd6fd436e1f2862d6ed744a24567eb92cbdd135bf",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 120,
+        "route_family": "central-west",
+        "pickup_id": "P055",
+        "hospital_id": "HOSP_WEST"
+      },
+      {
+        "episode_id": "city-heavy-22056-3ee074f8c33204d1",
+        "demand_group_id": "8ca225f97a5f9eaa0935a725aa0c8966a69ca8d9661ad141051e69fbde65c5ff",
+        "split": "test",
+        "regime": "heavy",
+        "seed": 22056,
+        "demand_sha256": "006ca31fedf6ac256be4d27a1ed2f7fde723cdee148c92f3feb24f627e166944",
+        "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+        "dispatch_s": 75,
+        "route_family": "north-to-west-unseen",
+        "pickup_id": "P095",
+        "hospital_id": "HOSP_WEST"
+      }
+    ],
+    "feature_schema": [
+      {
+        "name": "queue_sum_veh",
+        "unit": "vehicles",
+        "source": "lagged route incoming-lane queues",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "queue_max_veh",
+        "unit": "vehicles",
+        "source": "lagged maximum route incoming-lane queue",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "downstream_occupancy",
+        "unit": "fraction",
+        "source": "lagged downstream-lane occupancy",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "route_distance_m",
+        "unit": "meters",
+        "source": "fixed ambulance route geometry",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "route_junction_count",
+        "unit": "junctions",
+        "source": "fixed ambulance route controlled-junction count",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "eta_remaining_s",
+        "unit": "seconds",
+        "source": "frozen free-flow plus lagged queue ETA",
+        "sensor_lag_s": 1
+      },
+      {
+        "name": "phase_elapsed_s",
+        "unit": "seconds",
+        "source": "maximum lagged controller-stage elapsed time, not necessarily green",
+        "sensor_lag_s": 1
+      }
+    ],
+    "candidate_leads_s": [
+      0,
+      5,
+      10,
+      20,
+      30
+    ],
+    "civilian_weight": 1,
+    "horizon_s": 360,
+    "drain_end_s": 3000,
+    "recovery_window_s": [
+      60,
+      3000
+    ],
+    "tie_break": "smallest_lead",
+    "invalid_rules": [
+      "collision",
+      "teleport",
+      "inventory_or_tripinfo_mismatch",
+      "evidence_audit_failed"
+    ],
+    "heldout_regimes": [
+      "heavy"
+    ],
+    "heldout_route_families": [
+      "north-to-west-unseen"
+    ],
+    "model_specification": {
+      "max_depth": 3,
+      "min_samples_leaf": 8
+    },
+    "analytical_estimator": {
+      "version": "queue-concentration-v2",
+      "config": {
+        "queue_headway_s": 2.0,
+        "transition_loss_s": 4.0,
+        "ordinary_cycle_s": 58.0,
+        "civilian_weight": 1.0,
+        "civilian_cost_scale": 1.0
+      }
+    },
+    "controller_timing": {
+      "min_green_s": 8.0,
+      "ordinary_green_s": 25.0,
+      "yellow_s": 3.0,
+      "all_red_s": 3.0,
+      "max_hold_s": 35.0,
+      "request_timeout_s": 90.0,
+      "recovery_green_s": 25.0
+    },
+    "simulation_step_s": 0.5,
+    "queue_scope": "all inserted active civilians with speed below 0.1 m/s; insertion backlog separately reported"
+  }
+}

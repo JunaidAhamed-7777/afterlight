@@ -1,0 +1,20 @@
+{
+  "schema": "afterlight.collection-execution-plan.v1",
+  "created_utc": "2026-11-03T12:00:10.518498+00:00",
+  "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+  "source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
+  "study_spec_sha256": "3c2c5b1879553dd4e8e88037c5e0f6ecca851689d73bc51deb0a69c11612ef0d",
+  "max_concurrent_collectors": 2,
+  "world_workers_per_collector": 1,
+  "development_collection": {
+    "train": "local-runtime/study-train-v4",
+    "validation": "local-runtime/study-validation-v4",
+    "concurrent": true
+  },
+  "test_collection": {
+    "directory": "local-runtime/study-test-v4",
+    "concurrent": false,
+    "precondition": "One complete frozen selection and explicit immutable release; no automatic retry."
+  },
+  "preservation": "Keep all failed/superseded exploratory attempts, all complete development rows, and the single test attempt. No source/seed changes or undocumented outcome replacement."
+}

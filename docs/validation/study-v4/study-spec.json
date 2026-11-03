@@ -1,0 +1,614 @@
+{
+  "schema": "afterlight.study-spec.v2",
+  "study_id": "expanded-city-v4-20261103",
+  "network_kind": "city",
+  "declared_exploration_seeds": [
+    7,
+    8
+  ],
+  "cases": [
+    {
+      "case_id": "train-sparse-01",
+      "split": "train",
+      "seed": 22001,
+      "regime": "sparse",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-sparse-02",
+      "split": "train",
+      "seed": 22002,
+      "regime": "sparse",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-sparse-03",
+      "split": "train",
+      "seed": 22003,
+      "regime": "sparse",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-sparse-04",
+      "split": "train",
+      "seed": 22004,
+      "regime": "sparse",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "train-sparse-05",
+      "split": "train",
+      "seed": 22005,
+      "regime": "sparse",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-sparse-06",
+      "split": "train",
+      "seed": 22006,
+      "regime": "sparse",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-sparse-07",
+      "split": "train",
+      "seed": 22007,
+      "regime": "sparse",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-sparse-08",
+      "split": "train",
+      "seed": 22008,
+      "regime": "sparse",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "train-moderate-01",
+      "split": "train",
+      "seed": 22009,
+      "regime": "moderate",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-moderate-02",
+      "split": "train",
+      "seed": 22010,
+      "regime": "moderate",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-moderate-03",
+      "split": "train",
+      "seed": 22011,
+      "regime": "moderate",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-moderate-04",
+      "split": "train",
+      "seed": 22012,
+      "regime": "moderate",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "train-moderate-05",
+      "split": "train",
+      "seed": 22013,
+      "regime": "moderate",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-moderate-06",
+      "split": "train",
+      "seed": 22014,
+      "regime": "moderate",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-moderate-07",
+      "split": "train",
+      "seed": 22015,
+      "regime": "moderate",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-moderate-08",
+      "split": "train",
+      "seed": 22016,
+      "regime": "moderate",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "train-asymmetric-01",
+      "split": "train",
+      "seed": 22017,
+      "regime": "asymmetric",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-asymmetric-02",
+      "split": "train",
+      "seed": 22018,
+      "regime": "asymmetric",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-asymmetric-03",
+      "split": "train",
+      "seed": 22019,
+      "regime": "asymmetric",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-asymmetric-04",
+      "split": "train",
+      "seed": 22020,
+      "regime": "asymmetric",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "train-asymmetric-05",
+      "split": "train",
+      "seed": 22021,
+      "regime": "asymmetric",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "train-asymmetric-06",
+      "split": "train",
+      "seed": 22022,
+      "regime": "asymmetric",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "train-asymmetric-07",
+      "split": "train",
+      "seed": 22023,
+      "regime": "asymmetric",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "train-asymmetric-08",
+      "split": "train",
+      "seed": 22024,
+      "regime": "asymmetric",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "validation-sparse-01",
+      "split": "validation",
+      "seed": 22025,
+      "regime": "sparse",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "validation-sparse-02",
+      "split": "validation",
+      "seed": 22026,
+      "regime": "sparse",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "validation-sparse-03",
+      "split": "validation",
+      "seed": 22027,
+      "regime": "sparse",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "validation-sparse-04",
+      "split": "validation",
+      "seed": 22028,
+      "regime": "sparse",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "validation-moderate-01",
+      "split": "validation",
+      "seed": 22029,
+      "regime": "moderate",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "validation-moderate-02",
+      "split": "validation",
+      "seed": 22030,
+      "regime": "moderate",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "validation-moderate-03",
+      "split": "validation",
+      "seed": 22031,
+      "regime": "moderate",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "validation-moderate-04",
+      "split": "validation",
+      "seed": 22032,
+      "regime": "moderate",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "validation-asymmetric-01",
+      "split": "validation",
+      "seed": 22033,
+      "regime": "asymmetric",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "validation-asymmetric-02",
+      "split": "validation",
+      "seed": 22034,
+      "regime": "asymmetric",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "validation-asymmetric-03",
+      "split": "validation",
+      "seed": 22035,
+      "regime": "asymmetric",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "validation-asymmetric-04",
+      "split": "validation",
+      "seed": 22036,
+      "regime": "asymmetric",
+      "dispatch_s": 75,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "northeast-local"
+    },
+    {
+      "case_id": "test-sparse-01",
+      "split": "test",
+      "seed": 22037,
+      "regime": "sparse",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "test-sparse-02",
+      "split": "test",
+      "seed": 22038,
+      "regime": "sparse",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "test-sparse-03",
+      "split": "test",
+      "seed": 22039,
+      "regime": "sparse",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "test-sparse-04",
+      "split": "test",
+      "seed": 22040,
+      "regime": "sparse",
+      "dispatch_s": 75,
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "north-to-west-unseen"
+    },
+    {
+      "case_id": "test-moderate-01",
+      "split": "test",
+      "seed": 22041,
+      "regime": "moderate",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "test-moderate-02",
+      "split": "test",
+      "seed": 22042,
+      "regime": "moderate",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "test-moderate-03",
+      "split": "test",
+      "seed": 22043,
+      "regime": "moderate",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "test-moderate-04",
+      "split": "test",
+      "seed": 22044,
+      "regime": "moderate",
+      "dispatch_s": 75,
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "north-to-west-unseen"
+    },
+    {
+      "case_id": "test-asymmetric-01",
+      "split": "test",
+      "seed": 22045,
+      "regime": "asymmetric",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "test-asymmetric-02",
+      "split": "test",
+      "seed": 22046,
+      "regime": "asymmetric",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "test-asymmetric-03",
+      "split": "test",
+      "seed": 22047,
+      "regime": "asymmetric",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "test-asymmetric-04",
+      "split": "test",
+      "seed": 22048,
+      "regime": "asymmetric",
+      "dispatch_s": 75,
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "north-to-west-unseen"
+    },
+    {
+      "case_id": "test-heavy-01",
+      "split": "test",
+      "seed": 22049,
+      "regime": "heavy",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "test-heavy-02",
+      "split": "test",
+      "seed": 22050,
+      "regime": "heavy",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "test-heavy-03",
+      "split": "test",
+      "seed": 22051,
+      "regime": "heavy",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "test-heavy-04",
+      "split": "test",
+      "seed": 22052,
+      "regime": "heavy",
+      "dispatch_s": 75,
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "north-to-west-unseen"
+    },
+    {
+      "case_id": "test-heavy-05",
+      "split": "test",
+      "seed": 22053,
+      "regime": "heavy",
+      "dispatch_s": 60,
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "southwest-local"
+    },
+    {
+      "case_id": "test-heavy-06",
+      "split": "test",
+      "seed": 22054,
+      "regime": "heavy",
+      "dispatch_s": 90,
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "route_family": "cross-city-east"
+    },
+    {
+      "case_id": "test-heavy-07",
+      "split": "test",
+      "seed": 22055,
+      "regime": "heavy",
+      "dispatch_s": 120,
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "central-west"
+    },
+    {
+      "case_id": "test-heavy-08",
+      "split": "test",
+      "seed": 22056,
+      "regime": "heavy",
+      "dispatch_s": 75,
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "route_family": "north-to-west-unseen"
+    }
+  ],
+  "timing": {
+    "demand_end_s": 180,
+    "horizon_s": 360,
+    "drain_s": 2640,
+    "step_s": 0.5,
+    "sample_s": 5,
+    "sensor_lag_s": 1,
+    "recovery_window_s": [
+      60,
+      3000
+    ]
+  },
+  "budget": {
+    "max_episodes": 56,
+    "max_rollouts": 392,
+    "max_wall_time_s": 30000,
+    "rationale": "The clean-source matched city pilot at fa39f8a retained all84 audited worlds across12 groups; all84 completed, no infrastructure/audit failures. Full measured wall time was 4517.119780s, yielding 21079.892307s serial extrapolation for56 cases/392 worlds. The30000s whole-study split start allowance provides42.3% headroom for verification and machine variability; it is not a hard timeout or performance promise. Train24 and validation12 will use two independent single-worker collector processes with separate outputs/TraCI sockets and shared read-only frozen inputs; test20 is serial and starts only after one frozen selection/release. Pilot-based critical-path expectation is about4.6h plus verification overhead, leaving time inside the owner's7-10h overall window for final product QA/publication. The inventory includes an entirely held-out heavy regime and one actual ordered route family; all RNG seeds are unique, untouched22001-22056, excluding all pilot seeds and declared exploration7/8. One predeclared sparse test case retains six bounded private5s traces for cached-export acceptance; no public coarse demo is promised."
+  },
+  "civilian_weight": 1,
+  "analytical_config": {
+    "queue_headway_s": 2.0,
+    "transition_loss_s": 4.0,
+    "ordinary_cycle_s": 58.0,
+    "civilian_weight": 1.0,
+    "civilian_cost_scale": 1.0
+  },
+  "model_specification": {
+    "max_depth": 3,
+    "min_samples_leaf": 8
+  },
+  "illustrative_capture": {
+    "case_ids": [
+      "test-sparse-01"
+    ],
+    "max_world_bytes": 8388608,
+    "max_total_bytes": 50331648
+  },
+  "heldout_regimes": [
+    "heavy"
+  ],
+  "heldout_route_families": [
+    "north-to-west-unseen"
+  ]
+}
