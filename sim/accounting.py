@@ -111,7 +111,14 @@ def reconcile_tripinfo(ledger: Accounting, path) -> list[str]:
             ledger.inserted[vid] = departure
         if arrival >= 0:
             ledger.completed[vid] = arrival
-        if trip.get('vaporized', '') not in ('', 'false', '0'):
+        vaporized = trip.get('vaporized', '')
+        # SUMO 1.28 writes "end" for unfinished/undeparted vehicles flushed at
+        # the common endpoint. They remain running/not-inserted in our ledger
+        # and make the world censored, rather than a physical removal failure.
+        # Real removals (collision/TraCI/vaporizer/etc.) and an "end" marker on
+        # a claimed completed trip remain invalid.
+        unfinished_at_end = vaporized == 'end' and arrival == -1
+        if vaporized not in ('', 'false', '0') and not unfinished_at_end:
             reasons.append('vaporized_vehicle')
     if seen != set(ledger.scheduled):
         reasons.append('tripinfo_missing_scheduled_vehicle')

@@ -29,6 +29,34 @@ class AccountingTests(unittest.TestCase):
 
 
 class TripinfoTests(unittest.TestCase):
+    def test_end_marker_preserves_running_and_uninserted_censoring(self):
+        import tempfile
+        from pathlib import Path
+        from sim.accounting import reconcile_tripinfo
+        ledger=Accounting({key:{'type':'car','depart_s':0,'reference_s':10} for key in ('running','pending')})
+        ledger.depart(['running'],1.5)
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/'tripinfo.xml'
+            path.write_text('<tripinfos><tripinfo id="running" depart="1" arrival="-1" vaporized="end"/>'
+                            '<tripinfo id="pending" depart="-1" arrival="-1" vaporized="end"/></tripinfos>')
+            self.assertEqual(reconcile_tripinfo(ledger,path),[])
+        self.assertEqual(ledger.counts(),{'scheduled':2,'inserted':1,'completed':0,'running':1,'not_inserted':1})
+        self.assertIsNone(ledger.completed_civilian_mean_excess())
+
+    def test_real_removal_and_completed_end_marker_stay_invalid(self):
+        import tempfile
+        from pathlib import Path
+        from sim.accounting import reconcile_tripinfo
+        for marker,arrival in [('collision',-1),('traci',-1),('vaporizer',-1),('teleport',-1),('end',20)]:
+            ledger=Accounting({'car':{'type':'car','depart_s':0,'reference_s':10}})
+            ledger.depart(['car'],1)
+            if arrival>=0:ledger.arrive(['car'],arrival)
+            with tempfile.TemporaryDirectory() as directory:
+                path=Path(directory)/'tripinfo.xml'
+                path.write_text(f'<tripinfos><tripinfo id="car" depart="1" arrival="{arrival}" vaporized="{marker}"/></tripinfos>')
+                with self.subTest(marker=marker,arrival=arrival):
+                    self.assertIn('vaporized_vehicle',reconcile_tripinfo(ledger,path))
+
     def test_authoritative_times_replace_notification_times(self):
         import tempfile
         from pathlib import Path
