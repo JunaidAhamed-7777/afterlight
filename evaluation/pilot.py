@@ -69,6 +69,25 @@ def validate_plan(envelope: dict) -> dict:
     return plan
 
 
+class PilotAuditError(RuntimeError):
+    """Measured artifact failed required scientific-validity audit."""
+
+
+def audit_pilot_world(world: dict, network: dict, demand: dict, directory: Path, *, simulation_step_s: float) -> None:
+    """Audit dense evidence before discarding frames or assigning a finite target."""
+    from sim.audit import audit_world_signals, audit_lifecycle
+    try:
+        audit_world_signals(world,network,demand['dispatch_s'],simulation_step_s=simulation_step_s)
+        if world['frames'][-1]['t']!=world['metrics']['drain_end_s']:
+            raise ValueError('Per-world frames do not cover the common drain endpoint')
+        if world['status']!=world['metrics']['status']:
+            raise ValueError('World status contradicts metric status')
+        lifecycle=json.loads((directory/'lifecycle.json').read_text(encoding='utf-8'))
+        audit_lifecycle(demand,lifecycle,directory/'tripinfo.xml',world['metrics'])
+    except (ValueError,KeyError,TypeError,IndexError) as exc:
+        raise PilotAuditError(f'Per-world evidence audit failed: {exc}') from exc
+
+
 def execute_plan(envelope: dict, output: Path) -> dict:
     """The caller is responsible for running only on the authorized Omen machine."""
     plan = validate_plan(envelope)
@@ -106,8 +125,6 @@ def execute_plan(envelope: dict, output: Path) -> dict:
             scheduled = sum(v["id"] != "ambulance" for v in demand["vehicles"])
             case_rows = []
             for policy in plan["policies"]:
-                if source_snapshot() != source:
-                    raise RuntimeError("Source changed during pilot; retained completed attempts, remaining worlds unattempted")
                 name = policy["policy"] + (f"-{policy['lead_s']}" if policy["lead_s"] is not None else "")
                 world_dir = case_dir / name
                 identity = {"episode_id": case["id"], "demand_group_id": hashes["demand_group_id"],
@@ -115,35 +132,87 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                             "source_commit": manifest["source_commit"], "source_code_sha256": source["source_code_sha256"], "split": "pilot", "regime": case["regime"],
                             "seed": case["seed"], "policy": policy["policy"], "lead_s": policy["lead_s"]}
                 call_start = time.perf_counter()
+                world = None
+                dependencies_before = None
+                dependencies_after = None
+                runner_invoked = False
                 try:
+                    dependencies_before = dependency_versions()
+                    if source_snapshot() != source:
+                        raise RuntimeError("Source changed before pilot world; remaining simulations must not start")
+                    if dependencies_before != manifest["dependencies"]:
+                        raise RuntimeError("Dependencies changed before pilot world; mixed-runtime outcomes refused")
+                    runner_invoked = True
                     world = run_world(world_id=name, policy=policy["policy"], lead_s=policy["lead_s"] or 0,
                                       network_dir=netdir, demand_dir=case_dir / "demand", demand=demand, network=network,
                                       output=world_dir, horizon_s=case["horizon_s"], drain_s=case["drain_s"],
                                       step_s=plan["step_s"], sample_s=plan["sample_s"])
+                    dependencies_after = dependency_versions()
                     if source_snapshot() != source:
                         raise RuntimeError("Source changed while simulator was running; outcome not eligible as locked-source evidence")
+                    if dependencies_after != manifest["dependencies"]:
+                        raise RuntimeError("Dependencies changed during pilot world; outcome is not locked-runtime evidence")
+                    actual_sumo = world.get("sumo_version")
+                    if not isinstance(actual_sumo,str) or not actual_sumo:
+                        raise RuntimeError("Pilot world omitted actual SUMO version")
+                    if "sumo_version" not in manifest:
+                        manifest["sumo_version"] = actual_sumo
+                    elif actual_sumo != manifest["sumo_version"]:
+                        raise RuntimeError("SUMO version changed between pilot worlds; mixed-simulator outcomes refused")
+                    audit_pilot_world(world,network,demand,world_dir,simulation_step_s=plan["step_s"])
                     decision = world["decision"]
                     estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
-                    row = {**identity, **world["metrics"], "sumo_version": world["sumo_version"], "request_plan": decision["request_plan"],
+                    row = {**identity, **world["metrics"],
+                           "simulator_runtime_s":world["metrics"]["runtime_s"],
+                           "runtime_s":time.perf_counter()-call_start,
+                           "runtime_scope":"world execution, raw output and evidence audit; aggregate checkpoint I/O included in execution.runtime_total_s",
+                           "audit_status":"passed", "priority_deadline_audit":"passed", "dependencies":dependencies_after, "runner_invoked":True, "sumo_version": world["sumo_version"], "request_plan": decision["request_plan"],
                            "observation": decision["observation"],
                            "analytical_config_sha256": digest({"version": estimates["version"], "config": estimates["config"]}),
                            "analytical_cost_s": next((s["analytical_cost_s"] for s in estimates["scores"] if s["lead_s"] == policy["lead_s"]), None)}
                     # Release dense in-memory trajectories between worlds. Raw
                     # scalar/lifecycle/SUMO files remain in each world directory.
-                    del world
                 except Exception as error:
+                    if runner_invoked and dependencies_after is None:
+                        try:
+                            dependencies_after=dependency_versions()
+                        except Exception:
+                            # The original failure remains primary; absent
+                            # post-runtime metadata is explicit, never guessed.
+                            dependencies_after=None
                     failure_path = world_dir / "failure.json"
-                    failure = json.loads(failure_path.read_text(encoding="utf-8")) if failure_path.exists() else {}
-                    row = {**identity, "status": "infrastructure_error", "validity_reasons": [],
-                           "infrastructure_reason": str(error), "ambulance_journey_s": None, "civilian_mean_excess_s": None,
-                           "accounting": failure.get("accounting", {"scheduled": scheduled, "inserted": 0,
-                               "completed": 0, "running": 0, "not_inserted": scheduled}),
+                    try:
+                        failure = json.loads(failure_path.read_text(encoding="utf-8")) if failure_path.exists() else {}
+                    except (OSError,ValueError):
+                        failure = {}
+                    observed_metrics = world.get("metrics",{}) if world is not None else {}
+                    audit_failed = isinstance(error,PilotAuditError)
+                    row = {**identity, "status": "invalid" if audit_failed else "infrastructure_error",
+                           "validity_reasons": list(dict.fromkeys([*observed_metrics.get("validity_reasons",[]),
+                                                 *(["evidence_audit_failed"] if audit_failed else [])])),
+                           "audit_status":"failed" if audit_failed else "not_eligible",
+                           "accounting_unverified":True,
+                           "infrastructure_reason": None if audit_failed else str(error),
+                           "audit_reason":str(error) if audit_failed else None,
+                           "ambulance_journey_s":None,"civilian_mean_excess_s":None,
+                           "accounting": observed_metrics.get("accounting",failure.get("accounting", {"scheduled": scheduled, "inserted": 0,
+                               "completed": 0, "running": 0, "not_inserted": scheduled})),
                            "horizon_s": case["horizon_s"], "drain_end_s": case["horizon_s"] + case["drain_s"],
-                           "runtime_s": time.perf_counter() - call_start, "request_plan": None}
-                Accounting.from_mapping(row["accounting"])
+                           "runtime_s": time.perf_counter() - call_start,"request_plan":None,
+                           "runner_invoked":runner_invoked,"dependencies_before":dependencies_before,
+                           "dependencies_after":dependencies_after,
+                           "sumo_version":world.get("sumo_version") if world is not None else None,
+                           "raw_world_directory":str(world_dir.relative_to(output))}
+                # Frames are released only after the audit or retained-failure
+                # decision. Raw SUMO/lifecycle/outcome files are never deleted.
+                world = None
+                if row["audit_status"]=="passed":
+                    Accounting.from_mapping(row["accounting"])
                 rows.append(row)
                 case_rows.append(row)
                 write_json(output / "outcomes.json", rows)
+                if row["audit_status"] == "failed":
+                    raise PilotAuditError(f"Pilot stopped after invalid evidence in {case['id']}/{name}; raw outcome retained, remaining worlds unattempted")
                 if row["status"] == "infrastructure_error":
                     raise RuntimeError(f"Pilot stopped after infrastructure failure in {case['id']}/{name}; record retained, remaining worlds unattempted")
             ordinary = next(row for row in case_rows if row["policy"] == "ordinary")
@@ -161,11 +230,16 @@ def execute_plan(envelope: dict, output: Path) -> dict:
         write_json(output / "pilot-summary.json", report)
         return report
     except Exception as error:
-        manifest.update(status="infrastructure_error", reason=str(error))
+        manifest.update(status="invalid_evidence" if isinstance(error,PilotAuditError) else "infrastructure_error", reason=str(error))
         raise
     finally:
         manifest["recorded_worlds"] = len(rows)
-        manifest["unattempted_worlds"] = manifest["expected_worlds"] - len(rows)
+        manifest["runner_invocations"] = sum(bool(row.get("runner_invoked")) for row in rows)
+        manifest["preflight_rejected_worlds"] = sum(not row.get("runner_invoked",False) for row in rows)
+        manifest["unattempted_worlds"] = manifest["expected_worlds"] - manifest["runner_invocations"]
+        manifest["unrecorded_worlds"] = manifest["expected_worlds"] - len(rows)
+        manifest["audit_failed_worlds"] = sum(row.get("audit_status")=="failed" for row in rows)
+        manifest["infrastructure_failed_worlds"] = sum(row["status"]=="infrastructure_error" for row in rows)
         manifest["runtime_total_s"] = time.perf_counter() - started
         manifest["finished_utc"] = datetime.now(timezone.utc).isoformat()
         write_json(output / "execution.json", manifest)

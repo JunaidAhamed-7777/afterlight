@@ -17,10 +17,19 @@ def digest(value: object) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
-def validate_episode_inventory(protocol: Mapping) -> dict[str, Mapping]:
+def validate_episode_inventory(protocol: Mapping, *, require_regimes: bool = False) -> dict[str, Mapping]:
     inventory = protocol.get("episode_inventory")
     if not isinstance(inventory, list) or not inventory:
         raise ValueError("frozen protocol requires a complete episode inventory")
+    heldout = protocol.get("heldout_regimes", [])
+    if not isinstance(heldout, list) or not all(isinstance(regime, str) and regime for regime in heldout) or len(set(heldout)) != len(heldout):
+        raise ValueError("heldout_regimes must contain unique nonempty regime names")
+    # Legacy synthetic envelopes with no regime-holdout claim remain readable.
+    # All new freezes, any declared holdout, or any supplied regime metadata
+    # require a complete and consistent inventory rather than partial labels.
+    strict_regimes = require_regimes or bool(heldout) or any(isinstance(item, dict) and "regime" in item for item in inventory)
+    group_regimes: dict[str, str] = {}
+    represented_heldout = set()
     by_id = {}
     for item in inventory:
         if not isinstance(item, dict) or not {"episode_id", "demand_group_id", "split", "demand_sha256", "network_sha256", "dispatch_s"} <= item.keys():
@@ -31,7 +40,21 @@ def validate_episode_inventory(protocol: Mapping) -> dict[str, Mapping]:
         if item["episode_id"] in by_id or item["split"] not in {"train", "validation", "test"}:
             raise ValueError("duplicate episode id or invalid inventory split")
         finite(item["dispatch_s"], "inventory dispatch")
+        if strict_regimes:
+            regime = item.get("regime")
+            if not isinstance(regime, str) or not regime:
+                raise ValueError("every frozen inventory episode requires a nonempty regime")
+            group = item["demand_group_id"]
+            if group in group_regimes and group_regimes[group] != regime:
+                raise ValueError("one demand group cannot change regime across episode variants")
+            group_regimes[group] = regime
+            if regime in heldout:
+                if item["split"] != "test":
+                    raise ValueError(f"declared held-out regime {regime} appears outside test")
+                represented_heldout.add(regime)
         by_id[item["episode_id"]] = item
+    if set(heldout) != represented_heldout:
+        raise ValueError("every declared held-out regime must be represented in the test inventory")
     assert_disjoint(inventory, protocol["group_assignments"])
     if {item["demand_group_id"] for item in inventory} != set(protocol["group_assignments"]):
         raise ValueError("episode inventory must cover exactly all declared demand groups")
@@ -48,6 +71,8 @@ def assert_episode_coverage(rows: Sequence[Mapping], protocol: Mapping, split: s
         for key in ("demand_group_id", "split", "demand_sha256", "network_sha256"):
             if row.get(key) != item[key]:
                 raise ValueError(f"episode differs from frozen inventory: {key}")
+        if "regime" in item and row.get("regime") != item["regime"]:
+            raise ValueError("episode regime differs from frozen inventory")
         dispatch = row.get("dispatch_s", row.get("observation", {}).get("dispatch_s"))
         if dispatch != item["dispatch_s"]:
             raise ValueError("episode dispatch differs from frozen inventory")
@@ -93,7 +118,7 @@ def freeze_protocol(protocol: Mapping, destination: Path) -> dict:
         raise ValueError("duplicate feature names")
     if any(not isinstance(gid, str) or not gid for gid in protocol["group_assignments"]):
         raise ValueError("nonempty demand group identities required")
-    validate_episode_inventory(protocol)
+    validate_episode_inventory(protocol, require_regimes=True)
     envelope = {"sha256": digest(protocol), "protocol": dict(protocol)}
     # Exclusive creation avoids overwriting a frozen test contract accidentally.
     with destination.open("x", encoding="utf-8") as handle:

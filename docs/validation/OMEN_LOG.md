@@ -69,3 +69,30 @@ replacement for exact command logs, generated evidence or future reruns.
   QA independently of npm installation. They do not satisfy source-install/build
   reproducibility or simulator acceptance gates. Browser test harnesses also need
   the same safe default-flag exclusions used in the earlier capability check.
+
+## 2026-11-02, `ce29330` preview checkout (reported 23:55 UTC)
+
+- Exact-byte preview verification correctly stopped on a Windows CRLF mismatch;
+  preview unit checks reported three passed and one manifest error. The application
+  server and browser run did not proceed through a failed provenance gate.
+- The tester isolated 38 text mismatches (25 source, 12 output, canonical map JSON).
+  Every one matched the manifest after diagnostic CRLF-to-LF comparison; all ten
+  binary runtime assets matched their exact hashes. Checkout was clean with the
+  existing user-level `core.autocrlf=true` setting.
+- Both headed harnesses were inspected with sandbox enabled and all seven required
+  default-argument exclusions. This is harness inspection, not browser acceptance.
+- `b61bd9b` adds repository-scoped LF attributes and a targeted clean-input refresh;
+  the exact-byte manifest gate remains unchanged. Its actual Windows rerun is
+  pending. No global Git configuration change or simulation run is implied.
+
+## 2026-11-03, `b61bd9b` preview refresh (reported 00:08 UTC)
+
+- The targeted Git checkout command returned success but left all 38 CRLF text
+  inputs unchanged. Exact manifest verification failed again; preview checks were
+  three passed and one error. No server/browser run was accepted.
+- This exposed an incorrect helper assumption, not a hash-gate failure: a clean
+  checkout can be skipped by `checkout-index` even when force is requested.
+- `3f679de` replaces that mechanism with hash-verified indexed-byte extraction and
+  guarded atomic replacement, followed by exact file hashes and content-clean
+  postconditions. Its five mocked guards are authored; actual Omen execution of
+  the new helper and product browser acceptance remain pending.

@@ -166,6 +166,9 @@ def validate_timing_grid(step_s: float, timing: Timing | None = None) -> None:
     """
     if not math.isfinite(step_s) or step_s <= 0:
         raise ValueError('Simulation step must be finite and positive')
+    milliseconds = step_s * 1000
+    if not math.isfinite(milliseconds) or milliseconds < 1 or abs(milliseconds-round(milliseconds)) > 1e-9:
+        raise ValueError('Simulation step must use whole positive SUMO milliseconds')
     for name, duration in vars(timing or Timing()).items():
         ratio = duration / step_s
         if not math.isfinite(ratio) or abs(ratio-round(ratio)) > 1e-9:
@@ -319,7 +322,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                    'ambulance_journey_s': ledger.completed.get('ambulance', 0)-demand['dispatch_s'] if 'ambulance' in ledger.completed else None,
                    'civilian_mean_excess_s': ledger.completed_civilian_mean_excess() if status == 'completed' else None,
                    'accounting': counts, 'horizon_accounting': horizon_accounting,
-                   'horizon_s': horizon_s, 'drain_end_s': end_s, 'queue_samples': queue_samples,
+                   'horizon_s': horizon_s, 'drain_end_s': end_s, 'simulation_step_s': step_s, 'queue_samples': queue_samples,
                    'common_horizon_burden_vehicle_s': burden_vehicle_s,
                    'drain_burden_vehicle_s': drain_burden_vehicle_s,
                    'runtime_s': time.perf_counter()-started,
@@ -403,7 +406,7 @@ def run_pair(args) -> dict:
     scalar_rows = []
     for world in worlds.values():
         scalar_rows.append({'world_id':world['world_id'],'episode_id': episode_id, 'run_id': run_identity(episode_id,world['policy'],world['lead_s']), 'demand_group_id': hashes['demand_group_id'],
-            'split': args.split, 'policy': world['policy'], 'lead_s': world['lead_s'],
+            'split': args.split, 'regime': args.regime, 'policy': world['policy'], 'lead_s': world['lead_s'],
             **world['metrics'], 'demand_sha256': hashes['demand_sha256'],
             'network_sha256': network_manifest['network_sha256'], 'source_commit': provenance['source_commit'],
             'decision': world['decision'],

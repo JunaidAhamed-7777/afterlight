@@ -114,9 +114,17 @@ Numerical coordinate comparisons use 0.05 m tolerance; this is not a relaxation 
 the target-alignment gate. No generated lane/stop-line audit has yet run on Omen.
 
 Controller stage durations and maximum hold must be representable on the chosen
-simulation step; incompatible grids are rejected rather than rounding hard caps
+simulation step, which must also use whole positive SUMO milliseconds;
+incompatible grids are rejected rather than rounding hard caps
 upward. Frozen absolute requests can fall between ticks: activation occurs at the
 first tick at or after the planned timestamp. The absolute request-timeout check
 may likewise occur less than one step after its nominal deadline. Preserve both
 planned and actual event timestamps; do not retime the replay or label them equal.
 All priority variants use the same grid, controller, release and recovery logic.
+
+Numerical deadline comparisons use a fixed absolute 1 ns tie tolerance, smaller
+than the artifact audit tolerance and far below one simulation tick. This avoids
+a floating-point boundary postponing a cap by a whole tick; actual event
+timestamps are retained and meaningful early transitions remain prohibited.
+The supported grid follows [SUMO's documented time-step contract](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html),
+with additional exact-controller-duration divisibility required by AFTERLIGHT.

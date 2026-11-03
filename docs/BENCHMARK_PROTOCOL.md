@@ -70,3 +70,31 @@ Seeded randomness creates reproducible variation, not proof against overfitting.
 The ghost must replay the ordinary baseline's actual trajectory from its independent simulation, not a synthetic speed curve. Unit/integration checks assert no ghost ID in AFTERLIGHT simulation vehicles/detectors/priority events, equal absolute timestamps, matching input hashes, and identical exported pose to the baseline trace. Traffic responds to the solid ambulance only in AFTERLIGHT; baseline has its own ordinary signal/traffic evolution. Apparent ghost/visible-traffic overlap is a rendering explanation issue, never a reason to alter benchmark trajectories.
 
 Re-run the complete runtime pilot on the expanded graph before carrying over dataset or latency estimates. Twenty-five intersections, longer routes and randomized traffic can change both simulation cost and feature distribution. The three-junction result is a fixture result until expanded evaluation passes. Freeze any new route-conditioned features or variable-length action semantics before that test; prior review does not validate new model scope.
+
+## Executable pre-study gates
+
+Every newly frozen episode inventory records its demand regime as well as demand
+group, split, network/demand hashes and dispatch time. A declared held-out regime
+must be represented in test and absent from train/validation; dispatch variants
+within one demand group cannot relabel their regime. Candidate outcome rows must
+match that frozen inventory. Older synthetic unit envelopes with no regime
+metadata and no regime-holdout claim remain readable, but cannot be newly frozen
+under the stronger contract without the metadata.
+
+Pilot action diversity compares distinct frozen request schedules, not merely
+lead labels: clipping can make 20 s and 30 s the same action. Such duplicates must
+have identical measured outcomes; conflicting outcomes stop interpretation and
+retain raw evidence. A common best lead across all useful-margin episodes means
+there is still a single fixed action explaining those episodes, even if lowest-
+label tie representatives differ. This is exploratory diversity evidence, never
+held-out learned-selector gain.
+
+Before any pilot outcome receives a finite objective, its actual lifecycle and
+signal-event/frame evidence must pass the same pure checks used for paired
+artifacts. Freeze and recheck source and dependency metadata around every world;
+require one actual SUMO version across the pilot. A drift or evidence failure is
+retained, stops the pilot, and leaves remaining worlds explicitly unattempted.
+Report scheduled worlds, invoked simulations, preflight rejections, retained
+outcomes and failures separately. New world metrics record `simulation_step_s`;
+replay `step_s` is only the sampling cadence and must not be used as the simulator
+integration step when auditing request/hold deadlines.

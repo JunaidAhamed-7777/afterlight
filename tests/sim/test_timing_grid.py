@@ -20,6 +20,11 @@ class TimingGridTests(unittest.TestCase):
             with self.subTest(step=step), self.assertRaises(ValueError):
                 validate_timing_grid(step)
 
+    def test_submillisecond_or_fractional_millisecond_steps_are_rejected(self):
+        for step in (.0005, .3333):
+            with self.subTest(step=step), self.assertRaisesRegex(ValueError, 'milliseconds'):
+                validate_timing_grid(step)
+
     def test_custom_controller_duration_is_checked(self):
         with self.assertRaisesRegex(ValueError, 'max_hold_s'):
             validate_timing_grid(.5, Timing(max_hold_s=35.25))

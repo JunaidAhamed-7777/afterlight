@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from evaluation.metrics import Accounting, excess_queue_area, objective, verify_pair
-from evaluation.protocol import assert_episode_coverage, digest, freeze_protocol, pilot_summary
+from evaluation.protocol import assert_episode_coverage, digest, freeze_protocol, pilot_summary, validate_episode_inventory
 from evaluation.splits import assign_groups, assert_disjoint
 
 
@@ -108,7 +108,8 @@ class ProtocolTests(unittest.TestCase):
                 "invalid_rules": ["collision"], "heldout_regimes": [], "model_specification": {"max_depth": 3},
                 "analytical_estimator": {"version": "test-fixture", "config": {}},
                 "episode_inventory": [{"episode_id": f"e{i}", "demand_group_id": f"g{i}", "split": split,
-                    "demand_sha256": f"d{i}", "network_sha256": "n", "dispatch_s": 20}
+                    "demand_sha256": f"d{i}", "network_sha256": "n", "dispatch_s": 20,
+                    "regime": "heldout" if split == "test" else "ordinary"}
                     for i, split in enumerate(("train", "validation", "test"), start=1)]}
 
     def test_freeze_cannot_overwrite(self):
@@ -126,6 +127,45 @@ class ProtocolTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             assert_episode_coverage([original], protocol, "test")
         assert_episode_coverage([original, protocol["episode_inventory"][-1]], protocol, "test")
+
+    def test_new_freezes_require_regimes_but_old_no_holdout_envelopes_remain_readable(self):
+        protocol = self.protocol()
+        for item in protocol["episode_inventory"]:
+            del item["regime"]
+        assert_episode_coverage([protocol["episode_inventory"][0]], protocol, "train")
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "requires a nonempty regime"):
+                freeze_protocol(protocol, Path(directory) / "protocol.json")
+
+    def test_declared_heldout_regimes_are_complete_represented_and_test_only(self):
+        protocol = self.protocol()
+        protocol["heldout_regimes"] = ["heldout"]
+        validate_episode_inventory(protocol)
+        for split_index in (0, 1):
+            invalid = self.protocol()
+            invalid["heldout_regimes"] = ["heldout"]
+            invalid["episode_inventory"][split_index]["regime"] = "heldout"
+            with self.subTest(split=invalid["episode_inventory"][split_index]["split"]):
+                with self.assertRaisesRegex(ValueError, "outside test"):
+                    validate_episode_inventory(invalid)
+        del protocol["episode_inventory"][0]["regime"]
+        with self.assertRaisesRegex(ValueError, "requires a nonempty regime"):
+            validate_episode_inventory(protocol)
+        protocol = self.protocol()
+        protocol["heldout_regimes"] = ["never-generated"]
+        with self.assertRaisesRegex(ValueError, "must be represented"):
+            validate_episode_inventory(protocol)
+
+    def test_regime_metadata_cannot_drift_within_group_or_after_freeze(self):
+        protocol = self.protocol()
+        first = protocol["episode_inventory"][0]
+        protocol["episode_inventory"].append({**first, "episode_id": "e1-late", "demand_sha256": "d1-late", "regime": "other"})
+        with self.assertRaisesRegex(ValueError, "cannot change regime"):
+            validate_episode_inventory(protocol)
+        protocol = self.protocol()
+        row = {**protocol["episode_inventory"][-1], "regime": "ordinary"}
+        with self.assertRaisesRegex(ValueError, "regime differs"):
+            assert_episode_coverage([row], protocol, "test")
 
     def test_freeze_rejects_missing_feature_provenance(self):
         protocol = self.protocol()

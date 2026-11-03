@@ -4,11 +4,12 @@ import argparse
 import bisect
 import json
 import hashlib
+import math
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from export.replay import validate_replay
 from sim.network import read_network, sha256, write_json
-from policies.scheduler import Timing
+from policies.scheduler import Timing, TIME_EPSILON_S
 from sim.accounting import Accounting, reconcile_tripinfo
 
 
@@ -74,6 +75,138 @@ def audit_ordinary_negative_control(replay: dict) -> bool:
     return True
 
 
+def audit_world_signals(world: dict, network: dict, dispatch_s: float, *, simulation_step_s: float | None = None) -> dict:
+    """Pure per-world legal-transition, frozen-plan and sampled-state audit."""
+    name=world.get('world_id',world['policy'])
+    timing=Timing()
+    tolerance=1e-8  # Absolute numerical tolerance, never a whole simulation tick.
+    recorded_step=world.get('metrics',{}).get('simulation_step_s')
+    for candidate in (simulation_step_s,recorded_step):
+        if candidate is not None and (isinstance(candidate,bool) or not isinstance(candidate,(int,float)) or not math.isfinite(candidate) or candidate<=0):
+            raise ValueError(f'{name}: invalid integration-step provenance')
+    if simulation_step_s is not None and recorded_step is not None and simulation_step_s!=recorded_step:
+        raise ValueError(f'{name}: explicit integration step disagrees with recorded metadata')
+    step=simulation_step_s if simulation_step_s is not None else recorded_step
+    last_event_time={}
+    event_groups={junction:[] for junction in network['signals']}
+    for event in world['events']:
+        t=event.get('t')
+        if isinstance(t,bool) or not isinstance(t,(int,float)) or not math.isfinite(t) or t<0:
+            raise ValueError(f'{name}: event timestamp must be finite and nonnegative')
+        junction=event.get('junction')
+        if junction is None:
+            continue
+        if junction not in event_groups:
+            raise ValueError(f'{name}: event names unknown signal junction {junction}')
+        if t<last_event_time.get(junction,-1):
+            raise ValueError(f'{name}/{junction}: event timestamps are not monotonic')
+        last_event_time[junction]=t
+        event_groups[junction].append(event)
+        for field in ('phase','target'):
+            if field in event:
+                phase=event[field]
+                if isinstance(phase,bool) or not isinstance(phase,int) or not 0<=phase<len(network['signals'][junction]['greens']):
+                    raise ValueError(f'{name}/{junction}: invalid integer phase index')
+        if event['kind']=='green' and 'phase' not in event:
+            raise ValueError(f'{name}/{junction}: green event lacks phase index')
+    for junction,events in event_groups.items():
+        for kind in ('request_planned','request','priority_green','release'):
+            if sum(event['kind']==kind for event in events)>1:
+                raise ValueError(f'{name}/{junction}: duplicate {kind} event')
+    frames=world.get('frames',[])
+    if not frames or frames[0].get('t')!=0:
+        raise ValueError(f'{name}: signal audit requires frames starting at zero')
+    previous=-1.0
+    for frame in frames:
+        if isinstance(frame['t'],bool) or not isinstance(frame['t'],(int,float)) or not math.isfinite(frame['t']) or frame['t']<=previous:
+            raise ValueError(f'{name}: frame timestamps must be finite and strictly increasing')
+        previous=frame['t']
+    if any(event['t']>frames[-1]['t'] for event in world['events']):
+        raise ValueError(f'{name}: event occurs after recorded endpoint')
+    if world['policy'] == 'ordinary' and any(e['kind'] in ('request_planned','request','priority_green','recovery_requested') for e in world['events']):
+        raise ValueError('Ordinary baseline contains priority/recovery events')
+    plan = world['decision']['request_plan']
+    planned = {e['junction']:e['request_at_s'] for e in world['events'] if e['kind']=='request_planned'}
+    if planned != plan:
+        raise ValueError(f'{name}: request events differ from frozen dispatch plan')
+    for junction, signal in network['signals'].items():
+        events = [e for e in world['events'] if e.get('junction') == junction and e['kind'] in ('green','yellow','all_red')]
+        if not events or events[0]['t'] != 0 or events[0]['kind'] != 'green':
+            raise ValueError(f'{name}/{junction}: missing initial green')
+        for previous, event in zip(events, events[1:]):
+            expected_next = {'green':'yellow','yellow':'all_red','all_red':'green'}[previous['kind']]
+            minimum = {'green':timing.min_green_s,'yellow':timing.yellow_s,'all_red':timing.all_red_s}[previous['kind']]
+            if event['kind'] != expected_next or event['t']-previous['t'] < minimum-1e-8:
+                raise ValueError(f'{name}/{junction}: illegal or too-short transition {previous} -> {event}')
+        times = [e['t'] for e in events]
+        active_phase = 0
+        state_by_event = []
+        for event in events:
+            if event['kind'] == 'green':
+                active_phase = event['phase']
+                state = signal['greens'][active_phase]
+            elif event['kind'] == 'yellow':
+                state = ''.join('y' if c in 'gG' else 'r' for c in signal['greens'][active_phase])
+            else:
+                state = 'r'*len(signal['greens'][active_phase])
+            state_by_event.append(state)
+        for frame in world['frames']:
+            expected = state_by_event[bisect.bisect_right(times,frame['t'])-1]
+            matching=[s['state'] for s in frame['signals'] if s['id']==junction]
+            if len(matching)!=1:
+                raise ValueError(f'{name}/{junction}: missing or duplicate sampled signal')
+            actual=matching[0]
+            if actual != expected:
+                raise ValueError(f'{name}/{junction}: frame/event signal mismatch at {frame["t"]}')
+    for junction,events in event_groups.items():
+        by_kind={event['kind']:event for event in events if event['kind'] in ('request_planned','request','priority_green','release')}
+        planned_event=by_kind.get('request_planned')
+        if planned_event is None:
+            if by_kind:
+                raise ValueError(f'{name}/{junction}: priority activity has no frozen plan')
+            continue
+        request_at=planned_event.get('request_at_s')
+        if isinstance(request_at,bool) or not isinstance(request_at,(int,float)) or not math.isfinite(request_at) or request_at<planned_event['t']-tolerance or planned_event['t']<dispatch_s-tolerance:
+            raise ValueError(f'{name}/{junction}: invalid frozen request timestamp')
+        request_event=by_kind.get('request')
+        onset=by_kind.get('priority_green')
+        release=by_kind.get('release')
+        if request_event is not None:
+            if request_event['t']<request_at-tolerance:
+                raise ValueError(f'{name}/{junction}: request happened before its frozen due time')
+            if request_event.get('phase')!=planned_event.get('phase'):
+                raise ValueError(f'{name}/{junction}: request phase differs from frozen plan')
+        if onset is not None:
+            if request_event is None or onset['t']<request_event['t']-tolerance:
+                raise ValueError(f'{name}/{junction}: priority green precedes its request')
+            if onset.get('phase')!=planned_event.get('phase'):
+                raise ValueError(f'{name}/{junction}: priority green differs from requested phase')
+        if release is not None and (release['t']<planned_event['t']-tolerance or (onset is not None and release['t']<onset['t']-tolerance)):
+            raise ValueError(f'{name}/{junction}: release precedes plan or priority onset')
+        if step is not None:
+            endpoint=frames[-1]['t']
+            quantized=lambda t:math.ceil((t-TIME_EPSILON_S)/step)*step
+            # The runner explicitly advances every controller at the common
+            # endpoint before capturing the final frame. Endpoint deadlines
+            # therefore require their activation/release evidence too.
+            if request_event is None and quantized(request_at)<=endpoint+tolerance and (release is None or release['t']>=request_at-tolerance):
+                raise ValueError(f'{name}/{junction}: due priority request was never issued')
+            if request_event is not None and request_event['t']>quantized(request_at)+tolerance:
+                raise ValueError(f'{name}/{junction}: request exceeded integration-step quantization')
+            if request_event is not None:
+                deadline=quantized(request_at+timing.request_timeout_s)
+                if (release is None and endpoint>=deadline-tolerance) or (release is not None and release['t']>deadline+tolerance):
+                    raise ValueError(f'{name}/{junction}: priority request exceeded release timeout')
+            if onset is not None:
+                # Validated integration grids divide the hold duration; do
+                # not grant an additional whole step to a green hold.
+                deadline=onset['t']+timing.max_hold_s
+                if (release is None and endpoint>=deadline-tolerance) or (release is not None and release['t']>deadline+tolerance):
+                    raise ValueError(f'{name}/{junction}: priority green exceeded maximum hold')
+    return {'priority_deadline_audit':'passed' if step is not None else 'not_checked_missing_integration_step',
+            'simulation_step_s':step}
+
+
 def audit(directory: Path, *, write_result: bool = True) -> dict:
     replay = json.loads((directory/'replay.json').read_text(encoding='utf-8'))
     validate_replay(replay)
@@ -88,41 +221,9 @@ def audit(directory: Path, *, write_result: bool = True) -> dict:
     if sha256(demand_path)!=replay['provenance']['demand_manifest_sha256']:
         raise ValueError('Retained demand manifest differs from provenance')
     demand=json.loads(demand_path.read_text(encoding='utf-8'))
-    timing = Timing()
     checks = []
     for name, world in replay['worlds'].items():
-        if name == 'baseline' and any(e['kind'] in ('request_planned','request','priority_green','recovery_requested') for e in world['events']):
-            raise ValueError('Ordinary baseline contains priority/recovery events')
-        plan = world['decision']['request_plan']
-        planned = {e['junction']:e['request_at_s'] for e in world['events'] if e['kind']=='request_planned'}
-        if planned != plan:
-            raise ValueError(f'{name}: request events differ from frozen dispatch plan')
-        for junction, signal in network['signals'].items():
-            events = [e for e in world['events'] if e.get('junction') == junction and e['kind'] in ('green','yellow','all_red')]
-            if not events or events[0]['t'] != 0 or events[0]['kind'] != 'green':
-                raise ValueError(f'{name}/{junction}: missing initial green')
-            for previous, event in zip(events, events[1:]):
-                expected_next = {'green':'yellow','yellow':'all_red','all_red':'green'}[previous['kind']]
-                minimum = {'green':timing.min_green_s,'yellow':timing.yellow_s,'all_red':timing.all_red_s}[previous['kind']]
-                if event['kind'] != expected_next or event['t']-previous['t'] < minimum-1e-8:
-                    raise ValueError(f'{name}/{junction}: illegal or too-short transition {previous} -> {event}')
-            times = [e['t'] for e in events]
-            active_phase = 0
-            state_by_event = []
-            for event in events:
-                if event['kind'] == 'green':
-                    active_phase = event['phase']
-                    state = signal['greens'][active_phase]
-                elif event['kind'] == 'yellow':
-                    state = ''.join('y' if c in 'gG' else 'r' for c in signal['greens'][active_phase])
-                else:
-                    state = 'r'*len(signal['greens'][active_phase])
-                state_by_event.append(state)
-            for frame in world['frames']:
-                expected = state_by_event[bisect.bisect_right(times,frame['t'])-1]
-                actual = next(s['state'] for s in frame['signals'] if s['id'] == junction)
-                if actual != expected:
-                    raise ValueError(f'{name}/{junction}: frame/event signal mismatch at {frame["t"]}')
+        signal_audit=audit_world_signals(world,network,replay['scenario']['dispatch_s'])
         lifecycle=json.loads((directory/name/'lifecycle.json').read_text(encoding='utf-8'))
         audit_lifecycle(demand,lifecycle,directory/name/'tripinfo.xml',world['metrics'])
         counts = world['metrics']['accounting']
@@ -130,10 +231,7 @@ def audit(directory: Path, *, write_result: bool = True) -> dict:
             raise ValueError(f'{name}: demand accounting does not reconcile')
         if world['status'] == 'completed' and (counts['running'] or counts['not_inserted'] or world['metrics']['ambulance_journey_s'] is None):
             raise ValueError(f'{name}: falsely completed run')
-        for event in world['events']:
-            if event['kind'] == 'request_planned' and event['t'] < replay['scenario']['dispatch_s']:
-                raise ValueError(f'{name}: priority planned before dispatch')
-        checks.append({'world':name,'signal_transition_and_frame_alignment':'passed',
+        checks.append({'world':name,**signal_audit,'signal_transition_and_frame_alignment':'passed',
                        'demand_reconciliation':'passed','raw_tripinfo_metric_agreement':'passed','status':world['status']})
     negative_control=audit_ordinary_negative_control(replay)
     audit_outcomes(replay,json.loads((directory/'outcomes.json').read_text(encoding='utf-8')))

@@ -9,6 +9,19 @@ from dataclasses import dataclass, field
 import math
 
 
+# Absolute numerical tie tolerance only: one nanosecond, below the artifact
+# audit's 1e-8 s tolerance and far below SUMO's millisecond time resolution.
+# It must never scale with duration or stand in for a simulation tick. Boundary
+# events retain the actual caller timestamp; meaningful early transitions are
+# still prohibited. This avoids a binary-float subtraction delaying a cap by
+# an entire tick when the intended legal deadline has already been reached.
+TIME_EPSILON_S = 1e-9
+
+
+def deadline_reached(now: float, start: float, duration: float = 0.0) -> bool:
+    return now - start >= duration - TIME_EPSILON_S
+
+
 @dataclass(frozen=True)
 class Timing:
     min_green_s: float = 8.0
@@ -110,23 +123,22 @@ class Scheduler:
         q = queues if queues is not None else [0.0] * len(self.greens)
         if len(q) != len(self.greens) or any(not math.isfinite(x) or x < 0 for x in q):
             raise ValueError("One finite nonnegative queue observation per phase required")
-        elapsed = now - self.entered_s
         req = self.request
-        active = req is not None and not req.released and now >= req.at_s
+        active = req is not None and not req.released and deadline_reached(now, req.at_s)
         if active and not any(e['kind'] == 'request' for e in self.events):
             self._event(now, "request", phase=req.phase)
-        if req is not None and not req.released and (passed or (active and now - req.at_s >= self.timing.request_timeout_s)):
+        if req is not None and not req.released and (passed or (active and deadline_reached(now, req.at_s, self.timing.request_timeout_s))):
             req.released = True
             self.recovering = active or req.onset_s is not None
             self._event(now, "release", reason="passage" if passed else "request_timeout")
             active = False
         if self.stage == "yellow":
-            if elapsed >= self.timing.yellow_s:
+            if deadline_reached(now, self.entered_s, self.timing.yellow_s):
                 self.stage, self.entered_s = "all_red", now
                 self._event(now, "all_red")
             return self.state
         if self.stage == "all_red":
-            if elapsed >= self.timing.all_red_s:
+            if deadline_reached(now, self.entered_s, self.timing.all_red_s):
                 self.phase, self.stage, self.entered_s = self.target, "green", now
                 self.last_served[self.phase] = now
                 self.in_recovery_service = self.target_recovery
@@ -141,14 +153,14 @@ class Scheduler:
             if req.onset_s is None:
                 req.onset_s = now
                 self._event(now, "priority_green", phase=self.phase)
-            if now - req.onset_s >= self.timing.max_hold_s:
+            if deadline_reached(now, req.onset_s, self.timing.max_hold_s):
                 req.released = True
                 self.recovering = True
                 active = False
                 self._event(now, "release", reason="max_hold")
             else:
                 return self.state
-        if elapsed < self.timing.min_green_s:
+        if not deadline_reached(now, self.entered_s, self.timing.min_green_s):
             return self.state
         if active:
             self._begin_change(now, req.phase)
@@ -156,6 +168,6 @@ class Scheduler:
             self.recovering = False
             self._begin_change(now, self._recovery_phase(now, q), recovery=True)
             self._event(now, "recovery_requested", phase=self.target)
-        elif elapsed >= (self.timing.recovery_green_s if self.in_recovery_service else self.timing.ordinary_green_s):
+        elif deadline_reached(now, self.entered_s, self.timing.recovery_green_s if self.in_recovery_service else self.timing.ordinary_green_s):
             self._begin_change(now, (self.phase + 1) % len(self.greens))
         return self.state
