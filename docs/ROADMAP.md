@@ -12,7 +12,7 @@ The original asset pack is published and verified: 25 primary junctions plus 32 
 
 Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
 
-## Updated progress — November 3, 13:05 IST
+## Updated progress — November 3, 14:10 IST
 
 Desktop remains the sole optimization/test target (`AGENTS.md`). Real 3D geometry,
 selective building fading and low-poly instanced civilian traffic are retained.
@@ -34,8 +34,22 @@ teleports, running or uninserted vehicles. Signal/recovery, geometry alignment,
 demand/tripinfo and causality audits passed. This qualifies the recorded case,
 not every city route or regime.
 
-Next: inspect actual city replay/ghost rendering alignment; complete one real local-generation API
-flow; then measure pilot throughput/action diversity and freeze a feasible study.
+At `3060716`, 37 scoped Python and 90 Node checks passed. The genuine replay
+harness passed at 61, 61.5 and 242 s, complementing separate manual matrix/world
+checks at 205, 207 and 220 s. The corrected lowest tyre contact was
+0.180000007 m, matching the authored road surface. Twelve screenshots showed
+good gross road placement; exact stop-line and sub-centimetre visual alignment
+are not certified. Evidence-preservation retries passed without changing originals.
+
+The next requested desktop UI pass is explicit: keep the **3D viewport and
+playback fixed on the right**, with **settings and evidence independently
+scrolling on the left**. Provide greater camera zoom, legible per-link
+intersection signals, and reliable ambulance follow through pause, scrub and
+world switching. These are priorities under implementation, not accepted
+features. Preserve the existing live `5293ae0` demo; validate the new cohort
+separately. No mobile optimization/testing is added.
+
+Next: accept that desktop UI cohort and complete one real local-generation API flow; then measure pilot throughput/action diversity and freeze a feasible study.
 The public recording catalog remains empty. No trained model, held-out result or
 measured benefit is claimed. Keep the November 4 submission buffer; cut experiment
 breadth before correctness or an honest browser-recorded demonstration.
@@ -48,7 +62,7 @@ Documentation checkpoint → three-junction legal scheduler and accounting → c
 |---|---|
 | During transport gaps | Preserve existing attempts and all failed/unknown evidence; continue scoped source work and documentation. No cloud testing, training or invented replay. The latest V3/map-picking/offline-evidence preview source and exact hashes are in `preview/manifest.json`; later source changes do not inherit its build. |
 | Source continuity | The existing sparse-city journal resolved successfully; no active process remained. Do not pull source underneath any future active run. Current unit/build/desktop and scoped traffic gates passed at `11be524`; rerun affected gates after later code changes. |
-| Traffic and visual acceptance | Fixed fixture, ordinary/ordinary control and the sparse-city pair qualified at `11be524`, including automated alignment audits. Actual rendered city lane/stop-line and replay/ghost alignment remain separate browser gates. |
+| Traffic and visual acceptance | Fixed fixture, ordinary/ordinary control and the sparse-city pair qualified at `11be524`, including automated alignment audits. Genuine replay matrix/ghost and corrected numerical road-contact checks passed at `3060716`; exact stop-line/sub-centimetre visual alignment remains uncertified. |
 | Experiment feasibility | Measure runtime and useful lead diversity. Freeze feasible whole-realization splits, objective, model-selection rules and capture case IDs before collection. The source-implemented offline selected-replay bridge must pass acceptance using actual captured traces, preserving original fixed-candidate physics and separate selector provenance; it is not a live learned controller. |
 | Evaluation and replay | Only after valid collection: fit on training, choose on validation, freeze, evaluate untouched test. Retain invalid/censored cases and publish only audited real captures. No held-out gain means an honest inconclusive/non-learned result. |
 | Nov 4, by 13:00 | Capture the actual desktop product/demo and truthful results or limitations; reconcile reproduction, attribution, licensing and evidence links. Reduce experiment breadth before correctness. |

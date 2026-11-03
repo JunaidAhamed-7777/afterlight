@@ -321,7 +321,7 @@ qualification-run duration, not a benchmark or rendering performance measure.
   This is a scoped follow-up, not a replacement for the full `11be524` journal.
 - The new real-replay harness stopped before playback: its direct recording
   selection was disabled because the default journey went to Westhaven while
-  the genuine recording went to Eastgate. The product's normal **Open available
+  the genuine recording went to HOSP_EAST (Eastbank). The product's normal **Open available
   recording** action selected the correct route. Harness-only fix `5dad4cb`
   uses that action and still asserts the exact recorded identity; rerun pending.
 - A separate normal-UI inspection of the retained `11be524` city pair at absolute
@@ -339,3 +339,28 @@ qualification-run duration, not a benchmark or rendering performance measure.
   do not silently promote the earlier comparison into an end-of-test guarantee.
 - No demo promotion, simulator rerun, pilot, training or held-out evaluation
   occurred in this checkpoint. Original failed harness evidence is retained.
+
+
+## 2026-11-03, `3060716` corrected genuine replay and preservation (reported 08:40 UTC)
+
+Corrected preview compiled source: `975dd29`. This is scoped acceptance, not a
+new full unit/network/traffic cohort or a policy experiment.
+
+- **37 Python and 90 Node checks passed**. The genuine replay harness passed at
+  absolute times **61, 61.5 and 242 s**, including fractional playback and actual
+  solid/ghost matrices and world-switch isolation. The earlier separate manual
+  checks at 205, 207 and 220 s remain distinct evidence. No browser errors arose.
+- The measured lowest tyre contact was **0.180000007 m**, matching the authored
+  road height. Twelve screenshots supported good gross road placement. This
+  does **not** certify exact stop-line or sub-centimetre visual alignment.
+- The previously incomplete preservation check now passed: both evidence copies
+  matched all **109 original files**; **243 tracked files**, source HEAD and index
+  were unchanged. This closes the earlier approval/transport-related comparison
+  gap without deleting its historical record.
+- The existing read-only `5293ae0` demo on ports **5180/8765** was untouched;
+  corrected `3060716` staging used **5181**. No demo promotion or simulator rerun
+  occurred. HOSP_EAST is Eastbank; the earlier prose name Eastgate was corrected,
+  with no change to the recording's stable hospital ID.
+- No ML dependencies were installed. A real local-generation API lifecycle,
+  pilot throughput/action diversity, training and held-out evaluation remain
+  pending. These rendering checks do not establish model or policy benefit.

@@ -61,8 +61,8 @@ city worlds still had 21 and 20 running civilians; the common drain is essential
 Ambulance journeys were 210.5 s baseline and 182.5 s priority in this one
 exploratory pair, not an aggregate policy-benefit estimate.
 
-Actual rendered city replay/ghost alignment, a real local-generation API job,
-pilot throughput/diversity and all learned evaluation remain open gates. The
+A real local-generation API job, pilot throughput/diversity and all learned
+evaluation remain open gates. Scoped real-replay rendering results follow below. The
 public recording catalog remains empty; no performance benefit is claimed.
 The [compiled preview](../preview/README.md) permits separate browser acceptance
 without npm installation, but does not waive the source-build or simulator gates.
@@ -73,10 +73,31 @@ At `5293ae0`, 64 Python and 89 Node checks plus the local production build
 passed. Separate normal-UI checks of the real city recording at 205, 207 and
 220 seconds confirmed solid/ghost matrices and world-switch isolation without
 browser errors. The new automated harness failed at its journey-filtered
-selection step; `5dad4cb` corrects that entry flow, with rerun pending.
-Approximately 5 cm tyre penetration was observed across 48 contacts. Corrected
-road contact, fractional interpolation and precise stop-line/vertical visual
-acceptance remain unverified. See the log for evidence-preservation limitations.
+selection step; `5dad4cb` corrected that entry flow. Approximately 5 cm tyre
+penetration was observed across 48 contacts at that earlier checkpoint.
+
+At corrected preview `3060716` (compiled source `975dd29`), **37 Python and 90
+Node checks passed**. The genuine replay harness passed at 61, 61.5 and 242 s,
+including fractional playback and actual solid/ghost matrix and world-isolation
+checks, without browser errors. The lowest tyre contact was 0.180000007 m,
+matching the road surface. Twelve screenshots supported gross road placement;
+exact stop-line and sub-centimetre visual alignment are not certified.
+
+The preservation retry passed for both 109-file evidence copies and all 243
+tracked files; original source HEAD/index were unchanged. The read-only `5293ae0`
+demo remained on ports 5180/8765, while corrected staging used 5181. No promotion
+or new simulation is implied. No ML dependency was installed; real API generation,
+pilot and learned evaluation remain pending. Historical failures stay in the log.
+
+## Requested next desktop UI cohort — not yet accepted
+
+The owner requested a viewport-fixed **right-hand 3D view and playback**, with
+**left-hand settings/evidence scrolling independently**. The same pass must add
+greater zoom, legible per-link intersection signals, and robust ambulance follow
+when pausing, scrubbing or switching worlds. Frontend/camera work is in progress;
+this section records requested behavior, not implementation or test completion.
+Preserve the live `5293ae0` demo while a separate new cohort is built and accepted
+on Omen. Desktop remains the sole optimization/test target.
 
 ## First imported-city geometry audit
 
@@ -125,7 +146,7 @@ responsive behavior without starting mobile-specific work.
 The map allowance is 25 MB; the current enhanced GLB is 4,439,048 bytes according
 to its asset manifest. Low-poly instanced vehicles and the original canonical
 coordinate system remain unchanged. Source/unit/desktop checks passed at
-`11be524`; real city traffic playback still needs acceptance.
+`11be524`; the later scoped genuine-playback checks at `3060716` are recorded above.
 
 The offline selected-replay provenance bridge is implemented in source, including
 bounded predeclared trace capture, frozen-report verification, original-candidate
