@@ -75,6 +75,106 @@ def audit_ordinary_negative_control(replay: dict) -> bool:
     return True
 
 
+def audit_paired_dispatch(replay: dict) -> dict:
+    """Check shared history and frozen causal inputs, never refit a predictor.
+
+    Dispatch-boundary signal states may differ legitimately. Only samples and
+    events strictly before dispatch are compared. Unknown future policy labels
+    still receive the common-history audit, with timing coverage explicit.
+    """
+    tolerance = 1e-8
+
+    def number(value, name: str) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ValueError(f'{name}: expected a finite nonnegative number')
+        try:
+            valid = math.isfinite(value) and value >= 0
+        except OverflowError:
+            valid = False
+        if not valid:
+            raise ValueError(f'{name}: expected a finite nonnegative number')
+        return value
+
+    dispatch = number(replay['scenario']['dispatch_s'], 'dispatch')
+    worlds = replay['worlds']
+    if set(worlds) != {'baseline', 'afterlight'} or worlds['baseline']['policy'] != 'ordinary':
+        raise ValueError('Paired dispatch audit requires an ordinary baseline and separate AFTERLIGHT world')
+    histories = {}
+    decisions = {}
+    timing_checks = {}
+    for name in ('baseline', 'afterlight'):
+        world = worlds[name]
+        history = {}
+        for field in ('frames', 'events'):
+            history[field] = [row for row in world[field]
+                              if number(row.get('t'), f'{name}/{field} timestamp') < dispatch]
+        histories[name] = history
+        decision = world.get('decision')
+        if not isinstance(decision, dict) or decision.get('kind') != 'dispatch':
+            raise ValueError(f'{name}: missing frozen dispatch decision')
+        if abs(number(decision.get('t'), f'{name}/decision time') - dispatch) > tolerance:
+            raise ValueError(f'{name}: decision was not frozen at dispatch')
+        if decision.get('policy') != world['policy']:
+            raise ValueError(f'{name}: decision/world policy identity differs')
+        dispatch_events = [event for event in world['events'] if event.get('kind') == 'dispatch']
+        if dispatch_events != [decision]:
+            raise ValueError(f'{name}: dispatch event differs from the unique frozen decision')
+        observation = decision.get('observation')
+        if not isinstance(observation, dict):
+            raise ValueError(f'{name}: missing dispatch observation')
+        if number(observation.get('dispatch_s'), f'{name}/observation dispatch') != dispatch:
+            raise ValueError(f'{name}: observation belongs to another dispatch')
+        lag = number(observation.get('sensor_lag_s'), f'{name}/sensor lag')
+        observed = number(observation.get('observed_at_s'), f'{name}/observation time')
+        if observed > dispatch - lag + 1e-9:
+            raise ValueError(f'{name}: observation violates declared causal sensor lag')
+        # Validate the stable observation schema only, not any predictor/model
+        # version. Zero lag is an existing supported runner contract: the
+        # dispatch observation still precedes this world's priority action.
+        from models.residual import DEFAULT_FEATURES, feature_vector
+        feature_vector(observation, 0, 0, DEFAULT_FEATURES)
+        etas = decision.get('absolute_etas')
+        plan = decision.get('request_plan')
+        if not isinstance(etas, dict) or not isinstance(plan, dict):
+            raise ValueError(f'{name}: frozen ETA/request maps required')
+        for junction, eta in etas.items():
+            if not isinstance(junction, str) or not junction or number(eta, f'{name}/absolute ETA') < dispatch:
+                raise ValueError(f'{name}: ETA must be absolute and at or after dispatch')
+        for junction, timestamp in plan.items():
+            if not isinstance(junction, str) or not junction:
+                raise ValueError(f'{name}: invalid request junction')
+            number(timestamp, f'{name}/request time')
+        policy = world['policy']
+        expected = None
+        if policy == 'ordinary':
+            expected = {}
+        elif policy == 'immediate':
+            expected = {junction: dispatch for junction in etas}
+        elif policy in ('fixed', 'analytical'):
+            from policies.timing import LEADS
+            lead = decision.get('selected_lead_s')
+            if isinstance(lead, bool) or lead not in LEADS or world.get('lead_s') != lead:
+                raise ValueError(f'{name}: frozen selected lead/world lead mismatch')
+            expected = {junction: max(dispatch, eta - lead) for junction, eta in etas.items()}
+        if expected is not None:
+            if set(plan) != set(expected) or any(abs(plan[junction] - timestamp) > tolerance
+                                               for junction, timestamp in expected.items()):
+                raise ValueError(f'{name}: request plan differs from frozen dispatch/ETA/lead formula')
+            timing_checks[name] = 'passed'
+        else:
+            timing_checks[name] = 'not_checked_for_policy'
+        decisions[name] = decision
+    if histories['baseline'] != histories['afterlight']:
+        raise ValueError('Paired worlds differ before dispatch intervention')
+    for field in ('observation', 'absolute_etas'):
+        if decisions['baseline'][field] != decisions['afterlight'][field]:
+            raise ValueError(f'Paired dispatch {field} differ before policy selection')
+    return {'shared_pre_dispatch_history': 'passed', 'shared_causal_observation_and_etas': 'passed',
+            'pre_dispatch_frames': len(histories['baseline']['frames']),
+            'pre_dispatch_events': len(histories['baseline']['events']),
+            'frozen_request_timing': timing_checks}
+
+
 def audit_world_signals(world: dict, network: dict, dispatch_s: float, *, simulation_step_s: float | None = None) -> dict:
     """Pure per-world legal-transition, frozen-plan and sampled-state audit."""
     name=world.get('world_id',world['policy'])
@@ -233,11 +333,13 @@ def audit(directory: Path, *, write_result: bool = True) -> dict:
             raise ValueError(f'{name}: falsely completed run')
         checks.append({'world':name,**signal_audit,'signal_transition_and_frame_alignment':'passed',
                        'demand_reconciliation':'passed','raw_tripinfo_metric_agreement':'passed','status':world['status']})
+    paired_dispatch=audit_paired_dispatch(replay)
     negative_control=audit_ordinary_negative_control(replay)
     audit_outcomes(replay,json.loads((directory/'outcomes.json').read_text(encoding='utf-8')))
     result = {'schema':'afterlight.audit.v1','run_id':replay['scenario']['id'],
               'replay_sha256':sha256(directory/'replay.json'),'checks':checks,
               'scalar_table_agreement':'passed',
+              'paired_dispatch_causality':paired_dispatch,
               'ordinary_negative_control':'passed' if negative_control else 'not_this_policy',
               'scope':'Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority'}
     if write_result:

@@ -65,3 +65,15 @@ If the large `eclipse-sumo` wheel cannot be retrieved, use the verified official
 ### Independent-world negative control
 
 Before interpreting a priority benefit, run a fresh fixture pair with `--policy ordinary`, then `python -m sim.audit --run <that-run-directory>`. Both independent worlds must have exactly matching frames, control events, observations and metrics except wall-clock runtime. The audit asserts this automatically for ordinary/ordinary pairs. Passing this checks repeatability/world initialization; it is not evidence of policy improvement or real-world safety.
+
+### Frozen dispatch causality
+
+Every paired artifact audit also checks identical frames/events strictly before
+dispatch, identical lagged observations and absolute junction ETAs, and one
+matching frozen dispatch decision per world. Dispatch-boundary and later states
+may diverge because the controllers are independent. Ordinary control has no
+request plan; immediate requests start at dispatch; fixed/analytical requests
+use `max(dispatch, absolute_eta - selected_lead)` (zero lead is not immediate).
+Zero sensor lag remains supported only for the pre-action observation. Unknown
+future policy labels report timing coverage as not checked rather than silently
+passing it. This is an artifact-consistency gate, not proof of traffic benefit.
