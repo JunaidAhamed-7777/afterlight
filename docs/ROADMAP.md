@@ -14,6 +14,8 @@
 
 5. **Final release — complete.** The illustrated README and corrected 81.28 s native walkthrough are published. [All eleven source stages](validation/final-source-acceptance.json) passed: 664 executed Python tests, 139 Node tests, five explicit Python skips and both network conversions. The [63-file release](validation/final-production-release.json) totals 46,958,509 bytes. [Final public acceptance](validation/production-hosting-final-acceptance.json) verifies every served byte, real Study proof, native video playback/seeking and first-use controls at the READY production deployment. Earlier failed attempts remain retained with their scope and corrections.
 
+6. **Journey/Algorithm follow-up — published.** Reveal defaults ON per fresh visit. The prominent journey disclosure locks and blurs all selection controls until the visible Leave action is pressed; keyboard focus and left-pane scroll are deliberate. Results → Algorithm shows source-backed Dijkstra/shared roads, signal policy and recorded-pose display. [The accepted update](validation/journey-algorithm-release.json) retains all 11 source stages (664 Python and 147 Node tests passed; five skips), 18 paused camera pairs, real public interaction checks and 63 exact hosted files totaling 46,973,555 bytes. Original scientific evidence is unchanged.
+
 The public site replays cached evidence. It does not host SUMO, train models or control live traffic. Keep all historical roadmap sections below, and preserve every original journal and failed attempt without relabeling it as later acceptance.
 
 ## Historical roadmap and acceptance checkpoints

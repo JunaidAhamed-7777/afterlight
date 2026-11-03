@@ -1,6 +1,36 @@
 # AFTERLIGHT — current handoff
 
-## Current release checkpoint — November 4, 2026
+## Current desktop update — November 4, 2026
+
+The requested follow-up is published at [the public lab](https://afterlight-gamma.vercel.app/).
+Street reveal starts enabled on every fresh visit and resets after reload. The
+prominent journey disclosure sits above Current run; selecting a recording locks
+and blurs every pickup/search/hospital/map control, including during loading.
+**Leave recording & explore** stays above the blur, unlocks the fields and focuses
+search. Opening the disclosure scrolls only the left pane to expose the action.
+
+Results now has **This run / Study / Algorithm**. Algorithm identifies the
+reviewed distance-based Dijkstra implementation, exact ordered shared route,
+independent signal policies and recorded-pose display. Exact edges, reference
+lengths, coordinate conversion, interpolation and source links are available;
+unknown source versions and missing metadata remain explicit.
+
+[The release record](docs/validation/journey-algorithm-release.json) binds the
+63-file, 46,973,555-byte deployment to source `4126b4f` and its frozen inventory.
+All eleven source stages passed: 664 Python and 147 Node cases, five explicit Python skips,
+and both network conversions. Local and real public browser checks cover both
+hospitals, keyboard unlock, loading cancellation and the unchanged Study.
+Camera checks retain 18 identical paused pairs at two desktop profiles; default
+and reload reveal faded 3 of 826 buildings. Fresh qualified 30-second rendering windows
+measured 152.5 FPS overview / 129.7 FPS follow; timed endpoint fades were zero.
+
+The deployment is `dpl_3Pfq8rkYRbmUEq8AFoXrtfwRwHdU`; all 63 anonymously hosted
+files match the accepted build. Compiled public/local previews verify. Source,
+raw journals, prior failures, original scientific proof and previous measurements
+remain retained. No required work remains for this follow-up. The 81-second video is
+labeled as the earlier release; current screenshots show these new controls.
+
+## Previous release checkpoint — November 4, 2026
 
 AFTERLIGHT is a desktop replay and evidence product. The expanded city has exactly four times its original area, 81 primary intersections, 826 original Blender buildings, 100 pickup anchors and two hospitals in diagonal quadrants. Cars, bikes and trucks follow recorded SUMO traffic. The fixed right viewport holds camera and playback controls; Simulation, Results and Settings scroll independently on the left. Loading, cancellation, onboarding, dual follow, actual-model legends and 10×/20× playback have scoped desktop acceptance.
 

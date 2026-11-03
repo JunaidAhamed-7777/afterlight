@@ -65,7 +65,7 @@ The current build, with street reveal enabled, recorded **152.5 FPS overview / 1
 
 Complete warm Python selection across five candidates measured **0.2241 ms median / 0.2512 ms p95** for the learned method, versus **0.0429 / 0.0549 ms** analytical. That is 2,400 repeated decisions per method across 12 validation observations, excluding I/O, startup, simulation, browser and network. [Original timing samples](docs/validation/study-v4/selector-timing.json)
 
-The complete 63-file release is **46.97 MB**, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer. [Current feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Original release inventory](docs/validation/final-production-release.json)
+The complete 63-file release is **46.97 MB**, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer. [Current release inventory](docs/validation/journey-algorithm-release.json)
 
 ## Verify the experiment
 
@@ -79,7 +79,7 @@ python scripts/verify_public_study.py --base-url https://afterlight-gamma.vercel
 
 The verifier checks original bytes, full world inventories, frozen choices, failures, per-case rows and confidence intervals. [Public verification instructions](docs/STUDY_BROWSER_ACCEPTANCE.md) · [Publication record](docs/validation/study-v4/publication.json)
 
-The current source run passed **664 Python and 147 Node tests**, with five explicit Python skips. Both fixture and city network conversions passed. Desktop checks cover the journey lock, exact routing evidence, keyboard navigation, loading cancellation and default street reveal. [Current source checks and skip reasons](docs/validation/journey-algorithm-source-acceptance.json) · [Desktop feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Original public deployment checks](docs/validation/production-hosting-final-acceptance.json)
+The current source run passed **664 Python and 147 Node tests**, with five explicit Python skips. Both fixture and city network conversions passed. Desktop checks cover the journey lock, exact routing evidence, keyboard navigation, loading cancellation and default street reveal. [Current source checks and skip reasons](docs/validation/journey-algorithm-source-acceptance.json) · [Desktop feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Current public deployment checks](docs/validation/journey-algorithm-hosting.json)
 
 ## Run locally
 
