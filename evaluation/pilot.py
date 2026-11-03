@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import json
+import hashlib
 import re
 from pathlib import Path
 import platform
@@ -133,6 +134,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                             "seed": case["seed"], "policy": policy["policy"], "lead_s": policy["lead_s"]}
                 call_start = time.perf_counter()
                 world = None
+                signal_hash = None
                 dependencies_before = None
                 dependencies_after = None
                 runner_invoked = False
@@ -159,6 +161,11 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                         manifest["sumo_version"] = actual_sumo
                     elif actual_sumo != manifest["sumo_version"]:
                         raise RuntimeError("SUMO version changed between pilot worlds; mixed-simulator outcomes refused")
+                    signal_evidence = {key: world[key] for key in ('policy','status','decision','metrics','events')}
+                    signal_evidence['frames'] = [{'t':frame['t'],'signals':frame['signals']} for frame in world['frames']]
+                    signal_path = world_dir/'signal-audit-input.json'
+                    write_json(signal_path,signal_evidence)
+                    signal_hash = hashlib.sha256(signal_path.read_bytes()).hexdigest()
                     audit_pilot_world(world,network,demand,world_dir,simulation_step_s=plan["step_s"])
                     decision = world["decision"]
                     estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
@@ -166,7 +173,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                            "simulator_runtime_s":world["metrics"]["runtime_s"],
                            "runtime_s":time.perf_counter()-call_start,
                            "runtime_scope":"world execution, raw output and evidence audit; aggregate checkpoint I/O included in execution.runtime_total_s",
-                           "audit_status":"passed", "priority_deadline_audit":"passed", "dependencies":dependencies_after, "runner_invoked":True, "sumo_version": world["sumo_version"], "request_plan": decision["request_plan"],
+                           "signal_audit_input_sha256":signal_hash, "audit_status":"passed", "priority_deadline_audit":"passed", "dependencies":dependencies_after, "runner_invoked":True, "sumo_version": world["sumo_version"], "request_plan": decision["request_plan"],
                            "observation": decision["observation"],
                            "analytical_config_sha256": digest({"version": estimates["version"], "config": estimates["config"]}),
                            "analytical_cost_s": next((s["analytical_cost_s"] for s in estimates["scores"] if s["lead_s"] == policy["lead_s"]), None)}
@@ -190,6 +197,7 @@ def execute_plan(envelope: dict, output: Path) -> dict:
                     row = {**identity, "status": "invalid" if audit_failed else "infrastructure_error",
                            "validity_reasons": list(dict.fromkeys([*observed_metrics.get("validity_reasons",[]),
                                                  *(["evidence_audit_failed"] if audit_failed else [])])),
+                           "signal_audit_input_sha256":signal_hash,
                            "audit_status":"failed" if audit_failed else "not_eligible",
                            "accounting_unverified":True,
                            "infrastructure_reason": None if audit_failed else str(error),
