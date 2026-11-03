@@ -1,0 +1,250 @@
+{
+  "schema": "afterlight.study-negative-browser-acceptance.v1",
+  "recorded_utc": "2026-11-03T12:18:23.251405+00:00",
+  "status": "passed_scoped_negative_flows",
+  "positive_study_evidence_loaded": false,
+  "fabricated_positive_metrics": false,
+  "artifact": "local-runtime/study-negative-02/report.json",
+  "artifact_sha256": "1d1e04c2df2c4fbdf538241ad1fd5d9715c8e75707608514ceac60c6173ccab0",
+  "build": {
+    "manifest_file_sha256": "9c20993d7780b05da6b5a5acfe9bdf9f7800229feaf4577e0bccd8a2593a593c",
+    "source_inventory_sha256": "690fd59ad1fca70f76298d4f46bc65faf743fd456ba3293cab2c6c7fb9704411",
+    "git_head_at_freeze": "a36599d16e637d1ad906e88b0661539497d4d118",
+    "source_files_stable_at_freeze": true,
+    "served_file_count": 29,
+    "served_bytes": 37097284,
+    "bundles": [
+      "assets/CityView-ByQ4e6a1.js",
+      "assets/index-CdLo48_Q.css",
+      "assets/index-Crq7ClJn.js",
+      "assets/recording.worker-DdqdYQIB.js"
+    ],
+    "served_before": {
+      "files": 29,
+      "bytes": 37097284,
+      "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+    },
+    "served_after": {
+      "files": 29,
+      "bytes": 37097284,
+      "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+    }
+  },
+  "browser_version": "156.0.8078.80",
+  "viewport_css": [
+    1440,
+    810
+  ],
+  "device_pixel_ratio": 1,
+  "genuine_recording": {
+    "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "bytes": 72828179
+  },
+  "preserved_recording_state": {
+    "title": "Cross-city response",
+    "time": "180.5",
+    "playLabel": "Play recording",
+    "world": "Afterlight",
+    "ambulanceFollow": "true",
+    "ghostFollow": "false",
+    "cameraTarget": "-668.38,1.5,318.5918",
+    "zoom": "12",
+    "stage": {
+      "x": 352,
+      "y": 60,
+      "width": 1088,
+      "height": 750
+    },
+    "document": [
+      1440,
+      810
+    ],
+    "viewport": [
+      1440,
+      810
+    ]
+  },
+  "case_count": 16,
+  "cases": [
+    {
+      "case": "actual-unpublished404-and-retry",
+      "native_response_404": true,
+      "no_eager_fetch": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "initial_error_did_not_steal_Study_tab_focus": true,
+      "keyboard_retry_focus_restored": true
+    },
+    {
+      "case": "malformed-manifest",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study manifest is not valid JSON. Retry after the publication is corrected.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "schema-invalid-manifest",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study evidence has an invalid manifest fields.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "oversized-manifest",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study manifest exceeds its 16 KiB size limit. Retry after the publication is corrected.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "byte-count-mismatch",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study summary byte count does not match its manifest. Retry after the publication completes.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "checksum-mismatch",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study summary checksum does not match its manifest. Retry after the publication completes.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "malformed-summary",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study summary is not valid JSON. Retry after the publication is corrected.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "schema-invalid-summary",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "The study evidence has an invalid summary fields.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "missing-summary",
+      "deliberate_invalid_GET_response_only": true,
+      "visible_error": "Study summary request failed (404). Retry the study.",
+      "readable_study_specific_copy": true,
+      "no_placeholder_metrics": true,
+      "genuine_recording_preserved": true,
+      "focus_after_retry": {
+        "tag": "BUTTON",
+        "text": "Retry study",
+        "retryFocused": true
+      }
+    },
+    {
+      "case": "initial-summary-error-does-not-steal-focus",
+      "Study_tab_remains_focused": true,
+      "no_placeholder_metrics": true
+    },
+    {
+      "case": "retry-manifest-does-not-steal-outside-focus",
+      "actual_Tab_navigation_count": 10,
+      "outside_Follow_control_remains_focused": true,
+      "no_placeholder_metrics": true
+    },
+    {
+      "case": "retry-summary-does-not-steal-outside-focus",
+      "actual_Tab_navigation_count": 10,
+      "outside_Follow_control_remains_focused": true,
+      "no_placeholder_metrics": true
+    },
+    {
+      "case": "cancel-manifest-via-This run",
+      "actual_fetch_signal_aborted": true,
+      "no_late_study_UI": true,
+      "genuine_recording_clock_follow_camera_preserved": true
+    },
+    {
+      "case": "cancel-manifest-via-Simulation",
+      "actual_fetch_signal_aborted": true,
+      "no_late_study_UI": true,
+      "genuine_recording_clock_follow_camera_preserved": true
+    },
+    {
+      "case": "cancel-summary-via-This run",
+      "actual_fetch_signal_aborted": true,
+      "no_late_study_UI": true,
+      "genuine_recording_clock_follow_camera_preserved": true
+    },
+    {
+      "case": "cancel-summary-via-Simulation",
+      "actual_fetch_signal_aborted": true,
+      "no_late_study_UI": true,
+      "genuine_recording_clock_follow_camera_preserved": true
+    }
+  ],
+  "native_unpublished_response": {
+    "url": "http://127.0.0.1:5200/study/manifest.json",
+    "status": 404,
+    "accept": "application/json"
+  },
+  "page_error_count": 0,
+  "browser_POST_count": 0,
+  "pixel_review": {
+    "result": "passed_scoped_layout",
+    "files": [
+      "actual-404-unpublished.png",
+      "schema-invalid-summary.png"
+    ],
+    "observed": "At1440x810 the Study empty/error states remain clear, keyboard Retry focus is visible, no metric placeholders appear, and the real map/playback controls remain visible."
+  },
+  "history": {
+    "artifact": "local-runtime/study-negative-01/report.json",
+    "artifact_sha256": "29d17950b988e8f16e45e3c7c80d489ddbe03276efeb23b9bb7a412847423d58",
+    "status": "passed_core_Study_negative_flows_with_UI_polish_findings",
+    "findings_fixed_in_current_cohort": [
+      "Keyboard Retry focus restoration",
+      "Readable study-specific parser and size failure copy"
+    ]
+  },
+  "scope": "Initial404 is the actual served unpublished manifest with Accept application/json. Later fault injection replaces only isolated GETs with missing or invalid publication bytes, never a valid study summary. Real paused recording, clock, world, follow target and camera remain unchanged. Positive actual-report validation and final whole-product polish are separate pending gates."
+}
