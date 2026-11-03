@@ -1,0 +1,322 @@
+{
+  "schema": "afterlight.heavy-presentation-supplemented-review.v1",
+  "status": "passed_with_original_route_supplement",
+  "scope": "Read-only review of the existing exploratory heavy API pair, both censored at900s. This is presentation validation, not completed traffic performance or a safety certificate.",
+  "original_job_id": "62b6c50631914272a909e4066529d17b",
+  "original_auditor_exit_code": 1,
+  "original_auditor_status": "failed_closed_three_mixed_lane_movements_without_authoritative_route_metadata",
+  "original_auditor_report": {
+    "bytes": 9308,
+    "sha256": "b110b75f6920fb69a425fbdd4f233d9d588c1968d0193ba02476dea22c3d8705"
+  },
+  "original_auditor_report_unchanged": true,
+  "reviewed_crossings": 10747,
+  "classified_red_or_all_red_crossings": 0,
+  "mixed_lane_crossings_resolved_with_original_route": [
+    {
+      "world": "afterlight",
+      "vehicle": "civilian_00256",
+      "type": "car",
+      "crossing_time_s": 116.36134,
+      "incoming_edge": "V00_0_F",
+      "next_route_edge": "H10_0_F",
+      "original_connection": {
+        "from": "V00_0_F",
+        "to": "H10_0_F",
+        "fromLane": "0",
+        "toLane": "0",
+        "via": ":J10_4_0",
+        "tl": "J10",
+        "linkIndex": "4",
+        "dir": "r",
+        "state": "O"
+      },
+      "recorded_signal_state": "rrGGGr",
+      "controlled_link_index": 4,
+      "movement_state": "G",
+      "conclusion": "original route uniquely selects the green controlled link"
+    },
+    {
+      "world": "afterlight",
+      "vehicle": "civilian_00788",
+      "type": "truck",
+      "crossing_time_s": 188.18864,
+      "incoming_edge": "V00_0_F",
+      "next_route_edge": "H10_0_F",
+      "original_connection": {
+        "from": "V00_0_F",
+        "to": "H10_0_F",
+        "fromLane": "0",
+        "toLane": "0",
+        "via": ":J10_4_0",
+        "tl": "J10",
+        "linkIndex": "4",
+        "dir": "r",
+        "state": "O"
+      },
+      "recorded_signal_state": "rrGGGr",
+      "controlled_link_index": 4,
+      "movement_state": "G",
+      "conclusion": "original route uniquely selects the green controlled link"
+    },
+    {
+      "world": "baseline",
+      "vehicle": "civilian_00256",
+      "type": "car",
+      "crossing_time_s": 116.36134,
+      "incoming_edge": "V00_0_F",
+      "next_route_edge": "H10_0_F",
+      "original_connection": {
+        "from": "V00_0_F",
+        "to": "H10_0_F",
+        "fromLane": "0",
+        "toLane": "0",
+        "via": ":J10_4_0",
+        "tl": "J10",
+        "linkIndex": "4",
+        "dir": "r",
+        "state": "O"
+      },
+      "recorded_signal_state": "rrGGGr",
+      "controlled_link_index": 4,
+      "movement_state": "G",
+      "conclusion": "original route uniquely selects the green controlled link"
+    }
+  ],
+  "source_files": {
+    "demand/demand.rou.xml": {
+      "bytes": 242620,
+      "sha256": "4b6494f0744acfa136d7efdc404156b3898bfe00bb6452e4ed7ae75079c4d3c9"
+    },
+    "network/network.net.xml": {
+      "bytes": 1101984,
+      "sha256": "229d768d67dc589716b8799e338a8f9f1bc574544952d07f4fcb189494658b6f"
+    }
+  },
+  "worlds": {
+    "afterlight": {
+      "status": "censored",
+      "policy": "fixed",
+      "stats": {
+        "crossings": 5375,
+        "crossingsByVehicleType": {
+          "car": 3639,
+          "bike": 1172,
+          "truck": 563,
+          "ambulance": 1
+        },
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 2,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 5373,
+        "yellowMovements": 93
+      },
+      "red": [],
+      "ambiguous": [
+        {
+          "stopLine": [
+            -878.38,
+            -670.5
+          ],
+          "incomingVector": [
+            0,
+            1
+          ],
+          "vehicle": "civilian_00256",
+          "type": "car",
+          "junction": "J10",
+          "fromLane": "V00_0_F_0",
+          "linkIndices": [
+            4,
+            5
+          ],
+          "t": 116.36134,
+          "interval": [
+            116,
+            116.5
+          ],
+          "alpha": 0.72269,
+          "leftSpeed": 6.4903,
+          "rightSpeed": 6.4523,
+          "beforeDistance": 2.3246,
+          "afterDistance": 0.892,
+          "crossingPoint": [
+            -878.28569,
+            -670.5
+          ],
+          "exactState": "rrGGGr",
+          "laneStates": "Gr",
+          "leftPose": [
+            -878.38,
+            -672.8246,
+            0
+          ],
+          "rightPose": [
+            -878.2495,
+            -669.608,
+            1.703
+          ],
+          "classification": "mixed_movement_states_without_authoritative_vehicle_lane_or_route_metadata"
+        },
+        {
+          "stopLine": [
+            -878.38,
+            -670.5
+          ],
+          "incomingVector": [
+            0,
+            1
+          ],
+          "vehicle": "civilian_00788",
+          "type": "truck",
+          "junction": "J10",
+          "fromLane": "V00_0_F_0",
+          "linkIndices": [
+            4,
+            5
+          ],
+          "t": 188.18864,
+          "interval": [
+            188,
+            188.5
+          ],
+          "alpha": 0.37728,
+          "leftSpeed": 6.5949,
+          "rightSpeed": 6.4409,
+          "beforeDistance": 1.207,
+          "afterDistance": 1.9922,
+          "crossingPoint": [
+            -878.27002,
+            -670.5
+          ],
+          "exactState": "rrGGGr",
+          "laneStates": "Gr",
+          "leftPose": [
+            -878.38,
+            -671.707,
+            0
+          ],
+          "rightPose": [
+            -878.0885,
+            -668.5078,
+            2.3256
+          ],
+          "classification": "mixed_movement_states_without_authoritative_vehicle_lane_or_route_metadata"
+        }
+      ]
+    },
+    "baseline": {
+      "status": "censored",
+      "policy": "ordinary",
+      "stats": {
+        "crossings": 5372,
+        "crossingsByVehicleType": {
+          "car": 3635,
+          "bike": 1170,
+          "truck": 566,
+          "ambulance": 1
+        },
+        "exactTimelineSignals": 77,
+        "totalSignals": 77,
+        "allRedJunction": 0,
+        "allLaneMovementsRed": 0,
+        "inferredMovementRed": 0,
+        "ambiguousMixedRed": 1,
+        "unclassifiedWithoutTimeline": 0,
+        "greenOrYellowOrOff": 5371,
+        "yellowMovements": 96
+      },
+      "red": [],
+      "ambiguous": [
+        {
+          "stopLine": [
+            -878.38,
+            -670.5
+          ],
+          "incomingVector": [
+            0,
+            1
+          ],
+          "vehicle": "civilian_00256",
+          "type": "car",
+          "junction": "J10",
+          "fromLane": "V00_0_F_0",
+          "linkIndices": [
+            4,
+            5
+          ],
+          "t": 116.36134,
+          "interval": [
+            116,
+            116.5
+          ],
+          "alpha": 0.72269,
+          "leftSpeed": 6.4903,
+          "rightSpeed": 6.4523,
+          "beforeDistance": 2.3246,
+          "afterDistance": 0.892,
+          "crossingPoint": [
+            -878.28569,
+            -670.5
+          ],
+          "exactState": "rrGGGr",
+          "laneStates": "Gr",
+          "leftPose": [
+            -878.38,
+            -672.8246,
+            0
+          ],
+          "rightPose": [
+            -878.2495,
+            -669.608,
+            1.703
+          ],
+          "classification": "mixed_movement_states_without_authoritative_vehicle_lane_or_route_metadata"
+        }
+      ]
+    }
+  },
+  "recording": {
+    "id": "city-heavy-11010-8bde2df198dbf8f2-fixed-20-0d63fcec4c36-dt0p5",
+    "title": "Existing heavy exploratory API job \u2014 presentation review only",
+    "physicalBytes": 157189187,
+    "physicalSha256": "e7c0ac997fcca51b2a25ea73f291d4b0d563dc0c4264fe273892ef0f71272adc",
+    "decodedBytes": 157189187,
+    "decodedSha256": "e7c0ac997fcca51b2a25ea73f291d4b0d563dc0c4264fe273892ef0f71272adc",
+    "duration_s": 900,
+    "step_s": 0.5,
+    "sourceCommit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+    "networkSha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+    "demandSha256": "4b6494f0744acfa136d7efdc404156b3898bfe00bb6452e4ed7ae75079c4d3c9"
+  },
+  "audit_source_sha256": "df7bb43bd4570593abe936b30f13ed0e7afe1d7e09a8ec96a73317566322ac32",
+  "signal_timeline_source_sha256": "bdf0336adbb425af20f2a8bc12af06b4c43877e05677474ccab914f9d71d374b",
+  "limits": {
+    "mode": "explicit_local_only",
+    "physicalBytes": 268435456,
+    "decodedJsonBytes": 268435456,
+    "publicViewerLimitsChanged": false
+  },
+  "preservation": {
+    "schema": "afterlight.heavy-presentation-preservation.v1",
+    "checked_utc": "2026-11-03T18:07:05.829627+00:00",
+    "original_job_files": 26,
+    "original_client_files": 3,
+    "original_restart_proof_unchanged": true,
+    "before_inventory_sha256": "164e85d8ebb6d7868393b33abf10387470fe48cc41d24a705b6df9679d1c79b4",
+    "after_inventory_sha256": "36fbe18cb7a53fe2650e1f115486808be8f000615afd51f70b26fcceafb3fa83",
+    "all_original_bytes_unchanged": true,
+    "staging_copy_exact": true,
+    "auditor_exit_code": 1,
+    "auditor_status": "failed_closed_three_unresolved_mixed_lane_crossings",
+    "auditor_report": {
+      "bytes": 9308,
+      "sha256": "b110b75f6920fb69a425fbdd4f233d9d588c1968d0193ba02476dea22c3d8705"
+    },
+    "scope": "Existingexploratory900scensored pair. No simulation, model fit or rerun; zero classified red/allred crossings is not a pass while three movements remain unresolved."
+  }
+}
