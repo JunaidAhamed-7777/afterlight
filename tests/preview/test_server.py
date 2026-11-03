@@ -42,7 +42,13 @@ class PreviewPaths(unittest.TestCase):
         self.assertTrue(container.startswith(b'\xef\xbb\xbf'))
         locked = json.loads((ROOT / 'web/package-lock.json').read_bytes())['packages']
         self.assertNotIn(b'\r', container)
-        self.assertEqual(container.count(b'Permission is hereby granted'), 5)
+        inter_heading = b'===== Inter variable font (OFL-1.1) =====\n\n'
+        self.assertEqual(container.count(inter_heading), 1)
+        mit_notices, inter_notice = container.split(inter_heading)
+        self.assertEqual(mit_notices.count(b'Permission is hereby granted'), 5)
+        inter_license = (ROOT / 'web/public/fonts/Inter-LICENSE.txt').read_bytes()
+        self.assertEqual(container.count(inter_license), 1)
+        self.assertTrue(inter_notice.startswith(inter_license), 'The full original Inter OFL must remain verbatim under its heading')
         self.assertIn(b'does not specify a license for AFTERLIGHT source code or original assets', container)
         for notice, package in (('react', 'react'), ('react-dom', 'react-dom'),
                                 ('scheduler', 'scheduler'), ('three', 'three'), ('vite-runtime', 'vite')):
@@ -50,8 +56,8 @@ class PreviewPaths(unittest.TestCase):
                 original = (ROOT / f'preview/licenses/{notice}-LICENSE.txt').read_bytes()
                 version = locked[f'node_modules/{package}']['version']
                 heading = f'===== {notice} ({version}) =====\n\n'.encode()
-                self.assertEqual(container.count(heading), 1)
-                self.assertIn(heading + original, container, 'The entire retained notice must remain verbatim under its own heading')
+                self.assertEqual(mit_notices.count(heading), 1)
+                self.assertIn(heading + original, mit_notices, 'The entire retained MIT notice must remain verbatim before the Inter heading')
                 self.assertIn(b'Permission is hereby granted', original)
                 self.assertIn(b'THE SOFTWARE IS PROVIDED', original)
 
@@ -147,6 +153,111 @@ class PreviewStudyRoutes(unittest.TestCase):
             self.assertEqual(response.status, 404)
             self.assertNotIn(b'Unit HTML', response.read())
             connection.request('GET', '/study/manifest.json', headers={'Host': 'untrusted.invalid'})
+            response = connection.getresponse()
+            self.assertEqual(response.status, 403)
+            response.read()
+
+
+class PreviewPublicAssets(unittest.TestCase):
+    """Synthetic byte transport, including blocked compiled-output aliases."""
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        root_patch = patch.object(server, 'ROOT', self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
+        self.assets = {
+            '/brand/mark.svg': (b'<svg xmlns="http://www.w3.org/2000/svg"/>', 'image/svg+xml'),
+            '/brand/social-preview.jpg': (b'\xff\xd8\xffSynthetic JPEG transport bytes', 'image/jpeg'),
+            '/fonts/InterVariable.woff2': (b'wOF2Synthetic font transport bytes', 'font/woff2'),
+            '/fonts/Inter-LICENSE.txt': (b'Synthetic font-license transport bytes\n', 'text/plain; charset=utf-8'),
+            '/media/afterlight-desktop-demo.mp4': (b'Synthetic MP4 transport bytes', 'video/mp4'),
+        }
+        for route, (payload, _) in self.assets.items():
+            self.put('web/public' + route, payload)
+            self.put('preview/site' + route, b'Compiled alias must not replace the canonical public file')
+        for route in ('/brand/private.svg', '/fonts/private.txt', '/media/private.mp4'):
+            self.put('web/public' + route, b'Unlisted public file')
+            self.put('preview/site' + route, b'Compiled alias must not bypass the allowlist')
+        self.put('web/public/private.txt', b'Unrelated public file')
+        self.put('private.txt', b'Private repository file')
+
+    def put(self, relative, data):
+        path = self.root / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+        return path
+
+    def test_exact_public_files_and_query_parameters_resolve_to_canonical_bytes(self):
+        self.assertEqual(set(server.PUBLIC_ASSET_ROUTES), set(self.assets))
+        for route in self.assets:
+            with self.subTest(route=route):
+                expected = self.root / ('web/public' + route)
+                self.assertEqual(server.resolve_request(route), expected)
+                self.assertEqual(server.resolve_request(route + '?download=1'), expected)
+
+    def test_unlisted_files_directories_and_case_aliases_cannot_use_compiled_fallback(self):
+        for route in ('/brand/private.svg', '/fonts/private.txt', '/media/private.mp4',
+                      '/brand', '/brand/', '/fonts', '/fonts/', '/media', '/media/',
+                      '/BRAND/mark.svg', '/Fonts/InterVariable.woff2', '/media/AFTERLIGHT-desktop-demo.mp4',
+                      '/brand/mark.svg/', '/fonts/InterVariable.woff2.backup',
+                      '/private.txt', '/web/public/brand/mark.svg'):
+            with self.subTest(route=route):
+                self.assertIsNone(server.resolve_request(route))
+
+    def test_traversal_backslashes_and_nul_are_refused(self):
+        for route in ('/brand/../fonts/InterVariable.woff2', '/brand/%2e%2e/private.txt',
+                      '/fonts/%2e%2e/%2e%2e/private.txt', '/media/%2f..%2fprivate.txt',
+                      '/brand/..%5cprivate.txt', '/fonts/C:%5cprivate.txt',
+                      '/brand/%00mark.svg', '/brand/%252e%252e/private.txt'):
+            with self.subTest(route=route):
+                self.assertIsNone(server.resolve_request(route))
+
+    def test_every_path_component_refuses_symlinks_and_windows_junctions(self):
+        for route in self.assets:
+            parts = ('web', 'public', *route.lstrip('/').split('/'))
+            for length in range(1, len(parts) + 1):
+                blocked = self.root.joinpath(*parts[:length])
+                for check in ('is_symlink', 'is_junction'):
+                    with self.subTest(route=route, component=length, check=check), patch.object(
+                            Path, check, lambda path, target=blocked: path == target, create=True):
+                        self.assertIsNone(server.resolve_request(route))
+
+    def test_missing_allowed_file_does_not_use_a_compiled_alias(self):
+        for route in self.assets:
+            with self.subTest(route=route):
+                (self.root / ('web/public' + route)).unlink()
+                self.assertIsNone(server.resolve_request(route))
+
+    def test_http_get_and_head_preserve_all_five_payloads_and_explicit_mime_types(self):
+        class QuietHandler(server.Handler):
+            def log_message(self, *args):
+                pass
+
+        with server.ThreadingHTTPServer(('127.0.0.1', 0), QuietHandler) as httpd, ExitStack() as cleanup:
+            worker = threading.Thread(target=httpd.serve_forever, daemon=True)
+            worker.start()
+            cleanup.callback(worker.join, 2)
+            cleanup.callback(httpd.shutdown)
+            connection = http.client.HTTPConnection('127.0.0.1', httpd.server_port, timeout=5)
+            cleanup.callback(connection.close)
+            for route, (payload, mime) in self.assets.items():
+                for method in ('GET', 'HEAD'):
+                    with self.subTest(route=route, method=method):
+                        connection.request(method, route)
+                        response = connection.getresponse()
+                        self.assertEqual(response.status, 200)
+                        self.assertEqual(response.getheader('Content-Type'), mime)
+                        self.assertEqual(response.getheader('Content-Length'), str(len(payload)))
+                        self.assertEqual(response.getheader('X-Content-Type-Options'), 'nosniff')
+                        self.assertEqual(response.read(), payload if method == 'GET' else b'')
+            for route in ('/brand/private.svg', '/fonts/private.txt', '/media/private.mp4'):
+                connection.request('GET', route)
+                response = connection.getresponse()
+                self.assertEqual(response.status, 404)
+                self.assertNotIn(b'Compiled alias', response.read())
+            connection.request('GET', '/brand/mark.svg', headers={'Host': 'untrusted.invalid'})
             response = connection.getresponse()
             self.assertEqual(response.status, 403)
             response.read()

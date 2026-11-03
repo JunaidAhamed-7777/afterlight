@@ -10,6 +10,13 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
+PUBLIC_ASSET_ROUTES = {
+    "/brand/mark.svg": "brand/mark.svg",
+    "/brand/social-preview.jpg": "brand/social-preview.jpg",
+    "/fonts/InterVariable.woff2": "fonts/InterVariable.woff2",
+    "/fonts/Inter-LICENSE.txt": "fonts/Inter-LICENSE.txt",
+    "/media/afterlight-desktop-demo.mp4": "media/afterlight-desktop-demo.mp4",
+}
 
 
 def verify() -> dict:
@@ -40,6 +47,17 @@ def resolve_request(raw: str) -> Path | None:
             current = current / part
             if current.is_symlink() or (hasattr(current, "is_junction") and current.is_junction()):
                 return None
+    elif path in PUBLIC_ASSET_ROUTES:
+        base, relative = ROOT / "web/public", PUBLIC_ASSET_ROUTES[path]
+        current = ROOT
+        for part in ("web", "public", *relative.split("/")):
+            current = current / part
+            if current.is_symlink() or (hasattr(current, "is_junction") and current.is_junction()):
+                return None
+    elif path.lstrip("/").split("/", 1)[0].casefold() in {"brand", "fonts", "media"}:
+        # These namespaces expose only the exact files above. Do not let an
+        # unlisted or differently cased path fall through to compiled output.
+        return None
     elif path in ("/assets/previews/city_overview.png", "/assets/previews/city_expanded.png",
                   "/assets/previews/ambulance_model.png", "/assets/previews/ghost_model.png"):
         base, relative = ROOT / "assets/previews", path.rsplit("/", 1)[1]
@@ -83,7 +101,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_error(404)
             return
         mime = {".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".txt": "text/plain; charset=utf-8",
-                ".glb": "model/gltf-binary"}.get(path.suffix)
+                ".glb": "model/gltf-binary", ".svg": "image/svg+xml", ".woff2": "font/woff2",
+                ".jpg": "image/jpeg", ".mp4": "video/mp4"}.get(path.suffix)
         self.send_response(200)
         self.send_header("Content-Type", mime or mimetypes.guess_type(path.name)[0] or "application/octet-stream")
         self.send_header("Content-Length", str(len(data)))
