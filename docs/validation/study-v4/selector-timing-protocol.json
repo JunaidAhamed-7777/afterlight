@@ -1,0 +1,54 @@
+{
+  "schema": "afterlight.selector-timing-protocol.v1",
+  "declared_utc": "2026-11-03T15:30:06.510586+00:00",
+  "status": "declared_not_executed",
+  "scope": "Separate validation-only descriptive process benchmark; not a change to frozen traffic outcomes, model selection or held-out analysis. Declared during the released test collection before any test outcomes were inspected.",
+  "benchmark_source_commit": "71fade7",
+  "benchmark_source_sha256": "f812926a2de4e2d0a178f64767350882a8e09510d2acf576920cc34de641ad3d",
+  "study_sha256": "c45cc52dd231edef36f2ddedd14cad29d1b621abad07e32ed35c6a8cdab0981d",
+  "protocol_sha256": "5d8dfe519e8097350e7e9ba9741e4358be1c1f2b77a1194c2e6ed3da21ee89fb",
+  "selection_sha256": "1c30e8d616ce2654969f234b88b2a633f152b4ae8896ba5e368c642cf5db7f9c",
+  "model_sha256": "df1c707613d7a1d379aa5f4a810d63a2b2f85fb1140a3fd743ab3c09323d9998",
+  "model_file_sha256": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d",
+  "snapshots_source": "original retained selection/validation-candidates.json",
+  "snapshot_file_sha256": "d3c23e1447d7a47190eb9d24edee69e8b50e851efe153259c1b18d6d09c61c88",
+  "unique_validation_snapshots": 12,
+  "variants": [
+    "analytical",
+    "learned"
+  ],
+  "warmups_per_snapshot_per_variant": 20,
+  "timed_calls_per_snapshot_per_variant": 200,
+  "total_timed_calls_per_variant": 2400,
+  "case_order": "sorted episode identity; all cases included",
+  "variant_order": "alternating by repetition",
+  "timed_work": "fresh five-lead analytical estimation, feature construction, original JSON model/tree/hash checks and choice",
+  "excluded_work": [
+    "file IO",
+    "source/selection provenance audits",
+    "imports",
+    "fitting",
+    "SUMO execution",
+    "UI",
+    "network"
+  ],
+  "execution_gate": "After full frozen test collection ends, no-active-SUMO observed before and after; before final GPU performance acceptance",
+  "reported_statistics": [
+    "all nanosecond samples",
+    "mean",
+    "median",
+    "nearest-rank p95",
+    "min",
+    "max"
+  ],
+  "additional_identity": [
+    "hardware and Python",
+    "full simulation source",
+    "comparison envelope",
+    "exact model/validation bytes"
+  ],
+  "no_test_outcomes": true,
+  "no_fitting": true,
+  "no_automatic_promotion": true,
+  "interpretation": "2400 repeated timing calls per method reuse 12 unique validation snapshots; they are not 2400 independent traffic cases or hosted/live inference."
+}
