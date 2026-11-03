@@ -111,22 +111,22 @@ def observed_junction_passages(controls: list[dict], seen: set[str], now: float,
     return result
 
 
-def phase_queues(conn, signal: dict) -> list[float]:
+def phase_queues(conn, signal: dict, cache=None) -> list[float]:
     result = []
     for state in signal['greens']:
         lanes = {link['from_lane'] for link in signal['links'] if state[link['index']] in 'gG'}
-        result.append(float(sum(conn.lane.getLastStepHaltingNumber(lane) for lane in lanes)))
+        result.append(float(sum(cache.halting(lane) if cache is not None else conn.lane.getLastStepHaltingNumber(lane) for lane in lanes)))
     return result
 
 
-def snapshot(conn, controls: list[dict], schedulers: dict, network: dict, now: float) -> dict:
+def snapshot(conn, controls: list[dict], schedulers: dict, network: dict, now: float, cache=None) -> dict:
     queues, occupancies = [], []
     for c in controls:
         signal = network['signals'][c['junction']]
         lanes = {link['from_lane'] for link in signal['links'] if link['from_edge'] == c['incoming_edge']}
         outgoing = network['edges'][c['outgoing_edge']]['lanes']
-        queues.append(float(sum(conn.lane.getLastStepHaltingNumber(lane) for lane in lanes)))
-        occupancies.extend(conn.lane.getLastStepOccupancy(lane) / 100 for lane in outgoing)
+        queues.append(float(sum(cache.halting(lane) if cache is not None else conn.lane.getLastStepHaltingNumber(lane) for lane in lanes)))
+        occupancies.extend((cache.occupancy(lane) if cache is not None else conn.lane.getLastStepOccupancy(lane)) / 100 for lane in outgoing)
     return {'t': now, 'queues': queues, 'downstream_occupancy': sum(occupancies)/len(occupancies) if occupancies else 0,
             'phase_elapsed_s': max((now-schedulers[c['junction']].entered_s for c in controls), default=0)}
 
@@ -157,9 +157,9 @@ def dispatch_observation(demand: dict, network: dict, controls: list[dict], sens
             'eta_formula': 'dispatch + external lane free-flow time + 2 seconds per observed queued route vehicle; frozen'}, etas
 
 
-def pose_frame(conn, network: dict, now: float) -> dict:
-    vehicles = []
-    for vid in conn.vehicle.getIDList():
+def pose_frame(conn, network: dict, now: float, cache=None) -> dict:
+    vehicles = cache.poses() if cache is not None else []
+    for vid in (() if cache is not None else conn.vehicle.getIDList()):
         x, y = conn.vehicle.getPosition(vid)
         vehicles.append({'id': vid, 'type': conn.vehicle.getTypeID(vid), 'x': round(x, 4), 'y': round(y, 4),
                          'z': 0.0, 'angle_deg': round(conn.vehicle.getAngle(vid), 4),
@@ -196,7 +196,8 @@ def validate_timing_grid(step_s: float, timing: Timing | None = None) -> None:
 
 def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, demand_dir: Path,
               demand: dict, network: dict, output: Path, horizon_s: float, drain_s: float,
-              step_s: float = .5, sample_s: float = 1.0, sensor_lag_s: float = 1.0) -> dict:
+              step_s: float = .5, sample_s: float = 1.0, sensor_lag_s: float = 1.0,
+              verify_observations: bool = False) -> dict:
     import traci
     output.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
@@ -240,10 +241,12 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         sumo_stdout = open(output/'sumo-stdout.txt', 'w', encoding='utf-8')
         traci.start(command, label=label, stdout=sumo_stdout)
         conn = traci.getConnection(label)
+        from sim.traci_cache import ObservationCache
+        cache = ObservationCache(conn, network)
         sumo_version = conn.getVersion()[1]
         for j, scheduler in schedulers.items():
             conn.trafficlight.setRedYellowGreenState(j, scheduler.state)
-        observations.append(snapshot(conn, controls, schedulers, network, 0))
+        observations.append(snapshot(conn, controls, schedulers, network, 0, cache))
         queue_samples.append({'t': 0.0, 'queue_count': 0})
         total_steps = round(end_s / step_s)
         for step in range(total_steps):
@@ -266,7 +269,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                 for c in controls:
                     if c['junction'] in plan:
                         schedulers[c['junction']].plan(plan[c['junction']], c['phase'], planned_at_s=now)
-            ambulance_active = 'ambulance' in conn.vehicle.getIDList()
+            ambulance_active = 'ambulance' in cache.vehicles
             route_index = conn.vehicle.getRouteIndex('ambulance') if ambulance_active else -1
             ambulance_arrived = 'ambulance' in ledger.completed
             events.extend(observed_junction_passages(controls, observed_passages, now, route_index, ambulance_arrived))
@@ -274,17 +277,29 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
             for j, scheduler in schedulers.items():
                 c = control_by_junction.get(j)
                 passed = c is not None and (ambulance_arrived or route_index > c['route_index'])
-                state = scheduler.advance(now, passed=passed, queues=phase_queues(conn, network['signals'][j]))
+                state = scheduler.advance(now, passed=passed, queues=phase_queues(conn, network['signals'][j], cache))
                 conn.trafficlight.setRedYellowGreenState(j, state)
             # Signal state at timestamp t is the state after boundary control,
             # never the stale pre-transition state from the previous step.
-            observations[-1] = snapshot(conn, controls, schedulers, network, now)
+            observations[-1] = snapshot(conn, controls, schedulers, network, now, cache)
             if step % round(sample_s/step_s) == 0:
-                frames.append(pose_frame(conn, network, now))
+                frame = pose_frame(conn, network, now, cache)
+                if verify_observations:
+                    # Real SUMO qualification can compare every published pose
+                    # and frozen observation with independent direct reads.
+                    if frame != pose_frame(conn, network, now):
+                        raise RuntimeError('Subscribed poses differ from direct SUMO observations')
+                    if observations[-1] != snapshot(conn, controls, schedulers, network, now):
+                        raise RuntimeError('Subscribed dispatch observation differs from direct SUMO reads')
+                    for signal in network['signals'].values():
+                        if phase_queues(conn, signal, cache) != phase_queues(conn, signal):
+                            raise RuntimeError('Subscribed phase queues differ from direct SUMO reads')
+                frames.append(frame)
             conn.simulationStep()
             current = round((step + 1) * step_s, 9)
             departed_ids = conn.simulation.getDepartedIDList()
             arrived_ids = conn.simulation.getArrivedIDList()
+            cache.refresh(departed_ids)
             ledger.depart(departed_ids, current)
             ledger.arrive(arrived_ids, current)
             if 'ambulance' in departed_ids:
@@ -296,10 +311,10 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                 if ids:
                     reasons.append(kind)
                     events.append({'t': current, 'kind': kind, 'vehicle_ids': list(ids)})
-            observations.append(snapshot(conn, controls, schedulers, network, current))
+            observations.append(snapshot(conn, controls, schedulers, network, current, cache))
             while len(observations) > 1 and observations[1]['t'] < current-sensor_lag_s-step_s:
                 observations.popleft()
-            queued = sum(conn.vehicle.getSpeed(v) < .1 for v in conn.vehicle.getIDList() if v != 'ambulance')
+            queued = sum(cache.speed(v) < .1 for v in cache.vehicles if v != 'ambulance')
             pending_due = sum(v['depart_s'] <= current and vid not in ledger.inserted
                               for vid, v in ledger.scheduled.items() if vid != 'ambulance')
             if current <= horizon_s:
@@ -310,14 +325,14 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
             if abs(current-horizon_s) < 1e-8:
                 horizon_accounting = ledger.counts()
         # Close the exact common endpoint with its own legal boundary update.
-        ambulance_active = 'ambulance' in conn.vehicle.getIDList()
+        ambulance_active = 'ambulance' in cache.vehicles
         route_index = conn.vehicle.getRouteIndex('ambulance') if ambulance_active else -1
         events.extend(observed_junction_passages(controls, observed_passages, end_s, route_index, 'ambulance' in ledger.completed))
         for j, scheduler in schedulers.items():
             c = control_by_junction.get(j)
             passed = c is not None and ('ambulance' in ledger.completed or route_index > c['route_index'])
-            conn.trafficlight.setRedYellowGreenState(j, scheduler.advance(end_s, passed=passed, queues=phase_queues(conn, network['signals'][j])))
-        frames.append(pose_frame(conn, network, end_s))
+            conn.trafficlight.setRedYellowGreenState(j, scheduler.advance(end_s, passed=passed, queues=phase_queues(conn, network['signals'][j], cache)))
+        frames.append(pose_frame(conn, network, end_s, cache))
         events.extend(event for scheduler in schedulers.values() for event in scheduler.events)
         physical = set(conn.vehicle.getIDList())
         expected_running = set(ledger.inserted) - set(ledger.completed)
@@ -354,7 +369,9 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                    'trip_time_source': 'SUMO tripinfo departure/arrival; list-event discovery timestamps retained separately'}
         result = {'world_id': world_id, 'policy': policy, 'lead_s': decision['selected_lead_s'] if decision else None,
                   'status': status, 'metrics': metrics, 'events': events, 'frames': frames,
-                  'decision': decision, 'sumo_version': sumo_version}
+                  'decision': decision, 'sumo_version': sumo_version,
+                  'observation_transport': 'traci-subscriptions-v1',
+                  'direct_observation_verification': verify_observations}
         write_json(output/'lifecycle.json', ledger.rows())
         write_json(output/'outcome.json', {k:v for k,v in result.items() if k != 'frames'})
         return result
@@ -390,7 +407,8 @@ def run_pair(args) -> dict:
     demand_dir = output/'demand'
     hashes = save_demand(demand, demand_dir)
     common = dict(network_dir=network_dir, demand_dir=demand_dir, demand=demand, network=network,
-                  horizon_s=args.horizon, drain_s=args.drain, step_s=args.step, sample_s=args.sample)
+                  horizon_s=args.horizon, drain_s=args.drain, step_s=args.step, sample_s=args.sample,
+                  verify_observations=getattr(args, 'verify_observations', False))
     worlds = {}
     for world_id, policy in [('baseline', 'ordinary'), ('afterlight', args.policy)]:
         worlds[world_id] = run_world(world_id=world_id, policy=policy, lead_s=args.lead,
@@ -457,6 +475,8 @@ def main():
     parser.add_argument('--drain', type=float, default=360)
     parser.add_argument('--step', type=float, default=.5)
     parser.add_argument('--sample', type=float, default=1)
+    parser.add_argument('--verify-observations', action='store_true',
+                        help='compare subscribed samples against independent direct SUMO reads')
     parser.add_argument('--pickup')
     parser.add_argument('--hospital')
     parser.add_argument('--split', choices=('pilot','train','validation','test'), default='pilot')
