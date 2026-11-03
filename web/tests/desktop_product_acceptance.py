@@ -455,12 +455,18 @@ def main():
                   return {title:document.title, canonical:document.querySelector('link[rel=canonical]')?.href,
                     body_font:getComputedStyle(document.body).fontFamily,
                     fonts:[...document.fonts].map(f=>({family:f.family,status:f.status,weight:f.weight})),
-                    mark:mark?{src:new URL(mark.src).pathname,complete:mark.complete,width:mark.naturalWidth,height:mark.naturalHeight,alt:mark.alt}:null};
+                    mark:mark?{src:new URL(mark.src).pathname,complete:mark.complete,width:mark.naturalWidth,height:mark.naturalHeight,alt:mark.alt,
+                      rendered_width:mark.getBoundingClientRect().width,rendered_height:mark.getBoundingClientRect().height}:null};
                 }""")
                 identity = report["identity"]
                 assert any(face["family"].strip('"') == "Inter" and face["status"] == "loaded" for face in identity["fonts"]), "Actual self-hosted Inter font did not load"
                 assert identity["body_font"].startswith('Inter'), "Identity font is not applied to the interface"
-                assert identity["mark"] == {"src":"/brand/mark.svg","complete":True,"width":64,"height":64,"alt":""}, "Shared native brand mark is missing or inaccessible"
+                mark = identity["mark"]
+                assert mark and mark["src"] == "/brand/mark.svg" and mark["complete"] and mark["alt"] == "", "Shared decorative brand mark did not load"
+                # A viewBox-only SVG has browser-default natural dimensions.
+                # Its positive square image and actual on-screen size matter.
+                assert mark["width"] == mark["height"] > 0, "Brand mark has invalid source proportions"
+                assert 16 <= mark["rendered_width"] <= 64 and abs(mark["rendered_width"] - mark["rendered_height"]) < .01, "Brand mark is distorted or below the guide's readable minimum"
                 assert identity["title"] == "AFTERLIGHT — Traffic signal lab"
                 assert identity["canonical"] == "https://afterlight-gamma.vercel.app/"
             page.evaluate("document.title='AFTERLIGHT performance check — leave this window untouched'")
