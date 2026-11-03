@@ -30,7 +30,9 @@ must match the pre-test release's exact hashes.
 
 The output contains a bounded `manifest.json`, `summary.json`, and exact original
 report, study, protocol, selection, release and selector companions. Learned mode
-also includes the original safe JSON model. Copy this verified pack into
+also includes the original safe JSON model. A per-case CSV retains every test
+scenario under each comparison, including unavailable objectives and statuses;
+numeric differences keep their original precision. Copy this verified pack into
 `web/public/study/` as one publication. The UI verifies the summary's original
 UTF-8 byte count and SHA256 before schema validation; all companion links remain
 relative to the same study directory. Manifest and summary limits are 16 KiB and
@@ -53,3 +55,20 @@ Each companion also has its own exact file checksum and byte count.
 projection, failure retention, original-evidence protection and both learned and
 baseline-only compatibility with the production TypeScript validator. These
 tests are contract checks, not scientific experiment results.
+
+## Reproducible README figure
+
+Use a separate plotting environment so installing figure tools does not change
+the study's pinned runtime. Its resolved versions are recorded in
+`docs/validation/study-v4/plot-requirements-lock.txt`.
+
+```powershell
+local-runtime\plot-env-v4\Scripts\python.exe scripts/render_study_figure.py --pack C:/Github/afterlight-final-study-v4/local-runtime/study-public-pack-v4 --output local-runtime/study-figure-v4
+```
+
+This command requires the actual verified pack. It checks the manifest, original
+study/report digests, every plotted difference and each interval against the
+original report records. It produces PNG/SVG plus a render manifest with the
+input hashes, library versions and palette. There are no fallback metrics.
+Apply the final identity with `--accent`, `--background` and `--ink`; use a fresh
+output directory for each render. Inspect the actual figure before publishing.

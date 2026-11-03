@@ -7,7 +7,9 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+import csv
 import hashlib
+import io
 import json
 from pathlib import Path
 from statistics import mean
@@ -27,6 +29,43 @@ def assert_no_overlap(output: Path, protected_directories: tuple[Path, ...]) -> 
 def optional_mean(records: list[dict], field: str) -> float | None:
     values = [record[field] for record in records if record[field] is not None]
     return mean(values) if values else None
+
+
+def paired_records_csv(study_envelope: dict, report_envelope: dict) -> bytes:
+    """Human-readable case records; unavailable targets remain blank, never zero."""
+    episodes = {item['episode_id']: item for item in study_envelope['study']['episodes'] if item['split'] == 'test'}
+    buffer = io.StringIO(newline='')
+    fields = ['comparison', 'case_id', 'seed', 'regime', 'route_family', 'pickup_id', 'hospital_id',
+              'episode_id', 'demand_group_id', 'selected_lead_s', 'comparator_lead_s',
+              'selected_status', 'comparator_status', 'selected_infeasible', 'comparator_infeasible',
+              'selected_j_s', 'comparator_j_s', 'paired_delta_j_s', 'delta_ambulance_s',
+              'delta_civilian_s', 'delta_recovery_vehicle_s']
+    writer = csv.DictWriter(buffer, fieldnames=fields, lineterminator='\n')
+    writer.writeheader()
+    row_count = 0
+    comparisons = report_envelope['report']['comparisons']
+    for comparison, content in comparisons.items():
+        seen = set()
+        for record in content['records']:
+            episode = episodes[record['episode_id']]
+            if record['episode_id'] in seen or record['demand_group_id'] != episode['demand_group_id']:
+                raise ValueError('CSV record identity differs from the frozen test inventory')
+            seen.add(record['episode_id'])
+            row = {'comparison': comparison,
+                   **{key: episode[key] for key in ('case_id', 'seed', 'regime', 'route_family', 'pickup_id', 'hospital_id')},
+                   **{key: record[key] for key in ('episode_id', 'demand_group_id', 'selected_lead_s', 'comparator_lead_s',
+                       'selected_status', 'comparator_status', 'selected_infeasible', 'comparator_infeasible',
+                       'selected_j_s', 'comparator_j_s', 'paired_delta_j_s')},
+                   'delta_ambulance_s': record['conditional_delta_ambulance_s'],
+                   'delta_civilian_s': record['civilian_delta_s'],
+                   'delta_recovery_vehicle_s': record['conditional_delta_recovery_vehicle_s']}
+            writer.writerow(row)
+            row_count += 1
+        if seen != set(episodes):
+            raise ValueError('CSV comparison omits declared test episodes')
+    if row_count != len(episodes)*len(comparisons):
+        raise ValueError('CSV record count does not reconcile')
+    return buffer.getvalue().encode('utf-8')
 
 
 def project_summary(study_envelope: dict, report_envelope: dict,
@@ -193,6 +232,10 @@ def main() -> None:
             expected = release['selection_artifacts_sha256'][sources[kind].name]
             if hashlib.sha256(payloads[filename]).hexdigest() != expected:
                 raise ValueError('Copied selector/model bytes differ from the pre-test release')
+    csv_bytes = paired_records_csv(study, report)
+    payloads['paired-records.csv'] = csv_bytes
+    artifacts.append({'kind': 'paired_records', 'url': 'paired-records.csv',
+                      'sha256': hashlib.sha256(csv_bytes).hexdigest(), 'bytes': len(csv_bytes)})
     summary = project_summary(study, report, selection, context['release'], artifacts)
     # All publication bytes are derived before reserving a fresh destination.
     # Original scientific source, outcome files and existing reports stay intact.
@@ -214,6 +257,8 @@ def main() -> None:
             artifact = next(item for item in artifacts if item['kind'] == kind)
             if file_sha256(source) != artifact['sha256'] or file_sha256(output/artifact['url']) != artifact['sha256']:
                 raise ValueError('Original or copied proof companion changed during export')
+        if any(file_sha256(output/item['url']) != item['sha256'] for item in artifacts):
+            raise ValueError('A generated publication artifact changed during export')
         print(json.dumps({'status': 'verified_read_only_study_summary', **manifest,
                           'mode': summary['mode'], 'counts': summary['counts']}, indent=2))
     except Exception as error:

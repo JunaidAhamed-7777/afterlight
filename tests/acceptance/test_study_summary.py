@@ -1,12 +1,14 @@
 """Synthetic summary contract tests, never experiment/benchmark evidence."""
 from copy import deepcopy
+import csv
+import io
 import json
 from pathlib import Path
 import shutil
 import subprocess
 import unittest
 
-from scripts.export_study_summary import project_summary, assert_no_overlap
+from scripts.export_study_summary import project_summary, assert_no_overlap, paired_records_csv
 
 
 def fixtures(mode='learned'):
@@ -80,6 +82,28 @@ class StudySummaryContractTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'frozen selection'):
                     assert_no_overlap(destination, (selection,))
         assert_no_overlap(selection.parent/'synthetic-public-pack', (selection,))
+
+    def test_csv_keeps_every_failed_case_and_does_not_impute_zero(self):
+        study, report, *_ = fixtures()
+        tests = [item for item in study['study']['episodes'] if item['split'] == 'test']
+        for index, episode in enumerate(tests):
+            episode.update(episode_id=episode['demand_group_id'], case_id=f'synthetic-test-{index}', seed=index,
+                           regime='heavy', route_family='unseen', pickup_id='P1', hospital_id='H1')
+        for comparison in report['report']['comparisons'].values():
+            for index, record in enumerate(comparison['records']):
+                record.update(episode_id=tests[index]['episode_id'], demand_group_id=tests[index]['demand_group_id'],
+                              selected_lead_s=0, comparator_lead_s=5, selected_status='completed' if index==0 else 'censored',
+                              comparator_status='completed', selected_infeasible=index==1, comparator_infeasible=False,
+                              selected_j_s=10 if index==0 else None, comparator_j_s=11.5,
+                              paired_delta_j_s=-1.5 if index==0 else None,
+                              conditional_delta_recovery_vehicle_s=0 if index==0 else None)
+        records = list(csv.DictReader(io.StringIO(paired_records_csv(study, report).decode())))
+        self.assertEqual(len(records), 4)
+        unavailable = [row for row in records if row['selected_status']=='censored']
+        self.assertEqual(len(unavailable), 2)
+        self.assertTrue(all(row['selected_j_s']==row['paired_delta_j_s']==row['delta_civilian_s']=='' for row in unavailable))
+        report['report']['comparisons']['learned-vs-fixed']['records'].pop()
+        with self.assertRaisesRegex(ValueError, 'omits declared'): paired_records_csv(study, report)
 
     @unittest.skipUnless(shutil.which('node'), 'Node is required for the cross-language viewer contract')
     def test_python_projection_is_accepted_by_the_production_typescript_validator(self):
