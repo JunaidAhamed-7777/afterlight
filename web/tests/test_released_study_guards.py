@@ -58,7 +58,10 @@ class AnalysisAmendmentGuards(unittest.TestCase):
         self.raw = {kind: b'raise RuntimeError("DOWNLOADED SOURCE MUST NEVER EXECUTE")\n' for kind in
                     ('analysis_verifier_source', 'analysis_binding_source', 'analysis_entrypoint_source')}
         self.raw.update(analysis_diff=b'SYNTHETIC reviewed diff\n', analysis_failure_log=b'SYNTHETIC pre-fit verifier failure\n',
-                        analysis_failure_journal=b'{"state":"verification_failed_before_model_fit","model_fit_reached":false}')
+                        analysis_failure_journal=json.dumps({'schema': 'afterlight.selection-dependency-watcher.v1',
+                            'state': 'watcher_stopped_no_test_release', 'return_code': 1, 'automatic_retries': 0,
+                            'created_utc': '2025-12-31T23:59:57+00:00', 'invoked_utc': '2025-12-31T23:59:58+00:00',
+                            'stopped_utc': '2025-12-31T23:59:59+00:00'}).encode())
         def item(kind): return {'filename': ANALYSIS_ARTIFACTS[kind], 'sha256': sha(self.raw[kind])}
         files = {'verifier': {**item('analysis_verifier_source'), 'original_path': 'evaluation/study_reporting.py', 'original_sha256': 'c' * 64},
                  'binding_helper': {**item('analysis_binding_source'), 'original_path': 'evaluation/study_manifest.py', 'original_sha256': 'd' * 64},
@@ -136,11 +139,25 @@ class AnalysisAmendmentGuards(unittest.TestCase):
         self.artifacts['analysis_diff'] = {**removed, 'url': 'different.patch'}
         with self.assertRaisesRegex(AssertionError, 'companion URL'): self.verify()
 
-    def test_failure_original_basenames_can_bind_byte_exact_public_aliases(self):
+    def test_descriptor_failure_filenames_must_match_explicit_public_aliases(self):
         self.amendment['failed_attempt']['journal']['filename'] = 'original-client-journal.json'
         self.amendment['failed_attempt']['log']['filename'] = 'original-selection-error.txt'
         self.seal()
-        self.assertTrue(self.verify()['present'])
+        with self.assertRaisesRegex(AssertionError, 'filename differs'): self.verify()
+
+    def test_failure_journal_cannot_claim_success_fit_completion_or_a_retry(self):
+        original = self.raw['analysis_failure_journal']
+        for change in ({'state': 'completed'}, {'return_code': 0}, {'automatic_retries': 1}, {'model_fit_reached': True}, {'fit_completed': True}):
+            with self.subTest(change=change):
+                journal = json.loads(original); journal.update(change)
+                self.raw['analysis_failure_journal'] = json.dumps(journal).encode()
+                self.amendment['failed_attempt']['journal']['sha256'] = sha(self.raw['analysis_failure_journal']); self.seal()
+                with self.assertRaisesRegex(AssertionError, 'journal'): self.verify()
+
+    def test_original_journal_without_fit_marker_is_reported_as_a_metadata_limit(self):
+        result = self.verify()
+        self.assertFalse(result['failure_journal']['fit_stage_marker_present'])
+        self.assertFalse(result['failure_journal']['independently_proves_no_fit'])
 
     def test_companion_transfer_hash_cannot_replace_descriptor_source_identity(self):
         self.raw['analysis_verifier_source'] += b'# substituted source\n'; self.seal()

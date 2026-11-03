@@ -248,29 +248,39 @@ def verify_analysis_amendment(documents, raw, artifacts):
         expected_keys = {'filename', 'sha256'} | ({'original_path', 'original_sha256'} if original else set())
         assert isinstance(value, dict) and set(value) == expected_keys
         assert isinstance(value['filename'], str) and LOCAL_PATH.fullmatch(value['filename']) and '/' not in value['filename']
+        assert value['filename'] == ANALYSIS_ARTIFACTS[kind], ('Descriptor filename differs from public companion', kind)
         assert SHA.fullmatch(value['sha256']) and value['sha256'] == sha(raw[kind]), ('Descriptor companion binding mismatch', kind)
         if original:
             assert value['original_path'] == original
             assert value['original_sha256'] == study['source']['source_files'][original], ('Analysis amendment original source mismatch', original)
-            assert value['filename'] == ANALYSIS_ARTIFACTS[kind]
+
+    def instant(value):
+        assert isinstance(value, str)
+        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        assert parsed.utcoffset() is not None, 'Analysis provenance timestamps require explicit time zones'
+        return parsed
 
     failed = amendment['failed_attempt']
     assert isinstance(failed, dict) and set(failed) == {'state', 'model_fit_reached', 'journal', 'log'}
     assert failed['state'] == 'verification_failed_before_model_fit' and failed['model_fit_reached'] is False
-    # Failure references retain original basenames; the exporter gives their
-    # byte-exact copies the fixed public aliases checked above. SHA binds the
-    # original reference to its public companion independently of that rename.
+    # The descriptor uses the explicit public aliases even for original failed
+    # log/journal copies; exact hashes preserve the original evidence bytes.
     file_binding(failed['journal'], 'analysis_failure_journal')
     file_binding(failed['log'], 'analysis_failure_log')
-    strict_json(raw['analysis_failure_journal'])
+    journal = strict_json(raw['analysis_failure_journal'])
+    assert isinstance(journal, dict) and journal.get('schema') == 'afterlight.selection-dependency-watcher.v1'
+    assert journal.get('state') == 'watcher_stopped_no_test_release', 'Failure journal contradicts the declared stopped attempt'
+    assert type(journal.get('return_code')) is int and journal['return_code'] == 1, 'Failure journal contradicts the declared unsuccessful selection'
+    assert type(journal.get('automatic_retries')) is int and journal['automatic_retries'] == 0, 'Failure journal records an undeclared retry'
+    for marker in ('model_fit_reached', 'fit_completed'):
+        if marker in journal: assert journal[marker] is False, 'Failure journal contradicts the declared pre-fit failure'
+    assert (instant(journal['created_utc']) <= instant(journal['invoked_utc']) <= instant(journal['stopped_utc']) <= instant(amendment['created_utc'])), 'Failure journal does not precede the frozen amendment'
     files = amendment['analysis_files']
     assert isinstance(files, dict) and set(files) == {'verifier', 'binding_helper', 'entrypoint', 'diff'}
     file_binding(files['verifier'], 'analysis_verifier_source', 'evaluation/study_reporting.py')
     file_binding(files['binding_helper'], 'analysis_binding_source', 'evaluation/study_manifest.py')
     file_binding(files['entrypoint'], 'analysis_entrypoint_source')
     file_binding(files['diff'], 'analysis_diff')
-    assert files['entrypoint']['filename'] == ANALYSIS_ARTIFACTS['analysis_entrypoint_source']
-    assert files['diff']['filename'] == ANALYSIS_ARTIFACTS['analysis_diff']
     expected_binding = {
         'schema': 'afterlight.analysis-amendment-binding.v1', 'id': amendment['id'], 'sha256': descriptor['sha256'],
         'file_sha256': sha(raw['analysis_amendment']), 'implementation_sha256': files['verifier']['sha256'],
@@ -282,18 +292,17 @@ def verify_analysis_amendment(documents, raw, artifacts):
     assert release['selection_sha256'] == documents['selection']['sha256'], 'Original release does not bind amended selection identity'
     assert release['selection_file_sha256'] == sha(raw['selection']), 'Original release does not bind original amended selection bytes'
 
-    def instant(value):
-        assert isinstance(value, str)
-        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
-        assert parsed.utcoffset() is not None, 'Analysis provenance timestamps require explicit time zones'
-        return parsed
     created, selected, released, reported = map(instant, (amendment['created_utc'], selection['created_utc'], release['created_utc'], report['created_utc']))
     assert created <= selected <= released <= reported, 'Analysis correction was not frozen before selection and test release'
     return {'present': True, 'id': amendment['id'], 'descriptor_sha256': descriptor['sha256'],
             'descriptor_file_sha256': expected_binding['file_sha256'], 'frozen_estimator_sha256': estimator_hash,
             'original_simulation_source_unchanged': True, 'selection_report_and_original_release_bound': True,
             'all_analysis_companions_hash_verified': sorted(ANALYSIS_ARTIFACTS), 'downloaded_analysis_code_executed': False,
-            'scope': 'Checks exact public pre-test descriptor/source/failure evidence identities and declared chronology; metadata does not independently prove human nonaccess or the time model fitting actually began.'}
+            'failure_journal': {'schema': journal['schema'], 'state': journal['state'], 'return_code': journal['return_code'],
+                                'automatic_retries': journal['automatic_retries'],
+                                'fit_stage_marker_present': any(marker in journal for marker in ('model_fit_reached', 'fit_completed')),
+                                'independently_proves_no_fit': False},
+            'scope': 'Checks exact public pre-test descriptor/source/failure evidence identities, stopped/unsuccessful watcher status and declared chronology. The original journal has no fit-stage marker; the descriptor pre-fit assertion depends on the retained stack/log and reviewed absence of original output. Metadata does not independently prove human nonaccess or when fitting actually began.'}
 
 
 def verify_reproduction(summary, documents, raw, artifacts):

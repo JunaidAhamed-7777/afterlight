@@ -74,16 +74,22 @@ the exact whole-estimator hash, both original module hashes, and the failed
 verification before model fitting. Integer `1` and float `1.0` are not treated as
 the same frozen JSON identity.
 
-Failure references may retain their original basenames while their byte-exact
-public copies use `analysis-failure.txt` and
-`analysis-failed-selection-journal.json`; the descriptor's hashes bind those
-copies independently of the explicit rename.
+Every descriptor filename must match its explicit public artifact URL. The
+byte-exact failed log and journal use `analysis-failure.txt` and
+`analysis-failed-selection-journal.json`; their original hashes remain binding.
 
 Selection and report must bind the same descriptor and implementation hashes.
 The original release must bind the complete amended selection envelope and its
 original file bytes. Declared creation times must put the amendment before
 selection, then release, then report. These metadata checks do not independently
 prove human nonaccess or when fitting actually began.
+
+The failed dependency-watcher journal must record a stopped attempt, return
+code 1, zero automatic retries, and timestamps preceding the amendment.
+Contradictory success or fit-completion markers are rejected. The original
+journal has no fit-stage marker: the descriptor's pre-fit statement relies on
+the retained stack/log and the reviewed absence of the original output, rather
+than an independent journal proof that fitting never began.
 
 Downloaded analysis sources are hashed, never imported or executed. Frozen
 decision recomputation still uses only the original nine byte- and origin-bound
