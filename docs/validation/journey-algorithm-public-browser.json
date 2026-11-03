@@ -1,0 +1,292 @@
+{
+  "schema": "afterlight.journey-algorithm-public-acceptance.v1",
+  "status": "passed",
+  "public_url": "https://afterlight-gamma.vercel.app/",
+  "scope": "The same accepted headed desktop harness exercised the actual public deployment and both genuine 0.5s recordings. No product/harness modification, replacement replay response, new simulation or new performance benchmark.",
+  "binding": {
+    "compiled_source_commit": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+    "observed_checkout_commit": "14df511f0148935ad7570dbc3ac988694bf9f047",
+    "observed_checkout_source_files_match_frozen_compilation": 62,
+    "checkout_unchanged_during_run": true,
+    "strict_manifest": "local-runtime/production-journey-algorithm-02/manifest.json",
+    "strict_manifest_raw_sha256": "d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81",
+    "canonical_manifest_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6",
+    "HTTP_before_and_after": {
+      "files": 63,
+      "bytes": 46973555,
+      "manifest_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6"
+    },
+    "all_63_expected_served_files_exact_before_and_after": true,
+    "harness": "web/tests/journey_algorithm_acceptance.py",
+    "harness_sha256": "af122f65f969fa05245beeabc783355d390b6c0715637acf16cdf55ae545c642",
+    "raw_report": "local-runtime/journey-algorithm-public-01/report.json",
+    "raw_report_sha256": "6fa48787eabdb05df11d08e309dc90de57595733026d257725fd60e08d3862f4"
+  },
+  "browser": {
+    "version": "156.0.8078.80",
+    "headed": true,
+    "device_scale_factor": 1,
+    "viewports": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "started_utc": "2026-11-03T21:46:52.808342+00:00",
+    "finished_utc": "2026-11-03T21:48:13.251758+00:00",
+    "process_exit_code": 0,
+    "page_errors": [],
+    "teardown_warning": null,
+    "test_browser_closed": true
+  },
+  "journey": {
+    "native_summary_and_full_Leave_CTA_visible_on_user_Enter_open": true,
+    "native_Tab_skips_disabled_fields": true,
+    "blur_px": 3,
+    "all_five_regular_controls_plus_conditional_Clear_effectively_disabled_during_real_pending_GET": true,
+    "Leave_Enter_unlocks_unblurs_and_focuses_pickup_search": true,
+    "actual_dropdown_choices": {
+      "#pickup": {
+        "before": "P001",
+        "selected": "P002"
+      },
+      "#hospital": {
+        "before": "HOSP_EAST",
+        "selected": "HOSP_WEST"
+      }
+    },
+    "real_search_clear_and_canonical_map_picks": {
+      "selected_canonical_ids": {
+        "pickup": "P001",
+        "hospital": "HOSP_EAST"
+      },
+      "no_results_clear_focus": true,
+      "escape_does_not_change_route": true
+    },
+    "real_pending_recording_GET_has_no_substitute_response": true,
+    "Leave_terminates_worker_before_QA_interception_cleanup": true,
+    "reselecting_other_hospital_and_reload_lock_again": true,
+    "user_open_placements": {
+      "locked-1920x1080": {
+        "outside": true,
+        "ctaTop": 421.3125,
+        "ctaBottom": 461.3125,
+        "fieldsTop": 477.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 118,
+        "leftScrollerVisibleBottom": 1080,
+        "visibleBlurredFieldsPx": 316.59375
+      },
+      "locked-1280x720": {
+        "outside": true,
+        "ctaTop": 257.3125,
+        "ctaBottom": 297.3125,
+        "fieldsTop": 313.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 104,
+        "leftScrollerVisibleBottom": 720,
+        "visibleBlurredFieldsPx": 316.59375
+      },
+      "loading-recording-lock": {
+        "outside": true,
+        "ctaTop": 581.3125,
+        "ctaBottom": 621.3125,
+        "fieldsTop": 637.3125,
+        "filter": "none",
+        "leftScrollerVisibleTop": 118,
+        "leftScrollerVisibleBottom": 1080,
+        "visibleBlurredFieldsPx": 316.59375
+      }
+    }
+  },
+  "algorithm": {
+    "recordings": [
+      {
+        "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+        "seed": 7,
+        "pickup": "P001",
+        "hospital": "HOSP_EAST",
+        "decoded_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+        "decoded_bytes": 72828179,
+        "capture_source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+        "exact_scenario_route_edges_in_order": [
+          "H00_1_R",
+          "H00_0_R",
+          "V00_0_F",
+          "H10_0_F",
+          "H10_1_F",
+          "V11_0_F",
+          "V12_0_F",
+          "H31_0_F",
+          "H31_1_F",
+          "H31_2_F",
+          "H32_0_F",
+          "H33_0_F",
+          "H33_1_F",
+          "H33_2_F",
+          "H34_0_F",
+          "V53_0_F",
+          "V54_0_F",
+          "H55_0_F",
+          "H55_1_F",
+          "H55_2_F",
+          "H56_0_F",
+          "V75_0_F",
+          "H67_0_F",
+          "HOSP_EAST_DRIVEWAY_0_F"
+        ],
+        "lane_reference_m_separate_from_Dijkstra_cost": {
+          "afterlight": 2824.7999999999997,
+          "baseline": 2824.7999999999997
+        },
+        "shared_saved_route": true,
+        "ordinary_ghost_explained": true
+      },
+      {
+        "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+        "seed": 8,
+        "pickup": "P080",
+        "hospital": "HOSP_WEST",
+        "decoded_sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+        "decoded_bytes": 74074010,
+        "capture_source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+        "exact_scenario_route_edges_in_order": [
+          "V82_0_R",
+          "H27_0_R",
+          "H26_2_R",
+          "H26_1_R",
+          "H26_0_R",
+          "H25_0_R",
+          "H24_2_R",
+          "H24_1_R",
+          "H24_0_R",
+          "H23_0_R",
+          "H22_2_R",
+          "H22_1_R",
+          "H22_0_R",
+          "V21_0_R",
+          "H11_2_R",
+          "H11_1_R",
+          "H11_0_R",
+          "H10_1_R",
+          "HOSP_WEST_DRIVEWAY_0_F"
+        ],
+        "lane_reference_m_separate_from_Dijkstra_cost": {
+          "afterlight": 1741.9999999999998,
+          "baseline": 1741.9999999999998
+        },
+        "shared_saved_route": true,
+        "ordinary_ghost_explained": true
+      }
+    ],
+    "source_fingerprints": {
+      "sim/network.py": "9fc5578664b00ef4e5a307998133c605786378a2f794fbee4b5421a15e33b779",
+      "sim/demand.py": "b9cb1c63db28b2ab4df243d4a07563147cd412d072a911be4f0921b5783bd925",
+      "sim/run.py": "eccde802007afabd76106d8fc6b0466f8b697fbff233282af99601fd59ce6b45"
+    },
+    "Dijkstra_objective": "Sum of canonical edge length_m, not ETA. No unsupported numeric search total is reconstructed.",
+    "empty_recording_has_helpful_prompt_and_no_invented_route": true,
+    "This_run_Algorithm_and_actual_Study_preserve_paused_clock_follow_and_full_camera": true,
+    "Study_fetches_only_after_explicit_selection": true,
+    "actual_Study_fetches": [
+      {
+        "url": "https://afterlight-gamma.vercel.app/study/manifest.json",
+        "aborted": true,
+        "abortEvents": 1,
+        "status": 200
+      },
+      {
+        "url": "https://afterlight-gamma.vercel.app/study/summary.json",
+        "aborted": true,
+        "abortEvents": 1,
+        "status": 200
+      }
+    ]
+  },
+  "default_reveal": {
+    "checked_after_reload": true,
+    "scope": "Default control state only; the dedicated camera suite owns reveal pixel/angle coverage."
+  },
+  "layout": "No document/right-pane scrolling at1280x720 and1920x1080; left-scroller movement and native disclosure opening preserve map/camera dock/playback geometry.",
+  "pixel_review": {
+    "images": 9,
+    "status": "passed_for_saved_views",
+    "observations": "Full Leave CTA and blurred fields are visible after user-open at both sizes. Actual pending-load and unlocked states are clear. Algorithm route/source details and both hospital reference lengths are readable. No broad road/park stripes or missing city masses were observed in these saved views."
+  },
+  "screenshots": [
+    {
+      "file": "algorithm-1280x720.png",
+      "sha256": "194a8fd0199122b9841e23fd354ca057a67afed6130cadb8b7164d40c471215b",
+      "bytes": 298900,
+      "path": "local-runtime/journey-algorithm-public-01/algorithm-1280x720.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "algorithm-other-hospital.png",
+      "sha256": "45c5f06a642cf0d0f15a4e6bd19344e51be794d851701a43114316658df3a4c4",
+      "bytes": 418224,
+      "path": "local-runtime/journey-algorithm-public-01/algorithm-other-hospital.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "algorithm-overview.png",
+      "sha256": "dae7ee6a73c26ea9085d886f3f080b7bcf61887e47603de1a380940daffec1bc",
+      "bytes": 494020,
+      "path": "local-runtime/journey-algorithm-public-01/algorithm-overview.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "algorithm-saved-route.png",
+      "sha256": "0c3f8603e20b81d2578c0215fd27f5fc55ce3e9d9d91533521ff039a4662f832",
+      "bytes": 437484,
+      "path": "local-runtime/journey-algorithm-public-01/algorithm-saved-route.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "algorithm-source-details.png",
+      "sha256": "ac53baf4776008a6578f50a695190b23d1b926ff3d2e7f20a4dcd1a6ec263148",
+      "bytes": 492443,
+      "path": "local-runtime/journey-algorithm-public-01/algorithm-source-details.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "journey-explore-enabled.png",
+      "sha256": "e64e528be162bd176c7caae7abbd2aec3908de666ae47f22f0f030c1bed382f2",
+      "bytes": 1199731,
+      "path": "local-runtime/journey-algorithm-public-01/journey-explore-enabled.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "journey-loading-lock.png",
+      "sha256": "51a6a64e4182d4988a96a877b61eeea295c1981115220d731191a65f90e9390c",
+      "bytes": 415737,
+      "path": "local-runtime/journey-algorithm-public-01/journey-loading-lock.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "journey-locked-1280x720.png",
+      "sha256": "f60a9bf809f946981f3c87252e58537d09726876308c3638bf27d783890690b8",
+      "bytes": 564480,
+      "path": "local-runtime/journey-algorithm-public-01/journey-locked-1280x720.png",
+      "actual_pixels_reviewed": true
+    },
+    {
+      "file": "journey-locked-1920x1080.png",
+      "sha256": "e82fa2a666350577db5253dbbc857c80be142ef92879ce553ac4e183aaa00c60",
+      "bytes": 1203380,
+      "path": "local-runtime/journey-algorithm-public-01/journey-locked-1920x1080.png",
+      "actual_pixels_reviewed": true
+    }
+  ],
+  "limits": [
+    "The remote checks prove the63 expected manifest files, not an enumerable complete remote filesystem or deployment ownership identity.",
+    "Default Reveal is asserted checked after a real reload in a fresh isolated context; this harness does not certify every camera angle or independently record a first-paint checkbox value.",
+    "Source identification matches recording-exported hashes to reviewed known implementations; links are not fetched or independently source-audited here.",
+    "The lane-distance references are actual saved SUMO values, separate from Dijkstra canonical edge cost.",
+    "This is scoped browser/interaction/pixel acceptance, not a new scientific result, traffic-law certification, performance benchmark or universal hardware guarantee."
+  ]
+}
