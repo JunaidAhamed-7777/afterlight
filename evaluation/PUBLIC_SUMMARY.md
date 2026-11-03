@@ -71,4 +71,5 @@ study/report digests, every plotted difference and each interval against the
 original report records. It produces PNG/SVG plus a render manifest with the
 input hashes, library versions and palette. There are no fallback metrics.
 Apply the final identity with `--accent`, `--background` and `--ink`; use a fresh
-output directory for each render. Inspect the actual figure before publishing.
+output directory directly under the main checkout's `local-runtime` for each
+render. Inspect the actual figure before publishing.

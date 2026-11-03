@@ -167,11 +167,16 @@ def render(evidence: dict, output: Path, *, accent: str, background: str, ink: s
     try:
         figure.savefig(output/'study-comparisons.png', facecolor=background, metadata={'Software': 'AFTERLIGHT verified study figure'})
         figure.savefig(output/'study-comparisons.svg', facecolor=background, metadata={'Date': None})
+        # Canonical text bytes keep the generated SVG hash stable under Git's
+        # source LF policy; this does not change its vector shapes or values.
+        svg = output/'study-comparisons.svg'
+        svg.write_bytes(svg.read_bytes().replace(b'\r\n', b'\n'))
     finally:
         plt.close(figure)
     caption = f"Frozen offline study: {counts['test']} test scenarios / {counts['test_demand_groups']} independent demand groups. Signed conditional mean objective differences with 95% grouped intervals when eligible. Unavailable objectives and paired denominators are shown; no live controller or automatic benefit claim."
     (output/'caption.txt').write_text(caption+'\n', encoding='utf-8', newline='\n')
     manifest = {'schema': 'afterlight.study-figure.v1', 'scope': 'Visualization only; no simulation, fitting or selector tuning.',
+                'renderer_source_sha256': sha256(Path(__file__).read_bytes()),
                 'source_summary_sha256': evidence['summary_sha256'], 'source_pack_manifest_sha256': evidence['manifest_sha256'],
                 'source_report_file_sha256': evidence['report_file_sha256'],
                 'python': platform.python_version(), 'matplotlib': matplotlib.__version__, 'numpy': numpy.__version__,
@@ -191,6 +196,10 @@ def main() -> None:
     parser.add_argument('--ink', default='#193331')
     args = parser.parse_args()
     pack, output = args.pack.resolve(strict=True), args.output.resolve()
+    checkout = Path(__file__).resolve().parents[1]
+    runtime = checkout/'local-runtime'
+    if runtime.is_symlink() or not runtime.resolve().is_relative_to(checkout) or output.parent != runtime.resolve():
+        raise ValueError('Figure output must be a fresh direct child of the main checkout local-runtime')
     if output == pack or output.is_relative_to(pack) or pack.is_relative_to(output):
         raise ValueError('Figure output cannot overlap the original verified proof pack')
     if output.exists(): raise FileExistsError('Figure output must be a new directory')
