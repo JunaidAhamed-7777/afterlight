@@ -116,3 +116,37 @@ Compiled application source: `1312e865`; preview/harness/refresh source: `3f679d
 - Real paired playback, ghost timing against SUMO, loaded-traffic performance,
   actual simulation and ML evaluation remain untested. Smoke elapsed times above
   are test-run durations, not renderer frame-time or traffic-performance metrics.
+
+## 2026-11-03, `ba0c38a` recovered local cohort (reported 03:59 UTC)
+
+- Both owner-downloaded offline bundles matched their expected hashes. The local
+  install completed for all four SUMO packages at 1.28.0 and the locked npm
+  dependencies. Frontend production compilation succeeded on Omen.
+- **Reported unit results:** 262 Python passed / four skipped; 54 frontend Node
+  tests passed. The focused source-identity run separately reported 19 passed /
+  two platform-specific skips. Do not add these focused counts to the aggregate.
+- Synthetic local-generation protocol checks passed, including responsive views.
+  The headed browser run passed 12 checks, then failed a harness focus assertion:
+  Reset → Tab correctly entered the keyboard-focusable map, and the next Tab left
+  it. The harness is being corrected to accept and verify that intended sequence.
+- A real three-junction paired fixture ran. Its ordinary baseline is **invalid**
+  because a collision was reported at 153.00 s (captured at the next 153.5 s
+  sampling boundary). Both worlds completed 120 civilian vehicles, but completion
+  does not override the collision or make this a valid comparison. No replay or
+  benchmark gain may be promoted from this pair.
+- The colliding vehicles were a turning car (`civilian_00067`, 4.4 m) and a truck
+  (`civilian_00094`, 7.2 m) inserted at the start of outgoing edge `J3_J2` at
+  152.5 s. Both had numeric `departPos=0`. SUMO positions refer to the front
+  bumper; the observed truck rear extended into the junction. This supports an
+  unsafe insertion-position diagnosis, but a fresh controlled rerun must confirm
+  the correction. Existing invalid evidence remains retained, not relabeled.
+- Full-city conversion completed with six no-incoming-lane warnings and four
+  intersecting-left-turn warnings. These require lane-level connection review;
+  no city rollout, pilot, training, or held-out evaluation has passed.
+- A separate isolated local checkout was used after Git's stale metadata blocked
+  a normal fast-forward. Existing checkout contents were preserved. This is not
+  evidence that the stale-stat metadata issue itself was repaired.
+
+The enhanced 3D city/camera revision `14ea738` and compiled preview `63b7874` are
+later work and are **not covered** by these results. Their new asset, cutaway and
+camera tests still require a pinned Omen run.

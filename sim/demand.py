@@ -16,6 +16,42 @@ TYPES = {
 }
 RATES = {'sparse': .18, 'moderate': .55, 'heavy': 1.2, 'asymmetric': .7}
 
+# SUMO lane positions identify the FRONT bumper. A numeric zero places the
+# whole body behind the lane start, potentially inside an upstream junction.
+# Explicit numeric positions keep shared demand/reference costs reproducible.
+# https://sumo.dlr.de/userdoc/Definition_of_Vehicles%2C_Vehicle_Types%2C_and_Routes.html#departpos
+INSERTION_REAR_MARGIN_M = .1
+INSERTION_FRONT_MARGIN_M = .1
+
+
+def departure_lane_lengths(network: dict, edge_id: str, depart_lane: str = 'best') -> list[float]:
+    lanes = network['edges'][edge_id]['lanes']
+    if not lanes:
+        raise ValueError(f'No departure lanes for {edge_id}')
+    if depart_lane != 'best':
+        if not isinstance(depart_lane,str) or not depart_lane.isdecimal() or int(depart_lane)>=len(lanes):
+            raise ValueError('Departure lane must be best or a valid fixed lane index')
+        lanes = [lanes[int(depart_lane)]]
+    lengths = [network['lanes'][lane]['length_m'] for lane in lanes]
+    if any(isinstance(length,bool) or not isinstance(length,(int,float)) or not math.isfinite(length) or length<=0 for length in lengths):
+        raise ValueError(f'Invalid actual SUMO departure lane length for {edge_id}')
+    return lengths
+
+
+def validate_insertion_positions(demand: dict, network: dict) -> None:
+    """Reject unsupported body placement before SUMO, never drop/relocate rows."""
+    for vehicle in demand['vehicles']:
+        length = float(TYPES[vehicle['type']]['length'])
+        position = vehicle['depart_pos_m']
+        if isinstance(position,bool) or not isinstance(position,(int,float)) or not math.isfinite(position):
+            raise ValueError(f"{vehicle['id']}: departure front position must be finite")
+        lane_lengths = departure_lane_lengths(network,vehicle['route'][0],vehicle.get('depart_lane','best'))
+        if position < length+INSERTION_REAR_MARGIN_M-1e-9 or position > min(lane_lengths)-INSERTION_FRONT_MARGIN_M+1e-9:
+            raise ValueError(f"{vehicle['id']}: departure must fit the whole {length:g} m vehicle on its first lane "
+                             f"with {INSERTION_REAR_MARGIN_M:g} m rear and {INSERTION_FRONT_MARGIN_M:g} m front clearance; "
+                             'choose a supported pickup/start edge, do not shift or discard demand')
+
+
 
 def pickup_fraction(graph: dict, pickup: dict) -> float:
     edge = next(e for e in graph['edges'] if e['id'] == pickup['edge_id'])
@@ -68,14 +104,18 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
     ambulance_route = shortest_route(graph, pickup['edge_id'], hospital['destination_node'])
     pickup_lane = network['edges'][pickup['edge_id']]['lanes'][0]
     depart_pos, anchor_distance = project_to_lane(pickup['position'], network['lanes'][pickup_lane]['shape'])
-    depart_pos = min(depart_pos, network['lanes'][pickup_lane]['length_m']-.1)
     # The pickup curb is a pedestrian marker. Dispatch uses the adjacent lane,
     # never a teleport from a building/curb into the road.
     vehicles = [{'id': 'ambulance', 'type': 'ambulance', 'depart_s': dispatch_s,
                  'depart_pos_m': depart_pos, 'depart_lane': '0', 'route': ambulance_route,
                  'reference_s': free_flow_reference(ambulance_route, network, 'ambulance', depart_pos)}]
     rng = random.Random(seed)
-    candidates = sorted(network['edges'])
+    longest_civilian = max(float(TYPES[kind]['length']) for kind in ('car','truck','bike'))
+    minimum_start_length = longest_civilian+INSERTION_REAR_MARGIN_M+INSERTION_FRONT_MARGIN_M
+    candidates = sorted(edge for edge in network['edges'] if min(departure_lane_lengths(network,edge))>=minimum_start_length)
+    excluded_starts = sorted(set(network['edges'])-set(candidates))
+    if not candidates:
+        raise ValueError('No eligible civilian start edges can contain the complete vehicle body; no demand rows were discarded')
     endpoints = sorted(n['id'] for n in graph['nodes'] if not n['signalized'])
     now = 0.0
     index = 0
@@ -101,10 +141,12 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
         if route is None:
             raise ValueError('Unable to sample a permitted civilian route')
         kind = rng.choices(('car', 'truck', 'bike'), weights=(.82, .1, .08))[0]
+        civilian_position = float(TYPES[kind]['length'])+INSERTION_REAR_MARGIN_M
         vehicles.append({'id': f'civilian_{index:05d}', 'type': kind, 'depart_s': round(now, 3),
-                         'depart_pos_m': 0.0, 'route': route,
-                         'reference_s': free_flow_reference(route, network, kind)})
+                         'depart_pos_m': civilian_position, 'depart_lane': 'best', 'route': route,
+                         'reference_s': free_flow_reference(route, network, kind, civilian_position)})
         index += 1
+    validate_insertion_positions({'vehicles':vehicles},network)
     vehicles.sort(key=lambda v: (v['depart_s'], v['id']))
     return {'schema': 'afterlight.demand.v1', 'seed': seed, 'regime': regime,
             'dispatch_s': dispatch_s, 'demand_end_s': demand_end_s,
@@ -112,13 +154,19 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
             'reference_definition': 'max(0, arrival - scheduled_departure - external SUMO lane free-flow lower bound); reference excludes internal junctions and acceleration',
             'vehicle_class_note': 'All types including ambulance use passenger permissions. Bike is a compact low-speed motor-traffic proxy, not SUMO bicycle dynamics.',
             'bluelight_device': False,
+            'insertion_policy': {'schema':'afterlight.insertion.v1','position_reference':'SUMO front bumper',
+                'civilian_position_rule':'vType length + rear margin', 'rear_margin_m':INSERTION_REAR_MARGIN_M,
+                'front_margin_m':INSERTION_FRONT_MARGIN_M,'minimum_civilian_start_lane_length_m':minimum_start_length,
+                'excluded_short_start_edges':excluded_starts,'vehicle_lengths_m':{kind:float(spec['length']) for kind,spec in TYPES.items()},
+                'ambulance_position_rule':'exact nearest curb-to-lane projection; reject insufficient whole-body fit',
+                'insertion_checks':'all','depart_speed_mps':0,'max_depart_delay_s':-1,
+                'delay_policy':'SUMO queues blocked insertions; all scheduled/not-inserted rows remain accounted'},
             'pickup_projection': {'lane_id': pickup_lane, 'depart_pos_m': depart_pos,
                                   'curb_to_lane_distance_m': anchor_distance, 'method': 'nearest clipped SUMO lane polyline'}}
 
 
-def save_demand(demand: dict, directory: Path) -> dict:
-    directory.mkdir(parents=True, exist_ok=True)
-    write_json(directory/'demand.json', demand)
+def routes_element(demand: dict) -> ET.Element:
+    """One deterministic XML definition for saving and read-only binding checks."""
     root = ET.Element('routes')
     for name, properties in TYPES.items():
         node = ET.SubElement(root, 'vType', id=name, vClass='passenger', sigma='0.5',
@@ -126,9 +174,31 @@ def save_demand(demand: dict, directory: Path) -> dict:
         ET.SubElement(node, 'param', key='has.bluelight.device', value='false')
     for v in demand['vehicles']:
         node = ET.SubElement(root, 'vehicle', id=v['id'], type=v['type'], depart=str(v['depart_s']),
-                            departPos=str(v['depart_pos_m']), departSpeed='0', departLane=v.get('depart_lane', 'best'))
+                            departPos=str(v['depart_pos_m']), departSpeed='0', departLane=v.get('depart_lane', 'best'), insertionChecks='all')
         ET.SubElement(node, 'route', edges=' '.join(v['route']))
-    write_xml(directory/'demand.rou.xml', root)
+    return root
+
+
+def validate_saved_demand(demand: dict, network: dict, directory: Path) -> None:
+    """Bind the files SUMO consumes to the safe immutable declared realization.
+
+    Reject stale or altered inputs; never rewrite evidence to make it pass.
+    Explicit insertionChecks=all merely pins SUMO's normal default safety checks.
+    """
+    validate_insertion_positions(demand,network)
+    saved = json.loads((directory/'demand.json').read_text(encoding='utf-8'))
+    if saved != demand:
+        raise ValueError('Saved demand JSON differs from supplied immutable realization')
+    expected = ET.canonicalize(ET.tostring(routes_element(demand),encoding='unicode'),strip_text=True)
+    actual = ET.canonicalize((directory/'demand.rou.xml').read_text(encoding='utf-8'),strip_text=True)
+    if actual != expected:
+        raise ValueError('Saved SUMO route XML differs from safe demand/types/departures/insertion checks; retain evidence and regenerate a NEW run')
+
+
+def save_demand(demand: dict, directory: Path) -> dict:
+    directory.mkdir(parents=True, exist_ok=True)
+    write_json(directory/'demand.json', demand)
+    write_xml(directory/'demand.rou.xml', routes_element(demand))
     civilian_realization = [v for v in demand['vehicles'] if v['id'] != 'ambulance']
     group_hash = hashlib.sha256(json.dumps(civilian_realization, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
     return {'demand_sha256': sha256(directory/'demand.rou.xml'),

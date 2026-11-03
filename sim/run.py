@@ -19,7 +19,7 @@ import traceback
 from policies.scheduler import Scheduler, Timing
 from policies.timing import request_plan, distinct_schedules
 from sim.network import ROOT, binary, build_network, read_network, write_json, sha256
-from sim.demand import make_demand, save_demand
+from sim.demand import make_demand, save_demand, validate_saved_demand
 from sim.accounting import Accounting, reconcile_tripinfo
 from export.replay import SCHEMA, save_replay
 from models.analytical import choose_lead
@@ -185,6 +185,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         raise ValueError('Sample interval must be a positive integer multiple of simulation step')
     if any(abs(t/step_s-round(t/step_s)) > 1e-9 for t in (end_s, horizon_s, demand['dispatch_s'])):
         raise ValueError('Dispatch, horizon and common endpoint must align with simulation step')
+    validate_saved_demand(demand,network,demand_dir)
     command = [binary('sumo'), '--net-file', str(network_dir/'network.net.xml'),
                '--route-files', str(demand_dir/'demand.rou.xml'), '--step-length', str(step_s),
                '--seed', str(demand['seed']), '--begin', '0', '--end', str(end_s),

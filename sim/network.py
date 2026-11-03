@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import heapq
 import json
+import math
 import importlib.metadata
 import os
 import sys
@@ -150,6 +151,63 @@ def binary(name: str) -> str:
                        'run python -m sim.environment for scoped package diagnostics.')
 
 
+def edge_direction(edge: dict, *, at_end: bool) -> tuple[float, float]:
+    """Use the junction-adjacent nonzero segment of canonical geometry."""
+    segments = list(zip(edge['centerline'], edge['centerline'][1:]))
+    for a, b in reversed(segments) if at_end else segments:
+        dx, dy = b[0]-a[0], b[1]-a[1]
+        length = math.hypot(dx, dy)
+        if not math.isfinite(length):
+            raise ValueError(f'Nonfinite junction tangent for {edge["id"]}')
+        if length > 1e-9:
+            return dx/length, dy/length
+    raise ValueError(f'No finite nonzero junction tangent for {edge["id"]}')
+
+
+def connection_lane_pairs(incoming: dict, outgoing: dict) -> list[tuple[int, int]]:
+    """Conservative right-hand turn allocation without changing edge topology.
+
+    SUMO lane zero is rightmost. A right turn uses the outer lanes; a left turn
+    uses the inner lanes, including the destination lane on a widening turn.
+    This avoids the old all-lanes-to-all-turns layout and its orphaned inner
+    destination lanes at arterial boundary junctions. Straight movements and
+    same-road forward bends keep lane order, with explicit monotone fan-in/out
+    only when counts differ. Same-road identity never permits a U-turn.
+    Netconvert still creates turn curves and conflict-checked signal programs.
+    """
+    if incoming['to_node'] != outgoing['from_node']:
+        raise ValueError('Canonical connection endpoints do not meet')
+    ni, no = incoming['lanes'], outgoing['lanes']
+    if any(isinstance(n, bool) or not isinstance(n, int) or n < 1 for n in (ni, no)):
+        raise ValueError('Positive integer lane counts required')
+    ax, ay = edge_direction(incoming, at_end=True)
+    bx, by = edge_direction(outgoing, at_end=False)
+    cross, dot = ax*by-ay*bx, ax*bx+ay*by
+    # Road identity describes a forward continuation, not permission to reverse.
+    # Reject graph reversals/180-degree geometry before the same-road override.
+    if incoming['from_node'] == outgoing['to_node'] or (abs(cross) <= 1e-9 and dot <= 0):
+        raise ValueError('U-turn lane allocation is not supported by the canonical contract')
+    road_id = incoming.get('road_id')
+    same_road = isinstance(road_id, str) and bool(road_id) and road_id == outgoing.get('road_id')
+    if same_road:
+        return [(min(lane, ni-1), min(lane, no-1)) for lane in range(max(ni, no))]
+    if cross > 1e-9:
+        return [(ni-1, no-1)]
+    if cross < -1e-9:
+        return [(0, 0)]
+    return [(min(lane, ni-1), min(lane, no-1)) for lane in range(max(ni, no))]
+
+
+def lane_connections(graph: dict) -> list[dict]:
+    edges = {edge['id']: edge for edge in graph['edges']}
+    result = []
+    for connection in graph['connections']:
+        a, b = edges[connection['from_edge']], edges[connection['to_edge']]
+        result.extend({'from': a['id'], 'to': b['id'], 'fromLane': str(i), 'toLane': str(j)}
+                      for i, j in connection_lane_pairs(a, b))
+    return result
+
+
 def build_network(kind: str, output: Path) -> dict:
     if kind == 'city':
         map_bytes=(ROOT/'assets/map/city_manifest.json').read_bytes()
@@ -164,21 +222,14 @@ def build_network(kind: str, output: Path) -> dict:
         ET.SubElement(nodes, 'node', id=n['id'], x=str(n['position'][0]), y=str(n['position'][1]),
                       type='traffic_light' if n['signalized'] else 'priority')
     edges = ET.Element('edges')
-    edge_by_id = {e['id']: e for e in graph['edges']}
     for e in graph['edges']:
         ET.SubElement(edges, 'edge', id=e['id'], **{'from': e['from_node'], 'to': e['to_node'],
                       'numLanes': str(e['lanes']), 'width': str(e['lane_width_m']),
                       'speed': str(e['speed_kph']/3.6), 'allow': 'passenger',
                       'spreadType': 'right', 'shape': ' '.join(f'{p[0]},{p[1]}' for p in e['centerline'])})
     connections = ET.Element('connections')
-    for c in graph['connections']:
-        # Explicit legal edge pairs; netconvert builds lane-level turn geometry.
-        # Each incoming lane maps proportionally to an outgoing lane. No U-turns
-        # are introduced; every lane receives a permitted successor.
-        a, b = edge_by_id[c['from_edge']], edge_by_id[c['to_edge']]
-        for lane in range(a['lanes']):
-            ET.SubElement(connections, 'connection', **{'from': a['id'], 'to': b['id'],
-                          'fromLane': str(lane), 'toLane': str(min(lane, b['lanes'] - 1))})
+    for connection in lane_connections(graph):
+        ET.SubElement(connections, 'connection', **connection)
     write_xml(output / 'nodes.nod.xml', nodes)
     write_xml(output / 'edges.edg.xml', edges)
     write_xml(output / 'connections.con.xml', connections)
@@ -199,7 +250,9 @@ def build_network(kind: str, output: Path) -> dict:
                 'graph_sha256': hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest(),
                 'canonical_map_sha256': canonical_map_sha256,
                 'command': command, 'netconvert_version': subprocess.check_output([binary('netconvert'), '--version'], text=True).splitlines()[0],
-                'coordinate_normalization': False, 'validation_status': 'generated_not_acceptance_tested'}
+                'coordinate_normalization': False,
+                'lane_connection_policy': 'right-hand-inner-left-outer-right-straight-order-v1',
+                'validation_status': 'generated_not_acceptance_tested'}
     write_json(output/'network-manifest.json', metadata)
     write_json(output/'graph.json', graph)
     return metadata
