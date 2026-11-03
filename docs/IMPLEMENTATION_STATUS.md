@@ -20,7 +20,7 @@ Windows PC; cloud code review/build is not an acceptance result.
 
 The initial API served recordings only. The optional local-generation adapter now
 connects to the real runner when explicitly enabled, with one active job, bounded
-inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but real local-generation API acceptance remains pending an actual API job. It is not live streaming and
+inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, and a genuine API job completed and passed raw audit before the owner’s halt. Restart/recovery and full API lifecycle acceptance remain pending. It is not live streaming and
 does not invent progress.
 
 ## Reproduction commands — use the existing pinned environment
@@ -66,8 +66,8 @@ city worlds still had 21 and 20 running civilians; the common drain is essential
 Ambulance journeys were 210.5 s baseline and 182.5 s priority in this one
 exploratory pair, not an aggregate policy-benefit estimate.
 
-A real local-generation API job, pilot throughput/diversity and all learned
-evaluation remain open gates. Scoped real-replay rendering results follow below. The
+API restart/recovery and full lifecycle acceptance, pilot throughput/diversity
+and all learned evaluation remain open gates. Scoped real-replay rendering results follow below. The
 public recording catalog remains empty; no performance benefit is claimed.
 The [compiled preview](../preview/README.md) permits separate browser acceptance
 without npm installation, but does not waive the source-build or simulator gates.
@@ -162,3 +162,12 @@ fixed-lead candidate using a frozen selector, preserving physical policy, events
 and timing. The inspector distinguishes exporter-declared artifact references
 from independently verified evidence. It is not a live learned controller, and
 one recording cannot establish a study conclusion. See [export contract](../export/README.md).
+
+## API status at owner halt
+
+The Omen halt journal reports a genuine API job completed and passed raw audit
+on `3060716`. The task-owned API on port 8780 was stopped; no simulations or
+test clients remained active. Restart/recovery tests were not run. The user
+demo on 5180 and read-only API 8765 were preserved. The isolated validated
+checkout stayed clean at `3060716`, while the original main checkout remained
+`3f679def`; neither was reset or silently updated to the final source.

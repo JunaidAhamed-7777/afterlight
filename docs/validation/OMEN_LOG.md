@@ -364,3 +364,17 @@ new full unit/network/traffic cohort or a policy experiment.
 - No ML dependencies were installed. A real local-generation API lifecycle,
   pilot throughput/action diversity, training and held-out evaluation remain
   pending. These rendering checks do not establish model or policy benefit.
+
+## Owner halt — final Omen runtime reconciliation (reported 08:54 UTC)
+
+- One genuine local API job completed and passed its raw evidence audit on
+  `3060716`. Restart and recovery tests were **not run**; a full lifecycle or
+  genuine saved-job UI recovery pass must not be inferred.
+- No simulations or test clients remained active. The task-owned API on port
+  8780 was stopped; the user’s 5180 viewer and read-only 8765 API were preserved.
+- The isolated validated checkout remained clean at `3060716`; the original
+  main checkout stayed unchanged at `3f679def`. No destructive reset or implicit
+  source promotion occurred. The final desktop redesign is published source
+  only, without a new build/test pass, for the owner to continue locally.
+- Existing Omen evidence: `afterlight-tests/3060716/halt-handoff.json`. Preserve
+  the completed job and journals before choosing any next lifecycle action.

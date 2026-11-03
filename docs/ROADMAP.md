@@ -44,6 +44,11 @@ checks at 205, 207 and 220 s. The corrected lowest tyre contact was
 good gross road placement; exact stop-line and sub-centimetre visual alignment
 are not certified. Evidence-preservation retries passed without changing originals.
 
+At the owner’s halt, a genuine local API job completed and passed its raw audit.
+The task-owned API was stopped with no active simulations/test clients; restart
+and recovery tests were not run. Preserve that completed job for continuation
+rather than automatically generating another.
+
 The next requested desktop UI pass is explicit: keep the **3D viewport and
 playback fixed on the right**, with **settings and evidence independently
 scrolling on the left**. Provide greater camera zoom, legible per-link
@@ -52,7 +57,7 @@ world switching. These are priorities under implementation, not accepted
 features. Preserve the existing live `5293ae0` demo; validate the new cohort
 separately. No mobile optimization/testing is added.
 
-Next: accept that desktop UI cohort and complete one real local-generation API flow; then measure pilot throughput/action diversity and freeze a feasible study.
+For the local owner: accept that desktop UI cohort, then finish restart/recovery and UI integration using the already completed genuine API job; only then measure pilot throughput/action diversity and freeze a feasible study.
 The public recording catalog remains empty. No trained model, held-out result or
 measured benefit is claimed. Keep the November 4 submission buffer; cut experiment
 breadth before correctness or an honest browser-recorded demonstration.

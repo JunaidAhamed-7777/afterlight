@@ -94,10 +94,16 @@ and precise scope. Do not add these overlapping counts together.
   approval-review failure remains documented, but preservation uncertainty was
   subsequently resolved.
 
+At the halt, one genuine local API job from the `3060716` checkout had
+**completed and passed its raw evidence audit**. The task-owned API on port 8780
+was then stopped; no simulations or test clients remained active. Restart and
+recovery tests were **not run**. Do not infer full lifecycle/idempotency or UI
+recovery acceptance from the completed job alone. The retained Omen record is
+`afterlight-tests/3060716/halt-handoff.json`.
+
 No controlled multi-regime pilot, study collection, fitted model, held-out
-comparison, actual generation-API lifecycle acceptance or genuine saved-job UI
-recovery acceptance has been completed. The public recording catalog remains
-empty. The working user demo uses a private audited local catalog, not fake or
+comparison or genuine saved-job UI recovery acceptance has been completed.
+The public recording catalog remains empty. The working user demo uses a private audited local catalog, not fake or
 newly generated traffic.
 
 ## Preserve the live local demo and raw evidence
@@ -109,6 +115,11 @@ Last reported local services (check process/port state before acting):
   needed for this demo. Its API on port 8765 is **read-only**.
 - Port 5181: corrected `3060716` staging viewer; do not assume its ordinary
   browser catalog contains the isolated test recording.
+
+At halt, the isolated validated Omen checkout remained clean at `3060716`;
+the original main checkout remained unchanged at `3f679def`. Neither was
+automatically advanced to the final published source. The task-owned API 8780
+was stopped; the user-facing 5180 viewer and read-only API 8765 were preserved.
 
 Do not stop, replace or pull source underneath these services while the owner
 uses them. Do not launch generation on an occupied read-only API port. A lost
@@ -162,7 +173,9 @@ These are instructions, **not commands executed after the halt**.
    zoom, orbit, deliberate pan, follow reacquisition, end-of-run holding,
    keyboard access and both desktop window sizes. Inspect pixels; matrix
    checks alone cannot establish readable intersections or pleasant tracking.
-4. For the genuine API lifecycle gate, follow
+4. First inspect the retained completed API job and halt journal; do not
+   regenerate it merely because restart/recovery remains pending. For the
+   remaining genuine API lifecycle gates, follow
    [scripts/API_REAL_ACCEPTANCE.md](scripts/API_REAL_ACCEPTANCE.md). It prepares
    one fixed seed-7 exploratory request ID before POST, retains uncertainty,
    checks exact idempotency and raw replay bytes, and requires terminal state
