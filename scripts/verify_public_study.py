@@ -15,6 +15,7 @@ import json
 from pathlib import Path
 import platform
 import re
+import sys
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -25,6 +26,9 @@ def seconds(value):
 
 
 def main():
+    # Preserve published labels in Windows pipes as well as native terminals.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, 'reconfigure'): stream.reconfigure(encoding='utf-8')
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base-url', required=True, help='Public HTTPS viewer URL, or HTTP loopback publication')
     parser.add_argument('--released-manifest-sha256', required=True, help='Exact manifest SHA recorded by the completed audited release')

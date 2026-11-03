@@ -104,6 +104,12 @@ def check_actual_study(page, pack, output):
         {'label': 'Verified study summary', 'href': pack['summary_url'], 'download': True},
     ]
     assert links[3:] == [{'label': artifact['kind'].replace('_', ' '), 'href': local_url(artifact['url'], pack['summary_url']), 'download': True} for artifact in summary['artifacts']]
+    if amended:
+        page.locator('.study-analysis-note').scroll_into_view_if_needed()
+        page.screenshot(path=str(output / 'actual-study-amendment-downloads.png'), full_page=True)
+    page.get_by_role('link', name='test attempt', exact=True).scroll_into_view_if_needed()
+    page.screenshot(path=str(output / 'actual-study-claim-downloads.png'), full_page=True)
+    page.locator('.study-provenance dl dt').filter(has_text='Summary SHA-256').scroll_into_view_if_needed()
     page.screenshot(path=str(output / 'actual-study-provenance.png'), full_page=True)
     page.locator('.settings-scroll').evaluate("e=>e.scrollTo({top:0,behavior:'instant'})")
     page.screenshot(path=str(output / 'actual-study-overview.png'), full_page=True)

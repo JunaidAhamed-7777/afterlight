@@ -1,0 +1,185 @@
+{
+  "schema": "afterlight.actual-public-study-acceptance.v1",
+  "status": "passed",
+  "scope": "Actual released HTTP companions and genuine headed desktop Study interface. No valid positive response fixtures, model fitting, simulation or private outcome directories. One intentionally invalid response is removed before Retry fetches the real pack.",
+  "source_commit": "66d60b2",
+  "strict_build_manifest_sha256": "da2584a498736cbabfbd77b0bb66929b39aca407ecc9213dac551b664e98c59a",
+  "build_files": 58,
+  "build_bytes": 39508650,
+  "publication_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+  "public_proof": {
+    "verified_utc": "2026-11-03T18:08:03.540408+00:00",
+    "python": "3.12.15",
+    "entrypoint_sha256": "e69a2189b0fc87de1ecb98498b11e549a77a882a1e2f66af2a74769dd04a42e3",
+    "helper_sha256": "f0dcccb9cff4b6fc5d559b31e1845e6702f36c3052ab301e7676121767e66668"
+  },
+  "verification": {
+    "csv_rows": 40,
+    "all_test_episodes_retained_per_comparison": true,
+    "arithmetic": [
+      {
+        "comparison": "learned-vs-fixed",
+        "episodes": 20,
+        "paired_feasible": 19,
+        "csv_rows": 20,
+        "interval_groups": 19,
+        "interval_recomputed": [
+          -4.992861630530746,
+          5.978169418331287
+        ]
+      },
+      {
+        "comparison": "learned-vs-analytical",
+        "episodes": 20,
+        "paired_feasible": 19,
+        "csv_rows": 20,
+        "interval_groups": 19,
+        "interval_recomputed": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "public_envelope_and_file_bindings": true,
+    "scope": "Verifies the released public companions and their arithmetic; does not read or re-audit private raw simulator outcomes or prove human test nonaccess.",
+    "exclusive_test_claim": {
+      "original_attempt_raw_and_logical_hashes_verified": true,
+      "original_collection_raw_hash_verified": true,
+      "exclusive_claim_metadata_reconciled": true,
+      "declared_test_worlds": 140,
+      "all_declared_worlds_audited_and_invoked_once": true,
+      "scope": "Reconciles the released original claim, completed inventory and declared chronology. Public metadata does not independently prove absence of other private attempts, human nonaccess or the physical location of the original collection."
+    },
+    "analysis_amendment": {
+      "present": true,
+      "id": "frozen-estimator-config-v1",
+      "descriptor_sha256": "c30562eadf64ed991e18b905f685bcc325116158d32f9c560ba04d187b7909ae",
+      "descriptor_file_sha256": "9cc3c3edabf2af1075392e06cf16468d2a6ef90e93da86ffe46e5ccb50a144eb",
+      "frozen_estimator_sha256": "94088eb6a774a152e3ddb1f6a4766cc42b84f0c98848563345d4678cd6737883",
+      "original_simulation_source_unchanged": true,
+      "selection_report_and_original_release_bound": true,
+      "all_analysis_companions_hash_verified": [
+        "analysis_amendment",
+        "analysis_binding_source",
+        "analysis_diff",
+        "analysis_entrypoint_source",
+        "analysis_failure_journal",
+        "analysis_failure_log",
+        "analysis_verifier_source"
+      ],
+      "downloaded_analysis_code_executed": false,
+      "failure_journal": {
+        "schema": "afterlight.selection-dependency-watcher.v1",
+        "state": "watcher_stopped_no_test_release",
+        "return_code": 1,
+        "automatic_retries": 0,
+        "fit_stage_marker_present": false,
+        "independently_proves_no_fit": false
+      },
+      "scope": "Checks exact public pre-test descriptor/source/failure evidence identities, stopped/unsuccessful watcher status and declared chronology. The original journal has no fit-stage marker; the descriptor pre-fit assertion depends on the retained stack/log and reviewed absence of original output. Metadata does not independently prove human nonaccess or when fitting actually began."
+    },
+    "public_reproduction": {
+      "decoded_grids": [
+        {
+          "kind": "train_candidates",
+          "bytes": 48763514,
+          "sha256": "0f6d38148d0273b8c8ad53da7c508de5ff2615c861b6652da4e33ca4138d0e9c",
+          "rows": 120,
+          "decoder_memory_limit_bytes": 134217728
+        },
+        {
+          "kind": "validation_candidates",
+          "bytes": 24382978,
+          "sha256": "d3c23e1447d7a47190eb9d24edee69e8b50e851efe153259c1b18d6d09c61c88",
+          "rows": 60,
+          "decoder_memory_limit_bytes": 134217728
+        },
+        {
+          "kind": "test_candidates",
+          "bytes": 40648492,
+          "sha256": "2b6837e11e7b523cce82377b7f7803d7fabb5ca2a0a73ac4e8ae7da2cefa04c4",
+          "rows": 100,
+          "decoder_memory_limit_bytes": 134217728
+        },
+        {
+          "kind": "test_outcomes",
+          "bytes": 56902123,
+          "sha256": "98dba56c63f2e6c9610be7e5caf34f3e94a1b9cf0cb3c02ed92ddc0d14b001f6",
+          "rows": 140,
+          "decoder_memory_limit_bytes": 134217728
+        }
+      ],
+      "scientific_helper_source_files_verified": [
+        "evaluation/__init__.py",
+        "evaluation/metrics.py",
+        "evaluation/splits.py",
+        "evaluation/protocol.py",
+        "models/__init__.py",
+        "models/residual.py",
+        "models/analytical.py",
+        "evaluation/selectors.py",
+        "evaluation/comparison.py"
+      ],
+      "validation_fixed_choice_recomputed": true,
+      "test_candidate_full_scalar_subset_exact": true,
+      "all_test_world_statuses_recomputed": true,
+      "frozen_decisions_and_reports_recomputed": [
+        {
+          "comparison": "learned-vs-fixed",
+          "episodes": 20,
+          "frozen_model_and_comparator_choices_recomputed": true
+        },
+        {
+          "comparison": "learned-vs-analytical",
+          "episodes": 20,
+          "frozen_model_and_comparator_choices_recomputed": true
+        }
+      ]
+    }
+  },
+  "browser": {
+    "status": "passed_actual_released_Study_positive_acceptance",
+    "started_utc": "2026-11-03T18:12:20.910368+00:00",
+    "finished_utc": "2026-11-03T18:12:38.830586+00:00",
+    "browser_version": "156.0.8078.80",
+    "actual_UI": {
+      "comparisons": [
+        {
+          "id": "learned-vs-fixed",
+          "all_episode_failures_and_statuses_match": true,
+          "paired_means_and_signs_match": true,
+          "interval_or_actual_missing_reason_matches": true,
+          "changed_action_rate_matches": true
+        },
+        {
+          "id": "learned-vs-analytical",
+          "all_episode_failures_and_statuses_match": true,
+          "paired_means_and_signs_match": true,
+          "interval_or_actual_missing_reason_matches": true,
+          "changed_action_rate_matches": true
+        }
+      ],
+      "holdouts_objective_and_provenance_match": true,
+      "all_download_labels_and_targets_match": true
+    },
+    "mount_unmount_preserves_real_recording": true,
+    "invalid_then_retry_REAL_publication_ready_heading_focus": true,
+    "Study_Settings_guide_exit_Results_restores_This_run": [
+      "Skip tour",
+      "Done"
+    ],
+    "source_stable": true
+  },
+  "browser_all_requests_read_only": true,
+  "build_http_hashes_verified_before_and_after": true,
+  "root_pixel_review": {
+    "status": "passed",
+    "observations": "Actual counts, failure denominators, signed means and interval, amendment disclosure, original test claim/collection downloads, source and hashes are readable; left scroll preserves the city and transport.",
+    "screenshots": {
+      "actual-study-amendment-downloads.png": "0116258fda0126975300ea9f1191c7a2a91657dfc6be00b45b88ddbb73313464",
+      "actual-study-claim-downloads.png": "ad15d40d9bbfb819fe94725a8297923490c0c71fae9fdde96cdd331d128fa684",
+      "actual-study-overview.png": "dd3d239bbe957e199d14be7c7825133665cb0425caee193487b42edb5d68e441",
+      "actual-study-provenance.png": "7e7342a075b2876e9b5c9f8fb950ac90961b5eb38dd429495fc5907ce5d7fe00"
+    }
+  }
+}
