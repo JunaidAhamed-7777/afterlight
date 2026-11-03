@@ -28,7 +28,9 @@ class PreviewAssembly(unittest.TestCase):
 
     def test_source_discovery_includes_new_files_and_configs(self):
         for name in ('web/src/new/Scene.tsx', 'web/src/new.wgsl', 'web/scripts/new.mjs',
-                     'web/vite.config.ts', 'web/.env.local', 'web/public/favicon.svg'):
+                     'web/vite.config.ts', 'web/.env.local', 'web/public/favicon.svg',
+                     'web/public/study/manifest.json', 'web/public/study/summary.json',
+                     'web/public/study/proof/report.json'):
             self.assertTrue(builder.is_source(name), name)
         for name in ('web/node_modules/x.js', 'web/dist/index.html', 'web/tests/a.ts',
                      'web/public/assets/exports/city.glb', 'web/public/replays/catalog.json'):

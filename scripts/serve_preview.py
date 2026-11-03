@@ -38,6 +38,15 @@ def resolve_request(raw: str) -> Path | None:
         base, relative = ROOT / "assets/previews", path.rsplit("/", 1)[1]
     elif path.startswith("/replays/"):
         base, relative = ROOT / "web/public/replays", path.removeprefix("/replays/")
+    elif path.startswith("/study/"):
+        base, relative = ROOT / "web/public/study", path.removeprefix("/study/")
+        # Only explicitly public study files are served. Reject redirected
+        # folders/files as well as lexical traversal, including Windows junctions.
+        current = ROOT
+        for part in ("web", "public", "study", *relative.split("/")):
+            current = current / part
+            if current.is_symlink() or (hasattr(current, "is_junction") and current.is_junction()):
+                return None
     else:
         base, relative = ROOT / "preview/site", path.lstrip("/") or "index.html"
     candidate = (base / relative).resolve()
