@@ -1,0 +1,46 @@
+[
+  {
+    "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "decodedSha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "worlds": {
+      "baseline": {
+        "frames": 1801,
+        "integrationCadenceSeconds": 0.5,
+        "completedAllRedIntervals": 2233,
+        "minimumAllRedSeconds": 3.0,
+        "maximumAllRedSeconds": 3.0,
+        "openAllRedAtCommonEnd": 0
+      },
+      "afterlight": {
+        "frames": 1801,
+        "integrationCadenceSeconds": 0.5,
+        "completedAllRedIntervals": 2222,
+        "minimumAllRedSeconds": 3.0,
+        "maximumAllRedSeconds": 3.0,
+        "openAllRedAtCommonEnd": 1
+      }
+    }
+  },
+  {
+    "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+    "decodedSha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+    "worlds": {
+      "baseline": {
+        "frames": 1801,
+        "integrationCadenceSeconds": 0.5,
+        "completedAllRedIntervals": 2233,
+        "minimumAllRedSeconds": 3.0,
+        "maximumAllRedSeconds": 3.0,
+        "openAllRedAtCommonEnd": 0
+      },
+      "afterlight": {
+        "frames": 1801,
+        "integrationCadenceSeconds": 0.5,
+        "completedAllRedIntervals": 2227,
+        "minimumAllRedSeconds": 3.0,
+        "maximumAllRedSeconds": 3.0,
+        "openAllRedAtCommonEnd": 1
+      }
+    }
+  }
+]

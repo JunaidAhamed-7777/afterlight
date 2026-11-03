@@ -1,18 +1,18 @@
 {
   "schema": "afterlight.expanded-city-qualification.v1",
   "scope": "One predeclared seed-7 exploratory software qualification pair; not held-out policy performance or trained ML evidence.",
-  "source_commit": "b5b4115076f85d1df6f3868870f62f983b493f04",
-  "source_code_sha256": "dcbaa42fb6393e6b00d7b0b2a30f7122b12875dd9cd1d2e7ce6fb006e81a0f19",
+  "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+  "source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
   "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
-  "replay_sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
-  "replay_bytes": 18466506,
+  "replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+  "replay_bytes": 72828179,
   "sumo_version": "SUMO 1.28.0",
   "simulation_step_s": 0.5,
-  "replay_sample_s": 2,
-  "duration_s": 900.0,
+  "replay_sample_s": 0.5,
+  "duration_s": 900,
   "scenario": {
-    "id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
-    "episode_id": "city-moderate-7-44b1224ec1731f19",
+    "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "episode_id": "city-moderate-7-728e525b8a1a9238",
     "network_kind": "city",
     "seed": 7,
     "pickup_id": "P001",
@@ -55,9 +55,18 @@
   "worlds": {
     "baseline": {
       "status": "completed",
-      "ambulance_journey_s": 561.0,
-      "civilian_mean_excess_s": 99.5878483327308,
-      "civilian_excess_p95_s": 185.22023291320485,
+      "controller_timing": {
+        "min_green_s": 8.0,
+        "ordinary_green_s": 25.0,
+        "yellow_s": 3.0,
+        "all_red_s": 3.0,
+        "max_hold_s": 35.0,
+        "request_timeout_s": 90.0,
+        "recovery_green_s": 25.0
+      },
+      "ambulance_journey_s": 601.0,
+      "civilian_mean_excess_s": 111.48734582016799,
+      "civilian_excess_p95_s": 222.21429784017354,
       "accounting": {
         "scheduled": 398,
         "inserted": 398,
@@ -65,19 +74,27 @@
         "running": 0,
         "not_inserted": 0
       },
-      "runtime_s": 28.676206100000854,
-      "common_horizon_burden_vehicle_s": 17426.0,
-      "drain_burden_vehicle_s": 4095.5,
-      "peak_visible_vehicles": 368,
-      "peak_frame_s": 180.0,
+      "runtime_s": 48.733294300000125,
+      "peak_vehicles": 373,
+      "peak_frame_s": 180.5,
       "collisions": 0,
-      "teleports": 0
+      "teleports": 0,
+      "actual_frame_count": 1801
     },
     "afterlight": {
       "status": "completed",
-      "ambulance_journey_s": 455.0,
-      "civilian_mean_excess_s": 101.71724531765543,
-      "civilian_excess_p95_s": 193.8921076761855,
+      "controller_timing": {
+        "min_green_s": 8.0,
+        "ordinary_green_s": 25.0,
+        "yellow_s": 3.0,
+        "all_red_s": 3.0,
+        "max_hold_s": 35.0,
+        "request_timeout_s": 90.0,
+        "recovery_green_s": 25.0
+      },
+      "ambulance_journey_s": 473.0,
+      "civilian_mean_excess_s": 113.6808131568514,
+      "civilian_excess_p95_s": 222.36394143448928,
       "accounting": {
         "scheduled": 398,
         "inserted": 398,
@@ -85,21 +102,20 @@
         "running": 0,
         "not_inserted": 0
       },
-      "runtime_s": 31.702338499999314,
-      "common_horizon_burden_vehicle_s": 17682.5,
-      "drain_burden_vehicle_s": 4519.5,
-      "peak_visible_vehicles": 370,
-      "peak_frame_s": 182.0,
+      "runtime_s": 39.91502419999961,
+      "peak_vehicles": 373,
+      "peak_frame_s": 180.5,
       "collisions": 0,
-      "teleports": 0
+      "teleports": 0,
+      "actual_frame_count": 1801
     }
   },
-  "ambulance_difference_s": -106.0,
-  "civilian_mean_excess_difference_s": 2.1293969849246253,
+  "ambulance_difference_s": -128.0,
+  "civilian_mean_excess_difference_s": 2.193467336683412,
   "audit": {
     "schema": "afterlight.audit.v1",
-    "run_id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
-    "replay_sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
+    "run_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "replay_sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
     "checks": [
       {
         "world": "baseline",
@@ -126,8 +142,8 @@
     "paired_dispatch_causality": {
       "shared_pre_dispatch_history": "passed",
       "shared_causal_observation_and_etas": "passed",
-      "pre_dispatch_frames": 30,
-      "pre_dispatch_events": 539,
+      "pre_dispatch_frames": 120,
+      "pre_dispatch_events": 462,
       "frozen_request_timing": {
         "baseline": "passed",
         "afterlight": "passed"
@@ -136,11 +152,30 @@
     "ordinary_negative_control": "not_this_policy",
     "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
   },
-  "raw_evidence_directory": "C:\\Github\\afterlight-engine-v4\\local-runtime\\city-dense-qualified-7",
-  "observation_transport_check": {
-    "exact_metrics_events_and_decision_equal_to_direct_reads": true,
-    "direct_read_baseline_runtime_s": 95.68041749999975,
-    "subscription_baseline_runtime_s": 28.676206100000854,
-    "interpretation": "One measured before/after execution observation on the same machine and demand; timing is not a controlled repeated performance benchmark."
-  }
+  "raw_evidence_directory": "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-cross-city-7",
+  "public_transport": {
+    "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "title": "Cross-city response",
+    "url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+    "seed": 7,
+    "pickup_id": "P001",
+    "hospital_id": "HOSP_EAST",
+    "policy": "fixed",
+    "lead_s": 20,
+    "policy_label": "fixed \u00b7 20 s lead",
+    "duration_s": 900.0,
+    "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "bytes": 72828179,
+    "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+    "world_status": {
+      "baseline": "completed",
+      "afterlight": "completed"
+    },
+    "evidence_url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
+    "encoding": "gzip",
+    "transfer_bytes": 6585636,
+    "transfer_sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
+  },
+  "capture_validation": "Both pairs were rerun at the final clean source checkpoint with the three-second city all-red profile; all 1801 actual frames per world are retained. These are new physical executions, not a relabeling of the earlier one-second-profile captures.",
+  "presentation_review": "expanded-city-presentation.json"
 }

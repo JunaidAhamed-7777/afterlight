@@ -1,0 +1,93 @@
+{
+  "schema": "afterlight.presentation-crossing-review.v1",
+  "method": "Incoming lane stop-line crossing of the production linear interpolated SUMO front-bumper pose, within1.5m lateral lane center and incoming heading alignment>.90. Exact lamp timelines use production buildSignalTimeline and reproduce all saved frames. Mixed movement classification is separately labeled inferred when a unique future outgoing-lane pose+heading matches; unresolved movement is never guessed. These are presentation checks, not raw physics/safety certification. Teleport-like, same-position, missing-neighbor and differently typed pose pairs are ineligible. Yellow crossings are counted separately from red and are not a braking-acceptance certificate.",
+  "auditSourceSha256": "7be7360b7895d301410e7c2f5fd07614d41df818eb348683df9930bdcf5a83f5",
+  "signalTimelineSourceSha256": "bdf0336adbb425af20f2a8bc12af06b4c43877e05677474ccab914f9d71d374b",
+  "catalogSha256": "b69d26f06a6b002c5a904b65f288144672f96bf8eb0568d78656471f3c4820f9",
+  "nodeVersion": "v26.8.1",
+  "status": "passed",
+  "results": [
+    {
+      "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+      "title": "Cross-city response",
+      "decodedSha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+      "step_s": 0.5,
+      "sourceCommit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "worlds": {
+        "afterlight": {
+          "stats": {
+            "crossings": 2449,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2449,
+            "yellowMovements": 41
+          },
+          "red": [],
+          "ambiguous": []
+        },
+        "baseline": {
+          "stats": {
+            "crossings": 2441,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2441,
+            "yellowMovements": 49
+          },
+          "red": [],
+          "ambiguous": []
+        }
+      }
+    },
+    {
+      "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
+      "title": "Westhaven response",
+      "decodedSha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+      "step_s": 0.5,
+      "sourceCommit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "worlds": {
+        "afterlight": {
+          "stats": {
+            "crossings": 2474,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2474,
+            "yellowMovements": 43
+          },
+          "red": [],
+          "ambiguous": []
+        },
+        "baseline": {
+          "stats": {
+            "crossings": 2475,
+            "exactTimelineSignals": 77,
+            "totalSignals": 77,
+            "allRedJunction": 0,
+            "allLaneMovementsRed": 0,
+            "inferredMovementRed": 0,
+            "ambiguousMixedRed": 0,
+            "unclassifiedWithoutTimeline": 0,
+            "greenOrYellowOrOff": 2475,
+            "yellowMovements": 48
+          },
+          "red": [],
+          "ambiguous": []
+        }
+      }
+    }
+  ]
+}

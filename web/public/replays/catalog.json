@@ -2,9 +2,9 @@
   "schema": "afterlight.catalog.v1",
   "runs": [
     {
-      "id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+      "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
       "title": "Cross-city response",
-      "url": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.json.gz",
+      "url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
       "seed": 7,
       "pickup_id": "P001",
       "hospital_id": "HOSP_EAST",
@@ -12,22 +12,22 @@
       "lead_s": 20,
       "policy_label": "fixed \u00b7 20 s lead",
       "duration_s": 900.0,
-      "sha256": "60598c709d0e31a21fb112a07b740e25905e2608e58866c553781ab1212c6e41",
-      "bytes": 70357627,
-      "source_commit": "911b295e1f7abbea25ca964f1b74d51b21ac7b0a",
+      "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+      "bytes": 72828179,
+      "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
       "world_status": {
         "baseline": "completed",
         "afterlight": "completed"
       },
-      "evidence_url": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.evidence.json",
+      "evidence_url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
       "encoding": "gzip",
-      "transfer_bytes": 6410430,
-      "transfer_sha256": "9da0f708693251f3613678b750b5d30a51e11eb12c29fa6928b6dfacbf7b1f10"
+      "transfer_bytes": 6585636,
+      "transfer_sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
     },
     {
-      "id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5",
+      "id": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5",
       "title": "Westhaven response",
-      "url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.json.gz",
+      "url": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.json.gz",
       "seed": 8,
       "pickup_id": "P080",
       "hospital_id": "HOSP_WEST",
@@ -35,17 +35,17 @@
       "lead_s": 0,
       "policy_label": "analytical \u00b7 0 s lead",
       "duration_s": 900.0,
-      "sha256": "3d7f6452e4a034b5eb4fd04249239a54493c93fd80b8c1efeeba7b5a1ce72393",
-      "bytes": 71063795,
-      "source_commit": "911b295e1f7abbea25ca964f1b74d51b21ac7b0a",
+      "sha256": "8ed844ac1b8a48a4e40fd1a6c0867a9135e55eb9344d4b1c89c354ddd54cf3a1",
+      "bytes": 74074010,
+      "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
       "world_status": {
         "baseline": "completed",
         "afterlight": "completed"
       },
-      "evidence_url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.evidence.json",
+      "evidence_url": "city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.evidence.json",
       "encoding": "gzip",
-      "transfer_bytes": 6457295,
-      "transfer_sha256": "68cef7a32427ccda22e33080eb68c6106612925bffad78eedacbb2e7e68f188e"
+      "transfer_bytes": 6718803,
+      "transfer_sha256": "bab80cd0acdb6462ce5c31af4c99a226303f936704d21fec8b7496be82f33b69"
     }
   ]
 }

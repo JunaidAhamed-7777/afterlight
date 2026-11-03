@@ -1,0 +1,1657 @@
+{
+  "schema": "afterlight.expanded-network-qualification.v1",
+  "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+  "network_manifest": {
+    "schema": "afterlight.network.v1",
+    "kind": "city",
+    "network_sha256": "31c19a9498ca1ca41613cfcc2dfbe1dd472b67da10f68bc500a76a4ff1fdec13",
+    "network_file_sha256": "70e64b377ded870cdced44d8c2f635a460bc5e24b513cb23d344329a01b037ac",
+    "network_hash_definition": "canonical XML excluding generator timestamp/path comments and insignificant whitespace",
+    "graph_sha256": "f860848818f416ab74732145230d16bd9bb2bf01bac62e9295d5a2520678c2de",
+    "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+    "command": [
+      "C:\\Github\\afterlight\\.venv\\Scripts\\netconvert.exe",
+      "--node-files",
+      "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-cross-city-7\\network\\nodes.nod.xml",
+      "--edge-files",
+      "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-cross-city-7\\network\\edges.edg.xml",
+      "--connection-files",
+      "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-cross-city-7\\network\\connections.con.xml",
+      "--output-file",
+      "C:\\Github\\afterlight-final-study-v4\\local-runtime\\final-cross-city-7\\network\\network.net.xml",
+      "--offset.disable-normalization",
+      "true",
+      "--no-turnarounds",
+      "true",
+      "--tls.default-type",
+      "static",
+      "--tls.green.time",
+      "25",
+      "--tls.yellow.time",
+      "3",
+      "--tls.allred.time",
+      "3"
+    ],
+    "netconvert_version": "Eclipse SUMO netconvert 1.28.0",
+    "coordinate_normalization": false,
+    "lane_connection_policy": "right-hand-inner-left-outer-right-straight-order-v1",
+    "validation_status": "generated_not_acceptance_tested"
+  },
+  "route_count": 200,
+  "routes_passed": 200,
+  "imported_external_edges": 586,
+  "signals": 77,
+  "netconvert_stderr_bytes": 0,
+  "checks": [
+    "exact external edge identity",
+    "exact permitted edge transition set",
+    "canonical from/to endpoints",
+    "all pickup/hospital legal shortest paths",
+    "whole ambulance body fits actual clipped departure lane",
+    "legal generated green phase exists for every route movement",
+    "no repeated controlled junction on selected route"
+  ],
+  "scope": "Static graph/import/lane/route-control qualification only; not 200 executed SUMO episodes or learned route generalization.",
+  "routes": [
+    {
+      "pickup_id": "P001",
+      "hospital_id": "HOSP_WEST",
+      "edges": 5,
+      "controlled_junctions": 1,
+      "depart_lane": "H00_1_R_0",
+      "depart_pos_m": 47.35000000000002
+    },
+    {
+      "pickup_id": "P001",
+      "hospital_id": "HOSP_EAST",
+      "edges": 24,
+      "controlled_junctions": 13,
+      "depart_lane": "H00_1_R_0",
+      "depart_pos_m": 47.35000000000002
+    },
+    {
+      "pickup_id": "P002",
+      "hospital_id": "HOSP_WEST",
+      "edges": 5,
+      "controlled_junctions": 3,
+      "depart_lane": "H02_0_R_0",
+      "depart_pos_m": 112.35000000000004
+    },
+    {
+      "pickup_id": "P002",
+      "hospital_id": "HOSP_EAST",
+      "edges": 18,
+      "controlled_junctions": 12,
+      "depart_lane": "H02_0_R_0",
+      "depart_pos_m": 112.35000000000004
+    },
+    {
+      "pickup_id": "P003",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 5,
+      "depart_lane": "H03_0_F_0",
+      "depart_pos_m": 34.150000000000006
+    },
+    {
+      "pickup_id": "P003",
+      "hospital_id": "HOSP_EAST",
+      "edges": 16,
+      "controlled_junctions": 10,
+      "depart_lane": "H03_0_F_0",
+      "depart_pos_m": 34.150000000000006
+    },
+    {
+      "pickup_id": "P004",
+      "hospital_id": "HOSP_WEST",
+      "edges": 13,
+      "controlled_junctions": 7,
+      "depart_lane": "H05_0_F_0",
+      "depart_pos_m": 36.85000000000002
+    },
+    {
+      "pickup_id": "P004",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 8,
+      "depart_lane": "H05_0_F_0",
+      "depart_pos_m": 36.85000000000002
+    },
+    {
+      "pickup_id": "P005",
+      "hospital_id": "HOSP_WEST",
+      "edges": 2,
+      "controlled_junctions": 0,
+      "depart_lane": "H10_1_R_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P005",
+      "hospital_id": "HOSP_EAST",
+      "edges": 24,
+      "controlled_junctions": 13,
+      "depart_lane": "H10_1_R_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P006",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 2,
+      "depart_lane": "H12_0_R_0",
+      "depart_pos_m": 112.35000000000004
+    },
+    {
+      "pickup_id": "P006",
+      "hospital_id": "HOSP_EAST",
+      "edges": 17,
+      "controlled_junctions": 11,
+      "depart_lane": "H12_0_R_0",
+      "depart_pos_m": 112.35000000000004
+    },
+    {
+      "pickup_id": "P007",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 4,
+      "depart_lane": "H14_0_R_0",
+      "depart_pos_m": 120.15
+    },
+    {
+      "pickup_id": "P007",
+      "hospital_id": "HOSP_EAST",
+      "edges": 13,
+      "controlled_junctions": 9,
+      "depart_lane": "H14_0_R_0",
+      "depart_pos_m": 120.15
+    },
+    {
+      "pickup_id": "P008",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "H15_0_F_0",
+      "depart_pos_m": 36.85000000000002
+    },
+    {
+      "pickup_id": "P008",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 7,
+      "depart_lane": "H15_0_F_0",
+      "depart_pos_m": 36.85000000000002
+    },
+    {
+      "pickup_id": "P009",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 7,
+      "depart_lane": "H17_1_F_0",
+      "depart_pos_m": 40.05000000000007
+    },
+    {
+      "pickup_id": "P009",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 6,
+      "depart_lane": "H17_1_F_0",
+      "depart_pos_m": 40.05000000000007
+    },
+    {
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 3,
+      "depart_lane": "H22_1_R_0",
+      "depart_pos_m": 20.349999999999966
+    },
+    {
+      "pickup_id": "P010",
+      "hospital_id": "HOSP_EAST",
+      "edges": 17,
+      "controlled_junctions": 10,
+      "depart_lane": "H22_1_R_0",
+      "depart_pos_m": 20.349999999999966
+    },
+    {
+      "pickup_id": "P011",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 5,
+      "depart_lane": "H24_1_R_0",
+      "depart_pos_m": 22.150000000000006
+    },
+    {
+      "pickup_id": "P011",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 8,
+      "depart_lane": "H24_1_R_0",
+      "depart_pos_m": 22.150000000000006
+    },
+    {
+      "pickup_id": "P012",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 8,
+      "depart_lane": "H27_0_R_0",
+      "depart_pos_m": 126.04999999999995
+    },
+    {
+      "pickup_id": "P012",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 5,
+      "depart_lane": "H27_0_R_0",
+      "depart_pos_m": 126.04999999999995
+    },
+    {
+      "pickup_id": "P013",
+      "hospital_id": "HOSP_WEST",
+      "edges": 5,
+      "controlled_junctions": 3,
+      "depart_lane": "H30_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P013",
+      "hospital_id": "HOSP_EAST",
+      "edges": 18,
+      "controlled_junctions": 10,
+      "depart_lane": "H30_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P014",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 5,
+      "depart_lane": "H32_0_F_0",
+      "depart_pos_m": 99.89999999999996
+    },
+    {
+      "pickup_id": "P014",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "H32_0_F_0",
+      "depart_pos_m": 99.89999999999996
+    },
+    {
+      "pickup_id": "P015",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 6,
+      "depart_lane": "H34_0_R_0",
+      "depart_pos_m": 120.15
+    },
+    {
+      "pickup_id": "P015",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "H34_0_R_0",
+      "depart_pos_m": 120.15
+    },
+    {
+      "pickup_id": "P016",
+      "hospital_id": "HOSP_WEST",
+      "edges": 16,
+      "controlled_junctions": 8,
+      "depart_lane": "H36_0_R_0",
+      "depart_pos_m": 104.54999999999997
+    },
+    {
+      "pickup_id": "P016",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "H36_0_R_0",
+      "depart_pos_m": 104.54999999999997
+    },
+    {
+      "pickup_id": "P017",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "H41_0_R_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P017",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "H41_0_R_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P018",
+      "hospital_id": "HOSP_WEST",
+      "edges": 15,
+      "controlled_junctions": 7,
+      "depart_lane": "H43_0_F_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P018",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 6,
+      "depart_lane": "H43_0_F_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P019",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 9,
+      "depart_lane": "H45_0_F_0",
+      "depart_pos_m": 85.85000000000002
+    },
+    {
+      "pickup_id": "P019",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "H45_0_F_0",
+      "depart_pos_m": 85.85000000000002
+    },
+    {
+      "pickup_id": "P020",
+      "hospital_id": "HOSP_WEST",
+      "edges": 20,
+      "controlled_junctions": 10,
+      "depart_lane": "H47_0_R_0",
+      "depart_pos_m": 104.54999999999997
+    },
+    {
+      "pickup_id": "P020",
+      "hospital_id": "HOSP_EAST",
+      "edges": 5,
+      "controlled_junctions": 3,
+      "depart_lane": "H47_0_R_0",
+      "depart_pos_m": 104.54999999999997
+    },
+    {
+      "pickup_id": "P021",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 5,
+      "depart_lane": "H51_1_R_0",
+      "depart_pos_m": 68.35000000000002
+    },
+    {
+      "pickup_id": "P021",
+      "hospital_id": "HOSP_EAST",
+      "edges": 17,
+      "controlled_junctions": 8,
+      "depart_lane": "H51_1_R_0",
+      "depart_pos_m": 68.35000000000002
+    },
+    {
+      "pickup_id": "P022",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "H53_0_R_0",
+      "depart_pos_m": 135.35
+    },
+    {
+      "pickup_id": "P022",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 6,
+      "depart_lane": "H53_0_R_0",
+      "depart_pos_m": 135.35
+    },
+    {
+      "pickup_id": "P023",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 9,
+      "depart_lane": "H54_0_F_0",
+      "depart_pos_m": 110.35
+    },
+    {
+      "pickup_id": "P023",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "H54_0_F_0",
+      "depart_pos_m": 110.35
+    },
+    {
+      "pickup_id": "P024",
+      "hospital_id": "HOSP_WEST",
+      "edges": 21,
+      "controlled_junctions": 11,
+      "depart_lane": "H56_0_F_0",
+      "depart_pos_m": 92.70000000000005
+    },
+    {
+      "pickup_id": "P024",
+      "hospital_id": "HOSP_EAST",
+      "edges": 4,
+      "controlled_junctions": 2,
+      "depart_lane": "H56_0_F_0",
+      "depart_pos_m": 92.70000000000005
+    },
+    {
+      "pickup_id": "P025",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 6,
+      "depart_lane": "H61_0_R_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P025",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "H61_0_R_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P026",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "H63_0_R_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P026",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "H63_0_R_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P027",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 11,
+      "depart_lane": "H65_0_F_0",
+      "depart_pos_m": 85.85000000000002
+    },
+    {
+      "pickup_id": "P027",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 2,
+      "depart_lane": "H65_0_F_0",
+      "depart_pos_m": 85.85000000000002
+    },
+    {
+      "pickup_id": "P028",
+      "hospital_id": "HOSP_WEST",
+      "edges": 9,
+      "controlled_junctions": 7,
+      "depart_lane": "H70_0_F_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P028",
+      "hospital_id": "HOSP_EAST",
+      "edges": 16,
+      "controlled_junctions": 8,
+      "depart_lane": "H70_0_F_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P029",
+      "hospital_id": "HOSP_WEST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "H72_0_F_0",
+      "depart_pos_m": 76.89999999999998
+    },
+    {
+      "pickup_id": "P029",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 6,
+      "depart_lane": "H72_0_F_0",
+      "depart_pos_m": 76.89999999999998
+    },
+    {
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 10,
+      "depart_lane": "H74_0_R_0",
+      "depart_pos_m": 144.65000000000003
+    },
+    {
+      "pickup_id": "P030",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 5,
+      "depart_lane": "H74_0_R_0",
+      "depart_pos_m": 144.65000000000003
+    },
+    {
+      "pickup_id": "P031",
+      "hospital_id": "HOSP_WEST",
+      "edges": 20,
+      "controlled_junctions": 12,
+      "depart_lane": "H76_0_R_0",
+      "depart_pos_m": 126.04999999999995
+    },
+    {
+      "pickup_id": "P031",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "H76_0_R_0",
+      "depart_pos_m": 126.04999999999995
+    },
+    {
+      "pickup_id": "P032",
+      "hospital_id": "HOSP_WEST",
+      "edges": 24,
+      "controlled_junctions": 14,
+      "depart_lane": "H77_1_F_0",
+      "depart_pos_m": 40.05000000000007
+    },
+    {
+      "pickup_id": "P032",
+      "hospital_id": "HOSP_EAST",
+      "edges": 5,
+      "controlled_junctions": 2,
+      "depart_lane": "H77_1_F_0",
+      "depart_pos_m": 40.05000000000007
+    },
+    {
+      "pickup_id": "P033",
+      "hospital_id": "HOSP_WEST",
+      "edges": 13,
+      "controlled_junctions": 9,
+      "depart_lane": "H81_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P033",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 8,
+      "depart_lane": "H81_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P034",
+      "hospital_id": "HOSP_WEST",
+      "edges": 19,
+      "controlled_junctions": 11,
+      "depart_lane": "H83_0_F_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P034",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 6,
+      "depart_lane": "H83_0_F_0",
+      "depart_pos_m": 80.15
+    },
+    {
+      "pickup_id": "P035",
+      "hospital_id": "HOSP_WEST",
+      "edges": 19,
+      "controlled_junctions": 11,
+      "depart_lane": "H84_0_R_0",
+      "depart_pos_m": 36.849999999999994
+    },
+    {
+      "pickup_id": "P035",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 6,
+      "depart_lane": "H84_0_R_0",
+      "depart_pos_m": 36.849999999999994
+    },
+    {
+      "pickup_id": "P036",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 13,
+      "depart_lane": "H86_0_R_0",
+      "depart_pos_m": 74.45000000000006
+    },
+    {
+      "pickup_id": "P036",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "H86_0_R_0",
+      "depart_pos_m": 74.45000000000006
+    },
+    {
+      "pickup_id": "P037",
+      "hospital_id": "HOSP_WEST",
+      "edges": 25,
+      "controlled_junctions": 14,
+      "depart_lane": "H87_0_F_0",
+      "depart_pos_m": 169.04999999999995
+    },
+    {
+      "pickup_id": "P037",
+      "hospital_id": "HOSP_EAST",
+      "edges": 5,
+      "controlled_junctions": 2,
+      "depart_lane": "H87_0_F_0",
+      "depart_pos_m": 169.04999999999995
+    },
+    {
+      "pickup_id": "P038",
+      "hospital_id": "HOSP_WEST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "V01_0_F_0",
+      "depart_pos_m": 119.70000000000005
+    },
+    {
+      "pickup_id": "P038",
+      "hospital_id": "HOSP_EAST",
+      "edges": 20,
+      "controlled_junctions": 12,
+      "depart_lane": "V01_0_F_0",
+      "depart_pos_m": 119.70000000000005
+    },
+    {
+      "pickup_id": "P039",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V02_0_F_0",
+      "depart_pos_m": 33.25
+    },
+    {
+      "pickup_id": "P039",
+      "hospital_id": "HOSP_EAST",
+      "edges": 19,
+      "controlled_junctions": 11,
+      "depart_lane": "V02_0_F_0",
+      "depart_pos_m": 33.25
+    },
+    {
+      "pickup_id": "P040",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V04_0_R_0",
+      "depart_pos_m": 101.3
+    },
+    {
+      "pickup_id": "P040",
+      "hospital_id": "HOSP_EAST",
+      "edges": 18,
+      "controlled_junctions": 10,
+      "depart_lane": "V04_0_R_0",
+      "depart_pos_m": 101.3
+    },
+    {
+      "pickup_id": "P041",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 6,
+      "depart_lane": "V06_0_R_0",
+      "depart_pos_m": 135.20000000000007
+    },
+    {
+      "pickup_id": "P041",
+      "hospital_id": "HOSP_EAST",
+      "edges": 18,
+      "controlled_junctions": 8,
+      "depart_lane": "V06_0_R_0",
+      "depart_pos_m": 135.20000000000007
+    },
+    {
+      "pickup_id": "P042",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 8,
+      "depart_lane": "V07_0_F_0",
+      "depart_pos_m": 102.29999999999994
+    },
+    {
+      "pickup_id": "P042",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 9,
+      "depart_lane": "V07_0_F_0",
+      "depart_pos_m": 102.29999999999994
+    },
+    {
+      "pickup_id": "P043",
+      "hospital_id": "HOSP_WEST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "V11_0_F_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P043",
+      "hospital_id": "HOSP_EAST",
+      "edges": 17,
+      "controlled_junctions": 11,
+      "depart_lane": "V11_0_F_0",
+      "depart_pos_m": 69.29999999999995
+    },
+    {
+      "pickup_id": "P044",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V12_0_F_0",
+      "depart_pos_m": 177.25
+    },
+    {
+      "pickup_id": "P044",
+      "hospital_id": "HOSP_EAST",
+      "edges": 18,
+      "controlled_junctions": 10,
+      "depart_lane": "V12_0_F_0",
+      "depart_pos_m": 177.25
+    },
+    {
+      "pickup_id": "P045",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V14_0_R_0",
+      "depart_pos_m": 71.19999999999999
+    },
+    {
+      "pickup_id": "P045",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "V14_0_R_0",
+      "depart_pos_m": 71.19999999999999
+    },
+    {
+      "pickup_id": "P046",
+      "hospital_id": "HOSP_WEST",
+      "edges": 7,
+      "controlled_junctions": 5,
+      "depart_lane": "V15_0_R_0",
+      "depart_pos_m": 169.05
+    },
+    {
+      "pickup_id": "P046",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "V15_0_R_0",
+      "depart_pos_m": 169.05
+    },
+    {
+      "pickup_id": "P047",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 8,
+      "depart_lane": "V17_0_F_0",
+      "depart_pos_m": 135.20000000000007
+    },
+    {
+      "pickup_id": "P047",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 9,
+      "depart_lane": "V17_0_F_0",
+      "depart_pos_m": 135.20000000000007
+    },
+    {
+      "pickup_id": "P048",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 2,
+      "depart_lane": "V20_0_F_0",
+      "depart_pos_m": 30.54999999999995
+    },
+    {
+      "pickup_id": "P048",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 11,
+      "depart_lane": "V20_0_F_0",
+      "depart_pos_m": 30.54999999999995
+    },
+    {
+      "pickup_id": "P049",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "V22_0_F_0",
+      "depart_pos_m": 100.75
+    },
+    {
+      "pickup_id": "P049",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "V22_0_F_0",
+      "depart_pos_m": 100.75
+    },
+    {
+      "pickup_id": "P050",
+      "hospital_id": "HOSP_WEST",
+      "edges": 7,
+      "controlled_junctions": 5,
+      "depart_lane": "V24_0_R_0",
+      "depart_pos_m": 122.8
+    },
+    {
+      "pickup_id": "P050",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "V24_0_R_0",
+      "depart_pos_m": 122.8
+    },
+    {
+      "pickup_id": "P051",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 6,
+      "depart_lane": "V25_0_R_0",
+      "depart_pos_m": 31.44999999999999
+    },
+    {
+      "pickup_id": "P051",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V25_0_R_0",
+      "depart_pos_m": 31.44999999999999
+    },
+    {
+      "pickup_id": "P052",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 9,
+      "depart_lane": "V27_0_F_0",
+      "depart_pos_m": 78.79999999999994
+    },
+    {
+      "pickup_id": "P052",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 8,
+      "depart_lane": "V27_0_F_0",
+      "depart_pos_m": 78.79999999999994
+    },
+    {
+      "pickup_id": "P053",
+      "hospital_id": "HOSP_WEST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "V30_0_F_0",
+      "depart_pos_m": 164.95000000000005
+    },
+    {
+      "pickup_id": "P053",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 10,
+      "depart_lane": "V30_0_F_0",
+      "depart_pos_m": 164.95000000000005
+    },
+    {
+      "pickup_id": "P054",
+      "hospital_id": "HOSP_WEST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "V32_0_F_0",
+      "depart_pos_m": 132.25
+    },
+    {
+      "pickup_id": "P054",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "V32_0_F_0",
+      "depart_pos_m": 132.25
+    },
+    {
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_WEST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "V33_0_R_0",
+      "depart_pos_m": 177.25
+    },
+    {
+      "pickup_id": "P055",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "V33_0_R_0",
+      "depart_pos_m": 177.25
+    },
+    {
+      "pickup_id": "P056",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V35_0_R_0",
+      "depart_pos_m": 104.55000000000001
+    },
+    {
+      "pickup_id": "P056",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 6,
+      "depart_lane": "V35_0_R_0",
+      "depart_pos_m": 104.55000000000001
+    },
+    {
+      "pickup_id": "P057",
+      "hospital_id": "HOSP_WEST",
+      "edges": 13,
+      "controlled_junctions": 9,
+      "depart_lane": "V36_0_F_0",
+      "depart_pos_m": 35.05000000000001
+    },
+    {
+      "pickup_id": "P057",
+      "hospital_id": "HOSP_EAST",
+      "edges": 12,
+      "controlled_junctions": 6,
+      "depart_lane": "V36_0_F_0",
+      "depart_pos_m": 35.05000000000001
+    },
+    {
+      "pickup_id": "P058",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 4,
+      "depart_lane": "V40_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P058",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 9,
+      "depart_lane": "V40_0_F_0",
+      "depart_pos_m": 93.54999999999995
+    },
+    {
+      "pickup_id": "P059",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 6,
+      "depart_lane": "V42_0_F_0",
+      "depart_pos_m": 78.25
+    },
+    {
+      "pickup_id": "P059",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V42_0_F_0",
+      "depart_pos_m": 78.25
+    },
+    {
+      "pickup_id": "P060",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 6,
+      "depart_lane": "V43_0_R_0",
+      "depart_pos_m": 33.25
+    },
+    {
+      "pickup_id": "P060",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V43_0_R_0",
+      "depart_pos_m": 33.25
+    },
+    {
+      "pickup_id": "P061",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 8,
+      "depart_lane": "V45_0_R_0",
+      "depart_pos_m": 74.44999999999999
+    },
+    {
+      "pickup_id": "P061",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "V45_0_R_0",
+      "depart_pos_m": 74.44999999999999
+    },
+    {
+      "pickup_id": "P062",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 10,
+      "depart_lane": "V46_0_F_0",
+      "depart_pos_m": 185.45000000000005
+    },
+    {
+      "pickup_id": "P062",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "V46_0_F_0",
+      "depart_pos_m": 185.45000000000005
+    },
+    {
+      "pickup_id": "P063",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 5,
+      "depart_lane": "V50_0_F_0",
+      "depart_pos_m": 122.95000000000005
+    },
+    {
+      "pickup_id": "P063",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 8,
+      "depart_lane": "V50_0_F_0",
+      "depart_pos_m": 122.95000000000005
+    },
+    {
+      "pickup_id": "P064",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 6,
+      "depart_lane": "V51_0_F_0",
+      "depart_pos_m": 27.299999999999955
+    },
+    {
+      "pickup_id": "P064",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V51_0_F_0",
+      "depart_pos_m": 27.299999999999955
+    },
+    {
+      "pickup_id": "P065",
+      "hospital_id": "HOSP_WEST",
+      "edges": 15,
+      "controlled_junctions": 7,
+      "depart_lane": "V53_0_R_0",
+      "depart_pos_m": 109.75000000000001
+    },
+    {
+      "pickup_id": "P065",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 6,
+      "depart_lane": "V53_0_R_0",
+      "depart_pos_m": 109.75000000000001
+    },
+    {
+      "pickup_id": "P066",
+      "hospital_id": "HOSP_WEST",
+      "edges": 13,
+      "controlled_junctions": 9,
+      "depart_lane": "V55_0_R_0",
+      "depart_pos_m": 126.05000000000001
+    },
+    {
+      "pickup_id": "P066",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "V55_0_R_0",
+      "depart_pos_m": 126.05000000000001
+    },
+    {
+      "pickup_id": "P067",
+      "hospital_id": "HOSP_WEST",
+      "edges": 19,
+      "controlled_junctions": 11,
+      "depart_lane": "V56_0_F_0",
+      "depart_pos_m": 105.54999999999994
+    },
+    {
+      "pickup_id": "P067",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "V56_0_F_0",
+      "depart_pos_m": 105.54999999999994
+    },
+    {
+      "pickup_id": "P068",
+      "hospital_id": "HOSP_WEST",
+      "edges": 12,
+      "controlled_junctions": 6,
+      "depart_lane": "V60_0_F_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P068",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 7,
+      "depart_lane": "V60_0_F_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P069",
+      "hospital_id": "HOSP_WEST",
+      "edges": 15,
+      "controlled_junctions": 7,
+      "depart_lane": "V61_0_F_0",
+      "depart_pos_m": 161.7
+    },
+    {
+      "pickup_id": "P069",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 6,
+      "depart_lane": "V61_0_F_0",
+      "depart_pos_m": 161.7
+    },
+    {
+      "pickup_id": "P070",
+      "hospital_id": "HOSP_WEST",
+      "edges": 16,
+      "controlled_junctions": 8,
+      "depart_lane": "V63_0_R_0",
+      "depart_pos_m": 78.25
+    },
+    {
+      "pickup_id": "P070",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 5,
+      "depart_lane": "V63_0_R_0",
+      "depart_pos_m": 78.25
+    },
+    {
+      "pickup_id": "P071",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 9,
+      "depart_lane": "V64_0_R_0",
+      "depart_pos_m": 165.8
+    },
+    {
+      "pickup_id": "P071",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "V64_0_R_0",
+      "depart_pos_m": 165.8
+    },
+    {
+      "pickup_id": "P072",
+      "hospital_id": "HOSP_WEST",
+      "edges": 20,
+      "controlled_junctions": 12,
+      "depart_lane": "V66_0_F_0",
+      "depart_pos_m": 138.45000000000005
+    },
+    {
+      "pickup_id": "P072",
+      "hospital_id": "HOSP_EAST",
+      "edges": 5,
+      "controlled_junctions": 3,
+      "depart_lane": "V66_0_F_0",
+      "depart_pos_m": 138.45000000000005
+    },
+    {
+      "pickup_id": "P073",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 13,
+      "depart_lane": "V67_0_F_0",
+      "depart_pos_m": 31.799999999999955
+    },
+    {
+      "pickup_id": "P073",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V67_0_F_0",
+      "depart_pos_m": 31.799999999999955
+    },
+    {
+      "pickup_id": "P074",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 8,
+      "depart_lane": "V71_0_F_0",
+      "depart_pos_m": 90.29999999999995
+    },
+    {
+      "pickup_id": "P074",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 5,
+      "depart_lane": "V71_0_F_0",
+      "depart_pos_m": 90.29999999999995
+    },
+    {
+      "pickup_id": "P075",
+      "hospital_id": "HOSP_WEST",
+      "edges": 17,
+      "controlled_junctions": 9,
+      "depart_lane": "V73_0_R_0",
+      "depart_pos_m": 132.25
+    },
+    {
+      "pickup_id": "P075",
+      "hospital_id": "HOSP_EAST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "V73_0_R_0",
+      "depart_pos_m": 132.25
+    },
+    {
+      "pickup_id": "P076",
+      "hospital_id": "HOSP_WEST",
+      "edges": 20,
+      "controlled_junctions": 10,
+      "depart_lane": "V74_0_R_0",
+      "depart_pos_m": 28.19999999999999
+    },
+    {
+      "pickup_id": "P076",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V74_0_R_0",
+      "depart_pos_m": 28.19999999999999
+    },
+    {
+      "pickup_id": "P077",
+      "hospital_id": "HOSP_WEST",
+      "edges": 21,
+      "controlled_junctions": 13,
+      "depart_lane": "V76_0_F_0",
+      "depart_pos_m": 82.04999999999994
+    },
+    {
+      "pickup_id": "P077",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "V76_0_F_0",
+      "depart_pos_m": 82.04999999999994
+    },
+    {
+      "pickup_id": "P078",
+      "hospital_id": "HOSP_WEST",
+      "edges": 20,
+      "controlled_junctions": 14,
+      "depart_lane": "V77_0_F_0",
+      "depart_pos_m": 182.20000000000007
+    },
+    {
+      "pickup_id": "P078",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 3,
+      "depart_lane": "V77_0_F_0",
+      "depart_pos_m": 182.20000000000007
+    },
+    {
+      "pickup_id": "P079",
+      "hospital_id": "HOSP_WEST",
+      "edges": 16,
+      "controlled_junctions": 8,
+      "depart_lane": "V81_0_R_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P079",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "V81_0_R_0",
+      "depart_pos_m": 72.54999999999995
+    },
+    {
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_WEST",
+      "edges": 19,
+      "controlled_junctions": 9,
+      "depart_lane": "V82_0_R_0",
+      "depart_pos_m": 174.0
+    },
+    {
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 6,
+      "depart_lane": "V82_0_R_0",
+      "depart_pos_m": 174.0
+    },
+    {
+      "pickup_id": "P081",
+      "hospital_id": "HOSP_WEST",
+      "edges": 21,
+      "controlled_junctions": 11,
+      "depart_lane": "V84_0_R_0",
+      "depart_pos_m": 101.3
+    },
+    {
+      "pickup_id": "P081",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 4,
+      "depart_lane": "V84_0_R_0",
+      "depart_pos_m": 101.3
+    },
+    {
+      "pickup_id": "P082",
+      "hospital_id": "HOSP_WEST",
+      "edges": 24,
+      "controlled_junctions": 13,
+      "depart_lane": "V85_0_F_0",
+      "depart_pos_m": 28.19999999999999
+    },
+    {
+      "pickup_id": "P082",
+      "hospital_id": "HOSP_EAST",
+      "edges": 3,
+      "controlled_junctions": 1,
+      "depart_lane": "V85_0_F_0",
+      "depart_pos_m": 28.19999999999999
+    },
+    {
+      "pickup_id": "P083",
+      "hospital_id": "HOSP_WEST",
+      "edges": 21,
+      "controlled_junctions": 14,
+      "depart_lane": "V87_0_F_0",
+      "depart_pos_m": 102.29999999999994
+    },
+    {
+      "pickup_id": "P083",
+      "hospital_id": "HOSP_EAST",
+      "edges": 6,
+      "controlled_junctions": 3,
+      "depart_lane": "V87_0_F_0",
+      "depart_pos_m": 102.29999999999994
+    },
+    {
+      "pickup_id": "P084",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_40_0_0_R_0",
+      "depart_pos_m": 35.053999999999974
+    },
+    {
+      "pickup_id": "P084",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "LOCAL_40_0_0_R_0",
+      "depart_pos_m": 35.053999999999974
+    },
+    {
+      "pickup_id": "P085",
+      "hospital_id": "HOSP_WEST",
+      "edges": 15,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_60_2_0_F_0",
+      "depart_pos_m": 45.1339999999999
+    },
+    {
+      "pickup_id": "P085",
+      "hospital_id": "HOSP_EAST",
+      "edges": 10,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_60_2_0_F_0",
+      "depart_pos_m": 45.1339999999999
+    },
+    {
+      "pickup_id": "P086",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 3,
+      "depart_lane": "LOCAL_31_2_0_R_0",
+      "depart_pos_m": 51.99599999999998
+    },
+    {
+      "pickup_id": "P086",
+      "hospital_id": "HOSP_EAST",
+      "edges": 15,
+      "controlled_junctions": 9,
+      "depart_lane": "LOCAL_31_2_0_R_0",
+      "depart_pos_m": 51.99599999999998
+    },
+    {
+      "pickup_id": "P087",
+      "hospital_id": "HOSP_WEST",
+      "edges": 6,
+      "controlled_junctions": 2,
+      "depart_lane": "LOCAL_02_1_0_R_0",
+      "depart_pos_m": 59.24599999999998
+    },
+    {
+      "pickup_id": "P087",
+      "hospital_id": "HOSP_EAST",
+      "edges": 20,
+      "controlled_junctions": 11,
+      "depart_lane": "LOCAL_02_1_0_R_0",
+      "depart_pos_m": 59.24599999999998
+    },
+    {
+      "pickup_id": "P088",
+      "hospital_id": "HOSP_WEST",
+      "edges": 10,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_42_0_0_R_0",
+      "depart_pos_m": 37.79000000000002
+    },
+    {
+      "pickup_id": "P088",
+      "hospital_id": "HOSP_EAST",
+      "edges": 13,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_42_0_0_R_0",
+      "depart_pos_m": 37.79000000000002
+    },
+    {
+      "pickup_id": "P089",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_62_2_0_R_0",
+      "depart_pos_m": 33.79000000000002
+    },
+    {
+      "pickup_id": "P089",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_62_2_0_R_0",
+      "depart_pos_m": 33.79000000000002
+    },
+    {
+      "pickup_id": "P090",
+      "hospital_id": "HOSP_WEST",
+      "edges": 14,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_33_1_0_F_0",
+      "depart_pos_m": 49.74199999999998
+    },
+    {
+      "pickup_id": "P090",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_33_1_0_F_0",
+      "depart_pos_m": 49.74199999999998
+    },
+    {
+      "pickup_id": "P091",
+      "hospital_id": "HOSP_WEST",
+      "edges": 19,
+      "controlled_junctions": 9,
+      "depart_lane": "LOCAL_73_1_0_R_0",
+      "depart_pos_m": 60.73400000000003
+    },
+    {
+      "pickup_id": "P091",
+      "hospital_id": "HOSP_EAST",
+      "edges": 8,
+      "controlled_junctions": 4,
+      "depart_lane": "LOCAL_73_1_0_R_0",
+      "depart_pos_m": 60.73400000000003
+    },
+    {
+      "pickup_id": "P092",
+      "hospital_id": "HOSP_WEST",
+      "edges": 8,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_24_0_0_R_0",
+      "depart_pos_m": 60.734
+    },
+    {
+      "pickup_id": "P092",
+      "hospital_id": "HOSP_EAST",
+      "edges": 13,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_24_0_0_R_0",
+      "depart_pos_m": 60.734
+    },
+    {
+      "pickup_id": "P093",
+      "hospital_id": "HOSP_WEST",
+      "edges": 16,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_44_2_0_R_0",
+      "depart_pos_m": 31.965999999999998
+    },
+    {
+      "pickup_id": "P093",
+      "hospital_id": "HOSP_EAST",
+      "edges": 13,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_44_2_0_R_0",
+      "depart_pos_m": 31.965999999999998
+    },
+    {
+      "pickup_id": "P094",
+      "hospital_id": "HOSP_WEST",
+      "edges": 9,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_15_1_0_R_0",
+      "depart_pos_m": 35.05399999999998
+    },
+    {
+      "pickup_id": "P094",
+      "hospital_id": "HOSP_EAST",
+      "edges": 14,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_15_1_0_R_0",
+      "depart_pos_m": 35.05399999999998
+    },
+    {
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_WEST",
+      "edges": 21,
+      "controlled_junctions": 11,
+      "depart_lane": "LOCAL_75_0_0_F_0",
+      "depart_pos_m": 39.036
+    },
+    {
+      "pickup_id": "P095",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 2,
+      "depart_lane": "LOCAL_75_0_0_F_0",
+      "depart_pos_m": 39.036
+    },
+    {
+      "pickup_id": "P096",
+      "hospital_id": "HOSP_WEST",
+      "edges": 12,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_26_0_0_R_0",
+      "depart_pos_m": 66.68599999999999
+    },
+    {
+      "pickup_id": "P096",
+      "hospital_id": "HOSP_EAST",
+      "edges": 13,
+      "controlled_junctions": 5,
+      "depart_lane": "LOCAL_26_0_0_R_0",
+      "depart_pos_m": 66.68599999999999
+    },
+    {
+      "pickup_id": "P097",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 9,
+      "depart_lane": "LOCAL_46_2_0_R_0",
+      "depart_pos_m": 62.685999999999986
+    },
+    {
+      "pickup_id": "P097",
+      "hospital_id": "HOSP_EAST",
+      "edges": 11,
+      "controlled_junctions": 3,
+      "depart_lane": "LOCAL_46_2_0_R_0",
+      "depart_pos_m": 62.685999999999986
+    },
+    {
+      "pickup_id": "P098",
+      "hospital_id": "HOSP_WEST",
+      "edges": 11,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_17_1_0_R_0",
+      "depart_pos_m": 35.05399999999998
+    },
+    {
+      "pickup_id": "P098",
+      "hospital_id": "HOSP_EAST",
+      "edges": 16,
+      "controlled_junctions": 7,
+      "depart_lane": "LOCAL_17_1_0_R_0",
+      "depart_pos_m": 35.05399999999998
+    },
+    {
+      "pickup_id": "P099",
+      "hospital_id": "HOSP_WEST",
+      "edges": 18,
+      "controlled_junctions": 11,
+      "depart_lane": "LOCAL_57_0_0_R_0",
+      "depart_pos_m": 39.61399999999992
+    },
+    {
+      "pickup_id": "P099",
+      "hospital_id": "HOSP_EAST",
+      "edges": 7,
+      "controlled_junctions": 3,
+      "depart_lane": "LOCAL_57_0_0_R_0",
+      "depart_pos_m": 39.61399999999992
+    },
+    {
+      "pickup_id": "P100",
+      "hospital_id": "HOSP_WEST",
+      "edges": 23,
+      "controlled_junctions": 13,
+      "depart_lane": "LOCAL_77_2_0_F_0",
+      "depart_pos_m": 50.894000000000005
+    },
+    {
+      "pickup_id": "P100",
+      "hospital_id": "HOSP_EAST",
+      "edges": 5,
+      "controlled_junctions": 2,
+      "depart_lane": "LOCAL_77_2_0_F_0",
+      "depart_pos_m": 50.894000000000005
+    }
+  ]
+}
