@@ -65,8 +65,16 @@ python -m unittest discover -s tests/preview -v
 ```
 
 The helper checks every manifest-listed text input is tracked and has no staged
-or unstaged content edits, then refreshes only those paths using the repository's
-attributes. If it refuses, preserve the edits and report the exact mismatch; do
+or unstaged content edits, then reads their indexed Git blobs, verifies every blob against the manifest,
+and atomically replaces only inputs whose exact bytes differ. It rechecks for
+concurrent edits before each replacement, verifies all resulting hashes, and
+requires Git content-clean postconditions before reporting success. If it refuses, preserve the edits and report the exact mismatch; do
 not reset the worktree or force through the preflight. Files outside those listed
 inputs are untouched. The manifest still checks exact SHA-256 bytes, including
 the original canonical map JSON and unchanged binary GLBs.
+
+Git checkout-index may leave a clean CRLF file untouched even with `--force`;
+this helper deliberately does not rely on that command or its exit status as
+evidence that bytes were rewritten. It never changes index content or global
+configuration. If any postcondition fails, stop and report it rather than
+starting the application on unverified inputs.
