@@ -2,7 +2,7 @@
 
 A desktop traffic signal lab. Follow an ambulance through a miniature city, inspect the ordinary-signal response, and measure the traffic cost of giving it priority.
 
-[Open the lab](https://afterlight-gamma.vercel.app/) · [Watch the 84-second walkthrough](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
+[Open the lab](https://afterlight-gamma.vercel.app/) · [Watch the 81-second walkthrough](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
 
 ![AFTERLIGHT running in the browser: colorful original city, two recorded journeys, visible follow controls and shared playback](docs/images/workspace.png)
 
