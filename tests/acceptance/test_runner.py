@@ -22,13 +22,14 @@ class RunnerTests(unittest.TestCase):
         self.root=Path(self.temp.name)
         (self.root/'web/tests').mkdir(parents=True)
         (self.root/'web/tests/unit.test.ts').write_text('// synthetic unit fixture\n')
+        (self.root/'web/tests/test_released_study_guards.py').write_text('# synthetic subprocess fixture; never executed\n')
         self.output=self.root/'local-runtime/acceptance/unit-attempt'
         self.calls=[]
 
     def identity(self,root):return deepcopy(IDENTITY)
 
     def spawn(self,codes=None,interrupt=False):
-        codes=iter(codes or [0]*9)
+        codes=iter(codes or [0]*10)
         def start(argv,**kwargs):
             self.calls.append((argv,kwargs))
             self.assertIs(kwargs['shell'],False)
@@ -55,7 +56,9 @@ class RunnerTests(unittest.TestCase):
     def test_plan_is_read_only_and_excludes_build_traffic_training_and_browser(self):
         value=runner.plan(self.root,self.output,python='python-unit-fixture',node='node-unit-fixture')
         self.assertFalse(self.output.exists())
-        self.assertEqual(len(value['steps']),9)
+        self.assertEqual(len(value['steps']),10)
+        guard=next(step for step in value['steps'] if step['id']=='python-study-proof-guards')
+        self.assertEqual(guard['argv'],['python-unit-fixture','-B',str(self.root/'web/tests/test_released_study_guards.py')])
         flattened=[arg for step in value['steps'] for arg in step['argv']]
         self.assertNotIn('sim.run',flattened);self.assertNotIn('evaluation.collector',flattened)
         self.assertNotIn('build',flattened);self.assertNotIn('browser_smoke.py',flattened)
@@ -64,7 +67,7 @@ class RunnerTests(unittest.TestCase):
 
     def test_complete_records_actual_pids_commands_logs_and_exit_codes(self):
         result=self.execute()
-        self.assertEqual(result['status'],'completed');self.assertEqual(len(self.calls),9)
+        self.assertEqual(result['status'],'completed');self.assertEqual(len(self.calls),10)
         self.assertIsNone(result['active_child_pid'])
         self.assertEqual(runner.status(self.root,self.output)['state'],'completed')
         for step in result['steps']:
