@@ -40,6 +40,8 @@ def assert_camera_exploration(page):
     details = page.locator('.camera-console details')
     if details.get_attribute('open') is None:
         details.locator('summary').click()
+    reveal = page.get_by_label('Reveal streets behind foreground buildings', exact=True)
+    assert reveal.is_checked(), 'Foreground street reveal must start enabled on every fresh visit'
     journey = page.locator('.map-location').bounding_box()
     console = page.locator('.camera-console').bounding_box()
     assert journey and console
@@ -69,7 +71,6 @@ def assert_camera_exploration(page):
     assert pan.is_checked()
     pan.uncheck()
     before_toggle = json.loads(canvas.get_attribute('data-camera-state'))
-    reveal = page.get_by_label('Reveal streets behind foreground buildings', exact=True)
     reveal.uncheck()
     page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
     page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.fadedBuildings) === 0")

@@ -91,8 +91,10 @@ HTML controls and focused-canvas keyboard equivalents. No automatic orbit or
 parallax substitute is permitted. Original low-poly traffic assets remain
 unchanged and instanced. Enhanced building detail must stay subordinate to
 legible traffic and measured browser performance; the 50 MB map allowance is a
-ceiling rather than a filesize target. Foreground transparency is limited to
-identified buildings, never a shared-color whole-city fade. See
+ceiling rather than a filesize target. “Reveal streets behind foreground buildings”
+starts enabled on every page access. Its in-session opt-out is not persisted.
+Foreground transparency is limited to identified buildings in the perspective
+view, never a shared-color whole-city fade; Full city remains opaque. See
 [3D map and camera contract](docs/CAMERA_AND_3D_MAP.md) for geometry, coordinate
 preservation and Omen acceptance gates.
 

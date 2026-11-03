@@ -53,7 +53,8 @@ access, reduced-motion support and normal window resizing; do not expand mobile
 optimization or testing. Use actual modeled 3D buildings and roads, not parallax
 or billboard substitutes. Provide true-perspective exploration at 2.5× visual
 magnification, X/Y/Z camera controls, a fitted overview and selective foreground
-building cutaway as an explicit option, off by default. Magnification must not alter canonical meters or routes. The left Simulation/Results/Settings pane scrolls independently; the right city, camera and playback stay visible in a 16:9 desktop window.
+building reveal enabled on every page access, with an unpersisted current-visit
+opt-out. Full city stays opaque. Magnification must not alter canonical meters or routes. The left Simulation/Results/Settings pane scrolls independently; the right city, camera and playback stay visible in a 16:9 desktop window.
 
 The owner permits up to 50,000,000 bytes for the shipped static product assets, including compressed recordings. This build/transfer budget is separate from the 128 MiB decoded-JSON guard for an individual dense recording. Simple low-poly cars/trucks/bikes and an identifiable
 hero ambulance remain intentional. Optional map picking must use real canonical

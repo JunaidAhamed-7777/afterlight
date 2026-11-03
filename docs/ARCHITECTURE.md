@@ -134,7 +134,8 @@ with additional exact-controller-duration divisibility required by AFTERLIGHT.
 ## Desktop rendering and selection boundary
 
 The enhanced city preserves the original glTF root and canonical map. Per-building
-identity permits material batching with optional foreground cutaway, off by default; ground
+identity permits material batching with foreground reveal enabled on every page
+access; a current-visit opt-out is not persisted. Full city stays opaque. Ground
 and shared-color trees must never enter the building fade mask. True-perspective
 Explore and orthographic Full city are views of the same physical world. X tilt,
 Y heading and Z view-roll affect rendering only. Low-poly traffic stays instanced.

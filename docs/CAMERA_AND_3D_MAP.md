@@ -60,10 +60,11 @@ roof and facade layers. Static buildings cast shared shadows once; ground receiv
 them. Balanced and High change pixel ratio/shadow resolution. These settings do
 not rescale the city or alter simulation coordinates.
 
-## Optional building cutaway
+## Foreground building reveal
 
-Cutaway is **off by default**. Enable “Reveal streets behind foreground buildings”
-in Camera options when a building blocks the followed street. Identified building
+“Reveal streets behind foreground buildings” is **on by default on every page
+access**. Camera options can turn it off for the current visit; this opt-out is
+not persisted across page loads. Identified building
 nodes share material batches and a per-building opacity mask. The effect uses
 screen-door transparency and changes with the view direction; roads, trees,
 vehicles and signals stay outside that mask. Turning it off restores solid

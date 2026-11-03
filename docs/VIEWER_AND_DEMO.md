@@ -100,7 +100,8 @@ the page does not cancel a simulator process.
 - Camera shortcuts act only on the focused map. Native controls have meaningful
   labels and visible focus. Tab can leave the map.
 - Reduced motion disables continuous follow; there is no automatic playback.
-- Building cutaway is optional and off by default. Logarithmic depth keeps thin
+- Foreground building reveal starts enabled on every page access. Camera options
+  can disable it for the current visit; Full city stays opaque. Logarithmic depth keeps thin
   authored road/facade layers stable during perspective orbit.
 - Desktop is the acceptance target. Preserve responsive behavior without adding
   mobile-specific optimization or default mobile checks.

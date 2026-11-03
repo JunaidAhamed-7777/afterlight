@@ -18,16 +18,19 @@ from playwright.sync_api import expect, sync_playwright
 from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, ready, returning_visit, seek, settled, source_identity
 
 
-def capture(page, output: Path, label: str):
+def capture(page, output: Path, label: str, *, opaque=False):
     settled(page)
     canvas = page.locator(".three-host canvas")
     state = canvas.evaluate("c => ({camera:JSON.parse(c.dataset.cameraState),render:JSON.parse(c.dataset.renderInfo),faded:Number(c.dataset.fadedBuildings)})")
-    assert state["faded"] == 0, "Default camera orbit faded buildings without opting in"
+    assert 0 <= state["faded"] <= state["render"]["occluderBuildings"], state
+    if opaque:
+        assert state["faded"] == 0, "Explicitly opaque depth baseline faded buildings"
     first = canvas.screenshot(path=str(output / f"{label}.png"))
     page.wait_for_timeout(150)
     second = canvas.screenshot(path=str(output / f"{label}-repeat.png"))
-    after = canvas.evaluate("c => JSON.parse(c.dataset.cameraState)")
-    assert state["camera"] == after, "Paused camera changed between repeated screenshots"
+    after = canvas.evaluate("c => ({camera:JSON.parse(c.dataset.cameraState),faded:Number(c.dataset.fadedBuildings)})")
+    assert state["camera"] == after["camera"], "Paused camera changed between repeated screenshots"
+    assert state["faded"] == after["faded"], "Paused reveal membership changed without camera motion"
     identical = first == second
     if not identical:
         raise AssertionError(f"Paused same-camera canvas pixels changed in {label}")
@@ -46,7 +49,7 @@ def main():
     output = args.output.resolve()
     if not output.is_relative_to((ROOT / "local-runtime").resolve()): parser.error("Use local-runtime output")
     output.mkdir(parents=True, exist_ok=False)
-    report = {"scope": __doc__, "status": "pending", "source_before": source_identity(), "samples": [], "page_errors": [], "events": [], "loads": [], "stage": "launch"}
+    report = {"scope": __doc__, "status": "pending", "source_before": source_identity(), "samples": [], "reveal_defaults": [], "page_errors": [], "events": [], "loads": [], "stage": "launch"}
     playwright = browser = page = None
     try:
         playwright = sync_playwright().start()
@@ -74,10 +77,25 @@ def main():
                 "gl_renderer": gpu.get("auxAttributes", {}).get("glRenderer")})
             report["stage"] = prefix + "-capture"
             seek(page, 182)
+            reveal = page.get_by_label("Reveal streets behind foreground buildings", exact=True)
+            expect(reveal).to_be_checked()
+            expect(reveal).to_be_enabled()
+            default = capture(page, output, prefix + "-default-reveal")
+            assert default["camera"]["mode"] == "perspective", default
+            report["samples"].append(default)
             page.get_by_role("button", name="Full city", exact=True).click()
-            report["samples"].append(capture(page, output, prefix + "-overview"))
+            page.wait_for_function("document.querySelector('.three-host canvas').dataset.cameraPresentation === 'orthographic' && Number(document.querySelector('.three-host canvas').dataset.fadedBuildings)===0")
+            # Keep the seven-angle depth regression explicitly opaque. The
+            # separate default/reload samples above and below accept intentional
+            # foreground fading and require identical paused repeat pixels.
+            options = page.locator(".camera-console details")
+            if options.get_attribute("open") is None: options.locator("summary").click()
+            reveal.uncheck()
+            expect(reveal).not_to_be_checked()
+            options.locator("summary").click()
+            report["samples"].append(capture(page, output, prefix + "-overview", opaque=True))
             page.get_by_role("button", name=re.compile(r"^Explore(?: 2\.5×)?$")).click()
-            report["samples"].append(capture(page, output, prefix + "-explore"))
+            report["samples"].append(capture(page, output, prefix + "-explore", opaque=True))
             follow = page.locator(".follow-ambulance")
             if follow.get_attribute("aria-pressed") != "true": follow.click()
             expect(follow).to_have_attribute("aria-pressed", "true")
@@ -85,12 +103,19 @@ def main():
             # Paused camera is already translated exactly by Follow. Disable the
             # optional following blend before testing physical orbit stability.
             if follow.get_attribute("aria-pressed") == "true": follow.click()
-            report["samples"].append(capture(page, output, prefix + "-near"))
+            report["samples"].append(capture(page, output, prefix + "-near", opaque=True))
             canvas = page.locator(".three-host canvas"); canvas.focus()
             for name, key, repetitions in [("yaw", "y", 6), ("tilt-up", "x", 3), ("tilt-down", "Shift+X", 5), ("reverse-yaw", "Shift+Y", 10)]:
                 for _ in range(repetitions): canvas.press(key)
-                report["samples"].append(capture(page, output, prefix + "-" + name))
+                report["samples"].append(capture(page, output, prefix + "-" + name, opaque=True))
             page.screenshot(path=str(output / f"{prefix}-workspace.png"), full_page=True)
+            page.reload(wait_until="domcontentloaded"); ready(page)
+            expect(page.locator("#timeline")).to_be_enabled(timeout=90000)
+            seek(page, 182)
+            expect(reveal).to_be_checked()
+            report["samples"].append(capture(page, output, prefix + "-reload-default-reveal"))
+            report["reveal_defaults"].append({"viewport": [width, height], "initial_checked": True,
+                "opt_out_not_persisted_after_reload": True, "overview_stays_opaque_with_reveal_enabled": True})
             report["stage"] = prefix + "-closing"
             context.close(); browser.close(); browser = None
         assert not report["page_errors"], report["page_errors"]

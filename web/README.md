@@ -104,7 +104,8 @@ the inspected world, deliberate panning, Explore or Full city releases follow.
 Actual-model thumbnails and text identify both responses in the legend.
 Reduced motion disables continuous following.
 
-The optional building cutaway is **off by default**. Logarithmic depth keeps thin
+Foreground building reveal is **on by default on every page access**; Camera
+options can turn it off for the current visit. Full city stays opaque. Logarithmic depth keeps thin
 road/facade layers stable across kilometre-scale perspective views. Shared opaque
 materials and instanced vehicle colors retain geometry and draw-call efficiency.
 Map picking uses real anchors and click/drag separation, with search/dropdown

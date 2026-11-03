@@ -49,7 +49,9 @@ Build and run the current headed desktop acceptance against an isolated output
 and its manifest. Verify initial loading, both recordings, exact world switching,
 seek/ghost behavior, keyboard access, errors, and 16:9 layout. Retain actual
 renderer/frame-time/memory measurements with device and resolution. Inspect
-multiple camera tilts and yaws for depth fighting and unexpected cutaway.
+multiple camera tilts and yaws for depth fighting. Foreground building reveal
+starts enabled on every visit; intentional partial building fades are expected.
+Disable reveal explicitly when checking the opaque depth baseline.
 
 After the hosting tool reports a ready deployment, verify the returned URL and
 its public assets from an unauthenticated browser. Confirm HTTPS loading, gzip

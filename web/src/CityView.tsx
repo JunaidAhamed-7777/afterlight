@@ -65,7 +65,9 @@ export function CityView(props: Props) {
   const [retry, setRetry] = useState(0);
   const [exploring, setExploring] = useState(true);
   const [pan, setPan] = useState(false);
-  const [cutaway, setCutaway] = useState(false);
+  // Foreground reveal starts enabled on every visit; an in-session opt-out is
+  // deliberately not persisted across page loads.
+  const [cutaway, setCutaway] = useState(true);
   const [occluderCount, setOccluderCount] = useState(0);
   const [hoverAnchor, setHoverAnchor] = useState("");
   const cameraAction = useRef<(action: CameraAction) => void>(() => {});
