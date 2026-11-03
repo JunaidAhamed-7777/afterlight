@@ -210,6 +210,7 @@ def main():
               })
             })""")
             assert not report['recorded_results_layout']['overflow']
+            assert len(report['recorded_results_layout']['statusCells'])==2
             assert all(row['lines']==1 and not row['overflow'] for row in report['recorded_results_layout']['statusCells']),'Run status split within a word'
             note('Read actual This run results');shot('06-recorded-results');until(65)
             page.locator('.settings-scroll').evaluate("e=>e.scrollTo({top:Math.min(360,e.scrollHeight),behavior:'instant'})")
