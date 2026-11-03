@@ -340,6 +340,7 @@ export default function App() {
   const completedLoads =
     assetLoad.completed + (city ? 1 : 0) + (catalogLoaded ? 1 : 0);
   const totalLoads = assetLoad.total + 2;
+  const tourReady = bootDismissed && cityReplay && !loading && mapReady;
   const switchPanel = (next: typeof panel) => {
     setPanel(next);
     settingsScroll.current?.scrollTo({ top: 0 });
@@ -798,8 +799,12 @@ export default function App() {
                 </section>
                 <section className="view-options">
                   <h3>Quick tour</h3>
-                  <p className="field-note">A short guide to recordings, playback and the two ambulances.</p>
-                  <button data-tour-reopen className="text-button" onClick={() => setTourRequest(value => value + 1)}>Show the guide <Icon name="arrow" /></button>
+                  <p className="field-note" id="tour-availability">
+                    {tourReady
+                      ? "A short guide to recordings, playback and the two ambulances."
+                      : "Open a city recording with the 3D view ready to use the guide."}
+                  </p>
+                  <button data-tour-reopen className="text-button" disabled={!tourReady} aria-describedby="tour-availability" onClick={() => setTourRequest(value => value + 1)}>Show the guide <Icon name="arrow" /></button>
                 </section>
                 <section className="view-options">
                   <h3>Camera shortcuts</h3>
@@ -1171,7 +1176,7 @@ export default function App() {
           </div>
         </section>
       </main>
-      <Onboarding ready={bootDismissed && Boolean(replay) && !loading && mapReady} openRequest={tourRequest} onOpen={() => { setTime(playbackClock.current); setPlaying(false); switchPanel("run"); }} />
+      <Onboarding ready={tourReady} openRequest={tourRequest} onOpen={() => { setTime(playbackClock.current); setPlaying(false); switchPanel("run"); }} />
       {!bootDismissed && (
         <div
           className="boot-screen"
