@@ -26,7 +26,15 @@ Blender MCP is an authoring bridge, not a frontend framework or a requirement fo
 
 Review telemetry behavior against the pinned release. Upstream describes opt-in content telemetry, default anonymous usage reporting and `DISABLE_TELEMETRY=true`; verify actual configuration rather than assuming defaults. No personal data, keys or private scenes belong in prompts or public artifacts.
 
-## Asset plan
+## Historical prototype production notes
+
+The remaining sections preserve the original smaller-city plan and review
+checkpoints. Their 25-junction, file-size, hosting and not-yet-created wording is
+historical. Current geometry is described above and in [assets/README.md](../assets/README.md);
+the current 50 MB static product budget and Vercel delivery contract are in
+[DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Original asset plan
 
 Author original procedural geometry: 20–25-intersection modular road kit with a three-junction test fixture, lanes/stoplines, signals, restrained building silhouettes, civilian vehicle variants and one recognizable ambulance. Keep one metric scale. Organize collections by reusable object class; name origins and pivots predictably. Export camera-independent geometry, not a complete baked film masquerading as interaction.
 
