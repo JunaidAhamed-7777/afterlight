@@ -14,12 +14,23 @@ def main() -> None:
     prepare.add_argument("--output", type=Path, required=True)
     freeze = commands.add_parser("freeze", help="freeze verified saved inputs/protocol at the clean pinned source commit")
     freeze.add_argument("--study", type=Path, required=True)
+    select = commands.add_parser("select", help="verify train/validation collections and freeze selectors; never opens test outcomes")
+    select.add_argument("--study", type=Path, required=True)
+    select.add_argument("--train", type=Path, required=True)
+    select.add_argument("--validation", type=Path, required=True)
+    select.add_argument("--output", type=Path, required=True)
+    select.add_argument("--fit-model", action="store_true", help="explicitly fit the one frozen tree specification if eligible")
     args = parser.parse_args()
     if args.command == "prepare":
         result = prepare_study(read_json(args.spec), args.pilot_dir, args.output)
         study = result["study"]
         summary = {"study_sha256": result["sha256"], "episodes": study["budget"]["episodes"],
                    "expected_rollouts": study["budget"]["expected_rollouts"], "status": "inputs prepared; no traffic outcomes generated; protocol not yet frozen"}
+    elif args.command == "select":
+        from .study_reporting import select_study
+        result = select_study(args.study, args.train, args.validation, args.output, fit_model=args.fit_model)
+        summary = {"selection_sha256": result["sha256"], "status": result["selection"]["status"],
+                   "reason": result["selection"]["reason"], "test_release_authorized": False}
     else:
         result = freeze_study(args.study)
         summary = {"protocol_sha256": result["sha256"], "status": "protocol frozen; test outcomes remain unreleased"}

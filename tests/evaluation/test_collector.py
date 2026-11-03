@@ -46,6 +46,8 @@ class CollectorTests(unittest.TestCase):
         def run(**kwargs):
             kwargs['output'].mkdir(parents=True)
             (kwargs['output']/'outcome.json').write_text('{"synthetic_unit_fixture":true}')
+            for filename in ('lifecycle.json','tripinfo.xml','command.json'):
+                (kwargs['output']/filename).write_text('synthetic_unit_fixture')
             return {'sumo_version':version,'status':'completed','policy':kwargs['policy'],'events':[], 'frames':[{'t':0,'signals':[]},{'t':20,'signals':[]}], 'metrics':{'status':'completed','validity_reasons':[],
                 'accounting':{'scheduled':1,'inserted':1,'completed':1,'running':0,'not_inserted':0},
                 'ambulance_journey_s':3,'civilian_mean_excess_s':1,'runtime_s':.1,'horizon_s':10,'drain_end_s':20,
@@ -70,6 +72,9 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(runner.call_count,7);self.assertEqual(audit.call_count,7)
         self.assertEqual(len(rows),7);self.assertEqual(manifest['unattempted_worlds'],0)
         self.assertTrue(all(len(row['signal_audit_input_sha256'])==64 for row in rows))
+        expected_files={'lifecycle.json','tripinfo.xml','outcome.json','command.json','signal-audit-input.json'}
+        self.assertTrue(all(set(row['raw_files_sha256'])==expected_files for row in rows))
+        self.assertTrue(all(row['raw_files_sha256']['signal-audit-input.json']==row['signal_audit_input_sha256'] for row in rows))
         self.assertTrue((self.output/rows[0]['raw_world_directory']/'signal-audit-input.json').is_file())
         candidates=json.loads((self.output/'candidate-outcomes.json').read_text())
         self.assertEqual([row['lead_s'] for row in candidates],[0,5,10,20,30])
@@ -131,6 +136,35 @@ class CollectorTests(unittest.TestCase):
         self.study['budget']['split_start_budgets_s']={'train':500,'validation':500}
         result=collect_split(self.study_dir,'train',self.output)
         self.assertEqual(result['split_start_budget_s'],500)
+
+    def test_missing_raw_file_retains_failure_without_hash_leakage(self):
+        runner,_,_=self.mocks()
+        original=runner.side_effect
+        def missing_second(**kwargs):
+            world=original(**kwargs)
+            if kwargs['policy']=='immediate':
+                (kwargs['output']/'tripinfo.xml').unlink()
+            return world
+        runner.side_effect=missing_second
+        with self.assertRaises(RuntimeError):collect_split(self.study_dir,'train',self.output)
+        rows,manifest=self.records()
+        self.assertEqual(len(rows),2)
+        self.assertEqual(rows[1]['status'],'infrastructure_error')
+        self.assertEqual(set(rows[1]['raw_files_sha256']),{'lifecycle.json'})
+        self.assertIsNone(rows[1]['ambulance_journey_s'])
+        self.assertEqual(manifest['unattempted_worlds'],5)
+
+    def test_mutation_during_audit_retains_original_hash_and_null_target(self):
+        import hashlib
+        def mutate(world,network,demand,directory,**kwargs):
+            (directory/'tripinfo.xml').write_text('changed_during_audit')
+        self.mocks(audit_error=mutate)
+        with self.assertRaises(RuntimeError):collect_split(self.study_dir,'train',self.output)
+        rows,_=self.records()
+        self.assertEqual(rows[0]['status'],'infrastructure_error')
+        self.assertIn('changed during audit',rows[0]['failure_reason'])
+        self.assertEqual(rows[0]['raw_files_sha256']['tripinfo.xml'],hashlib.sha256(b'synthetic_unit_fixture').hexdigest())
+        self.assertIsNone(rows[0]['ambulance_journey_s'])
 
     def test_runtime_root_symlink_is_rejected_without_output_mutation(self):
         self.mocks()

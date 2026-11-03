@@ -89,3 +89,34 @@ Rich trace retention and test-release orchestration are subsequent checkpoints.
 Hashes and metadata guards detect drift and inconsistent artifacts. They cannot
 prove a human never inspected test information or that reported files are truthful
 without independent execution. No held-out gain is claimed before actual results.
+
+## Train/validation selection checkpoint
+
+After a frozen study has one completed audited attempt for each development split:
+
+```powershell
+python -m evaluation.collector --study local-runtime/study --split train --output local-runtime/train-attempt
+python -m evaluation.collector --study local-runtime/study --split validation --output local-runtime/validation-attempt
+python -m evaluation.study select --study local-runtime/study --train local-runtime/train-attempt --validation local-runtime/validation-attempt --output local-runtime/selection
+```
+
+The default freezes analytical versus the best validation fixed lead, without
+importing optional ML. To fit the **single declared** tree, explicitly add
+`--fit-model` after installing the reviewed optional requirements in the study
+venv. The selection manifest records actual Python, scikit-learn (must be 1.7.2),
+NumPy, SciPy, joblib and threadpoolctl versions and the optional requirements byte
+hash. There is no hidden parameter search or install/upgrade in this command.
+
+Each collection must supply all seven audited worlds per frozen episode. The
+verifier checks its split before opening outcomes, original raw-byte hashes,
+scalar/raw consistency, lifecycle and signal audits, recomputed common-window
+recovery, source/runtime, candidate inventory and observation-only predictions.
+Failed/censored policy outcomes remain rows; invalid infrastructure/audit attempts
+cannot be pooled into a cosmetically complete dataset. It does not accept a test
+path or scan directories looking for outcomes.
+
+Too few finite training labels produce `baseline_only`, with a reason and no model.
+No common feasible validation cohort produces `inconclusive`, with no invented
+best fixed comparator. A fitted tree yields `learned_ready`, **not** a performance
+claim, and separately freezes comparisons against both analytical and best fixed
+lead. Selection never releases test; that requires a separate reviewed gate.

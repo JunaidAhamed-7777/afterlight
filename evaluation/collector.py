@@ -115,6 +115,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                     raise RuntimeError('Frozen wall-time budget reached; remaining worlds retained as unattempted')
                 world = None
                 signal_hash = None
+                raw_hashes = {}
                 world_dir = output / item['directory']
                 before = time.perf_counter()
                 identity = {key: episode[key] for key in ('episode_id', 'case_id', 'demand_group_id', 'split', 'regime',
@@ -143,8 +144,16 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                     signal_path = world_dir / 'signal-audit-input.json'
                     _checkpoint(signal_path, signal_evidence)
                     signal_hash = hashlib.sha256(signal_path.read_bytes()).hexdigest()
+                    filenames = ('lifecycle.json','tripinfo.xml','outcome.json','command.json','signal-audit-input.json')
+                    for filename in filenames:
+                        raw_hashes[filename] = hashlib.sha256((world_dir / filename).read_bytes()).hexdigest()
+                    if raw_hashes['signal-audit-input.json'] != signal_hash:
+                        raise RuntimeError('Signal audit evidence changed before audit')
                     audit_pilot_world(world, network, demand, world_dir, simulation_step_s=timing['step_s'])
                     Accounting.from_mapping(world['metrics']['accounting'])
+                    after_hashes = {filename: hashlib.sha256((world_dir / filename).read_bytes()).hexdigest() for filename in filenames}
+                    if after_hashes != raw_hashes:
+                        raise RuntimeError('Raw evidence changed during audit; original hashes retained')
                     estimates = estimate_candidates(world['decision']['observation'], AnalyticalConfig(**study['spec']['analytical_config']))
                     estimator_hash = digest({'version': estimates['version'], 'config': estimates['config']})
                     if estimator_hash != digest(study['protocol']['analytical_estimator']):
@@ -155,7 +164,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                         'request_plan': world['decision']['request_plan'], 'observation': world['decision']['observation'],
                         'analytical_config_sha256': estimator_hash,
                         'analytical_cost_s': next((score['analytical_cost_s'] for score in estimates['scores'] if score['lead_s'] == item['lead_s']), None),
-                        'raw_world_directory': item['directory'], 'signal_audit_input_sha256': signal_hash}
+                        'raw_world_directory': item['directory'], 'signal_audit_input_sha256': signal_hash, 'raw_files_sha256': raw_hashes}
                     item['state'] = 'audited'
                 except Exception as error:
                     audit_failed = isinstance(error, PilotAuditError)
@@ -173,7 +182,7 @@ def collect_split(study_directory: Path, split: str, output: Path) -> dict:
                         'ambulance_journey_s': None, 'civilian_mean_excess_s': None,
                         'horizon_s': timing['horizon_s'], 'drain_end_s': timing['horizon_s']+timing['drain_s'],
                         'request_plan': None, 'observation': None, 'analytical_cost_s': None,
-                        'runtime_s': time.perf_counter()-before, 'raw_world_directory': item['directory'], 'signal_audit_input_sha256': signal_hash}
+                        'runtime_s': time.perf_counter()-before, 'raw_world_directory': item['directory'], 'signal_audit_input_sha256': signal_hash, 'raw_files_sha256': raw_hashes}
                     item['state'] = 'audit_failed' if audit_failed else 'infrastructure_failed'
                 world = None
                 rows.append(row)

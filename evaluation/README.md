@@ -61,3 +61,9 @@ It requires a genuine matching pilot and refuses pilot-group reuse. The initial
 collector deliberately rejects test: selector freeze, explicit test release and
 final reporting are separate gates still being implemented. New tooling has not
 yet been accepted on Omen; source compilation is not a study result.
+
+The study `select` command now verifies complete audited train/validation evidence,
+selects the validation-best fixed lead, and optionally fits one declared residual
+tree with explicit ML-version guards. It freezes comparisons against both the
+fixed and analytical selectors before any test release. Baseline-only and
+inconclusive outputs remain explicit; fitting is not evidence of held-out gain.
