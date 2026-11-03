@@ -69,7 +69,7 @@ export class StudyUnpublishedError extends Error {
 }
 
 function fail(field: string): never {
-  throw new Error(`The study evidence has an invalid ${field}.`);
+  throw new Error(`The study evidence could not be verified (${field}). Retry the study.`);
 }
 function object(value: unknown, field: string): Record<string, unknown> {
   if (!value || typeof value !== "object" || Array.isArray(value)) fail(field);
