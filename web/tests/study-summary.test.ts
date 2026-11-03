@@ -215,6 +215,49 @@ test("a malformed HTML success response is a publication error, never an unpubli
   }, () => new Response("<!doctype html><title>Unit SPA fallback</title>", { headers: { "Content-Type": "text/html" } }));
 });
 
+test("malformed study JSON uses concise resource-specific copy without native parser locations", async () => {
+  const malformed = new TextEncoder().encode('{"synthetic-unit-only": }');
+  for (const resource of ["manifest", "summary"] as const) {
+    const manifest = { schema: "afterlight.study-summary-manifest.v1", url: "summary.json", sha256: digest(malformed), bytes: malformed.length };
+    await mockedFetch(async () => {
+      await assert.rejects(loadStudySummary(manifestUrl, new AbortController().signal), error => {
+        assert.ok(error instanceof Error);
+        assert.equal(error.message, `The study ${resource} is not valid JSON. Retry after the publication is corrected.`);
+        assert.doesNotMatch(error.message, /position|column|line\s+\d|Unexpected|synthetic-unit-only/);
+        return true;
+      });
+    }, url => new Response(resource === "summary" && url === manifestUrl ? encode(manifest) : malformed));
+  }
+});
+
+test("invalid study encoding and numbers have readable study-specific recovery copy", async () => {
+  for (const [bytes, detail] of [
+    [new Uint8Array([0xff]), "could not be read as UTF-8 JSON"],
+    [new TextEncoder().encode('{"synthetic-unit-only":1e400}'), "contains invalid numbers"],
+  ] as const) {
+    const manifest = { schema: "afterlight.study-summary-manifest.v1", url: "summary.json", sha256: digest(bytes), bytes: bytes.length };
+    await mockedFetch(async () => {
+      await assert.rejects(loadStudySummary(manifestUrl, new AbortController().signal), {
+        message: `The study summary ${detail}. Retry after the publication is corrected.`,
+      });
+    }, url => new Response(url === manifestUrl ? encode(manifest) : bytes));
+  }
+});
+
+test("timed-out study requests identify the resource and offer retry", async () => {
+  const { manifest } = packed();
+  for (const resource of ["manifest", "summary"] as const) {
+    await mockedFetch(async () => {
+      await assert.rejects(loadStudySummary(manifestUrl, new AbortController().signal), {
+        message: `The study ${resource} request timed out. Retry the study.`,
+      });
+    }, url => {
+      if (resource === "summary" && url === manifestUrl) return new Response(encode(manifest));
+      throw new DOMException("Synthetic native timeout detail must not appear", "TimeoutError");
+    });
+  }
+});
+
 test("checksum and byte count reject changed summary bytes before acceptance", async () => {
   for (const mismatch of ["bytes", "checksum"] as const) {
     const { manifest, bytes } = packed();
@@ -230,7 +273,9 @@ test("manifest and summary streams are bounded even without Content-Length", asy
     const { manifest } = packed(); let canceled = false;
     const limit = target === "manifest" ? STUDY_MANIFEST_LIMIT : STUDY_SUMMARY_LIMIT;
     await mockedFetch(async () => {
-      await assert.rejects(loadStudySummary(manifestUrl, new AbortController().signal), /size limit/);
+      await assert.rejects(loadStudySummary(manifestUrl, new AbortController().signal), {
+        message: `The study ${target} exceeds its ${target === "manifest" ? "16 KiB" : "1 MiB"} size limit. Retry after the publication is corrected.`,
+      });
       assert.equal(canceled, true);
     }, url => {
       if (target === "summary" && url === manifestUrl) return new Response(encode(manifest));
@@ -259,6 +304,18 @@ test("unmount cancellation rejects a pending request and a pre-aborted request p
     const promise = loadStudySummary(manifestUrl, controller.signal);
     controller.abort();
     await assert.rejects(promise, { name: "AbortError" });
+  }, (_url, options) => new Promise((_resolve, reject) => {
+    options!.signal!.addEventListener("abort", () => reject(options!.signal!.reason), { once: true });
+  }));
+});
+
+test("leaving the study preserves the caller's abort reason instead of creating an error message", async () => {
+  const controller = new AbortController();
+  const reason = new DOMException("Synthetic view departure", "AbortError");
+  await mockedFetch(async () => {
+    const request = loadStudySummary(manifestUrl, controller.signal);
+    controller.abort(reason);
+    await assert.rejects(request, error => error === reason);
   }, (_url, options) => new Promise((_resolve, reject) => {
     options!.signal!.addEventListener("abort", () => reject(options!.signal!.reason), { once: true });
   }));

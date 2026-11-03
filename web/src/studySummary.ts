@@ -221,22 +221,42 @@ export function validateStudySummary(value: unknown): StudySummary {
 export async function loadStudySummary(manifestUrl: string, signal: AbortSignal): Promise<LoadedStudy> {
   signal.throwIfAborted();
   const request = async (url: string, limit: number, manifest = false) => {
-    const response = await fetch(url, {
-      signal: AbortSignal.any([signal, AbortSignal.timeout(15000)]),
-      cache: "no-cache",
-      redirect: "error",
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) {
-      await response.body?.cancel();
-      if (manifest && response.status === 404) throw new StudyUnpublishedError();
-      throw new Error(`Study ${manifest ? "manifest" : "summary"} request failed (${response.status}). Retry the study.`);
+    const resource = manifest ? "manifest" : "summary";
+    const requestSignal = AbortSignal.any([signal, AbortSignal.timeout(15000)]);
+    try {
+      const response = await fetch(url, {
+        signal: requestSignal,
+        cache: "no-cache",
+        redirect: "error",
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) {
+        await response.body?.cancel();
+        if (manifest && response.status === 404) throw new StudyUnpublishedError();
+        throw new Error(`Study ${resource} request failed (${response.status}). Retry the study.`);
+      }
+      const bytes = await boundedBytes(response, limit);
+      signal.throwIfAborted();
+      return bytes;
+    } catch (error) {
+      // A user leaving the view remains cancellation, not a publication error.
+      signal.throwIfAborted();
+      if ((error instanceof Error && error.name === "TimeoutError") || requestSignal.reason?.name === "TimeoutError")
+        throw new Error(`The study ${resource} request timed out. Retry the study.`);
+      if (error instanceof Error && /size limit/.test(error.message))
+        throw new Error(`The study ${resource} exceeds its ${manifest ? "16 KiB" : "1 MiB"} size limit. Retry after the publication is corrected.`);
+      throw error;
     }
-    const bytes = await boundedBytes(response, limit);
-    signal.throwIfAborted();
-    return bytes;
   };
-  const manifest = validateStudyManifest(parseJsonBytes(await request(manifestUrl, STUDY_MANIFEST_LIMIT, true), STUDY_MANIFEST_LIMIT));
+  const parse = (bytes: Uint8Array, limit: number, resource: "manifest" | "summary") => {
+    try { return parseJsonBytes(bytes, limit); }
+    catch (error) {
+      const detail = error instanceof Error && /UTF-8/.test(error.message) ? "could not be read as UTF-8 JSON"
+        : error instanceof Error && /nonfinite/.test(error.message) ? "contains invalid numbers" : "is not valid JSON";
+      throw new Error(`The study ${resource} ${detail}. Retry after the publication is corrected.`);
+    }
+  };
+  const manifest = validateStudyManifest(parse(await request(manifestUrl, STUDY_MANIFEST_LIMIT, true), STUDY_MANIFEST_LIMIT, "manifest"));
   const summaryUrl = studyArtifactUrl(manifest.url, manifestUrl);
   const bytes = await request(summaryUrl, STUDY_SUMMARY_LIMIT);
   if (bytes.byteLength !== manifest.bytes) throw new Error("The study summary byte count does not match its manifest. Retry after the publication completes.");
@@ -244,5 +264,5 @@ export async function loadStudySummary(manifestUrl: string, signal: AbortSignal)
   signal.throwIfAborted();
   const sha256 = Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
   if (sha256 !== manifest.sha256) throw new Error("The study summary checksum does not match its manifest. Retry after the publication completes.");
-  return { manifest, summary: validateStudySummary(parseJsonBytes(bytes, STUDY_SUMMARY_LIMIT)), manifestUrl, summaryUrl };
+  return { manifest, summary: validateStudySummary(parse(bytes, STUDY_SUMMARY_LIMIT, "summary")), manifestUrl, summaryUrl };
 }
