@@ -1,30 +1,73 @@
-# Zero-cost delivery
+# Static Vercel delivery
 
-## Chosen baseline
+## Deployment target
 
-Run SUMO generation, fitting and evaluation locally. Publish a static React/Three.js viewer on a free static host such as Cloudflare Pages, with versioned recorded traces and benchmark summaries. No paid API, persistent server or cloud GPU is necessary. Provider limits and terms must be rechecked before deployment.
+Vercel is the chosen production target. The repository-root `vercel.json` builds
+the static React/Three.js product; SUMO, fitting and local-generation jobs remain
+on the operator's computer. No public simulator API or hosted function is part
+of this deployment.
 
-Cloudflare Pages static requests are documented separately from metered Functions. Avoid Functions for the MVP. Its documented maximum individual asset size is 25 MiB; split scenario traces and keep meshes below it. Do not depend on a video larger than the asset limit: publish the demo via the contest-supported video route after checking its terms.
+Project settings follow the committed configuration:
 
-## Truthful public capabilities
+- Root directory: repository root.
+- Install: `npm --prefix web ci`.
+- Build: `npm --prefix web run build`.
+- Output: `web/dist`.
+- Framework preset: no automatic framework detection (`framework: null`).
+- Production `VITE_API_BASE`: leave unset so the site uses its bundled catalog.
 
-The public viewer can switch among exported scenarios, scrub synchronized outcomes, inspect decision inputs/actions and read results. It cannot claim to run arbitrary fresh SUMO experiments. Label sample selection and prerecorded provenance visibly. ONNX/browser inference is a stretch only if preprocessing and outputs are verified against Python; it is unnecessary for a credible entry and does not move SUMO into the browser.
+The asset preparation step copies authoritative exports/map/previews into the
+build. `.vercelignore` excludes local environments, raw experiment directories,
+Blender scenes and source-only research folders. It keeps the exports, canonical
+map and public recording files needed by the build. Check the actual upload and
+build inventory before release; never infer readiness from this plan alone.
 
-## Release gates
+## Recording transport and budget
 
-- Local commands independently reproduce one small scenario and benchmark aggregation.
-- Every public trace maps to a versioned manifest and matching code/config.
-- Build output contains no environment secrets, email details or private notes.
-- Asset sizes, MIME types, loading/error states and WebGL fallback checked.
-- Attribution and dependency/asset licenses included.
-- Submission URL and repository work from a logged-out browser.
+The current catalog publishes two real 0.5 s exploratory pairs with 3 s all-red
+clearance as `.json.gz`. Together they occupy exactly 13,304,439 bytes
+(13.30 MB) of compressed recording files. The current
+city GLB is 14.38 MB. The owner permits at most 50,000,000 bytes of shipped static
+assets, including recordings; measure the complete output, not only the meshes.
 
-If hosting is blocked, local code plus a strong truthful demo remains the fallback because deployment is recommended rather than mandatory. Spend no money to rescue deployment. Final README must state what runs locally versus what the public URL actually does.
+Catalog `bytes` and `sha256` bind the original decoded JSON. `encoding`,
+`transfer_bytes` and `transfer_sha256` describe the compressed container. Serve
+`.json.gz` losslessly: the viewer handles gzip magic bytes or an HTTP-decoded
+response. Do not relabel compressed bytes as JSON without matching transport
+behavior. Each decoded response is capped at 128 MiB independently of the static
+asset budget. A worker prepares one selected recording; benchmark its actual
+load latency and memory on desktop.
 
-## Expanded product capabilities
+The committed cache headers require revalidation for catalog/replays, canonical
+maps and named GLB exports. Deploy those files as a consistent build. The browser
+rejects mismatched recording metadata/checksums and mismatched city hashes rather
+than presenting stale traffic on a different map.
 
-Public static mode may expose the city, pickup/hospital catalog and only prerecorded combinations actually available, with clear unavailable states. It cannot run arbitrary randomized demand by pretending a new seed has been simulated. Local live mode is separate and advertises only implemented validated routes. Both share ghost/world-isolation semantics, error/retry behavior and accessible metrics. Preload the minimal map; lazy-load scenario traces and optional detail rather than shipping every pickup combination upfront. No new paid storage account is assumed.
+## Release verification
 
-## Current local adapter distinction
+Build and run the current headed desktop acceptance against an isolated output
+and its manifest. Verify initial loading, both recordings, exact world switching,
+seek/ghost behavior, keyboard access, errors, and 16:9 layout. Retain actual
+renderer/frame-time/memory measurements with device and resolution. Inspect
+multiple camera tilts and yaws for depth fighting and unexpected cutaway.
 
-The implemented optional adapter binds loopback only and requires `--enable-generation` to accept one real SUMO pair at a time. Its job state is actual queued/running/completed/failed; completed output is a **recorded simulation**. This checkpoint does not stream synchronized live traffic. The static viewer has no generator. Do not expose the local API through a public tunnel, add hosted functions or claim a live backend without a separate authorized and validated implementation.
+After the hosting tool reports a ready deployment, verify the returned URL and
+its public assets from an unauthenticated browser. Confirm HTTPS loading, gzip
+behavior, base paths and absence of loopback API calls. Record the exact source
+commit/build identity and production URL in the release documentation. Rebuild
+and redeploy after later identity/frontend changes; an earlier URL does not
+validate newer source automatically.
+
+Public capabilities are replay, exploration and evidence inspection. Arbitrary
+pickup/seed generation is available only through an explicitly enabled loopback
+runner. Its real job lifecycle and completed recordings stay distinct from live
+streaming. The local API must not be exposed by a public tunnel as a deployment
+shortcut.
+
+## Historical hosting proposal
+
+The initial plan considered Cloudflare Pages and its then-documented 25 MiB
+individual-file limit. That was a proposal, not a deployment or a Vercel quota.
+The original 25 MB map ceiling was later superseded by the owner's 50 MB total
+asset allowance. Historical provider limits and old prototype inventories do not
+define the current release. Verify applicable provider terms before publishing.
