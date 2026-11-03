@@ -11,7 +11,7 @@ from unittest.mock import patch
 from evaluation.protocol import digest
 from evaluation.study_manifest import POLICIES, file_hash
 from evaluation.study_reporting import RAW_FILES, verify_collection, select_study, ml_runtime
-from models.analytical import AnalyticalConfig
+from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION
 
 
 class ReportingTests(unittest.TestCase):
@@ -20,7 +20,7 @@ class ReportingTests(unittest.TestCase):
         self.root=Path(temp.name);self.study_dir=self.root/'local-runtime/study';self.study_dir.mkdir(parents=True)
         self.collection=self.root/'local-runtime/train';self.collection.mkdir()
         self.source={'source_commit':'unit','source_code_sha256':'unit-code','source_dirty':False}
-        self.estimator={'version':'unit','config':asdict(AnalyticalConfig())}
+        self.estimator={'version':ESTIMATOR_VERSION,'config':asdict(AnalyticalConfig(queue_headway_s=3.5))}
         episode={'episode_id':'episode','case_id':'case','demand_group_id':'group','split':'train','regime':'sparse','seed':1,
             'dispatch_s':2,'pickup_id':'pickup','hospital_id':'hospital','route_family':'route',
             'demand_sha256':'demand','network_sha256':'network','demand_directory':'inputs/demand/case'}
@@ -71,7 +71,7 @@ class ReportingTests(unittest.TestCase):
         stack.enter_context(patch('evaluation.study_reporting.assert_episode_coverage'))
         stack.enter_context(patch('evaluation.study_reporting.validate_prediction_inputs'))
         stack.enter_context(patch('models.residual.validate_candidate_rows'))
-        stack.enter_context(patch('evaluation.study_manifest.estimate_candidates',return_value={**self.estimator,
+        self.estimates=stack.enter_context(patch('evaluation.study_manifest.estimate_candidates',return_value={**self.estimator,
             'scores':[{'lead_s':lead,'analytical_cost_s':1} for lead in (0,5,10,20,30)]}))
 
     def save(self):
@@ -83,6 +83,14 @@ class ReportingTests(unittest.TestCase):
         result=verify_collection(self.study_dir,self.collection,'train')
         self.assertEqual(len(result['rows']),7);self.assertEqual(len(result['candidate_rows']),5)
         self.assertEqual(len(result['files_sha256']),38)
+
+    def test_collection_verifier_uses_exact_full_protocol_estimator_for_every_world(self):
+        verify_collection(self.study_dir,self.collection,'train')
+        self.assertEqual(self.estimates.call_count,7)
+        for call in self.estimates.call_args_list:
+            self.assertEqual(asdict(call.args[1]),self.estimator['config'])
+            self.assertEqual(call.args[1].queue_headway_s,3.5)
+            self.assertIs(type(call.args[1].civilian_weight),float)
 
     def test_wrong_split_never_opens_outcomes(self):
         self.manifest['split']='test';self.save()

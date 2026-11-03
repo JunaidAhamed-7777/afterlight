@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 from evaluation.protocol import digest
 from evaluation.study_manifest import (prepare_study, freeze_study, load_study, validate_spec,
     file_hash, assert_saved_inputs, validate_study_links, route_membership, validate_pilot_world_binding)
-from models.analytical import AnalyticalConfig
+from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
 
 
 def spec_fixture():
@@ -237,3 +237,83 @@ class StudyTests(unittest.TestCase):
         independent['protocol']['illustrative_capture']={'case_ids':[],'max_world_bytes':0,'max_total_bytes':0}
         with self.assertRaisesRegex(ValueError,'illustrative_capture'):
             validate_study_links(self.output,independent,verify_inputs=False)
+
+
+class WorldBindingConfigurationTests(unittest.TestCase):
+    """Synthetic observations only; no saved study or simulator evidence."""
+    def setUp(self):
+        from policies.scheduler import timing_for_network
+        observation = {'dispatch_s':20,'sensor_lag_s':1,'observed_at_s':19,'values':{
+            'queue_sum_veh':10,'queue_max_veh':10,'downstream_occupancy':0,'route_distance_m':500,
+            'route_junction_count':3,'eta_remaining_s':40,'phase_elapsed_s':2}}
+        self.plan = {'civilian_weight':1,'network':'city'}
+        self.estimator = {'version':ESTIMATOR_VERSION,'config':asdict(AnalyticalConfig())}
+        self.raw = {'policy':'fixed','lead_s':10,'status':'completed','sumo_version':'synthetic fixture',
+            'metrics':{'runtime_s':1.0,'controller_timing':asdict(timing_for_network('city'))},
+            'decision':{'observation':observation,'request_plan':{'synthetic':True}}}
+        self.row = {key:self.raw[key] for key in ('policy','lead_s','status','sumo_version')}
+        self.row.update(self.raw['decision'],simulator_runtime_s=1.0,
+            controller_timing=self.raw['metrics']['controller_timing'])
+        self.predict()
+
+    def predict(self):
+        self.estimates = estimate_candidates(self.raw['decision']['observation'],
+                                              AnalyticalConfig(**self.estimator['config']))
+        self.row['analytical_config_sha256'] = digest(self.estimator)
+        self.row['analytical_cost_s'] = next(score['analytical_cost_s'] for score in self.estimates['scores']
+                                            if score['lead_s'] == self.row['lead_s'])
+
+    def bind(self, row=None, raw=None, estimator=None):
+        validate_pilot_world_binding(self.row if row is None else row,self.raw if raw is None else raw,self.plan,
+                                     frozen_estimator=self.estimator if estimator is None else estimator)
+
+    def test_full_frozen_float_config_accepts_integer_objective_without_rehashing(self):
+        self.assertIs(type(self.plan['civilian_weight']),int)
+        self.assertIs(type(self.estimator['config']['civilian_weight']),float)
+        self.bind()
+        # The separate legacy pilot contract deliberately preserves the old
+        # weight-only reconstruction, even if an extra plan field is present.
+        with self.assertRaisesRegex(ValueError,'prediction/config'):
+            validate_pilot_world_binding(self.row,self.raw,{**self.plan,'analytical_estimator':self.estimator})
+
+    def test_every_explicit_config_field_is_used_and_all_leads_bind(self):
+        self.estimator['config'].update(queue_headway_s=3.5,transition_loss_s=3.0,
+                                       ordinary_cycle_s=62.0,civilian_cost_scale=.6)
+        for lead in (0,5,10,20,30):
+            self.row['lead_s'] = self.raw['lead_s'] = lead
+            self.predict()
+            with self.subTest(lead=lead): self.bind()
+
+    def test_legacy_pilot_keeps_its_original_exact_weight_type(self):
+        self.estimator['config']['civilian_weight'] = 1
+        self.predict()
+        validate_pilot_world_binding(self.row,self.raw,self.plan)
+        with self.assertRaisesRegex(ValueError,'prediction/config'):
+            validate_pilot_world_binding(self.row,self.raw,{**self.plan,'civilian_weight':1.0})
+
+    def test_full_estimator_shape_version_and_weight_fail_closed(self):
+        variants = [None,{}, {'version':ESTIMATOR_VERSION,'config':None}]
+        for mutate in (lambda e:e.update(version='unsupported'),lambda e:e.update(extra='unexpected'),
+                       lambda e:e['config'].pop('queue_headway_s'),
+                       lambda e:e['config'].update(extra=1),lambda e:e['config'].update(civilian_weight=2)):
+            changed = deepcopy(self.estimator); mutate(changed); variants.append(changed)
+        for estimator in variants:
+            with self.subTest(estimator=estimator),self.assertRaisesRegex(ValueError,'Exact frozen'):
+                validate_pilot_world_binding(self.row,self.raw,self.plan,frozen_estimator=estimator)
+
+    def test_canonical_numeric_identity_and_constructor_reconstruction_are_exact(self):
+        changed = deepcopy(self.estimator); changed['config']['civilian_weight'] = 1
+        self.assertEqual(changed,self.estimator)
+        self.assertNotEqual(digest(changed),digest(self.estimator))
+        with self.assertRaisesRegex(ValueError,'prediction/config'): self.bind(estimator=changed)
+        with patch('evaluation.study_manifest.estimate_candidates',return_value={**self.estimates,'config':changed['config']}),\
+                self.assertRaisesRegex(ValueError,'constructor changed'):
+            self.bind()
+
+    def test_full_config_retains_raw_metric_decision_timing_and_prediction_guards(self):
+        for key,value in [('status','invalid'),('lead_s',20),('simulator_runtime_s',2),
+                          ('observation',{}),('request_plan',{}),('analytical_config_sha256','0'*64),
+                          ('analytical_cost_s',-100)]:
+            with self.subTest(key=key),self.assertRaises(ValueError): self.bind(row={**self.row,key:value})
+        raw = deepcopy(self.raw); raw['metrics']['controller_timing']['all_red_s'] = 99
+        with self.assertRaisesRegex(ValueError,'controller timing'): self.bind(raw=raw)

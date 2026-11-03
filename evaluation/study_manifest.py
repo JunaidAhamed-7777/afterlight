@@ -23,6 +23,7 @@ REGIMES = {"sparse", "moderate", "asymmetric", "heavy"}
 SPLITS = {"train", "validation", "test"}
 SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}\Z")
 POLICIES = [("ordinary", None), ("immediate", None), *(("fixed", lead) for lead in (0, 5, 10, 20, 30))]
+_LEGACY_ESTIMATOR = object()
 
 
 def read_json(path: Path):
@@ -331,8 +332,14 @@ def validate_pilot_evidence(directory: Path, spec: Mapping, source: Mapping) -> 
             "interpretation": "Measured exploratory pilot basis, not a promised runtime or held-out performance result."}
 
 
-def validate_pilot_world_binding(row: Mapping, raw: Mapping, plan: Mapping) -> None:
-    """Bind aggregate pilot measurements to the saved simulator outcome."""
+def validate_pilot_world_binding(row: Mapping, raw: Mapping, plan: Mapping,
+                                 *, frozen_estimator=_LEGACY_ESTIMATOR) -> None:
+    """Bind scalar/raw evidence and its exact declared analytical prediction.
+
+    Legacy pilots retain their original weight-only estimator reconstruction.
+    Study callers must explicitly supply the complete frozen estimator; numeric
+    JSON identities such as 1 versus 1.0 are preserved, never normalized.
+    """
     from policies.scheduler import Timing, timing_for_network
     expected_timing=asdict(timing_for_network(plan.get('network','fixture')))
     if raw['metrics'].get('controller_timing',asdict(Timing()))!=expected_timing:
@@ -348,8 +355,20 @@ def validate_pilot_world_binding(row: Mapping, raw: Mapping, plan: Mapping) -> N
     for key in ("observation", "request_plan"):
         if row.get(key) != decision[key]:
             raise ValueError(f"pilot scalar/raw decision mismatch: {key}")
-    estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
-    expected_hash = digest({"version": estimates["version"], "config": estimates["config"]})
+    if frozen_estimator is _LEGACY_ESTIMATOR:
+        estimates = estimate_candidates(decision["observation"], AnalyticalConfig(civilian_weight=plan["civilian_weight"]))
+        expected_hash = digest({"version": estimates["version"], "config": estimates["config"]})
+    else:
+        if (not isinstance(frozen_estimator, Mapping) or set(frozen_estimator) != {"version", "config"}
+                or frozen_estimator["version"] != ESTIMATOR_VERSION
+                or not isinstance(frozen_estimator["config"], Mapping)
+                or set(frozen_estimator["config"]) != set(asdict(AnalyticalConfig()))
+                or frozen_estimator["config"]["civilian_weight"] != plan["civilian_weight"]):
+            raise ValueError("Exact frozen analytical estimator/version/configuration required")
+        estimates = estimate_candidates(decision["observation"], AnalyticalConfig(**frozen_estimator["config"]))
+        expected_hash = digest(frozen_estimator)
+        if digest({"version": estimates["version"], "config": estimates["config"]}) != expected_hash:
+            raise ValueError("Analytical constructor changed the exact frozen estimator identity")
     cost = next((score["analytical_cost_s"] for score in estimates["scores"] if score["lead_s"] == row["lead_s"]), None)
     if row.get("analytical_config_sha256") != expected_hash or row.get("analytical_cost_s") != cost:
         raise ValueError("pilot analytical prediction/config differs from recomputed observation-only estimate")
