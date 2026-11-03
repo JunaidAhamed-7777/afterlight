@@ -193,9 +193,11 @@ def plan(root: Path, output: Path, *, python: str | None = None, node: str | Non
     steps=[]
     for group in ('sim','evaluation','api','assets','preview','acceptance'):
         steps.append({'id':'python-'+group,'argv':[python,'-B','-m','unittest','discover','-s','tests/'+group,'-v'],'cwd':str(root)})
-    guards = root/'web/tests/test_released_study_guards.py'
-    if not guards.is_file():raise ValueError('Missing released-study guard unit tests')
-    steps.append({'id':'python-study-proof-guards','argv':[python,'-B',str(guards)],'cwd':str(root)})
+    for group, filename in (('study-proof-guards','test_released_study_guards.py'),
+                            ('study-proof-cli','test_public_study_cli.py')):
+        guards = root/'web/tests'/filename
+        if not guards.is_file():raise ValueError('Missing isolated public-study unit checks')
+        steps.append({'id':'python-'+group,'argv':[python,'-B',str(guards)],'cwd':str(root)})
     files=sorted((root/'web/tests').glob('*.test.ts'))
     if not files:raise ValueError('No committed frontend Node unit tests found')
     steps.append({'id':'node-units','argv':[node,'--experimental-strip-types','--test',*[str(path) for path in files]],'cwd':str(root/'web')})
