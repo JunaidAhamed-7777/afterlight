@@ -1,7 +1,7 @@
 # AFTERLIGHT city assets
 
 The current viewer uses **`exports/city_enhanced.glb`**, the expanded original
-architectural miniature. It follows the canonical 2,040 Ã— 2,010 m map: 81 primary
+architectural miniature. It follows the canonical 2,040 × 2,010 m map: 81 primary
 junctions, 826 addressable buildings, eight landscaped parks and two hospitals
 in diagonal quadrants. Westhaven has an emerald roof pavilion; Eastbank has a
 taller coral service wing. Both retain the actual canonical ambulance access.
@@ -100,7 +100,7 @@ City geometry has a nonzero GLB root translation inherited from static batching.
 
 ## Supplemental asset overview
 
-![Actual exported Afterlight asset kit â€” presentation panels not to scale](previews/asset_overview.png)
+![Actual exported Afterlight asset kit — presentation panels not to scale](previews/asset_overview.png)
 
 This supplemental Blender contact sheet displays the actual exported city, ambulance, civilian fleet, building palette and landmark geometry. Panels are deliberately **not to scale**; the cyan ghost panel is an opaque presentation treatment, not proof of browser transparency or simulation. Regenerate it with `src/render_asset_overview.py` in Blender, using the same `__file__` convention above. It imports existing GLBs and does not modify their files.
 

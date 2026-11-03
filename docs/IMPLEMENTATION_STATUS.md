@@ -1,3 +1,10 @@
+> **Historical implementation checkpoints:** this file preserves the earlier
+> source/build/acceptance progression, including the November 3 owner halt.
+> Old empty-catalog, 25-node/25 MB and pending statements below describe those
+> recorded cohorts. For the current expanded desktop product, use the
+> [documentation index](README.md), [viewer setup](../web/README.md) and current
+> artifact manifests. No older result automatically validates later source.
+
 # Implementation checkpoints
 
 > **Owner handoff:** cloud work stopped at the explicit November 3 halt. See

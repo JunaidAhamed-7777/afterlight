@@ -23,7 +23,7 @@ From the repository root, use a **new** output path:
 Preparation persists a fresh 32-hex request ID before network traffic. An
 exclusive `run-started.json` claim blocks concurrent execution and crash retry
 even if the mutable journal still says prepared. The only
-request is city, seed 7, sparse demand, fixed lead 10, P001 â†’ HOSP_EAST. The API
+request is city, seed 7, sparse demand, fixed lead 10, P001 → HOSP_EAST. The API
 uses its fixed pilot/exploration protocol: two independent worlds, dispatch 60 s,
 demand end 180 s, horizon 360 s + drain 540 s (900 s endpoint), with 0.5 s replay samples.
 This revised expanded-city protocol does not relabel earlier 600 s jobs; retain
