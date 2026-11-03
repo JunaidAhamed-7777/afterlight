@@ -12,10 +12,10 @@ from api.jobs import JobManager, RequestError, OutputConflict, parameters, load_
 
 def synthetic_replay():
     return {"schema": "afterlight.replay.v1", "mode": "recorded", "duration_s": 1, "step_s": 1,
-            "coordinates": {"position_reference": "front_bumper"}, "scenario": {"network_kind": "fixture", "seed": 7, "regime": "moderate"},
-            "provenance": dict(source_commit="fixture", network_sha256="fixture", demand_sha256="fixture", sumo_version="fixture"),
+            "coordinates": {"position_reference": "front_bumper", "source": "canonical XY meters", "render": "[x,z,-y]"}, "scenario": {"network_kind": "fixture", "id": "unit-only", "seed": 7, "dispatch_s": 0, "pickup_id": "FIXTURE_PICKUP", "hospital_id": "FIXTURE_HOSPITAL", "regime": "moderate"},
+            "provenance": dict(source_commit="fixture", network_sha256="a"*64, demand_sha256="b"*64, sumo_version="fixture"),
             "worlds": {w: {"world_id": w, "status": "completed", "policy": "ordinary" if w == "baseline" else "fixed", "lead_s": 10,
-                           "frames": [{"t": 0, "vehicles": []}, {"t": 1, "vehicles": []}]} for w in ("baseline", "afterlight")}}
+                           "metrics": {}, "events": [], "frames": [{"t": 0, "vehicles": [], "signals": [], "queue_count": 0}, {"t": 1, "vehicles": [], "signals": [], "queue_count": 0}]} for w in ("baseline", "afterlight")}}
 
 
 class JobTests(unittest.TestCase):

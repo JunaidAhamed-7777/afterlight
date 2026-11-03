@@ -14,10 +14,10 @@ from api.server import ArtifactError, catalog, replay, make_handler, local_origi
 def synthetic_replay():
     # Explicit unit fixture, never a public recording or traffic result.
     return {"schema": "afterlight.replay.v1", "mode": "recorded", "duration_s": 1, "step_s": 1,
-            "coordinates": {"position_reference": "front_bumper"}, "scenario": {"network_kind": "fixture"},
-            "provenance": dict(source_commit="fixture", network_sha256="fixture", demand_sha256="fixture", sumo_version="fixture"),
+            "coordinates": {"position_reference": "front_bumper", "source": "canonical XY meters", "render": "[x,z,-y]"}, "scenario": {"network_kind": "fixture", "id": "unit-only", "seed": 7, "dispatch_s": 0, "pickup_id": "FIXTURE_PICKUP", "hospital_id": "FIXTURE_HOSPITAL"},
+            "provenance": dict(source_commit="fixture", network_sha256="a"*64, demand_sha256="b"*64, sumo_version="fixture"),
             "worlds": {w: {"world_id": w, "status": "completed", "policy": "ordinary" if w == "baseline" else "fixed",
-                           "frames": [{"t": 0, "vehicles": []}, {"t": 1, "vehicles": []}]} for w in ("baseline", "afterlight")}}
+                           "metrics": {}, "events": [], "frames": [{"t": 0, "vehicles": [], "signals": [], "queue_count": 0}, {"t": 1, "vehicles": [], "signals": [], "queue_count": 0}]} for w in ("baseline", "afterlight")}}
 
 
 class ArtifactTests(unittest.TestCase):
@@ -132,6 +132,31 @@ class HTTPTests(unittest.TestCase):
                 urlopen(self.base+'/api/runs/bound',timeout=3)
             self.assertEqual(caught.exception.code,422)
             self.assertEqual((root/'bound.json').read_bytes(),payload)
+
+    def test_complete_looking_malformed_replays_are_http_422_before_serving(self):
+        root=Path(self.temp.name)
+        mutations=[lambda r:r.update(duration_s=True),
+                   lambda r:r['worlds']['afterlight'].pop('metrics'),
+                   lambda r:r['worlds']['afterlight'].update(metrics=[]),
+                   lambda r:r['worlds']['afterlight'].pop('events'),
+                   lambda r:r['worlds']['afterlight']['frames'][0].pop('signals'),
+                   lambda r:r['worlds']['afterlight']['frames'][0].update(queue_count=False),
+                   lambda r:r['worlds']['afterlight']['frames'][0].update(signals=[{'id':'J','state':'?'}]),
+                   lambda r:r['worlds']['afterlight']['frames'][0].update(vehicles=[
+                       dict(id='ambulance',type='ambulance',x=0,y=0,z=0,angle_deg=0,speed_mps=0,length_m=5),
+                       dict(id='second',type='ambulance',x=1,y=1,z=0,angle_deg=0,speed_mps=0,length_m=5)])]
+        for index,mutate in enumerate(mutations):
+            data=synthetic_replay();mutate(data)
+            payload=json.dumps(data).encode()
+            (root/'malformed.json').write_bytes(payload)
+            # Even correct catalog bytes/hash cannot replace schema validation.
+            (root/'catalog.json').write_text(json.dumps({'schema':'afterlight.catalog.v1','runs':[
+                {'id':'malformed','bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest()}]}))
+            with self.subTest(mutation=index),self.assertRaises(HTTPError) as caught:
+                urlopen(self.base+'/api/runs/malformed',timeout=3)
+            self.assertEqual(caught.exception.code,422)
+            self.assertIn('replay validation',json.load(caught.exception)['error'])
+            self.assertEqual((root/'malformed.json').read_bytes(),payload)
 
     def test_catalog_numeric_overflow_and_depth_are_http_422(self):
         root=Path(self.temp.name)

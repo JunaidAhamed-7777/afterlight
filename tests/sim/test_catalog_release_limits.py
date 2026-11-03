@@ -24,8 +24,8 @@ class ReleaseBudgetTests(unittest.TestCase):
 
     def fixture(self):
         replay={'schema':'afterlight.replay.v1','mode':'recorded','duration_s':1,'step_s':1,
-                'coordinates':{'position_reference':'front_bumper'},
-                'scenario':{'id':'synthetic-budget-fixture','network_kind':'city','seed':7,
+                'coordinates':{'position_reference':'front_bumper','source':'canonical XY meters','render':'[x,z,-y]'},
+                'scenario':{'id':'synthetic-budget-fixture','network_kind':'city','seed':7,'dispatch_s':0,
                             'pickup_id':'P001','hospital_id':'HOSP_EAST'},
                 'provenance':{'source_commit':'1'*40,'source_dirty':False,'network_sha256':'2'*64,
                               'demand_sha256':'3'*64,'sumo_version':'synthetic unit fixture, never measured',
@@ -33,8 +33,8 @@ class ReleaseBudgetTests(unittest.TestCase):
                 'worlds':{name:{'world_id':name,'policy':'ordinary' if name=='baseline' else 'fixed',
                                'lead_s':None if name=='baseline' else 10,'status':'completed',
                                'metrics':{},'events':[],
-                               'frames':[{'t':0,'vehicles':[],'signals':[]},
-                                         {'t':1,'vehicles':[],'signals':[]}]}
+                               'frames':[{'t':0,'vehicles':[],'signals':[],'queue_count':0},
+                                         {'t':1,'vehicles':[],'signals':[],'queue_count':0}]}
                           for name in ('baseline','afterlight')}}
         payload=json.dumps(replay).encode()
         (self.run/'replay.json').write_bytes(payload)
