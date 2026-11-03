@@ -5,10 +5,10 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `14ea738befab111041511a58c8b1fb402c1ce8c3`.
+**Compiled source:** `f54dc39768be86f98682e49f0a51a5e7a0837971`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
-Compilation succeeded in the cloud. This true-perspective camera and enhanced 3D map build still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
+Compilation succeeded in the cloud. This desktop-first usability, true-perspective camera and enhanced 3D map build still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
 acceptance is recorded in `docs/validation/OMEN_LOG.md`.
 A successful preview test does not establish npm installation reproducibility,
 SUMO correctness, performance improvement, or a trained model.
@@ -22,7 +22,7 @@ python scripts/serve_preview.py
 
 Open `http://127.0.0.1:5173/` for public recorded mode. The initial empty catalog
 is intentional: no genuine SUMO pair has yet been generated and accepted. Check
-loading, original city assets, controls, keyboard, mobile, errors and WebGL.
+loading, original city assets, controls, keyboard, desktop window resizing, errors and WebGL. Mobile optimization/testing is outside the current target.
 `http://127.0.0.1:5173/local.html` is compiled for the local API at
 `http://127.0.0.1:8765`; it should show an honest disconnected state until that
 API is running. See the root README for API prerequisites and explicit generation
