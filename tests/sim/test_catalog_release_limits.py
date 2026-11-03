@@ -75,6 +75,16 @@ class ReleaseBudgetTests(unittest.TestCase):
             auditor.assert_not_called()
         self.assertFalse(self.destination.exists())
 
+    def test_coarse_physics_capture_is_refused_for_public_city_presentation(self):
+        payload,_=self.fixture();replay=json.loads(payload)
+        for world in replay['worlds'].values():world['metrics']['simulation_step_s']=.5
+        (self.run/'replay.json').write_text(json.dumps(replay))
+        with patch('export.catalog.audit') as auditor:
+            with self.assertRaisesRegex(ValueError,'every integration boundary'):
+                register(self.run,self.destination,compress=True)
+            auditor.assert_not_called()
+        self.assertFalse(self.destination.exists())
+
     def test_repacking_keeps_identity_evidence_and_human_title(self):
         payload,audit_result=self.fixture()
         with patch('export.catalog.audit',return_value=audit_result),patch('export.catalog.audit_outcomes'):

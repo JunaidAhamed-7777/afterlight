@@ -86,6 +86,10 @@ def register(run: Path, destination: Path, *, compress: bool = False, title: str
     validate_replay(replay)
     if replay['scenario']['network_kind'] != 'city':
         raise ValueError('The city viewer library accepts city recordings only; retain fixture artifacts separately')
+    integration_steps=[world.get('metrics',{}).get('simulation_step_s') for world in replay['worlds'].values()]
+    if any(isinstance(step,(int,float)) and not isinstance(step,bool) and replay['step_s']>step+1e-9
+           for step in integration_steps):
+        raise ValueError('Public city recordings must capture every integration boundary; coarse vehicle interpolation can cross red lights. Retain coarse scalar evidence locally and capture a fresh exploratory demo at --sample 0.5.')
     provenance = replay['provenance']
     if not re.fullmatch(r'[0-9a-f]{40}',provenance['source_commit']):
         raise ValueError('A real repository source commit is required, not a unit-test fixture')

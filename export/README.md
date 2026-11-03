@@ -56,3 +56,11 @@ vehicle poses too coarsely for a polished public replay; retain that scientific
 evidence without publishing it as a visual demo. No model,
 trace, selected replay or benefit is supplied as a fake fallback. Source is
 implemented; actual Omen end-to-end acceptance remains required.
+
+
+Public city registration now requires captures at every recorded integration
+boundary when simulation-step provenance is present. A 2 s or 5 s vehicle trace
+cannot be promoted to a public city demo for a 0.5 s simulation: interpolation
+can otherwise move stopped vehicles across a red stop line before an actual
+green event. Coarse scalar-study evidence is retained locally; fresh exploratory
+visual captures use `--sample 0.5`. Compression preserves every actual sample.
