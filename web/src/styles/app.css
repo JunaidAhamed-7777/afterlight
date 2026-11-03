@@ -816,6 +816,19 @@ footer a {
   position: relative;
   margin-left: auto;
 }
+.follow-controls { display: flex; align-items: center; gap: 6px; padding-left: 12px; border-left: 1px solid var(--line); }
+.follow-controls button { min-height: 34px; padding: 6px 12px; font-size: 12px; background: transparent; white-space: nowrap; }
+.follow-controls .follow-ambulance { color: var(--ambulance); }
+.follow-controls .follow-ghost { color: var(--ghost); }
+.follow-controls button[aria-pressed="true"] { background: var(--surface-hover); border-color: currentColor; }
+.follow-controls button > span { font-size: 17px; line-height: 1; }
+.legend .legend-model { width: 53px; height: 32px; object-fit: contain; margin: -6px -2px -6px -5px; }
+@media (min-width: 1000px) and (max-width: 1250px) {
+  .follow-controls { padding-left: 6px; gap: 4px; }
+  .follow-controls button { padding: 6px 8px; font-size: 11px; }
+  .camera-presets button { padding: 6px 8px; }
+  .camera-console { gap: 6px; }
+}
 .camera-console summary {
   padding: 8px 0;
   min-height: 32px;

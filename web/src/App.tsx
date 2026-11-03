@@ -9,6 +9,7 @@ import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
 import { selectionLabel } from "./selectionEvidence.ts";
 import { ReplayEvidence } from "./ReplayEvidence.tsx";
+import { Onboarding } from "./Onboarding.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt } from "./replay.ts";
 import type { MapPickMode } from "./MapSelectionLayer.ts";
@@ -83,6 +84,8 @@ function Icon({
   );
 }
 export default function App() {
+  const [tourRequest, setTourRequest] = useState(0);
+  const [followTarget, setFollowTarget] = useState<"ambulance" | "ghost">("ambulance");
   const [panel, setPanel] = useState<"run" | "results" | "settings">("run");
   const [bootDismissed, setBootDismissed] = useState(false);
   const [assetLoad, setAssetLoad] = useState({
@@ -165,8 +168,12 @@ export default function App() {
   const prefersReduced = useReducedMotion(),
     reducedMotion = prefersReduced || motionOff;
   useEffect(() => {
-    const evidenceOnly = Boolean(replay && cityHash &&
-      (replay.scenario.network_kind !== "city" || !geometryMatches(replay.provenance.canonical_map_sha256, cityHash)));
+    const evidenceOnly = Boolean(
+      replay &&
+        cityHash &&
+        (replay.scenario.network_kind !== "city" ||
+          !geometryMatches(replay.provenance.canonical_map_sha256, cityHash)),
+    );
     if (catalogLoaded && (mapReady || evidenceOnly)) setBootDismissed(true);
   }, [mapReady, catalogLoaded, replay, cityHash]);
   useEffect(() => {
@@ -240,10 +247,7 @@ export default function App() {
     const url = recordingUrl(item.url, catalogBase);
     (generatedReplays.current.has(selection)
       ? Promise.resolve().then(() =>
-          bindRecording(
-            generatedReplays.current.get(selection)!,
-            item,
-          ),
+          bindRecording(generatedReplays.current.get(selection)!, item),
         )
       : loadRecording(item, url, c.signal)
     )
@@ -346,6 +350,17 @@ export default function App() {
     else if (playing) setTime(playbackClock.current);
     setPlaying(!playing);
   };
+  const followVehicle = (target: "ambulance" | "ghost") => {
+    if (!cityReplay || reducedMotion) return;
+    const active = follow && followTarget === target;
+    setFollowTarget(target);
+    setFollow(!active);
+    if (target === "ghost" && !active) {
+      setGhost(true);
+      setWorld("afterlight");
+    }
+    if (!active) setLocate(value => value + 1);
+  };
   return (
     <div className="app-shell">
       <a className="skip-link" href="#experiment-controls">
@@ -367,7 +382,11 @@ export default function App() {
         <div className="topbar-right">
           <span className="mode-label">
             <span className={`status-dot ${replay ? "recorded" : ""}`} />
-            {generating ? "Generating locally" : replay ? "Recorded simulation" : "City explorer"}
+            {generating
+              ? "Generating locally"
+              : replay
+                ? "Recorded simulation"
+                : "City explorer"}
           </span>
           <a
             className="source-link"
@@ -392,6 +411,7 @@ export default function App() {
               ).map(([id, label]) => (
                 <button
                   key={id}
+                  data-tour={id === "results" ? "results" : undefined}
                   aria-pressed={panel === id}
                   onClick={() => switchPanel(id)}
                 >
@@ -658,7 +678,7 @@ export default function App() {
                     }}
                     onOpen={(r, url) => {
                       generatedReplays.current.clear();
-                    generatedReplays.current.set(r.scenario.id, r);
+                      generatedReplays.current.set(r.scenario.id, r);
                       const entry: CatalogEntry = {
                         id: r.scenario.id,
                         title: `Local ${r.worlds.afterlight.policy} run`,
@@ -716,7 +736,10 @@ export default function App() {
                       type="checkbox"
                       checked={ghost}
                       disabled={!cityReplay || world === "baseline"}
-                      onChange={(e) => setGhost(e.target.checked)}
+                      onChange={(e) => {
+                        setGhost(e.target.checked);
+                        if (!e.target.checked && followTarget === "ghost") setFollow(false);
+                      }}
                     />
                     <span>
                       Show baseline ghost
@@ -772,6 +795,11 @@ export default function App() {
                       </small>
                     </span>
                   </label>
+                </section>
+                <section className="view-options">
+                  <h3>Quick tour</h3>
+                  <p className="field-note">A short guide to recordings, playback and the two ambulances.</p>
+                  <button data-tour-reopen className="text-button" onClick={() => setTourRequest(value => value + 1)}>Show the guide <Icon name="arrow" /></button>
                 </section>
                 <section className="view-options">
                   <h3>Camera shortcuts</h3>
@@ -862,13 +890,13 @@ export default function App() {
                   <div className="segmented" aria-label="Inspect traffic world">
                     <button
                       aria-pressed={world === "afterlight"}
-                      onClick={() => setWorld("afterlight")}
+                      onClick={() => { setWorld("afterlight"); setFollow(false); }}
                     >
                       Afterlight
                     </button>
                     <button
                       aria-pressed={world === "baseline"}
-                      onClick={() => setWorld("baseline")}
+                      onClick={() => { setWorld("baseline"); setFollow(false); }}
                     >
                       Ordinary
                     </button>
@@ -926,7 +954,15 @@ export default function App() {
                   </div>
                 </div>
               ) : (
-                <CanvasBoundary onFailure={() => setAssetLoad(state => ({...state, error: true, phase: "The 3D renderer could not start"}))}>
+                <CanvasBoundary
+                  onFailure={() =>
+                    setAssetLoad((state) => ({
+                      ...state,
+                      error: true,
+                      phase: "The 3D renderer could not start",
+                    }))
+                  }
+                >
                   <Suspense
                     fallback={
                       <div className="canvas-status" role="status">
@@ -941,7 +977,7 @@ export default function App() {
                         cityReplay ? replay!.worlds.baseline.frames : []
                       }
                       followFrames={
-                        cityReplay ? replay!.worlds.afterlight.frames : []
+                        cityReplay ? replay!.worlds[followTarget === "ghost" ? "baseline" : world].frames : []
                       }
                       onManualCamera={() => setFollow(false)}
                       onMapReady={setMapReady}
@@ -978,6 +1014,10 @@ export default function App() {
                       hospital={hospital}
                       quality={quality}
                       follow={follow}
+                      playing={playing}
+                      followTarget={followTarget}
+                      canFollow={cityReplay && !reducedMotion}
+                      onFollow={followVehicle}
                       reducedMotion={reducedMotion}
                       reset={reset}
                       locate={locate}
@@ -1030,14 +1070,14 @@ export default function App() {
             {cityReplay && (
               <div className="legend">
                 <span>
-                  <i className="legend-solid" />
+                  <img className="legend-model" src={`${base}assets/previews/ambulance_model.png`} alt="" />
                   {world === "afterlight"
                     ? "Afterlight ambulance"
                     : "Ordinary ambulance"}
                 </span>
                 {world === "afterlight" && ghost && (
                   <span>
-                    <i className="legend-ghost" />
+                    <img className="legend-model" src={`${base}assets/previews/ghost_model.png`} alt="" />
                     Baseline ghost
                   </span>
                 )}
@@ -1120,42 +1160,18 @@ export default function App() {
                   onChange={(e) => setSpeed(Number(e.target.value))}
                   disabled={!replay}
                 >
-                  {[0.5, 1, 2, 4].map((s) => (
+                  {[0.5, 1, 2, 4, 10, 20].map((s) => (
                     <option key={s} value={s}>
                       {s}×
                     </option>
                   ))}
                 </select>
               </label>
-              <button
-                className="icon-button locate-button"
-                disabled={!cityReplay}
-                aria-label="Locate Afterlight ambulance"
-                title="Locate ambulance"
-                onClick={() => {
-                  setLocate((x) => x + 1);
-                  if (!reducedMotion) setFollow(true);
-                }}
-              >
-                <span aria-hidden="true">⌖</span>
-              </button>
-              <button
-                className="follow-button"
-                disabled={!cityReplay || reducedMotion}
-                aria-pressed={follow}
-                onClick={() => setFollow(!follow)}
-                title={
-                  reducedMotion
-                    ? "Turn off reduced motion to follow the ambulance"
-                    : "Track the Afterlight ambulance"
-                }
-              >
-                <span aria-hidden="true">◎</span> Follow
-              </button>
             </div>
           </div>
         </section>
       </main>
+      <Onboarding ready={bootDismissed && Boolean(replay) && !loading && mapReady} openRequest={tourRequest} onOpen={() => { setTime(playbackClock.current); setPlaying(false); switchPanel("run"); }} />
       {!bootDismissed && (
         <div
           className="boot-screen"

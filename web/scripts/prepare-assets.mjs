@@ -8,6 +8,8 @@ for (const path of [
   "map/city_manifest.json",
   "previews/city_overview.png",
   "previews/city_expanded.png",
+  "previews/ambulance_model.png",
+  "previews/ghost_model.png",
 ]) {
   await cp(new URL(`assets/${path}`, root), new URL(path, target), {
     recursive: true,

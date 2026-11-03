@@ -32,7 +32,7 @@ const steps = [
   {
     selector: ".follow-controls",
     title: "Stay with the ambulance",
-    text: "Follow Ambulance tracks Afterlight; Follow Ghost tracks the ordinary response. Zoom and rotate for a closer look.",
+    text: "Follow Ambulance tracks the visible ambulance; Follow Ghost tracks the ordinary response. Zoom and rotate for a closer look.",
   },
   {
     selector: '.panel-nav [data-tour="results"]',

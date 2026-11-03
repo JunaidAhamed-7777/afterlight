@@ -15,6 +15,9 @@ interface Props {
   cutaway: boolean;
   occluderCount: number;
   disabled: boolean;
+  canFollow: boolean;
+  following: "ambulance" | "ghost" | null;
+  onFollow: (target: "ambulance" | "ghost") => void;
   onAction: (action: CameraAction) => void;
   onPan: (value: boolean) => void;
   onCutaway: (value: boolean) => void;
@@ -53,6 +56,14 @@ export function CameraControls(props: Props) {
           onClick={() => props.onAction("zoom-in")}
         >
           +
+        </button>
+      </div>
+      <div className="follow-controls" role="group" aria-label="Follow a response vehicle">
+        <button className="follow-ambulance" disabled={!props.canFollow} aria-pressed={props.following === "ambulance"} onClick={() => props.onFollow("ambulance")} title="Locate and follow the ambulance in this traffic world">
+          <span aria-hidden="true">◎</span> Follow Ambulance
+        </button>
+        <button className="follow-ghost" disabled={!props.canFollow} aria-pressed={props.following === "ghost"} onClick={() => props.onFollow("ghost")} title="Locate and follow the ordinary-signal ghost">
+          <span aria-hidden="true">◉</span> Follow Ghost
         </button>
       </div>
       <details>

@@ -45,6 +45,10 @@ interface Props {
   hospital: string;
   quality: "balanced" | "high";
   follow: boolean;
+  playing: boolean;
+  followTarget: "ambulance" | "ghost";
+  canFollow: boolean;
+  onFollow: (target: "ambulance" | "ghost") => void;
   reducedMotion: boolean;
   reset: number;
   locate: number;
@@ -489,11 +493,21 @@ export function CityView(props: Props) {
       new URLSearchParams(window.location.search).get("inspect") === "1";
     const inspectionIds = inspectVehicles
       ? (new URLSearchParams(window.location.search).get("inspect_ids") ?? "")
-          .split(",").filter(id => /^[A-Za-z0-9_-]{1,80}$/.test(id)).slice(0, 16)
+          .split(",")
+          .filter((id) => /^[A-Za-z0-9_-]{1,80}$/.test(id))
+          .slice(0, 16)
       : [];
     const inspectionSignals = inspectVehicles
-      ? new Set((new URLSearchParams(window.location.search).get("inspect_signals") ?? "")
-          .split(",").filter(id => /^[A-Za-z0-9_-]{1,80}$/.test(id)).slice(0, 16))
+      ? new Set(
+          (
+            new URLSearchParams(window.location.search).get(
+              "inspect_signals",
+            ) ?? ""
+          )
+            .split(",")
+            .filter((id) => /^[A-Za-z0-9_-]{1,80}$/.test(id))
+            .slice(0, 16),
+        )
       : null;
     const active = new VehicleLayer(false, inspectVehicles, inspectionIds),
       ghosts = new VehicleLayer(true, inspectVehicles),
@@ -507,12 +521,20 @@ export function CityView(props: Props) {
     const loadAsset = async (name: string) => {
       const url = `${base}assets/exports/${name}.glb`;
       const response = await fetch(url, {
-        signal: AbortSignal.any([assetRequests.signal, AbortSignal.timeout(60000)]),
+        signal: AbortSignal.any([
+          assetRequests.signal,
+          AbortSignal.timeout(60000),
+        ]),
       });
-      if (!response.ok) throw new Error(`${name} model request failed (${response.status}).`);
+      if (!response.ok)
+        throw new Error(`${name} model request failed (${response.status}).`);
       const bytes = await boundedBytes(response, 50 * 1024 * 1024);
-      if (disposed) throw new DOMException("City loading was canceled.", "AbortError");
-      return loader.parseAsync(bytes.buffer, new URL(`${base}assets/exports/`, location.href).href);
+      if (disposed)
+        throw new DOMException("City loading was canceled.", "AbortError");
+      return loader.parseAsync(
+        bytes.buffer,
+        new URL(`${base}assets/exports/`, location.href).href,
+      );
     };
     const load = async () => {
       try {
@@ -699,7 +721,7 @@ export function CityView(props: Props) {
               const point = new THREE.Vector3(...target);
               camera.position.add(point.clone().sub(controls.target));
               controls.target.copy(point);
-              camera.zoom = 12;
+              camera.zoom = Math.max(camera.zoom, 12);
               perspectiveMode = true;
               overviewMode = false;
               setExploring(true);
@@ -773,6 +795,8 @@ export function CityView(props: Props) {
           lastModelsRevision = modelsRevision;
           lastTime = p.clock.current;
         }
+        if (active.updateBeacons(tick / 1000, p.playing && !p.reducedMotion))
+          dirty = true;
         const replacedTrack = followTrack.frames !== p.followFrames;
         if (replacedTrack)
           followTrack = new AmbulanceCameraTrack(p.followFrames);
@@ -867,7 +891,9 @@ export function CityView(props: Props) {
               ghostRequested: p.ghost,
               active: active.inspect(),
               ghost: ghosts.inspect(),
-              signalLinks: inspectionSignals ? geometryLayer.inspectSignals(inspectionSignals, renderCamera) : [],
+              signalLinks: inspectionSignals
+                ? geometryLayer.inspectSignals(inspectionSignals, renderCamera)
+                : [],
             });
           }
           if (assetsLoaded && !mapReady) {
@@ -996,6 +1022,9 @@ export function CityView(props: Props) {
           cutaway={cutaway}
           occluderCount={occluderCount}
           disabled={failed || Boolean(status)}
+          canFollow={props.canFollow && !failed && !status}
+          following={props.follow ? props.followTarget : null}
+          onFollow={props.onFollow}
           onAction={(action) => cameraAction.current(action)}
           onPan={setPan}
           onCutaway={setCutaway}

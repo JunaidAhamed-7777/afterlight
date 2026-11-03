@@ -14,6 +14,7 @@ preview/
 assets/src/
 assets/qa/
 assets/previews/ambulance_*.png
+!assets/previews/ambulance_model.png
 assets/previews/asset_overview.png
 docs/
 evaluation/
