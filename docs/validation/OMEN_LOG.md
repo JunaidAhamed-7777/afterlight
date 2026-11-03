@@ -204,3 +204,20 @@ Compiled application source remains `f54dc39`, from preview `b951090`.
   shutdown. No training, pilot or held-out evaluation result is claimed.
 
 Subsequent source changes are not covered by this acceptance.
+
+## 2026-11-03, `f34ab49` first refreshed gate (reported 06:29 UTC)
+
+- Strict preview verification and offline production build passed.
+- Simulation unit checks: **197 passed, 1 failed, 2 Windows-specific skips**.
+  The failing synthetic recovery test expected the legal-boundary message, but
+  its early mutation crossed the release itself and correctly hit the earlier
+  preceding-release guard. The audit was not weakened. The correction uses an
+  early passage release to isolate minimum-green timing, and adds an explicit
+  recovery-before-existing-release regression. The corrected tests are pending
+  a fresh Omen run.
+- The gate stopped: evaluation/API/asset/frontend Node/network/browser/traffic
+  acceptance was not reached in this cohort. No active child/test remained at
+  the reported checkpoint. No new real paired-run or ML result is claimed.
+
+The next source cohort must rerun the affected gate; build success does not turn
+the failed unit checkpoint into a pass.

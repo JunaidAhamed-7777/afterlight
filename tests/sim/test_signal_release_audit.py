@@ -112,10 +112,24 @@ class SignalReleaseAuditTests(unittest.TestCase):
 
     def test_delayed_or_early_recovery_rejected(self):
         for delta in (-.5, .5):
-            world, network, timing = fixture()
-            next(e for e in world['events'] if e['kind'] == 'recovery_requested')['t'] += delta
-            with self.assertRaisesRegex(ValueError, 'legal release boundary'):
+            # Passage releases at 2 s, before the legal minimum-green boundary
+            # at 8 s. Both mutations remain AFTER release, so this isolates the
+            # boundary guard instead of the earlier preceding-release guard.
+            world, network, timing = fixture(passed_at=2)
+            recovery = next(e for e in world['events'] if e['kind'] == 'recovery_requested')
+            release = next(e for e in world['events'] if e['kind'] == 'release')
+            recovery['t'] += delta
+            self.assertGreater(recovery['t'], release['t'])
+            with self.subTest(delta=delta), self.assertRaisesRegex(ValueError, 'legal release boundary'):
                 self.check((world, network, timing))
+
+    def test_recovery_before_existing_release_rejected(self):
+        world, network, timing = fixture()
+        release = next(e for e in world['events'] if e['kind'] == 'release')
+        recovery = next(e for e in world['events'] if e['kind'] == 'recovery_requested')
+        recovery['t'] = release['t'] - .5
+        with self.assertRaisesRegex(ValueError, 'preceding release'):
+            self.check((world, network, timing))
 
     def test_recovery_without_release_rejected(self):
         world, network, timing = fixture()
