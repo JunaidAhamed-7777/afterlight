@@ -39,18 +39,9 @@ def source_commit() -> str:
 
 
 def source_snapshot() -> dict:
-    """Record explicit project code identity without exporting local diff contents."""
-    files = {}
-    for directory in ('sim','policies','models','evaluation','export'):
-        for path in sorted((ROOT/directory).rglob('*.py')):
-            files[str(path.relative_to(ROOT)).replace('\\','/')] = sha256(path)
-    files['assets/map/city_manifest.json']=sha256(ROOT/'assets/map/city_manifest.json')
-    try:
-        dirty = bool(subprocess.check_output(['git','status','--porcelain','--','sim','policies','models','evaluation','export','assets/map/city_manifest.json'],cwd=ROOT,text=True).strip())
-    except (OSError,subprocess.CalledProcessError):
-        dirty = None
-    return {'source_commit':source_commit(),'source_dirty':dirty,'source_code_sha256':digest(files),
-            'source_files':files}
+    """Actual scoped byte/object identity, independent of Git's stat cache."""
+    from sim.source_identity import source_snapshot as snapshot_source
+    return snapshot_source(ROOT)
 
 
 def dependency_versions() -> dict:
