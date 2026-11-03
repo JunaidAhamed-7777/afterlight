@@ -52,3 +52,16 @@ City geometry has a nonzero GLB root translation inherited from static batching.
 This supplemental Blender contact sheet displays the actual exported city, ambulance, civilian fleet, building palette and landmark geometry. Panels are deliberately **not to scale**; the cyan ghost panel is an opaque presentation treatment, not proof of browser transparency or simulation. Regenerate it with `src/render_asset_overview.py` in Blender, using the same `__file__` convention above. It imports existing GLBs and does not modify their files.
 
 `DELIVERY_FILES.json` is the immutable snapshot manifest for the original 35-file ZIP, not an evergreen checksum list for later repository revisions. This overview image/script and this README addition were added afterward; the original manifest and ZIP remain unchanged.
+
+## Interactive city enhancement
+
+The application now uses `exports/city_enhanced.glb`, an additional authored
+4,439,048-byte 3D city. The original nine-GLB pack above is unchanged and its
+validation applies only to that original delivery. Editable enhancement source
+is `afterlight_city_enhanced.blend`; its deterministic Blender generator is
+`src/enhance_city.py`. The companion enhanced manifest binds source hashes,
+187 building IDs, real geometry bounds and revision metadata. V3 adds shallow
+modeled facades, chamfered rooftop service volumes and hospital entry/roof
+structure; it does not change canonical roads or tiny civilian vehicle assets.
+See [camera and geometry contract](../docs/CAMERA_AND_3D_MAP.md). V3 has build/export
+evidence only until pinned Omen acceptance; no new render performance is claimed.

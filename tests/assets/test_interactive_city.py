@@ -101,6 +101,40 @@ class InteractiveCityTests(unittest.TestCase):
         cls.graph=json.loads((ASSETS/'map/city_manifest.json').read_text(encoding='utf-8'))
         cls.nodes=cls.gltf['nodes']
         cls.buildings={node.get('extras',{}).get('building_id'):node for node in cls.nodes if 'building_id' in node.get('extras',{})}
+        cls._triangle_cache={}
+
+    def _building_triangles_blender(self,identifier):
+        """Read actual indexed GLB triangles, including root, into canonical XY/Z."""
+        if identifier not in self._triangle_cache:
+            root=self.nodes[self.gltf['scenes'][self.gltf.get('scene',0)]['nodes'][0]]
+            node=self.buildings[identifier]
+            transform=multiply(matrix(root),matrix(node))
+            triangles=[]
+            for primitive in self.gltf['meshes'][node['mesh']]['primitives']:
+                positions=[point(transform,p) for p in accessor(self.gltf,self.binary,primitive['attributes']['POSITION'])]
+                canonical=[(p[0],-p[2],p[1]) for p in positions]
+                indices=[value[0] for value in accessor(self.gltf,self.binary,primitive['indices'])]
+                triangles.extend(tuple(canonical[indices[i+j]] for j in range(3)) for i in range(0,len(indices),3))
+            self._triangle_cache[identifier]=triangles
+        return self._triangle_cache[identifier]
+
+    def _triangles_in_box(self,identifier,center,size):
+        low=[center[i]-size[i]/2 for i in range(3)]
+        high=[center[i]+size[i]/2 for i in range(3)]
+        # Float32 coordinate export at city scale needs millimetre tolerance;
+        # this is far smaller than the shortest intended 0.128 m bevel.
+        return [triangle for triangle in self._building_triangles_blender(identifier)
+                if all(low[i]-.002<=p[i]<=high[i]+.002 for p in triangle for i in range(3))]
+
+    def _assert_real_box(self,identifier,center,size):
+        triangles=self._triangles_in_box(identifier,center,size)
+        self.assertEqual(len(triangles),12,'Expected physical six-face box, not metadata or a billboard')
+        vertices={tuple(round(v,4) for v in p) for triangle in triangles for p in triangle}
+        self.assertEqual(len(vertices),8)
+        self.assertTrue(all(area_squared(*triangle)>1e-12 for triangle in triangles))
+        for axis in range(3):
+            self.assertAlmostEqual(min(p[axis] for p in vertices),center[axis]-size[axis]/2,delta=.002)
+            self.assertAlmostEqual(max(p[axis] for p in vertices),center[axis]+size[axis]/2,delta=.002)
 
     def test_original_city_graph_and_tiny_vehicle_bytes_unchanged(self):
         for relative,expected in ORIGINAL_HASHES.items():
@@ -244,6 +278,72 @@ class InteractiveCityTests(unittest.TestCase):
         for row in self.report['buildings']:
             self.assertEqual(self.buildings[row['building_id']]['extras']['source_faces_preserved'],row['original_faces'])
             if row['kind']!='hospital':self.assertGreater(row['added_faces'],0)
+
+    def test_v3_revision_and_complete_detail_feature_inventory(self):
+        self.assertEqual(self.report['enhancement_revision'],'v3-chamfered-rooftops-hospital-structure')
+        # Repository LF policy preserves exact authored generator provenance.
+        self.assertEqual(self.report['provenance']['generator_sha256'],
+                         hashlib.sha256((ASSETS/'src/enhance_city.py').read_bytes()).hexdigest())
+        hospital_count=0;rooftop_count=0
+        for row in self.report['buildings']:
+            features=row['detail_features'];kinds=[feature['kind'] for feature in features]
+            self.assertEqual(len(kinds),len(set(kinds)))
+            if row['kind']=='hospital':
+                hospital_count+=1
+                self.assertEqual(set(kinds),{'canopy_support_columns','canopy_front_fascia','upper_roof_edge_frame'})
+                support=next(feature for feature in features if feature['kind']=='canopy_support_columns')
+                self.assertEqual(support['count'],2)
+                self.assertGreater(support['clear_centre_span_m'],15)
+            else:
+                rooftop_count+=1
+                self.assertEqual(set(kinds),{'existing_v2_facade_bays_and_ledges','rooftop_service_volume'})
+                rooftop=next(feature for feature in features if feature['kind']=='rooftop_service_volume')
+                self.assertEqual(rooftop['chamfer_segments'],1)
+                self.assertGreater(rooftop['chamfer_radius_m'],0)
+                self.assertLessEqual(rooftop['chamfer_radius_m'],.20)
+                self.assertIs(rooftop['outer_bounds_unchanged_from_v2'],True)
+        self.assertEqual((rooftop_count,hospital_count),(185,2))
+
+    def test_v3_rooftops_contain_actual_chamfer_faces_and_unchanged_outer_bounds(self):
+        for building in self.graph['buildings']:
+            if building['kind']=='hospital':continue
+            identifier=building['id'];x,y=building['center'];w,d=building['size'];h=building['height_m']
+            roof_h=min(1.8,max(.8,h*.045));radius=min(.20,roof_h*.16)
+            center=(x+w*.12,y-d*.10,h*1.03+roof_h/2);size=(w*.38,d*.32,roof_h)
+            with self.subTest(building=identifier):
+                triangles=self._triangles_in_box(identifier,center,size)
+                self.assertEqual(len(triangles),44,'A plain V2 box has only 12 triangles')
+                vertices={tuple(round(v,4) for v in p) for triangle in triangles for p in triangle}
+                self.assertEqual(len(vertices),24,'One-segment edge chamfer has 24 distinct positions')
+                slanted=0
+                for a,b,c in triangles:
+                    u=[b[i]-a[i] for i in range(3)];v=[c[i]-a[i] for i in range(3)]
+                    normal=(u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0])
+                    slanted+=sum(abs(value)>1e-5 for value in normal)>1
+                self.assertEqual(slanted,32,'Require real bevel/corner surfaces, not subdivided axis-aligned faces')
+                for axis in range(3):
+                    self.assertAlmostEqual(min(p[axis] for p in vertices),center[axis]-size[axis]/2,delta=.002)
+                    self.assertAlmostEqual(max(p[axis] for p in vertices),center[axis]+size[axis]/2,delta=.002)
+                low=center[2]-roof_h/2;high=center[2]+roof_h/2
+                for expected in (low,low+radius,high-radius,high):
+                    self.assertTrue(any(abs(p[2]-expected)<.002 for p in vertices),'Missing physical chamfer level')
+
+    def test_v3_hospital_entry_and_roof_frame_exist_as_real_volumes(self):
+        for building in self.graph['buildings']:
+            if building['kind']!='hospital':continue
+            identifier=building['id'];x,y=building['center'];w,d=building['size'];h=building['height_m']
+            with self.subTest(building=identifier):
+                for side in (-1,1):
+                    self._assert_real_box(identifier,(x+side*7.8,y-d/2-7.3,2.175),(.55,.55,4.35))
+                self._assert_real_box(identifier,(x,y-d/2-7.72,5.82),(17.6,.38,.30))
+                uw,ud=w*.73,d*.74
+                for side in (-1,1):
+                    self._assert_real_box(identifier,(x,y+side*(ud/2-.24),h+4.22),(uw-.48,.38,.40))
+                    self._assert_real_box(identifier,(x+side*(uw/2-.24),y,h+4.22),(.38,ud-.48,.40))
+                # Upper roof frame has no new triangle inside the central roof
+                # identity area above the original flat H lettering.
+                centre=self._triangles_in_box(identifier,(x,y,h+4.25),(12,12,.30))
+                self.assertFalse(centre,'Roof frame must leave the original H area open')
 
 
 if __name__=='__main__':unittest.main()

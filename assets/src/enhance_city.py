@@ -77,6 +77,46 @@ def append_box(vertices, faces, material_ids, center, size, material_index):
         faces.append(tuple(start+i for i in face)); material_ids.append(material_index)
 
 
+def append_chamfered_box(vertices, faces, material_ids, center, size, radius, material_index):
+    """One-segment edge chamfer: 24 vertices, 18 quads and eight triangles.
+
+    Only used on the new rooftop service volumes, never original source faces.
+    Flat bevel faces create real directional-light highlights without modifiers,
+    textures or a subdivision budget. The box's original outer bounds stay fixed.
+    """
+    half = [value/2 for value in size]
+    radius = min(radius, min(half)*.45)
+    index = {}
+    corners = [(x,y,z) for x in (-1,1) for y in (-1,1) for z in (-1,1)]
+    for corner in corners:
+        for axis in range(3):
+            index[(corner,axis)] = len(vertices)
+            vertices.append(tuple(center[i]+corner[i]*(half[i]-(0 if i==axis else radius)) for i in range(3)))
+    def face(ids, normal):
+        points = [Vector(vertices[i]) for i in ids]
+        if (points[1]-points[0]).cross(points[2]-points[0]).dot(Vector(normal)) < 0:
+            ids = list(reversed(ids))
+        faces.append(tuple(ids)); material_ids.append(material_index)
+    for axis in range(3):
+        others = [i for i in range(3) if i!=axis]
+        for sign in (-1,1):
+            ids=[]
+            for a,b in ((-1,-1),(1,-1),(1,1),(-1,1)):
+                corner=[0,0,0]; corner[axis]=sign; corner[others[0]]=a; corner[others[1]]=b
+                ids.append(index[(tuple(corner),axis)])
+            normal=[0,0,0]; normal[axis]=sign; face(ids,normal)
+    for a,b in ((0,1),(0,2),(1,2)):
+        other=next(i for i in range(3) if i not in (a,b))
+        for sa in (-1,1):
+            for sb in (-1,1):
+                low=[0,0,0]; low[a]=sa; low[b]=sb; low[other]=-1
+                high=low.copy(); high[other]=1
+                ids=[index[(tuple(low),a)],index[(tuple(low),b)],index[(tuple(high),b)],index[(tuple(high),a)]]
+                normal=[0,0,0]; normal[a]=sa; normal[b]=sb; face(ids,normal)
+    for corner in corners:
+        face([index[(corner,axis)] for axis in range(3)],corner)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output-dir', required=True, type=Path)
@@ -127,6 +167,7 @@ def main():
         original_faces = len(faces)
         detail_porcelain = next((slot for slot in materials if material_slots[slot].name.startswith('porcelain')), porcelain)
         detail_style = 'original_landmark'
+        detail_features = []
         if identifier != 'GROUND' and by_id[identifier]['kind'] != 'hospital':
             b = by_id[identifier]; x,y = b['center']; w,d = b['size']; h=b['height_m']
             inverse = root_matrix.inverted()
@@ -151,8 +192,35 @@ def main():
             # Main authored mass and cap remain untouched; actual new bounds
             # explicitly include the extra 0.8–1.8 m rooftop silhouette.
             roof_h=min(1.8,max(.8,h*.045))
-            box((x+w*.12,y-d*.10,h*1.03+roof_h/2),(w*.38,d*.32,roof_h),detail_porcelain)
-            detail_style='shallow_3d_bays_ledges_rooftop'
+            chamfer_radius=min(.20,roof_h*.16)
+            append_chamfered_box(vertices,faces,materials,
+                tuple(inverse@Vector((x+w*.12,y-d*.10,h*1.03+roof_h/2))),
+                (w*.38,d*.32,roof_h),chamfer_radius,detail_porcelain)
+            detail_style='shallow_3d_bays_ledges_chamfered_rooftop'
+            detail_features=[{'kind':'existing_v2_facade_bays_and_ledges'},
+                             {'kind':'rooftop_service_volume','chamfer_radius_m':chamfer_radius,
+                              'chamfer_segments':1,'outer_bounds_unchanged_from_v2':True}]
+        elif identifier != 'GROUND':
+            b=by_id[identifier]; x,y=b['center']; w,d=b['size']; h=b['height_m']
+            inverse=root_matrix.inverted()
+            def box(center,size,material):
+                append_box(vertices,faces,materials,tuple(inverse@Vector(center)),size,material)
+            # Original south canopy is 18 x 8 m, centered 4 m from body frontage,
+            # from z=4.35 to 5.65 m. Columns sit under its front corners, leaving
+            # a broad central passage; new fascia stays inside its XY footprint.
+            for side in (-1,1):
+                box((x+side*7.8,y-d/2-7.3,2.175),(.55,.55,4.35),detail_porcelain)
+            box((x,y-d/2-7.72,5.82),(17.6,.38,.30),detail_porcelain)
+            # Low upper-roof edge framing stays at the existing upper mass's
+            # perimeter. Its centre stays open around the original roof H.
+            uw,ud=w*.73,d*.74
+            for side in (-1,1):
+                box((x,y+side*(ud/2-.24),h+4.22),(uw-.48,.38,.40),detail_porcelain)
+                box((x+side*(uw/2-.24),y,h+4.22),(.38,ud-.48,.40),detail_porcelain)
+            detail_style='original_hospital_with_structural_entry_and_roof_frame'
+            detail_features=[{'kind':'canopy_support_columns','count':2,'clear_centre_span_m':15.05},
+                             {'kind':'canopy_front_fascia','inside_existing_xy_footprint':True},
+                             {'kind':'upper_roof_edge_frame','centre_open_for_original_H':True}]
         added_faces += len(faces)-original_faces
         mesh=bpy.data.meshes.new(f'{identifier}_authored_detail_mesh'); mesh.from_pydata(vertices,[],faces); mesh.update()
         # Compact material slots per node to avoid exporting unused references.
@@ -174,7 +242,8 @@ def main():
             node_manifest.append({'building_id':identifier,'node_name':name,'kind':by_id[identifier]['kind'],
                                   'canonical_body_height_m':by_id[identifier]['height_m'],
                                   'world_bounds_blender_m':[low,high],'world_bounds_render_m':[render_low,render_high],
-                                  'original_faces':original_faces,'added_faces':len(faces)-original_faces,'detail_style':detail_style})
+                                  'original_faces':original_faces,'added_faces':len(faces)-original_faces,
+                                  'detail_style':detail_style,'detail_features':detail_features})
     # Hide original source collections without deleting their authored content.
     for collection in bpy.data.collections:
         if collection!=build_collection: collection.hide_render=True
@@ -193,7 +262,8 @@ def main():
             'vehicle_geometry_changed':False,
             'material_policy':'shared_immutable_asset_materials; preserve palette and glass; renderer must isolate building fade from ground, using per-building clones or per-vertex building masks',
             'validation_status':'build_only_omen_visual_and_runtime_validation_pending',
-            'notes':'Original source faces retained exactly once. New building details only; rooftop volume expands visual Z bounds. No render or simulation executed.'}
+            'enhancement_revision':'v3-chamfered-rooftops-hospital-structure',
+            'notes':'Original source faces retained exactly once. V3 chamfers only new rooftop boxes and adds hospital canopy supports/fascia plus upper-roof perimeter framing. Canonical body heights unchanged; actual visual bounds recorded. No render or simulation executed.'}
     destinations[2].write_text(json.dumps(report,indent=2)+'\n')
     print('BUILD_OUTPUT='+json.dumps({k:v for k,v in report.items() if k!='buildings'}))
 

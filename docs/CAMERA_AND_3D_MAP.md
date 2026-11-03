@@ -6,7 +6,7 @@ The city, roads, buildings, cars, trucks, bikes and ambulance are actual glTF me
 geometry. No camera-facing photographs or parallax layers stand in for those
 objects. The enhanced map adds modeled window bays, architectural ledges and
 small rooftop volumes to the original building masses. Hospitals retain their
-original modeled details. Road slabs, sidewalks, parks and canonical road
+original modeled details, with structural canopy supports and roof-edge framing. Road slabs, sidewalks, parks and canonical road
 coordinates are preserved.
 
 `assets/exports/city_enhanced.glb` is the interactive map. Its companion manifest
@@ -15,7 +15,7 @@ records its exact bytes, hashes, original source, per-building visual bounds and
 `assets/src/enhance_city.py` reproduces the enhancement from the original Blender
 city without regenerating streets. Original map and vehicle assets remain in the
 repository. The 25 MB map allowance is a ceiling, not a target: this export is
-approximately 4.11 MB. Cars, trucks and bikes remain the original tiny low-poly
+approximately 4.44 MB. Cars, trucks and bikes remain the original tiny low-poly
 models, rendered through the existing instanced vehicle layer.
 
 ## Camera contract
@@ -105,3 +105,17 @@ uncertain. Leave the recording explicitly to choose a new journey. Saved job
 parameters remain immutable even if the next-journey dropdowns change. The map
 selection protocol harness uses intercepted, explicitly synthetic API responses;
 it is not a genuine traffic run or public recording.
+
+## Geometry revision v3
+
+V3 gives the 185 small rooftop service volumes a one-segment edge chamfer,
+producing actual directional-light facets without textures or subdivision.
+Both hospitals gain two canopy support columns, a shallow front fascia and
+upper-roof perimeter framing; the original roof H stays unobstructed. Original
+source faces, canonical roads, vehicle meshes and the 187 building IDs remain
+unchanged. New detail uses the existing 15 shared materials.
+
+The exported GLB is 4,439,048 bytes with 84,540 authored triangles. These are
+export inventory figures, not browser performance measurements. V2's actual
+Omen renderer counters must not be attributed to V3. Close-range appearance,
+cutaway correctness and loaded-traffic performance require new Omen acceptance.

@@ -3,14 +3,14 @@
   "provenance": {
     "source_blend_sha256": "4d7248908e4efd068b52046a1f3375e01bc843e974ddb67c9169c51b8021cced",
     "canonical_map_sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
-    "generator_sha256": "e94990e35344ebb8fc8feb7d287551c75596dead1a2e47d4f687f8183955abd6",
+    "generator_sha256": "be7688ed2954f975e881eeb9970e4bbcd0724cb4e567bcdbb663d03d6ff0fde5",
     "blender_version": "4.3.2"
   },
   "asset": "city_enhanced.glb",
-  "asset_bytes": 4106136,
-  "asset_sha256": "9ad513c55f7934e95933a5c617351941f2ca6e0a21dc0f010ba1982f1d072b0c",
+  "asset_bytes": 4439048,
+  "asset_sha256": "b0d4c326f3a347b0e54f9f5840711a8061b23b648cc20abd91348cb244253900",
   "source_original_faces": 7360,
-  "added_faces": 31950,
+  "added_faces": 35734,
   "root_blender_translation_m": [
     10.0,
     7.5,
@@ -37,7 +37,7 @@
         [
           -297.0,
           -68.5,
-          30.05099868774414
+          30.420001983642578
         ]
       ],
       "world_bounds_render_m": [
@@ -48,13 +48,28 @@
         ],
         [
           -297.0,
-          30.05099868774414,
+          30.420001983642578,
           136.5
         ]
       ],
       "original_faces": 312,
-      "added_faces": 0,
-      "detail_style": "original_landmark"
+      "added_faces": 42,
+      "detail_style": "original_hospital_with_structural_entry_and_roof_frame",
+      "detail_features": [
+        {
+          "kind": "canopy_support_columns",
+          "count": 2,
+          "clear_centre_span_m": 15.05
+        },
+        {
+          "kind": "canopy_front_fascia",
+          "inside_existing_xy_footprint": true
+        },
+        {
+          "kind": "upper_roof_edge_frame",
+          "centre_open_for_original_H": true
+        }
+      ]
     },
     {
       "building_id": "HOSP_EAST_BUILDING",
@@ -70,7 +85,7 @@
         [
           390.5,
           151.5,
-          30.05099868774414
+          30.420001983642578
         ]
       ],
       "world_bounds_render_m": [
@@ -81,13 +96,28 @@
         ],
         [
           390.5,
-          30.05099868774414,
+          30.420001983642578,
           -83.5
         ]
       ],
       "original_faces": 312,
-      "added_faces": 0,
-      "detail_style": "original_landmark"
+      "added_faces": 42,
+      "detail_style": "original_hospital_with_structural_entry_and_roof_frame",
+      "detail_features": [
+        {
+          "kind": "canopy_support_columns",
+          "count": 2,
+          "clear_centre_span_m": 15.05
+        },
+        {
+          "kind": "canopy_front_fascia",
+          "inside_existing_xy_footprint": true
+        },
+        {
+          "kind": "upper_roof_edge_frame",
+          "centre_open_for_original_H": true
+        }
+      ]
     },
     {
       "building_id": "B0002",
@@ -119,8 +149,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0003",
@@ -152,8 +193,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0004",
@@ -185,8 +237,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0005",
@@ -218,8 +281,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0006",
@@ -251,8 +325,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0007",
@@ -284,8 +369,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0008",
@@ -317,8 +413,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0009",
@@ -350,8 +457,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0010",
@@ -383,8 +501,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0011",
@@ -416,8 +545,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0012",
@@ -449,8 +589,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0013",
@@ -482,8 +633,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0014",
@@ -515,8 +677,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0015",
@@ -548,8 +721,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0016",
@@ -581,8 +765,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0017",
@@ -614,8 +809,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0018",
@@ -647,8 +853,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0019",
@@ -680,8 +897,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0020",
@@ -713,8 +941,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0021",
@@ -746,8 +985,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0022",
@@ -779,8 +1029,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0023",
@@ -812,8 +1073,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0024",
@@ -845,8 +1117,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0025",
@@ -878,8 +1161,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0026",
@@ -911,8 +1205,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0027",
@@ -944,8 +1249,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0028",
@@ -977,8 +1293,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0029",
@@ -1010,8 +1337,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0030",
@@ -1043,8 +1381,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0031",
@@ -1076,8 +1425,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0032",
@@ -1109,8 +1469,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0033",
@@ -1142,8 +1513,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0034",
@@ -1175,8 +1557,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0035",
@@ -1208,8 +1601,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0036",
@@ -1241,8 +1645,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0037",
@@ -1274,8 +1689,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0038",
@@ -1307,8 +1733,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.18,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0039",
@@ -1340,8 +1777,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0040",
@@ -1373,8 +1821,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0041",
@@ -1406,8 +1865,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0042",
@@ -1439,8 +1909,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0043",
@@ -1472,8 +1953,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0044",
@@ -1505,8 +1997,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0045",
@@ -1538,8 +2041,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0046",
@@ -1571,8 +2085,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0047",
@@ -1604,8 +2129,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0048",
@@ -1637,8 +2173,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0049",
@@ -1670,8 +2217,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0050",
@@ -1703,8 +2261,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1872,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0051",
@@ -1736,8 +2305,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0052",
@@ -1769,8 +2349,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0053",
@@ -1802,8 +2393,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0054",
@@ -1835,8 +2437,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0055",
@@ -1868,8 +2481,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0056",
@@ -1901,8 +2525,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0057",
@@ -1934,8 +2569,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0058",
@@ -1967,8 +2613,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0059",
@@ -2000,8 +2657,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0060",
@@ -2033,8 +2701,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0061",
@@ -2066,8 +2745,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0062",
@@ -2099,8 +2789,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0063",
@@ -2132,8 +2833,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0064",
@@ -2165,8 +2877,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0065",
@@ -2198,8 +2921,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0066",
@@ -2231,8 +2965,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0067",
@@ -2264,8 +3009,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0068",
@@ -2297,8 +3053,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0069",
@@ -2330,8 +3097,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0070",
@@ -2363,8 +3141,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0071",
@@ -2396,8 +3185,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0072",
@@ -2429,8 +3229,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0073",
@@ -2462,8 +3273,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0074",
@@ -2495,8 +3317,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0075",
@@ -2528,8 +3361,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0076",
@@ -2561,8 +3405,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0077",
@@ -2594,8 +3449,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0078",
@@ -2627,8 +3493,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0079",
@@ -2660,8 +3537,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0080",
@@ -2693,8 +3581,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0081",
@@ -2726,8 +3625,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0082",
@@ -2759,8 +3669,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0083",
@@ -2792,8 +3713,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0084",
@@ -2825,8 +3757,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.18,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0085",
@@ -2858,8 +3801,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0086",
@@ -2891,8 +3845,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0087",
@@ -2924,8 +3889,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0088",
@@ -2957,8 +3933,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0089",
@@ -2990,8 +3977,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0090",
@@ -3023,8 +4021,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0091",
@@ -3056,8 +4065,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0092",
@@ -3089,8 +4109,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0093",
@@ -3122,8 +4153,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0094",
@@ -3155,8 +4197,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0095",
@@ -3188,8 +4241,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0096",
@@ -3221,8 +4285,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0097",
@@ -3254,8 +4329,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0098",
@@ -3287,8 +4373,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0099",
@@ -3320,8 +4417,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0100",
@@ -3353,8 +4461,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0101",
@@ -3386,8 +4505,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0102",
@@ -3419,8 +4549,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0103",
@@ -3452,8 +4593,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0104",
@@ -3485,8 +4637,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0105",
@@ -3518,8 +4681,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0106",
@@ -3551,8 +4725,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0107",
@@ -3584,8 +4769,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0108",
@@ -3617,8 +4813,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1872,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0109",
@@ -3650,8 +4857,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0110",
@@ -3683,8 +4901,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0111",
@@ -3716,8 +4945,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0112",
@@ -3749,8 +4989,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0113",
@@ -3782,8 +5033,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0114",
@@ -3815,8 +5077,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1872,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0115",
@@ -3848,8 +5121,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0116",
@@ -3881,8 +5165,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0117",
@@ -3914,8 +5209,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0118",
@@ -3947,8 +5253,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0119",
@@ -3980,8 +5297,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0120",
@@ -4013,8 +5341,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0121",
@@ -4046,8 +5385,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0122",
@@ -4079,8 +5429,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0123",
@@ -4112,8 +5473,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0124",
@@ -4145,8 +5517,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0125",
@@ -4178,8 +5561,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0126",
@@ -4211,8 +5605,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0127",
@@ -4244,8 +5649,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0128",
@@ -4277,8 +5693,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0129",
@@ -4310,8 +5737,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0130",
@@ -4343,8 +5781,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0131",
@@ -4376,8 +5825,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0132",
@@ -4409,8 +5869,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0133",
@@ -4442,8 +5913,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1656,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0134",
@@ -4475,8 +5957,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0135",
@@ -4508,8 +6001,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0136",
@@ -4541,8 +6045,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0137",
@@ -4574,8 +6089,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0138",
@@ -4607,8 +6133,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.18,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0139",
@@ -4640,8 +6177,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0140",
@@ -4673,8 +6221,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0141",
@@ -4706,8 +6265,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0142",
@@ -4739,8 +6309,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0143",
@@ -4772,8 +6353,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0144",
@@ -4805,8 +6397,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0145",
@@ -4838,8 +6441,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0146",
@@ -4871,8 +6485,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0147",
@@ -4904,8 +6529,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0148",
@@ -4937,8 +6573,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0149",
@@ -4970,8 +6617,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0150",
@@ -5003,8 +6661,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0151",
@@ -5036,8 +6705,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0152",
@@ -5069,8 +6749,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0153",
@@ -5102,8 +6793,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0154",
@@ -5135,8 +6837,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0155",
@@ -5168,8 +6881,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0156",
@@ -5201,8 +6925,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1872,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0157",
@@ -5234,8 +6969,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0158",
@@ -5267,8 +7013,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0159",
@@ -5300,8 +7057,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0160",
@@ -5333,8 +7101,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0161",
@@ -5366,8 +7145,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0162",
@@ -5399,8 +7189,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0163",
@@ -5432,8 +7233,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0164",
@@ -5465,8 +7277,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0165",
@@ -5498,8 +7321,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1584,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0166",
@@ -5531,8 +7365,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0167",
@@ -5564,8 +7409,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0168",
@@ -5597,8 +7453,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0169",
@@ -5630,8 +7497,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1368,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0170",
@@ -5663,8 +7541,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1944,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0171",
@@ -5696,8 +7585,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0172",
@@ -5729,8 +7629,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0173",
@@ -5762,8 +7673,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1728,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0174",
@@ -5795,8 +7717,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0175",
@@ -5828,8 +7761,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0176",
@@ -5861,8 +7805,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 210,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 230,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.2,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0177",
@@ -5894,8 +7849,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0178",
@@ -5927,8 +7893,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0179",
@@ -5960,8 +7937,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.144,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0180",
@@ -5993,8 +7981,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1512,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0181",
@@ -6026,8 +8025,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0182",
@@ -6059,8 +8069,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0183",
@@ -6092,8 +8113,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.1296,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0184",
@@ -6125,8 +8157,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.18,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0185",
@@ -6158,8 +8201,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     },
     {
       "building_id": "B0186",
@@ -6191,8 +8245,19 @@
         ]
       ],
       "original_faces": 12,
-      "added_faces": 150,
-      "detail_style": "shallow_3d_bays_ledges_rooftop"
+      "added_faces": 170,
+      "detail_style": "shallow_3d_bays_ledges_chamfered_rooftop",
+      "detail_features": [
+        {
+          "kind": "existing_v2_facade_bays_and_ledges"
+        },
+        {
+          "kind": "rooftop_service_volume",
+          "chamfer_radius_m": 0.128,
+          "chamfer_segments": 1,
+          "outer_bounds_unchanged_from_v2": true
+        }
+      ]
     }
   ],
   "ground_node": "AL_GROUND",
@@ -6201,5 +8266,6 @@
   "vehicle_geometry_changed": false,
   "material_policy": "shared_immutable_asset_materials; preserve palette and glass; renderer must isolate building fade from ground, using per-building clones or per-vertex building masks",
   "validation_status": "build_only_omen_visual_and_runtime_validation_pending",
-  "notes": "Original source faces retained exactly once. New building details only; rooftop volume expands visual Z bounds. No render or simulation executed."
+  "enhancement_revision": "v3-chamfered-rooftops-hospital-structure",
+  "notes": "Original source faces retained exactly once. V3 chamfers only new rooftop boxes and adds hospital canopy supports/fascia plus upper-roof perimeter framing. Canonical body heights unchanged; actual visual bounds recorded. No render or simulation executed."
 }
