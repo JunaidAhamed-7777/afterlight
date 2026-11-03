@@ -423,7 +423,11 @@ def run_pair(args) -> dict:
     # Scientific episode/action identity is stable across code revisions; the
     # public recording ID also names its source revision so a corrected capture
     # never overwrites older evidence with the same experiment parameters.
-    scenario_id = run_identity(episode_id,args.policy,worlds['afterlight']['lead_s']) + '-' + source['source_code_sha256'][:12]
+    # Sampling changes the capture bytes, not the physical episode/action.
+    # Include it in the public recording identity so dense captures can coexist
+    # with older sparse recordings without overwriting any evidence.
+    cadence = format(args.sample, '.9g').replace('.', 'p')
+    scenario_id = run_identity(episode_id,args.policy,worlds['afterlight']['lead_s']) + '-' + source['source_code_sha256'][:12] + '-dt' + cadence
     provenance = {**source, 'network_sha256': network_manifest['network_sha256'],
                   'canonical_map_sha256': network_manifest['canonical_map_sha256'],
                   'network_file_sha256': network_manifest['network_file_sha256'],

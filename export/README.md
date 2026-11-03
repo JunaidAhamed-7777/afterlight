@@ -5,6 +5,22 @@ web/public/replays`. Registration audits raw evidence and preserves exact replay
 bytes. It is not deployment, proof of improvement, or permission to hide invalid
 outcomes.
 
+For dense recordings, use lossless transport compression:
+
+```powershell
+python -m export.catalog --run local-runtime/<audited-run> --destination web/public/replays --gzip --title "Westhaven response"
+```
+
+The published `.json.gz` must be below 20 MiB physically and decode to below
+128 MiB. Catalog `sha256` and `bytes` always identify the **original recorded
+JSON bytes**; `transfer_sha256` and `transfer_bytes` identify the gzip file.
+Compression is roundtrip-checked before any destination files are installed.
+The viewer decompresses before raw-byte checksum/schema validation. Repacking
+keeps the same scenario identity and evidence companion; raw simulation journals
+are retained locally. A human title changes presentation only. The owner's
+50 MB total shipped-asset ceiling is measured against actual deployed file bytes,
+not decoded JSON memory size.
+
 ## Frozen-selector illustrative replay
 
 `selected_replay` closes the gap between a scientific candidate-selection result
@@ -34,7 +50,9 @@ why the frozen selector chose this recorded candidate. Invalid or censored
 selected outcomes are preserved, never swapped for a nicer-looking run.
 
 This helper writes only a fresh ignored local export and runs the normal paired
-artifact audit. Public catalog registration and its **20 MiB per-file cap** remain
-separate. The map's 25 MB allowance does not increase recording limits. No model,
+artifact audit. Public catalog registration has separate **20 MiB physical /
+128 MiB decoded** per-recording caps when using gzip. A scalar study may sample
+vehicle poses too coarsely for a polished public replay; retain that scientific
+evidence without publishing it as a visual demo. No model,
 trace, selected replay or benefit is supplied as a fake fallback. Source is
 implemented; actual Omen end-to-end acceptance remains required.

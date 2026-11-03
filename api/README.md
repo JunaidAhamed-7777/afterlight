@@ -26,9 +26,12 @@ The static public viewer does not start simulations.
 
 One job runs at a time. Repeated submissions are rejected, not silently queued.
 Outputs go to server-generated directories under `local-runtime/jobs`; clients
-cannot choose paths or shell commands. Each job uses the same bounded fixture
-protocol (dispatch60, demand end180, horizon240 plus drain360 seconds), pilot
-split only. This is local *generation followed by recorded playback*, not live
+cannot choose paths or shell commands. Each job uses a bounded pilot/exploration protocol: dispatch60, demand end180,
+0.5-second integration, and a common drain endpoint. The expanded city uses
+horizon360 plus drain540 seconds (900 seconds total) with 2-second replay
+samples; the three-junction fixture retains horizon240 plus drain360 (600 total)
+with 1-second samples. The longer city drain covers the expanded routes without
+artificially truncating them at the old endpoint. All jobs are pilot split only. This is local *generation followed by recorded playback*, not live
 streaming or an evaluated learned controller. All completed/invalid/censored
 outcomes are retained. Errors are not replaced by sample data.
 
@@ -49,10 +52,10 @@ verified recordings remain readable. Do not pull while a simulation is running.
 ## Artifact and source integrity
 
 HTTP replay reads, generation completion checks, and restarted-job recovery use
-one shared **64 MiB** byte cap. The cap applies to the actual read, not just a
+one shared **128 MiB** byte cap. The cap applies to the actual read, not just a
 prior file-size check. Oversized or changed artifacts remain on disk but cannot
 be advertised/served as verified completions. Both replay endpoints return the exact original bytes that passed their
-recorded hash, schema and request/catalog checks. Pretty-printing is preserved,
+recorded hash, schema and request/catalog checks. Original compact or formatted serialization is preserved,
 so catalog SHA256 and byte counts remain valid in the viewer. They do not
 reserialize hash-bound replays or reopen a separately validated path. JSON
 nonfinite tokens, exponent overflow (such as `1e309`) and excessive parser depth
@@ -62,7 +65,7 @@ containers including the root**. A quote/escape-aware linear scan enforces this
 bound before structure decoding, independently of interpreter recursion limits.
 The same depth bound covers requests, catalogs, replay bytes, recovered job
 records and generated HTTP metadata. Byte limits remain context-specific: replay
-and catalog reads default to 64 MiB, persisted job metadata to 1 MiB, and POST
+and catalog reads default to 128 MiB, persisted job metadata to 1 MiB, and POST
 bodies to 16 KiB. An explicit context cap is honored by both the reader and
 parser rather than being replaced by the replay cap. Exact-byte replay responses remain unchanged.
 

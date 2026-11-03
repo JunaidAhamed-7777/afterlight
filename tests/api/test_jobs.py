@@ -19,6 +19,21 @@ def synthetic_replay():
 
 
 class JobTests(unittest.TestCase):
+    def test_city_job_uses_expanded_network_drain_without_changing_fixture(self):
+        for network, expected in [('city', (360.0, 540.0, 2.0)), ('fixture', (240.0, 360.0, 1.0))]:
+            calls = []
+            def runner(args):
+                calls.append(args)
+                raise RuntimeError('unit-only protocol capture; no SUMO execution')
+            with tempfile.TemporaryDirectory() as root:
+                manager = JobManager(Path(root), runner)
+                manager.submit({'network': network})
+                manager.close()
+                self.assertEqual(len(calls), 1)
+                args = calls[0]
+                self.assertEqual((args.horizon, args.drain, args.sample), expected)
+                self.assertEqual((args.dispatch, args.demand_end, args.step), (60.0, 180.0, .5))
+
     def test_recovery_rejects_deterministically_overdeep_persisted_job(self):
         from api.artifacts import MAX_JSON_DEPTH
         with tempfile.TemporaryDirectory() as root:

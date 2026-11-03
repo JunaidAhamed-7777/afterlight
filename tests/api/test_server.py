@@ -1,6 +1,7 @@
 """Local artifact boundary tests; execute on the Omen acceptance machine."""
 import json
 import hashlib
+import gzip
 import tempfile
 import unittest
 import threading
@@ -8,7 +9,8 @@ from http.server import ThreadingHTTPServer
 from urllib.request import urlopen, Request
 from urllib.error import HTTPError
 from pathlib import Path
-from api.server import ArtifactError, catalog, replay, make_handler, local_origin
+from unittest.mock import patch
+from api.server import ArtifactError, catalog, replay, replay_bytes, make_handler, local_origin, validated_replay_bytes
 
 
 def synthetic_replay():
@@ -28,6 +30,27 @@ class ArtifactTests(unittest.TestCase):
 
     def write(self, name, data):
         (self.root / name).write_text(json.dumps(data), encoding="utf-8")
+
+    def test_gzip_catalog_returns_exact_original_bytes_with_both_hashes_bound(self):
+        payload=(json.dumps(synthetic_replay(),indent=2)+'\n').encode()
+        encoded=gzip.compress(payload,mtime=0)
+        (self.root/'packed.json.gz').write_bytes(encoded)
+        row={'id':'packed','url':'packed.json.gz','bytes':len(payload),
+             'sha256':hashlib.sha256(payload).hexdigest(),'transfer_bytes':len(encoded),
+             'transfer_sha256':hashlib.sha256(encoded).hexdigest()}
+        self.write('catalog.json',{'schema':'afterlight.catalog.v1','runs':[row]})
+        self.assertEqual(replay_bytes(self.root,'packed'),payload)
+        row['transfer_sha256']='0'*64
+        self.write('catalog.json',{'schema':'afterlight.catalog.v1','runs':[row]})
+        with self.assertRaisesRegex(ArtifactError,'transfer.*hash'):replay_bytes(self.root,'packed')
+
+    def test_gzip_decode_is_bounded_and_corruption_is_a_controlled_error(self):
+        path=self.root/'packed.json.gz'
+        path.write_bytes(gzip.compress(b'x'*1000,mtime=0))
+        with patch('api.server.MAX_REPLAY_BYTES',64),self.assertRaisesRegex(ArtifactError,'Decoded.*size limit'):
+            validated_replay_bytes(path)
+        path.write_bytes(b'not gzip')
+        with self.assertRaisesRegex(ArtifactError,'gzip stream is corrupt'):validated_replay_bytes(path)
 
     def test_cors_only_accepts_loopback_viewer_origins(self):
         self.assertEqual(local_origin("http://localhost:5173"), "http://localhost:5173")

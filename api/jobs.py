@@ -144,8 +144,11 @@ class JobManager:
             record = deepcopy(self.jobs[job_id])
         output = self.output_root / job_id
         safe_output = False
+        city = params['network'] == 'city'
         args = SimpleNamespace(**params, output=output, dispatch=60.0, demand_end=180.0,
-                               horizon=240.0, drain=360.0, step=.5, sample=1.0, split="pilot")
+                               horizon=360.0 if city else 240.0,
+                               drain=540.0 if city else 360.0,
+                               step=.5, sample=2.0 if city else 1.0, split="pilot")
         try:
             safe_output = output.resolve().parent == self.output_root and not output.exists()
             if not safe_output:

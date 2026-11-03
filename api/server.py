@@ -7,6 +7,9 @@ opts into the real local SUMO runner and requires its dependencies.
 from __future__ import annotations
 
 import argparse
+import gzip
+import hashlib
+import io
 import json
 import re
 import socket
@@ -41,14 +44,17 @@ def replay_bytes(replay_dir: Path, run_id: str) -> bytes:
     if len(matches)!=1:
         raise ArtifactError("Run is absent or duplicated in the published catalog")
     row = matches[0]
-    path = replay_dir / f"{run_id}.json"
+    filename=row.get('url',f'{run_id}.json')
+    if filename not in (f'{run_id}.json',f'{run_id}.json.gz'):
+        raise ArtifactError('Catalog recording must name its own local JSON/gzip file')
+    path = replay_dir / filename
     if path.resolve().parent != replay_dir.resolve():
         raise ArtifactError("Run path is outside the replay directory")
-    payload = validated_replay_bytes(path)
+    payload = validated_replay_bytes(path,transfer_sha256=row.get('transfer_sha256'),
+                                     transfer_bytes=row.get('transfer_bytes'))
     if 'bytes' in row and (isinstance(row['bytes'],bool) or not isinstance(row['bytes'],int) or row['bytes']!=len(payload)):
         raise ArtifactError('Replay bytes differ from published catalog size')
     if 'sha256' in row:
-        import hashlib
         if not isinstance(row['sha256'],str) or not re.fullmatch(r'[a-fA-F0-9]{64}',row['sha256']) or hashlib.sha256(payload).hexdigest()!=row['sha256'].lower():
             raise ArtifactError('Replay bytes differ from published catalog hash')
     return payload
@@ -58,8 +64,24 @@ def replay(replay_dir: Path, run_id: str) -> dict:
     return parse_json_object(replay_bytes(replay_dir,run_id))
 
 
-def validated_replay_bytes(path: Path) -> bytes:
-    payload = read_bytes(path)
+def validated_replay_bytes(path: Path, *, transfer_sha256=None, transfer_bytes=None) -> bytes:
+    compressed=path.name.endswith('.json.gz')
+    payload = read_bytes(path,limit=20*1024*1024 if compressed else None)
+    if transfer_bytes is not None and (isinstance(transfer_bytes,bool) or
+            not isinstance(transfer_bytes,int) or transfer_bytes!=len(payload)):
+        raise ArtifactError('Replay transfer bytes differ from published catalog size')
+    if transfer_sha256 is not None and (not isinstance(transfer_sha256,str) or
+            not re.fullmatch(r'[a-fA-F0-9]{64}',transfer_sha256) or
+            hashlib.sha256(payload).hexdigest()!=transfer_sha256.lower()):
+        raise ArtifactError('Replay transfer bytes differ from published catalog hash')
+    if compressed:
+        try:
+            with gzip.GzipFile(fileobj=io.BytesIO(payload),mode='rb') as stream:
+                payload=stream.read(MAX_REPLAY_BYTES+1)
+        except (OSError,EOFError) as error:
+            raise ArtifactError('Recording gzip stream is corrupt') from error
+        if len(payload)>MAX_REPLAY_BYTES:
+            raise ArtifactError('Decoded recording exceeds the local API size limit')
     data = parse_json_object(payload)
     try:
         from export.replay import validate_replay

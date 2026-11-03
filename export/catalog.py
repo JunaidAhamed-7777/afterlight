@@ -5,6 +5,8 @@ publish a website. Review resulting artifacts before a separate Git publication.
 """
 from __future__ import annotations
 import argparse
+import gzip
+import io
 import json
 import hashlib
 import os
@@ -16,6 +18,20 @@ from sim.audit import audit, audit_outcomes
 from sim.network import ROOT, sha256
 
 MAX_PUBLIC_FILE_BYTES=20*1024*1024  # Strictly below the documented static-release ceiling.
+MAX_DECODED_REPLAY_BYTES=128*1024*1024  # Dense 0.5 s captures; viewer/API share this boundary.
+
+
+def _gzip_bytes(payload: bytes) -> bytes:
+    """Lossless transport packaging; never rewrite the recorded JSON values."""
+    output=io.BytesIO()
+    with gzip.GzipFile(filename='',mode='wb',fileobj=output,compresslevel=9,mtime=0) as stream:
+        stream.write(payload)
+    encoded=output.getvalue()
+    if len(encoded)>=MAX_PUBLIC_FILE_BYTES:
+        raise ValueError('Compressed recording is at least 20 MiB; use bounded indexed chunks before publication')
+    if gzip.decompress(encoded)!=payload:
+        raise ValueError('Compressed recording failed its exact-byte roundtrip')
+    return encoded
 
 def _public_json_bytes(value: dict) -> bytes:
     payload=(json.dumps(value,indent=2,allow_nan=False)+'\n').encode('utf-8')
@@ -56,13 +72,14 @@ def _install_bytes_exclusive(target: Path, payload: bytes, expected_sha256: str)
         if temporary.exists(): temporary.unlink()
 
 
-def register(run: Path, destination: Path) -> dict:
+def register(run: Path, destination: Path, *, compress: bool = False, title: str | None = None) -> dict:
     source = run/'replay.json'
-    if source.stat().st_size>=MAX_PUBLIC_FILE_BYTES:
-        raise ValueError('Recording is at least 20 MiB; compact JSON or implement indexed chunks before static registration. Raw scientific evidence is unchanged.')
+    limit=MAX_DECODED_REPLAY_BYTES if compress else MAX_PUBLIC_FILE_BYTES
+    if source.stat().st_size>=limit:
+        raise ValueError('Recording exceeds its decoded/physical limit; compact JSON or implement indexed chunks before static registration. Raw scientific evidence is unchanged.')
     with source.open('rb') as handle:
-        source_bytes=handle.read(MAX_PUBLIC_FILE_BYTES)
-    if len(source_bytes)>=MAX_PUBLIC_FILE_BYTES:
+        source_bytes=handle.read(limit)
+    if len(source_bytes)>=limit:
         raise ValueError('Recording grew beyond the public-file budget during registration')
     source_digest = hashlib.sha256(source_bytes).hexdigest()
     replay = json.loads(source_bytes)
@@ -97,6 +114,10 @@ def register(run: Path, destination: Path) -> dict:
                 'outcomes':outcomes,
                 'raw_outputs_note':'Full tripinfo and lifecycle files retained in original run directory; this is the compact public evidence companion.'}
     _public_json_bytes(evidence)  # Reject oversized companion before installing any public file.
+    public_bytes=_gzip_bytes(source_bytes) if compress else source_bytes
+    transfer_digest=hashlib.sha256(public_bytes).hexdigest()
+    if title is not None and (not isinstance(title,str) or not title.strip() or len(title)>120):
+        raise ValueError('Recording title must be a nonempty label of at most 120 characters')
     destination.mkdir(parents=True,exist_ok=True)
     lock = destination/'.catalog.lock'
     try:
@@ -113,33 +134,39 @@ def register(run: Path, destination: Path) -> dict:
         if len(ids)!=len(set(ids)) or any(not isinstance(item,str) for item in ids):
             raise ValueError('Existing recording catalog has invalid/duplicate IDs')
         digest = source_digest
-        target = destination/f'{identity}.json'
-        if target.exists() and sha256(target)!=digest:
+        target = destination/(f'{identity}.json.gz' if compress else f'{identity}.json')
+        if target.exists() and sha256(target)!=transfer_digest:
             raise ValueError('This recording ID already has different bytes; prior evidence will not be overwritten')
         existing = next((entry for entry in catalog['runs'] if entry['id']==identity),None)
         if existing is not None:
-            if existing.get('sha256') != digest or not target.is_file():
+            if existing.get('sha256') != digest:
                 raise ValueError('Existing catalog entry does not match exact recording bytes')
-            return {'status':'already_registered','entry':existing,'changed':False}
         afterlight = replay['worlds']['afterlight']
         selected = afterlight.get('lead_s')
         policy_label = afterlight['policy'] + (f' · {selected} s lead' if selected is not None else '')
-        entry = {'id':identity,'title':f'{scenario["pickup_id"]} → {scenario["hospital_id"]} · Seed {scenario["seed"]}',
+        entry = {'id':identity,'title':title or (existing or {}).get('title') or f'{scenario["pickup_id"]} → {scenario["hospital_id"]} · Seed {scenario["seed"]}',
                  'url':target.name,'seed':scenario['seed'],'pickup_id':scenario['pickup_id'],
                  'hospital_id':scenario['hospital_id'],'policy':afterlight['policy'],
                  'lead_s':selected,'policy_label':policy_label,'duration_s':replay['duration_s'],
                  'sha256':digest,'bytes':len(source_bytes),'source_commit':provenance['source_commit'],
                  'world_status':{name:world['status'] for name,world in replay['worlds'].items()},
                  'evidence_url':f'{identity}.evidence.json'}
+        if compress:
+            entry.update(encoding='gzip',transfer_bytes=len(public_bytes),transfer_sha256=transfer_digest)
         evidence_path = destination/f'{identity}.evidence.json'
         if evidence_path.exists():
             existing_evidence=json.loads(evidence_path.read_text(encoding='utf-8'))
             if existing_evidence != evidence:
                 raise ValueError('Existing evidence companion differs; refusing overwrite')
-        catalog['runs'].append(entry)
+        if existing is not None:
+            if existing==entry and target.is_file() and evidence_path.is_file():
+                return {'status':'already_registered','entry':existing,'changed':False}
+            catalog['runs'][catalog['runs'].index(existing)]=entry
+        else:
+            catalog['runs'].append(entry)
         _public_json_bytes(catalog)  # Check every public JSON budget before installing artifacts.
         if not target.exists():
-            _install_bytes_exclusive(target,source_bytes,digest)
+            _install_bytes_exclusive(target,public_bytes,transfer_digest)
         if not evidence_path.exists():
             _atomic_json(evidence_path,evidence)
         _atomic_json(catalog_path,catalog)
@@ -153,8 +180,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run',type=Path,required=True)
     parser.add_argument('--destination',type=Path,default=ROOT/'web/public/replays')
+    parser.add_argument('--gzip',action='store_true',help='losslessly gzip replay transport; retain original decoded SHA256 and byte count')
+    parser.add_argument('--title',help='short human-readable recording label')
     args=parser.parse_args()
-    print(json.dumps(register(args.run.resolve(),args.destination.resolve()),indent=2))
+    print(json.dumps(register(args.run.resolve(),args.destination.resolve(),compress=args.gzip,title=args.title),indent=2))
 
 
 if __name__=='__main__': main()

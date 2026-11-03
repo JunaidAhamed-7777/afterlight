@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import stat
 
-MAX_REPLAY_BYTES = 64 * 1024 * 1024
+MAX_REPLAY_BYTES = 128 * 1024 * 1024
 MAX_JSON_DEPTH = 64  # Container nesting, including the root object; independent of Python recursion limits.
 
 
