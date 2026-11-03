@@ -14,7 +14,7 @@ from tempfile import TemporaryDirectory
 import unittest
 from unittest.mock import patch
 
-from released_study_pack import ANALYSIS_ARTIFACTS, PURE_HELPER_FILES, bound_scientific_modules, canonical_sha, sha, strict_json, verify_analysis_amendment
+from released_study_pack import ANALYSIS_ARTIFACTS, PURE_HELPER_FILES, bound_scientific_modules, canonical_sha, sha, strict_json, verify_analysis_amendment, verify_test_claim
 
 
 def scientific(name):
@@ -178,6 +178,88 @@ class AnalysisAmendmentGuards(unittest.TestCase):
     def test_unamended_legacy_context_requires_no_analysis_artifacts_or_binding(self):
         for key in ('selection', 'report'): self.documents[key][key].pop('analysis_amendment')
         self.assertEqual(verify_analysis_amendment(self.documents, {}, {}), {'present': False})
+
+
+class ExclusiveClaimGuards(unittest.TestCase):
+    """Synthetic claim/inventory metadata only; no positive summary or metrics."""
+    def setUp(self):
+        source = {'source_commit': 'a' * 40, 'source_code_sha256': 'b' * 64}
+        dependencies = {'synthetic': 'stdlib'}
+        self.documents = {
+            'study': {'sha256': 'c' * 64, 'study': {'source': source, 'dependencies': dependencies,
+                'pilot_evidence': {'sumo_version': 'synthetic'},
+                'episodes': [{'episode_id': 'synthetic-episode', 'case_id': 'synthetic-case', 'split': 'test'}]}},
+            'protocol': {'sha256': 'd' * 64, 'protocol': {'candidate_leads_s': [0, 5, 10, 20, 30]}},
+            'release': {'sha256': 'e' * 64, 'release': {'mode': 'learned', 'expected_worlds': 7, 'created_utc': '2026-01-01T00:00:00+00:00'}},
+            'report': {'report': {'sumo_version': 'synthetic', 'created_utc': '2026-01-01T00:04:00+00:00', 'collection_files_sha256': {}}},
+        }
+        self.attempt = {'schema': 'afterlight.test-attempt.v1', 'release_sha256': 'e' * 64, 'study_sha256': 'c' * 64,
+                        'protocol_sha256': 'd' * 64, 'expected_worlds': 7, 'state': 'claimed_before_first_test_world',
+                        'output_directory': 'synthetic-test', 'claimed_utc': '2026-01-01T00:01:00+00:00'}
+        inventory = []
+        for policy, lead in [('ordinary', None), ('immediate', None), *(('fixed', lead) for lead in (0, 5, 10, 20, 30))]:
+            inventory.append({'episode_id': 'synthetic-episode', 'case_id': 'synthetic-case', 'policy': policy, 'lead_s': lead,
+                              'state': 'audited', 'runner_invoked': True,
+                              'directory': 'worlds/synthetic-case/' + policy + (f'-{lead}' if policy == 'fixed' else '')})
+        self.collection = {'schema': 'afterlight.collection.v1', 'split': 'test', 'status': 'completed',
+                            'study_sha256': 'c' * 64, 'protocol_sha256': 'd' * 64, 'release_sha256': 'e' * 64,
+                            'release_mode': 'learned', 'source': source, 'dependencies': dependencies, 'sumo_version': 'synthetic',
+                            'recorded_worlds': 7, 'runner_invocations': 7, 'unattempted_worlds': 0, 'runtime_total_s': 1,
+                            'started_utc': '2026-01-01T00:02:00+00:00', 'finished_utc': '2026-01-01T00:03:00+00:00',
+                            'world_inventory': inventory}
+        self.raw = {}; self.artifacts = {}; self.seal()
+
+    def seal(self):
+        envelope = {'sha256': canonical_sha(self.attempt), 'attempt': self.attempt}
+        self.documents['test_attempt'] = envelope
+        self.collection['test_attempt_sha256'] = envelope['sha256']
+        self.documents['test_collection'] = self.collection
+        for kind, filename in (('test_attempt', 'attempt.json'), ('test_collection', 'collection.json')):
+            self.raw[kind] = json.dumps(self.documents[kind], indent=2).encode()
+            self.artifacts[kind] = {'kind': kind, 'url': filename, 'bytes': len(self.raw[kind]), 'sha256': sha(self.raw[kind])}
+        report = self.documents['report']['report']
+        report['test_attempt_sha256'] = envelope['sha256']; report['attempt_file_sha256'] = sha(self.raw['test_attempt'])
+        report['collection_files_sha256']['collection.json'] = sha(self.raw['test_collection'])
+
+    def verify(self): return verify_test_claim(self.documents, self.raw, self.artifacts)
+
+    def test_claim_and_complete_seven_world_inventory_bind_without_metrics(self):
+        result = self.verify()
+        self.assertTrue(result['exclusive_claim_metadata_reconciled'])
+        self.assertEqual(result['declared_test_worlds'], 7)
+
+    def test_original_attempt_bytes_cannot_change_after_report_binding(self):
+        self.raw['test_attempt'] += b'\n'
+        with self.assertRaisesRegex(AssertionError, 'file hash'): self.verify()
+
+    def test_claim_must_precede_test_start_and_retain_claimed_state(self):
+        self.attempt['claimed_utc'] = '2026-01-01T00:02:01+00:00'; self.seal()
+        with self.assertRaisesRegex(AssertionError, 'chronology'): self.verify()
+        self.attempt['claimed_utc'] = '2026-01-01T00:01:00+00:00'; self.attempt['state'] = 'completed'; self.seal()
+        with self.assertRaises(AssertionError): self.verify()
+
+    def test_collection_cannot_duplicate_or_omit_a_declared_world(self):
+        self.collection['world_inventory'][-1] = dict(self.collection['world_inventory'][0]); self.seal()
+        with self.assertRaisesRegex(AssertionError, 'duplicates'): self.verify()
+
+    def test_collection_cannot_report_unattempted_or_uninvoked_worlds(self):
+        self.collection['unattempted_worlds'] = 1; self.seal()
+        with self.assertRaisesRegex(AssertionError, 'count mismatch'): self.verify()
+        self.collection['unattempted_worlds'] = 0; self.collection['world_inventory'][0]['runner_invoked'] = False; self.seal()
+        with self.assertRaises(AssertionError): self.verify()
+
+    def test_collection_world_directory_must_match_frozen_case_policy_and_lead(self):
+        self.collection['world_inventory'][0]['directory'] = '../different-world'; self.seal()
+        with self.assertRaises(AssertionError): self.verify()
+
+    def test_collection_release_or_attempt_cannot_be_replaced(self):
+        self.collection['release_sha256'] = 'f' * 64; self.seal()
+        with self.assertRaisesRegex(AssertionError, 'identity mismatch'): self.verify()
+
+    def test_fixed_lead_boolean_cannot_alias_integer_zero(self):
+        world = self.collection['world_inventory'][2]; world['lead_s'] = False
+        world['directory'] = 'worlds/synthetic-case/fixed-False'; self.seal()
+        with self.assertRaises(AssertionError): self.verify()
 
 
 class BoundModuleTests(unittest.TestCase):

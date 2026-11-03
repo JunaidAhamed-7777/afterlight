@@ -215,6 +215,71 @@ def interval_from_records(records):
     return [means[int(.025 * 1999)], means[int(.975 * 1999)]], len(names)
 
 
+def provenance_instant(value):
+    assert isinstance(value, str)
+    parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    assert parsed.utcoffset() is not None, 'Provenance timestamps require explicit time zones'
+    return parsed
+
+
+def verify_test_claim(documents, raw, artifacts):
+    """Reconcile the original exclusive claim and completed collection metadata."""
+    assert artifacts['test_attempt']['url'] == 'attempt.json' and artifacts['test_collection']['url'] == 'collection.json'
+    report = documents['report']['report']; release = documents['release']['release']
+    study = documents['study']['study']; protocol = documents['protocol']['protocol']
+    for kind, expected in (('test_attempt', report['attempt_file_sha256']),
+                           ('test_collection', report['collection_files_sha256']['collection.json'])):
+        assert sha(raw[kind]) == expected == artifacts[kind]['sha256'], ('Original claim/collection file hash mismatch', kind)
+        assert len(raw[kind]) == artifacts[kind]['bytes'] <= COMPANION_LIMIT
+        assert canonical_sha(strict_json(raw[kind])) == canonical_sha(documents[kind])
+    attempt_envelope = documents['test_attempt']
+    attempt = envelope(attempt_envelope, 'attempt', 'afterlight.test-attempt.v1')
+    assert attempt_envelope['sha256'] == report['test_attempt_sha256']
+    expected_ids = {episode['episode_id'] for episode in study['episodes'] if episode['split'] == 'test'}
+    episodes = {episode['episode_id']: episode for episode in study['episodes'] if episode['split'] == 'test'}
+    expected_worlds = len(expected_ids) * (2 + len(protocol['candidate_leads_s']))
+    assert attempt['release_sha256'] == documents['release']['sha256']
+    assert attempt['study_sha256'] == documents['study']['sha256']
+    assert attempt['protocol_sha256'] == documents['protocol']['sha256']
+    assert type(attempt['expected_worlds']) is int and attempt['expected_worlds'] == expected_worlds == release['expected_worlds']
+    assert attempt['state'] == 'claimed_before_first_test_world'
+    assert isinstance(attempt['output_directory'], str) and LOCAL_PATH.fullmatch(attempt['output_directory'])
+    collection = documents['test_collection']
+    assert collection['schema'] == 'afterlight.collection.v1' and collection['split'] == 'test' and collection['status'] == 'completed'
+    for key, expected in (('study_sha256', documents['study']['sha256']), ('protocol_sha256', documents['protocol']['sha256']),
+                          ('release_sha256', documents['release']['sha256']), ('test_attempt_sha256', attempt_envelope['sha256']),
+                          ('release_mode', release['mode'])):
+        assert collection[key] == expected, ('Completed collection identity mismatch', key)
+    assert canonical_sha(collection['source']) == canonical_sha(study['source'])
+    assert canonical_sha(collection['dependencies']) == canonical_sha(study['dependencies'])
+    assert collection['sumo_version'] == report['sumo_version'] == study['pilot_evidence']['sumo_version']
+    for key, expected in (('recorded_worlds', expected_worlds), ('runner_invocations', expected_worlds), ('unattempted_worlds', 0)):
+        assert type(collection[key]) is int and collection[key] == expected, ('Completed collection inventory count mismatch', key)
+    assert type(collection['runtime_total_s']) in (int, float) and math.isfinite(collection['runtime_total_s']) and collection['runtime_total_s'] > 0
+    inventory = collection['world_inventory']
+    assert isinstance(inventory, list) and len(inventory) == expected_worlds
+    actual = set()
+    expected = {(eid, policy, lead) for eid in expected_ids for policy, lead in
+                [('ordinary', None), ('immediate', None), *(('fixed', lead) for lead in protocol['candidate_leads_s'])]}
+    for world in inventory:
+        assert set(world) == {'episode_id', 'case_id', 'policy', 'lead_s', 'state', 'directory', 'runner_invoked'}
+        key = (world['episode_id'], world['policy'], world['lead_s'])
+        assert key in expected and key not in actual, 'Collection duplicates or adds a test world'
+        assert world['case_id'] == episodes[world['episode_id']]['case_id']
+        assert (type(world['lead_s']) is int if world['policy'] == 'fixed' else world['lead_s'] is None)
+        assert world['state'] == 'audited' and world['runner_invoked'] is True
+        directory = 'worlds/' + world['case_id'] + '/' + world['policy'] + (f"-{world['lead_s']}" if world['policy'] == 'fixed' else '')
+        assert world['directory'] == directory
+        actual.add(key)
+    assert actual == expected, 'Collection omits a declared test world'
+    times = list(map(provenance_instant, (release['created_utc'], attempt['claimed_utc'], collection['started_utc'], collection['finished_utc'], report['created_utc'])))
+    assert times == sorted(times), 'Exclusive test claim/collection/report chronology is inconsistent'
+    return {'original_attempt_raw_and_logical_hashes_verified': True, 'original_collection_raw_hash_verified': True,
+            'exclusive_claim_metadata_reconciled': True, 'declared_test_worlds': expected_worlds,
+            'all_declared_worlds_audited_and_invoked_once': True,
+            'scope': 'Reconciles the released original claim, completed inventory and declared chronology. Public metadata does not independently prove absence of other private attempts, human nonaccess or the physical location of the original collection.'}
+
+
 def verify_analysis_amendment(documents, raw, artifacts):
     """Bind the explicit pre-test audit correction without executing its code."""
     selection = documents['selection']['selection']; report = documents['report']['report']
@@ -257,11 +322,6 @@ def verify_analysis_amendment(documents, raw, artifacts):
             assert value['original_path'] == original
             assert value['original_sha256'] == study['source']['source_files'][original], ('Analysis amendment original source mismatch', original)
 
-    def instant(value):
-        assert isinstance(value, str)
-        parsed = datetime.fromisoformat(value.replace('Z', '+00:00'))
-        assert parsed.utcoffset() is not None, 'Analysis provenance timestamps require explicit time zones'
-        return parsed
 
     failed = amendment['failed_attempt']
     assert isinstance(failed, dict) and set(failed) == {'state', 'model_fit_reached', 'journal', 'log'}
@@ -277,7 +337,7 @@ def verify_analysis_amendment(documents, raw, artifacts):
     assert type(journal.get('automatic_retries')) is int and journal['automatic_retries'] == 0, 'Failure journal records an undeclared retry'
     for marker in ('model_fit_reached', 'fit_completed'):
         if marker in journal: assert journal[marker] is False, 'Failure journal contradicts the declared pre-fit failure'
-    assert (instant(journal['created_utc']) <= instant(journal['invoked_utc']) <= instant(journal['stopped_utc']) <= instant(amendment['created_utc'])), 'Failure journal does not precede the frozen amendment'
+    assert (provenance_instant(journal['created_utc']) <= provenance_instant(journal['invoked_utc']) <= provenance_instant(journal['stopped_utc']) <= provenance_instant(amendment['created_utc'])), 'Failure journal does not precede the frozen amendment'
     files = amendment['analysis_files']
     assert isinstance(files, dict) and set(files) == {'verifier', 'binding_helper', 'entrypoint', 'diff'}
     file_binding(files['verifier'], 'analysis_verifier_source', 'evaluation/study_reporting.py')
@@ -295,7 +355,7 @@ def verify_analysis_amendment(documents, raw, artifacts):
     assert release['selection_sha256'] == documents['selection']['sha256'], 'Original release does not bind amended selection identity'
     assert release['selection_file_sha256'] == sha(raw['selection']), 'Original release does not bind original amended selection bytes'
 
-    created, selected, released, reported = map(instant, (amendment['created_utc'], selection['created_utc'], release['created_utc'], report['created_utc']))
+    created, selected, released, reported = map(provenance_instant, (amendment['created_utc'], selection['created_utc'], release['created_utc'], report['created_utc']))
     assert created <= selected <= released <= reported, 'Analysis correction was not frozen before selection and test release'
     return {'present': True, 'id': amendment['id'], 'descriptor_sha256': descriptor['sha256'],
             'descriptor_file_sha256': expected_binding['file_sha256'], 'frozen_estimator_sha256': estimator_hash,
@@ -377,6 +437,10 @@ def verify_reproduction(summary, documents, raw, artifacts):
     expected_worlds = {(eid, policy, lead) for eid in test_ids for policy, lead in [('ordinary', None), ('immediate', None),
                        *(('fixed', lead) for lead in protocol['protocol']['candidate_leads_s'])]}
     assert len(outcomes) == len(expected_worlds) and {(r['episode_id'], r['policy'], r['lead_s']) for r in outcomes} == expected_worlds
+    inventory = {(row['episode_id'], row['policy'], row['lead_s']): row for row in documents['test_collection']['world_inventory']}
+    for row in outcomes:
+        world = inventory[(row['episode_id'], row['policy'], row['lead_s'])]
+        assert row['case_id'] == world['case_id'] and row['raw_world_directory'] == world['directory'], 'Scalar world differs from original completed collection inventory'
     assert dict(Counter(row['status'] for row in outcomes)) == report['all_world_status_counts']
     lookup = {(row['episode_id'], row['lead_s']): row for row in candidates}
     choices = []
@@ -583,7 +647,7 @@ def load_released_public_pack(base_url: str, expected_manifest_sha256: str):
     assert all(type(entry.get('bytes')) is int and entry['bytes'] > 0 for entry in inventory)
     assert len(manifest_bytes) + len(summary_bytes) + sum(entry['bytes'] for entry in inventory) <= COMPANION_LIMIT, 'Released proof pack exceeds its agreed 4 MiB physical budget'
     artifacts = {}; paths = set(); raw = {}; documents = {}; observed = []
-    required = {'report', 'study', 'protocol', 'selection', 'release', 'fixed_selector', 'analytical_selector', 'paired_records', 'reproduction'} | GRID_KINDS
+    required = {'report', 'study', 'protocol', 'selection', 'release', 'test_attempt', 'test_collection', 'fixed_selector', 'analytical_selector', 'paired_records', 'reproduction'} | GRID_KINDS
     if summary['mode'] == 'learned': required |= {'model', 'learned_selector', 'comparison_learned_vs_fixed', 'comparison_learned_vs_analytical'}
     else:
         assert summary['mode'] == 'baseline_only'
@@ -605,6 +669,7 @@ def load_released_public_pack(base_url: str, expected_manifest_sha256: str):
     assert required <= artifacts.keys(), ('Missing required public companions', required - artifacts.keys())
     if summary['mode'] == 'baseline_only': assert 'model' not in artifacts
     verified = verify_accounting(summary, documents, raw)
+    verified['exclusive_test_claim'] = verify_test_claim(documents, raw, artifacts)
     verified['analysis_amendment'] = verify_analysis_amendment(documents, raw, artifacts)
     verified['public_reproduction'] = verify_reproduction(summary, documents, raw, artifacts)
     return {'manifest_url': manifest_url, 'manifest_sha256': sha(manifest_bytes), 'manifest': manifest,

@@ -69,6 +69,17 @@ Declared regime and route-family holdouts and excluded exploration seeds are
 checked against the published inventory. Private simulator outcomes are never
 opened, and no traffic, training, selector fitting or test release is run.
 
+The original exclusive test-attempt envelope and completed collection manifest
+are published as `attempt.json` and `collection.json`. Their exact original
+hashes must match the report; the attempt's logical hash must also match the
+release-bound claim identity. The verifier reconciles release/study/protocol,
+source/dependencies/SUMO, the claimed-before-first-world state and declared
+release → claim → collection → report chronology. Every declared case retains
+ordinary, immediate and all fixed candidates exactly once as audited/invoked
+worlds. Full scalar rows must match those original inventory directories.
+These metadata checks cannot independently prove absence of other private
+attempts, human nonaccess or the physical location of original files.
+
 The agreed reproduction pack also includes lossless XZ copies of the original
 train/validation candidate grids and test candidate/full-scalar outcomes.
 `reproduction.json` binds their physical transfer hashes, original decoded hashes,

@@ -78,7 +78,7 @@ def main():
         print(f"  95% grouped interval: {interval_text}; independent groups: {comparison['interval_groups']}.")
     amended = verified['analysis_amendment']['present']
     grids = len(verified['public_reproduction']['decoded_grids'])
-    print(f"Proof: {len(pack['companions'])} companion hashes, {grids} bounded original grids, frozen choices and statistics recomputed; analysis amendment {'verified' if amended else 'absent'}.")
+    print(f"Proof: {len(pack['companions'])} companion hashes, {grids} bounded original grids, exclusive claim metadata reconciled, frozen choices and statistics recomputed; analysis amendment {'verified' if amended else 'absent'}.")
     print('Scope: offline cached choices; deltas are selected minus comparator, conditional on both completing. Metadata does not independently prove test nonaccess.')
     if output is not None: print('JSON report: ' + str(output))
 
