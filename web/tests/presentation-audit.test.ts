@@ -96,6 +96,26 @@ function fixture(red = false): Replay {
   };
 }
 
+function outsideRuntimeDirectory(prefix: string): string {
+  const checkout = fs.realpathSync(fileURLToPath(new URL("../../", import.meta.url)));
+  const runtime = path.join(checkout, "local-runtime");
+  const canonicalRuntime = fs.existsSync(runtime) ? fs.realpathSync(runtime) : runtime;
+  const isInsideRuntime = (directory: string) => {
+    const relative = path.relative(canonicalRuntime, directory);
+    return relative === "" || (!path.isAbsolute(relative) && relative !== ".." && !relative.startsWith(".." + path.sep));
+  };
+  // Acceptance deliberately redirects every temp variable into local-runtime.
+  // Boundary-rejection fixtures must still physically live outside that tree.
+  const temporary = fs.realpathSync(os.tmpdir());
+  const base = isInsideRuntime(temporary) ? checkout : temporary;
+  const directory = fs.mkdtempSync(path.join(base, prefix));
+  if (isInsideRuntime(fs.realpathSync(directory))) {
+    fs.rmdirSync(directory); // Only this newly created, still-empty fixture.
+    assert.fail("Outside-runtime fixture resolved inside local-runtime");
+  }
+  return directory;
+}
+
 function audit(
   replay: unknown,
   changeEntry?: (entry: Record<string, unknown>) => void,
@@ -108,9 +128,9 @@ function audit(
 ) {
   const localRoot = fileURLToPath(new URL("../../local-runtime/", import.meta.url));
   if (options.local) fs.mkdirSync(localRoot, { recursive: true });
-  const directory = fs.mkdtempSync(
-    path.join(options.local ? localRoot : os.tmpdir(), "afterlight-audit-cli-"),
-  );
+  const directory = options.local
+    ? fs.mkdtempSync(path.join(localRoot, "afterlight-audit-cli-"))
+    : outsideRuntimeDirectory("afterlight-audit-cli-");
   let externalDirectory: string | undefined;
   try {
     const bytes = Buffer.from(JSON.stringify(replay));
@@ -130,7 +150,7 @@ function audit(
       sha256: createHash("sha256").update(bytes).digest("hex"),
     };
     if (options.redirectedRecording) {
-      externalDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "afterlight-audit-outside-"));
+      externalDirectory = outsideRuntimeDirectory("afterlight-audit-outside-");
       fs.renameSync(path.join(directory, "recording.json"), path.join(externalDirectory, "recording.json"));
       fs.symlinkSync(externalDirectory, path.join(directory, "redirected"), process.platform === "win32" ? "junction" : "dir");
       entry.url = "redirected/recording.json";
