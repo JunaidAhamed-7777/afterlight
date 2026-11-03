@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState, type MouseEvent } from "react";
 import {
   loadStudySummary,
   studyArtifactUrl,
@@ -84,6 +84,43 @@ export function StudyResults() {
   const titleId = useId();
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<State>({ status: "loading" });
+  const retryButton = useRef<HTMLButtonElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const retryFocus = useRef<{ trigger: HTMLElement; moved: boolean } | null>(null);
+  useEffect(() => {
+    const movedFocus = (event: FocusEvent) => {
+      const intent = retryFocus.current;
+      if (intent && event.target !== intent.trigger && event.target !== document.body && event.target !== document.documentElement)
+        intent.moved = true;
+    };
+    const movedPointer = (event: PointerEvent) => {
+      const intent = retryFocus.current;
+      if (intent && !intent.trigger.contains(event.target as Node)) intent.moved = true;
+    };
+    const leftWindow = () => { if (retryFocus.current) retryFocus.current.moved = true; };
+    document.addEventListener("focusin", movedFocus);
+    document.addEventListener("pointerdown", movedPointer, true);
+    window.addEventListener("blur", leftWindow);
+    return () => {
+      document.removeEventListener("focusin", movedFocus);
+      document.removeEventListener("pointerdown", movedPointer, true);
+      window.removeEventListener("blur", leftWindow);
+    };
+  }, []);
+  useEffect(() => {
+    if (state.status === "loading") return;
+    const intent = retryFocus.current;
+    retryFocus.current = null;
+    if (!intent || intent.moved || !document.hasFocus()) return;
+    const active = document.activeElement;
+    if (active && active !== intent.trigger && active !== document.body && active !== document.documentElement) return;
+    (state.status === "ready" ? heading.current : retryButton.current)?.focus({ preventScroll: true });
+  }, [state]);
+  const retry = (event: MouseEvent<HTMLButtonElement>) => {
+    retryFocus.current = event.detail === 0 && document.activeElement === event.currentTarget
+      ? { trigger: event.currentTarget, moved: false } : null;
+    setAttempt(value => value + 1);
+  };
   useEffect(() => {
     const controller = new AbortController();
     setState({ status: "loading" });
@@ -105,14 +142,14 @@ export function StudyResults() {
       <section className="evidence study-results study-empty" aria-labelledby={titleId} aria-busy={state.status === "loading"}>
         <div className="section-heading">
           <span className="eyebrow">Held-out study</span>
-          <h2 id={titleId}>{state.status === "loading" ? "Loading study evidence…" : state.status === "unpublished" ? "Study not published" : "Study evidence unavailable"}</h2>
+          <h2 id={titleId} ref={heading} tabIndex={-1}>{state.status === "loading" ? "Loading study evidence…" : state.status === "unpublished" ? "Study not published" : "Study evidence unavailable"}</h2>
         </div>
         <p role="status">
           {state.status === "loading" ? "Checking the published summary and its checksum."
             : state.status === "unpublished" ? "This build has no audited study summary. Open This run to inspect an individual recording."
               : state.message}
         </p>
-        {state.status !== "loading" && <button className="text-button" onClick={() => setAttempt(value => value + 1)}>Retry study</button>}
+        {state.status !== "loading" && <button ref={retryButton} className="text-button" onClick={retry}>Retry study</button>}
       </section>
     );
   }
@@ -121,7 +158,7 @@ export function StudyResults() {
     <section className="evidence study-results" aria-labelledby={titleId}>
       <div className="section-heading">
         <span className="eyebrow">Held-out study</span>
-        <h2 id={titleId}>{summary.mode === "learned" ? "Offline selector results" : "Analytical baseline results"}</h2>
+        <h2 id={titleId} ref={heading} tabIndex={-1}>{summary.mode === "learned" ? "Offline selector results" : "Analytical baseline results"}</h2>
         <p>Frozen test evidence. Each comparison keeps every test episode in its accounting.</p>
       </div>
       {summary.mode === "baseline_only" && <p className="study-mode-note">This release compares the analytical planner with tuned fixed lead. It contains no learned-model result.</p>}
