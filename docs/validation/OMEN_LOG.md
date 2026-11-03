@@ -181,3 +181,26 @@ Compiled application source: `14ea738`. Actual Omen checks reported:
 
 No new valid SUMO pair or collision-fix acceptance was reported with this UI
 cohort. Desktop-only acceptance is the current target; mobile work is excluded.
+
+## 2026-11-03, `7ef8ffe` desktop and network conversion (reported 04:41 UTC)
+
+Compiled application source remains `f54dc39`, from preview `b951090`.
+
+- Preview checks **9/9**, enhanced asset checks **8/8**, locked npm production
+  build and frontend Node checks **57/57** passed.
+- Headed desktop browser checks **14/14** and synthetic local-generation protocol
+  checks passed. No additional mouse/cutaway supplemental probe ran in this cohort.
+- Three-junction fixture and full-city network conversion both exited zero with
+  empty warning logs. This resolves the previously observed conversion warnings
+  for this checkpoint, not traffic safety or paired-run acceptance.
+- No new fixture pair, ordinary-controller negative control, or city traffic run
+  completed in this reported cohort. The earlier invalid collision evidence is
+  unchanged; the insertion correction still needs a fresh real run.
+- The focused/full Python batch launch lost its transport response during laptop
+  shutdown. Its outcome is **unknown**, not passed or failed. Inspect the saved
+  `python-gates` records and actual process state before starting another batch.
+  A network qualification script write was also uncertain and it was not run.
+- The newer preview was not promoted to the user-facing localhost port before
+  shutdown. No training, pilot or held-out evaluation result is claimed.
+
+Subsequent source changes are not covered by this acceptance.

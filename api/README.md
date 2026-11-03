@@ -45,3 +45,23 @@ The server captures the simulation source identity at startup. If the checkout
 changes, new generation is refused until the server is restarted; a long-lived
 Python process must not attribute cached old modules to a newer commit. Existing
 verified recordings remain readable. Do not pull while a simulation is running.
+
+## Artifact and source integrity
+
+HTTP replay reads, generation completion checks, and restarted-job recovery use
+one shared **64 MiB** byte cap. The cap applies to the actual read, not just a
+prior file-size check. Oversized or changed artifacts remain on disk but cannot
+be advertised/served as verified completions. Both replay endpoints return the exact original bytes that passed their
+recorded hash, schema and request/catalog checks. Pretty-printing is preserved,
+so catalog SHA256 and byte counts remain valid in the viewer. They do not
+reserialize hash-bound replays or reopen a separately validated path. JSON
+nonfinite tokens, exponent overflow (such as `1e309`) and excessive parser depth
+are rejected as controlled errors, including nested metadata values.
+
+Generation rechecks the server's startup source identity after the runner and
+again before recording completion. A mismatch is an explicit infrastructure
+failure, not a measured policy outcome; raw simulation evidence is retained.
+The fixed 600-second simulation horizon is **not a wall-clock timeout**. There
+is no unsafe thread cancellation or global process-kill fallback: shutdown
+waits for the owned runner, and this checkpoint does not promise bounded wall
+runtime or automatic crash recovery.

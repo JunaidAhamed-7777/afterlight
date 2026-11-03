@@ -1,5 +1,6 @@
 """Local artifact boundary tests; execute on the Omen acceptance machine."""
 import json
+import hashlib
 import tempfile
 import unittest
 import threading
@@ -105,6 +106,48 @@ class HTTPTests(unittest.TestCase):
             with urlopen(request, timeout=3) as response:
                 self.assertEqual(response.headers.get("Access-Control-Allow-Origin"), origin if allowed else None)
 
+    def test_prettyprinted_replay_http_preserves_declared_exact_bytes(self):
+        root=Path(self.temp.name)
+        payload=(json.dumps(synthetic_replay(),indent=2)+'\n').encode()
+        expected_hash=hashlib.sha256(payload).hexdigest()
+        (root/'pretty.json').write_bytes(payload)
+        (root/'catalog.json').write_text(json.dumps({'schema':'afterlight.catalog.v1','runs':[
+            {'id':'pretty','sha256':expected_hash,'bytes':len(payload)}]}))
+        request=Request(self.base+'/api/runs/pretty',headers={'Origin':'http://localhost:5173'})
+        with urlopen(request,timeout=3) as response:
+            actual=response.read()
+            self.assertEqual(actual,payload)
+            self.assertEqual(hashlib.sha256(actual).hexdigest(),expected_hash)
+            self.assertEqual(int(response.headers['Content-Length']),len(payload))
+            self.assertEqual(response.headers['Cache-Control'],'no-store')
+            self.assertEqual(response.headers['X-Content-Type-Options'],'nosniff')
+            self.assertEqual(response.headers['Access-Control-Allow-Origin'],'http://localhost:5173')
+
+    def test_wrong_catalog_hash_or_length_is_http_422(self):
+        root=Path(self.temp.name);payload=json.dumps(synthetic_replay(),indent=2).encode()
+        (root/'bound.json').write_bytes(payload)
+        for extra in ({'sha256':'0'*64},{'bytes':len(payload)+1}):
+            (root/'catalog.json').write_text(json.dumps({'schema':'afterlight.catalog.v1','runs':[{'id':'bound',**extra}]}))
+            with self.subTest(binding=extra),self.assertRaises(HTTPError) as caught:
+                urlopen(self.base+'/api/runs/bound',timeout=3)
+            self.assertEqual(caught.exception.code,422)
+            self.assertEqual((root/'bound.json').read_bytes(),payload)
+
+    def test_catalog_numeric_overflow_and_depth_are_http_422(self):
+        root=Path(self.temp.name)
+        prefix=b'{"schema":"afterlight.catalog.v1","runs":[],"extra":'
+        for value in (b'{"nested":1e309}',b'[-1e309]',b'['*2000+b'0'+b']'*2000):
+            (root/'catalog.json').write_bytes(prefix+value+b'}')
+            with self.assertRaises(HTTPError) as caught:urlopen(self.base+'/api/catalog',timeout=3)
+            self.assertEqual(caught.exception.code,422)
+
+    def test_replay_integer_overflow_is_http_422_not_handler_failure(self):
+        root=Path(self.temp.name);data=synthetic_replay();data['duration_s']=10**1000
+        (root/'overflow.json').write_text(json.dumps(data))
+        (root/'catalog.json').write_text(json.dumps({'schema':'afterlight.catalog.v1','runs':[{'id':'overflow'}]}))
+        with self.assertRaises(HTTPError) as caught:urlopen(self.base+'/api/runs/overflow',timeout=3)
+        self.assertEqual(caught.exception.code,422)
+
     def test_generation_is_honestly_unavailable(self):
         with self.assertRaises(HTTPError) as caught:
             urlopen(Request(self.base + "/api/runs", data=b"{}", method="POST"), timeout=3)
@@ -148,8 +191,32 @@ class GenerationHTTPTests(unittest.TestCase):
             self.assertEqual(json.load(response)["id"], "unit-only")
         self.assertEqual(self.jobs.submitted, 1)
 
+    def test_job_http_serves_verified_bytes_without_reserializing_or_rereading_path(self):
+        expected=synthetic_replay()
+        payload=json.dumps(expected,indent=2).encode()
+        self.jobs.get=lambda identifier:{'id':identifier,'status':'completed'}
+        calls=[]
+        def data(identifier):calls.append(identifier);return payload
+        self.jobs.replay_bytes=data
+        self.jobs.replay_path=lambda identifier:self.fail('HTTP must not reread a separately checked path')
+        with urlopen(self.base+'/api/jobs/unit-only/replay',timeout=3) as response:
+            self.assertEqual(response.status,200)
+            self.assertEqual(int(response.headers['Content-Length']),len(payload))
+            self.assertEqual(response.read(),payload)
+        self.assertEqual(calls,['unit-only'])
+
+    def test_generated_metadata_serialization_errors_are_controlled_422(self):
+        deep=[]
+        for _ in range(2000):deep=[deep]
+        for value in (float('inf'),object(),deep):
+            self.jobs.get=lambda identifier,value=value:{'id':identifier,'status':'failed','extra':value}
+            with self.assertRaises(HTTPError) as caught:
+                urlopen(self.base+'/api/jobs/unit-only',timeout=3)
+            self.assertEqual(caught.exception.code,422)
+            self.assertIn('safely serialized',json.load(caught.exception)['error'])
+
     def test_nonfinite_or_nonjson_body_rejected(self):
-        for body in (b'{"bad":Infinity}', b'not json'):
+        for body in (b'{"bad":Infinity}', b'not json', b'{"nested":{"x":1e309}}', b'{"nested":[-1e309]}', b'{"deep":'+b'['*2000+b'0'+b']'*2000+b'}'):
             request = Request(self.base + "/api/runs", data=body, method="POST", headers={"Content-Type": "application/json"})
             with self.assertRaises(HTTPError) as caught:
                 urlopen(request, timeout=3)

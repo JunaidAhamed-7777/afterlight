@@ -14,30 +14,10 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-MAX_REPLAY_BYTES = 64 * 1024 * 1024
+# Re-export existing names for callers, but keep one canonical byte cap/parser.
+from api.artifacts import MAX_REPLAY_BYTES, ArtifactError, reject_nonfinite, finite_float, read_json, read_bytes, parse_json_object
+
 SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,95}\Z")
-
-
-class ArtifactError(Exception):
-    """An absent or invalid artifact, not a traffic outcome."""
-
-
-def reject_nonfinite(value: str):
-    raise ValueError(f"Non-finite JSON: {value}")
-
-
-def read_json(path: Path) -> dict:
-    if not path.is_file():
-        raise ArtifactError("Artifact is not available")
-    if path.stat().st_size > MAX_REPLAY_BYTES:
-        raise ArtifactError("Artifact exceeds the local API size limit")
-    try:
-        value = json.loads(path.read_text(encoding="utf-8"), parse_constant=reject_nonfinite)
-    except (OSError, UnicodeError, ValueError) as exc:
-        raise ArtifactError("Artifact is not readable JSON") from exc
-    if not isinstance(value, dict):
-        raise ArtifactError("Artifact root must be an object")
-    return value
 
 
 def catalog(replay_dir: Path) -> dict:
@@ -54,25 +34,43 @@ def catalog(replay_dir: Path) -> dict:
     return data
 
 
-def replay(replay_dir: Path, run_id: str) -> dict:
+def replay_bytes(replay_dir: Path, run_id: str) -> bytes:
     if not SAFE_ID.fullmatch(run_id):
         raise ArtifactError("Invalid run ID")
-    if run_id not in {row["id"] for row in catalog(replay_dir)["runs"]}:
-        raise ArtifactError("Run is not in the published catalog")
+    matches = [row for row in catalog(replay_dir)["runs"] if row['id']==run_id]
+    if len(matches)!=1:
+        raise ArtifactError("Run is absent or duplicated in the published catalog")
+    row = matches[0]
     path = replay_dir / f"{run_id}.json"
     if path.resolve().parent != replay_dir.resolve():
         raise ArtifactError("Run path is outside the replay directory")
-    return validated_replay(path)
+    payload = validated_replay_bytes(path)
+    if 'bytes' in row and (isinstance(row['bytes'],bool) or not isinstance(row['bytes'],int) or row['bytes']!=len(payload)):
+        raise ArtifactError('Replay bytes differ from published catalog size')
+    if 'sha256' in row:
+        import hashlib
+        if not isinstance(row['sha256'],str) or not re.fullmatch(r'[a-fA-F0-9]{64}',row['sha256']) or hashlib.sha256(payload).hexdigest()!=row['sha256'].lower():
+            raise ArtifactError('Replay bytes differ from published catalog hash')
+    return payload
 
 
-def validated_replay(path: Path) -> dict:
-    data = read_json(path)
+def replay(replay_dir: Path, run_id: str) -> dict:
+    return parse_json_object(replay_bytes(replay_dir,run_id))
+
+
+def validated_replay_bytes(path: Path) -> bytes:
+    payload = read_bytes(path)
+    data = parse_json_object(payload)
     try:
         from export.replay import validate_replay
         validate_replay(data)
-    except (ValueError, TypeError, KeyError, AttributeError, IndexError) as exc:
+    except (ValueError, TypeError, KeyError, AttributeError, IndexError, OverflowError, RecursionError) as exc:
         raise ArtifactError(f"Run failed recorded replay validation: {exc}") from exc
-    return data
+    return payload
+
+
+def validated_replay(path: Path) -> dict:
+    return parse_json_object(validated_replay_bytes(path))
 
 
 def local_origin(origin: str | None) -> str | None:
@@ -101,7 +99,18 @@ def make_handler(replay_dir: Path, jobs=None):
             self.connection.settimeout(10)
 
         def send_json(self, code: int, data: dict) -> None:
-            body = json.dumps(data, allow_nan=False, separators=(",", ":")).encode()
+            # Serialize before headers, so malformed generated metadata cannot
+            # leave a partial successful response or recurse into error output.
+            try:
+                body = json.dumps(data,allow_nan=False,ensure_ascii=False,separators=(",",":")).encode('utf-8')
+                if len(body)>MAX_REPLAY_BYTES:
+                    raise ValueError('Metadata response exceeds local API limit')
+            except (ValueError,TypeError,OverflowError,RecursionError):
+                code = 422
+                body = b'{"error":"Local response metadata could not be safely serialized"}'
+            self.send_json_bytes(code,body)
+
+        def send_json_bytes(self, code: int, body: bytes) -> None:
             self.send_response(code)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(body)))
@@ -133,17 +142,18 @@ def make_handler(replay_dir: Path, jobs=None):
                     if not job:
                         self.send_json(404, {"error": "Unknown local generation job"})
                     elif len(parts) == 2 and parts[1] == "replay":
-                        artifact = jobs.replay_path(job_id)
-                        if artifact:
-                            self.send_json(200, validated_replay(artifact))
+                        payload = jobs.replay_bytes(job_id)
+                        if payload is not None:
+                            self.send_json_bytes(200, payload)
                         else:
-                            self.send_json(409, {"error": "No completed replay is available yet", "status": job["status"]})
+                            current = jobs.get(job_id) or job
+                            self.send_json(409, {"error": "No verified completed replay is available", "status": current["status"]})
                     elif len(parts) == 1:
                         self.send_json(200, job)
                     else:
                         self.send_json(404, {"error": "Endpoint not found"})
                 elif path.startswith("/api/runs/"):
-                    self.send_json(200, replay(replay_dir, path.removeprefix("/api/runs/")))
+                    self.send_json_bytes(200, replay_bytes(replay_dir, path.removeprefix("/api/runs/")))
                 else:
                     self.send_json(404, {"error": "Endpoint not found"})
             except ArtifactError as exc:
@@ -188,11 +198,11 @@ def make_handler(replay_dir: Path, jobs=None):
                 raw = self.rfile.read(length)
                 if len(raw) != length:
                     raise ValueError("Incomplete request body")
-                body = json.loads(raw, parse_constant=reject_nonfinite)
+                body = json.loads(raw, parse_constant=reject_nonfinite, parse_float=finite_float)
                 self.send_json(202, jobs.submit(body))
             except (socket.timeout, TimeoutError):
                 self.send_json(408, {"error": "Request body timed out"})
-            except (ValueError, TypeError) as exc:
+            except (ValueError, TypeError, RecursionError) as exc:
                 self.send_json(400, {"error": str(exc)})
 
     return Handler

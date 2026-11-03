@@ -7,7 +7,7 @@ import time
 import unittest
 from unittest.mock import patch
 from types import SimpleNamespace
-from api.jobs import JobManager, RequestError, OutputConflict, parameters
+from api.jobs import JobManager, RequestError, OutputConflict, parameters, load_job_replay
 
 
 def synthetic_replay():
@@ -168,6 +168,94 @@ class JobTests(unittest.TestCase):
                 self.assertEqual(json.loads((folder / "job.json").read_text())["status"], "completed")
             finally:
                 manager.close()
+
+    def test_postrun_source_change_is_infrastructure_failure_with_raw_evidence(self):
+        current={'source_commit':'initial','source_code_sha256':'initial'}
+        def runner(args):
+            args.output.mkdir(parents=True)
+            (args.output/'replay.json').write_text(json.dumps(synthetic_replay()))
+            current['source_commit']='changed-during-run'
+            return {'scenario_id':'unit-fixture'}
+        with tempfile.TemporaryDirectory() as root:
+            manager=JobManager(Path(root),runner,source_snapshot_fn=lambda:dict(current))
+            job=manager.submit({'network':'fixture'});manager.close()
+            actual=manager.get(job['id'])
+            self.assertEqual(actual['status'],'failed')
+            self.assertEqual(actual['failure_kind'],'infrastructure_source_changed')
+            self.assertNotIn('replay_url',actual)
+            self.assertTrue((Path(root)/job['id']/'replay.json').exists())
+            self.assertEqual(json.loads((Path(root)/job['id']/'job.json').read_text())['status'],'failed')
+
+    def test_source_change_during_artifact_validation_prevents_completion(self):
+        current={'source_commit':'initial','source_code_sha256':'initial'}
+        def runner(args):
+            args.output.mkdir(parents=True)
+            (args.output/'replay.json').write_text(json.dumps(synthetic_replay()))
+            return {'scenario_id':'unit-fixture'}
+        def changed_after_validation(*args):
+            result=load_job_replay(*args)
+            current['source_code_sha256']='changed-during-validation'
+            return result
+        with tempfile.TemporaryDirectory() as root,patch('api.jobs.load_job_replay',side_effect=changed_after_validation):
+            manager=JobManager(Path(root),runner,source_snapshot_fn=lambda:dict(current))
+            job=manager.submit({'network':'fixture'});manager.close()
+            self.assertEqual(manager.get(job['id'])['failure_kind'],'infrastructure_source_changed')
+            self.assertNotIn('replay_url',manager.get(job['id']))
+
+    def test_oversize_replay_cannot_be_completed(self):
+        def runner(args):
+            args.output.mkdir(parents=True)
+            (args.output/'replay.json').write_text(json.dumps(synthetic_replay()))
+            return {'scenario_id':'unit-fixture'}
+        with tempfile.TemporaryDirectory() as root,patch('api.artifacts.MAX_REPLAY_BYTES',100):
+            manager=JobManager(Path(root),runner)
+            job=manager.submit({'network':'fixture'});manager.close()
+            actual=manager.get(job['id'])
+            self.assertEqual(actual['status'],'failed')
+            self.assertIn('size limit',actual['error'])
+            self.assertTrue((Path(root)/job['id']/'replay.json').exists())
+
+    def test_recovery_and_serving_use_the_same_size_cap(self):
+        def runner(args):
+            args.output.mkdir(parents=True)
+            (args.output/'replay.json').write_text(json.dumps(synthetic_replay()))
+            return {'scenario_id':'unit-fixture'}
+        with tempfile.TemporaryDirectory() as root:
+            manager=JobManager(Path(root),runner)
+            job=manager.submit({'network':'fixture'});manager.close()
+            self.assertEqual(manager.get(job['id'])['status'],'completed')
+            recovered=JobManager(Path(root),runner)
+            try:
+                with patch('api.artifacts.MAX_REPLAY_BYTES',100):
+                    self.assertIsNone(manager.replay_data(job['id']))
+                    self.assertEqual(manager.get(job['id'])['failure_kind'],'artifact_integrity')
+                    self.assertEqual(recovered.get(job['id'])['status'],'failed')
+            finally:recovered.close()
+
+    def test_verified_response_uses_exact_bytes_hashed_not_a_second_read(self):
+        import hashlib
+        from api.artifacts import read_bytes
+        expected=synthetic_replay()
+        with tempfile.TemporaryDirectory() as root:
+            path=Path(root)/'replay.json';path.write_text(json.dumps(expected))
+            original=path.read_bytes();expected_hash=hashlib.sha256(original).hexdigest()
+            def read_then_change(target):
+                payload=read_bytes(target)
+                altered=synthetic_replay();altered['scenario']['seed']=999
+                target.write_text(json.dumps(altered))
+                return payload
+            with patch('api.jobs.read_bytes',side_effect=read_then_change) as reader:
+                data,actual_hash=load_job_replay(path,parameters({'network':'fixture'}),expected_hash)
+            self.assertEqual(reader.call_count,1)
+            self.assertEqual(data,expected);self.assertEqual(actual_hash,expected_hash)
+            self.assertEqual(json.loads(path.read_text())['scenario']['seed'],999)
+
+    def test_unbounded_numeric_duration_is_controlled_artifact_failure(self):
+        from api.artifacts import ArtifactError
+        data=synthetic_replay();data['duration_s']=10**1000
+        with tempfile.TemporaryDirectory() as root:
+            path=Path(root)/'huge-integer.json';path.write_text(json.dumps(data))
+            with self.assertRaises(ArtifactError):load_job_replay(path,parameters({'network':'fixture'}))
 
     def test_runner_failure_retained_not_fabricated(self):
         def runner(args):
