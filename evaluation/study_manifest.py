@@ -13,7 +13,8 @@ import xml.etree.ElementTree as ET
 from typing import Mapping
 
 from evaluation.metrics import finite
-from evaluation.protocol import digest, freeze_protocol, pilot_summary, validate_episode_inventory, RESERVED_QUALIFICATION_SEEDS
+from evaluation.protocol import (digest, freeze_protocol, pilot_summary, validate_episode_inventory,
+    RESERVED_QUALIFICATION_SEEDS, validate_declared_exploration_seeds)
 from evaluation.splits import assert_disjoint
 from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
 from models.residual import DEFAULT_FEATURES
@@ -90,9 +91,9 @@ def validate_illustrative_capture(contract: Mapping, cases: list) -> dict:
 
 def validate_spec(spec: Mapping) -> dict:
     required = {"schema", "study_id", "network_kind", "cases", "timing", "budget", "civilian_weight",
-                "analytical_config", "model_specification", "heldout_regimes", "heldout_route_families", "illustrative_capture"}
-    if not isinstance(spec, Mapping) or not required <= spec.keys() or spec["schema"] != "afterlight.study-spec.v1":
-        raise ValueError("incomplete or unsupported explicit study spec")
+                "analytical_config", "model_specification", "heldout_regimes", "heldout_route_families", "illustrative_capture", "declared_exploration_seeds"}
+    if not isinstance(spec, Mapping) or not required <= spec.keys() or spec["schema"] != "afterlight.study-spec.v2":
+        raise ValueError("explicit study-spec.v2 requires declared_exploration_seeds; legacy specs need operator review")
     if not isinstance(spec["study_id"], str) or not SAFE_ID.fullmatch(spec["study_id"]):
         raise ValueError("study_id must be a safe identifier")
     if spec["network_kind"] not in {"fixture", "city"}:
@@ -147,6 +148,9 @@ def validate_spec(spec: Mapping) -> dict:
     if seen_splits != SPLITS or not set(heldout) <= represented_regimes or not set(heldout_routes) <= represented_routes:
         raise ValueError("all splits and all declared holdouts must be represented")
     seed_assignments(cases)
+    declared = validate_declared_exploration_seeds(spec["declared_exploration_seeds"])
+    if set(declared).intersection(case["seed"] for case in cases):
+        raise ValueError("study reuses an operator-declared explored RNG seed")
     validate_illustrative_capture(spec["illustrative_capture"], cases)
     budget = spec["budget"]
     if not isinstance(budget, Mapping) or set(budget) != {"max_episodes", "max_rollouts", "max_wall_time_s", "rationale"}:
@@ -161,7 +165,7 @@ def validate_spec(spec: Mapping) -> dict:
     if set(spec["analytical_config"]) != set(asdict(AnalyticalConfig())):
         raise ValueError("all analytical parameters must be explicit")
     if weight != 1 or spec["analytical_config"] != asdict(AnalyticalConfig()):
-        raise ValueError("study v1 requires default analytical configuration and objective weight 1, matching the simulator")
+        raise ValueError("study requires default analytical configuration and objective weight 1, matching the simulator")
     model = spec["model_specification"]
     if not isinstance(model, Mapping) or set(model) != {"max_depth", "min_samples_leaf"}:
         raise ValueError("one explicit shallow-tree specification required")
@@ -424,6 +428,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
         protocol = {"schema": "afterlight.protocol.v1", "source_commit": source["source_commit"],
             "source_code_sha256": source["source_code_sha256"], "group_assignments": assignments,
             "seed_assignments": seed_assignments(spec["cases"]),
+            "declared_exploration_seeds": spec["declared_exploration_seeds"],
             "illustrative_capture": spec["illustrative_capture"],
             "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
             "episode_inventory": [{k: row[k] for k in ("episode_id", "demand_group_id", "split", "regime", "seed", "demand_sha256", "network_sha256", "dispatch_s", "route_family", "pickup_id", "hospital_id")} for row in episodes],
@@ -457,12 +462,13 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
     """Bind collector paths and episode identities to the same frozen input set."""
     from policies.scheduler import Timing
     from sim.identity import episode_identity
-    spec, protocol = study["spec"], study["protocol"]
+    spec, protocol = validate_spec(study["spec"]), study["protocol"]
     timing = spec["timing"]
     validate_pilot_seed_exclusion(study["pilot_evidence"], spec["cases"])
     validate_illustrative_capture(spec["illustrative_capture"], spec["cases"])
     expected_contract = {
         "seed_assignments": seed_assignments(spec["cases"]),
+        "declared_exploration_seeds": spec["declared_exploration_seeds"],
         "illustrative_capture": spec["illustrative_capture"],
         "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
         "source_commit": study["source"]["source_commit"], "source_code_sha256": study["source"]["source_code_sha256"],

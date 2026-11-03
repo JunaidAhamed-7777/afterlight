@@ -22,9 +22,19 @@ Open `http://127.0.0.1:5173`. All acceptance tests and browser QA belong on Omen
 
 For an explicit local API library, set `VITE_API_BASE=http://127.0.0.1:8765` before starting Vite. The viewer fetches `/api/catalog`; this does not claim live simulation. Generation controls appear only when the explicitly enabled local server reports that capability.
 
+### Exploration seeds and scientific studies
+
+Local generation is exploration, not untouched benchmark evidence. Keep an
+operator record of every seed whose outcomes you inspect, and include those
+seeds in a future study spec's required `declared_exploration_seeds` list. Changing
+regime, route or dispatch does not make that seed untouched. Seed 7 and all pilot
+seeds are excluded separately. After freezing a study, do not preview its seeds
+through local generation. This manual declaration is not an automated audit or
+proof of complete exploration history; see `evaluation/STUDY.md`.
+
 ## Omen browser acceptance matrix
 
-- Desktop 1440×900 and mobile 390×844: no horizontal overflow, legible controls, city asset visible and road/marker alignment.
+- Desktop 1440×900 and desktop window resizing: no horizontal overflow, legible controls, city asset visible and road/marker alignment.
 - Inspect city glTF original root transform; select P001 and both hospitals; verify markers at canonical anchors.
 - Keyboard: visible focus, native select/search, reset camera, timeline, play/pause when a real recording exists.
 - Reduced motion: no auto-follow or autoplay; system preference respected.

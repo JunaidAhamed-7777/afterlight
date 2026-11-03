@@ -26,7 +26,12 @@ in the pilot; they do not become finite learning targets.
 
 Save JSON containing these required fields; there is no automatic large budget:
 
-- `schema`: `afterlight.study-spec.v1`; safe `study_id`; `network_kind`: fixture or city.
+- `schema`: `afterlight.study-spec.v2`; safe `study_id`; `network_kind`: fixture or city.
+- `declared_exploration_seeds`: required sorted, unique integer seeds in
+  `0..2147483647` previously inspected through local generation, demos or other
+  exploratory runs. Use explicit `[]` only when there are no additional known
+  explored seeds. Booleans are not integers here. This exclusion is additive to
+  reserved qualification seed 7 and all pilot seeds, across every regime/split.
 - `cases`: explicit objects with `case_id`, `split` (train/validation/test), `seed`,
   `regime`, `dispatch_s`, `pickup_id`, `hospital_id`, `route_family`.
 - `timing`: `demand_end_s`, `horizon_s`, `drain_s`, `step_s`, `sample_s`,
@@ -48,6 +53,17 @@ Save JSON containing these required fields; there is no automatic large budget:
   Every declared holdout must be represented in test only. For held-out route
   families, the actual ordered edge route cannot also appear outside test.
   Other family labels remain user-defined strata, not geometric novelty claims.
+
+Study-spec v1 is rejected rather than silently assigning an empty exploration
+history. To prepare a new v2 study, the operator must review known exploration
+and declare it before generating inputs. Existing generated studies cannot be
+silently upgraded or rebranded as untouched. The declaration is frozen into the
+protocol and rechecked when loading; no runtime folders are scanned. It is a
+manual disclosure safeguard, **not proof that every inspected run was disclosed**.
+After freeze, do not preview or locally generate any study seed outside its
+scheduled collection/selection/released-test workflow. If accidental exploration
+occurs, disclose it and do not claim that affected evidence remained untouched;
+a frozen declaration cannot retroactively repair exposure.
 
 All three splits must exist. Every civilian realization and all its dispatch/route
 variants stay in one split; pilot groups cannot be reused. In addition, each RNG

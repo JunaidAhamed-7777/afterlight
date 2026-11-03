@@ -76,3 +76,17 @@ class SeedIsolationTests(unittest.TestCase):
         protocol['seed_assignments'].pop('2001')
         protocol['seed_assignments']['7']={'split':'train','regime':'moderate'}
         with self.assertRaisesRegex(ValueError,'qualification'):validate_episode_inventory(protocol)
+
+    def test_protocol_declared_exploration_rejected_across_splits(self):
+        for index in range(3):
+            protocol=protocol_fixture()
+            protocol['declared_exploration_seeds']=[protocol['episode_inventory'][index]['seed']]
+            with self.subTest(index=index),self.assertRaisesRegex(ValueError,'operator-declared'):
+                validate_episode_inventory(protocol)
+
+    def test_explicit_empty_declaration_still_requires_seed_inventory(self):
+        protocol=protocol_fixture();protocol['declared_exploration_seeds']=[]
+        validate_episode_inventory(protocol)
+        protocol.pop('seed_assignments')
+        for item in protocol['episode_inventory']:item.pop('seed')
+        with self.assertRaisesRegex(ValueError,'explicit valid seed'):validate_episode_inventory(protocol)

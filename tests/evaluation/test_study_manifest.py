@@ -17,7 +17,7 @@ from models.analytical import AnalyticalConfig
 
 
 def spec_fixture():
-    return {'schema':'afterlight.study-spec.v1','study_id':'unit-study','network_kind':'fixture',
+    return {'schema':'afterlight.study-spec.v2','declared_exploration_seeds':[],'study_id':'unit-study','network_kind':'fixture',
         'cases':[{'case_id':split,'split':split,'seed':2000+i,'regime':'heavy' if split=='test' else 'moderate',
                   'dispatch_s':60,'pickup_id':'pickup','hospital_id':'hospital','route_family':'west-east'}
                  for i,split in enumerate(('train','validation','test'))],
@@ -61,6 +61,40 @@ class StudyTests(unittest.TestCase):
 
     def prepared(self):
         return prepare_study(self.spec,self.root/'pilot',self.output)
+
+    def test_exploration_declaration_is_explicit_and_strict(self):
+        for value in (None, [True], [1.0], [-1], [2**31], [42, 42], [42, 1], "42"):
+            spec=deepcopy(self.spec);spec['declared_exploration_seeds']=value
+            with self.subTest(value=value),self.assertRaises(ValueError):validate_spec(spec)
+        for mutation in ('missing', 'legacy'):
+            spec=deepcopy(self.spec)
+            if mutation=='missing':spec.pop('declared_exploration_seeds')
+            else:spec['schema']='afterlight.study-spec.v1'
+            with self.subTest(mutation=mutation),self.assertRaisesRegex(ValueError,'study-spec.v2'):validate_spec(spec)
+        validate_spec(self.spec)
+
+    def test_explored_seed_rejected_before_output_for_every_split(self):
+        for case_index in range(3):
+            spec=deepcopy(self.spec);spec['declared_exploration_seeds']=[42]
+            spec['cases'][case_index]['seed']=42
+            with self.subTest(split=spec['cases'][case_index]['split']),self.assertRaisesRegex(ValueError,'operator-declared'):
+                prepare_study(spec,self.root/'pilot',self.output)
+            self.assertFalse(self.output.exists())
+        self.pilot.assert_not_called()
+        self.runner.assert_not_called()
+
+    def test_exploration_declaration_frozen_and_rechecked_on_load(self):
+        self.spec['declared_exploration_seeds']=[0,42,2**31-1]
+        envelope=self.prepared();study=envelope['study']
+        self.assertEqual(study['protocol']['declared_exploration_seeds'],[0,42,2**31-1])
+        changed=deepcopy(study);changed['protocol']['declared_exploration_seeds']=[]
+        with self.assertRaises(ValueError):validate_study_links(self.output,changed,verify_inputs=False)
+        changed=deepcopy(study)
+        changed['spec']['declared_exploration_seeds']=[2000]
+        changed['protocol']['declared_exploration_seeds']=[2000]
+        with self.assertRaisesRegex(ValueError,'operator-declared'):validate_study_links(self.output,changed,verify_inputs=False)
+        (self.output/'study.json').write_text(json.dumps({'sha256':digest(changed),'study':changed}))
+        with self.assertRaisesRegex(ValueError,'operator-declared'):load_study(self.output,verify_inputs=False)
 
     def test_prepare_freeze_are_saved_input_only(self):
         envelope=self.prepared()

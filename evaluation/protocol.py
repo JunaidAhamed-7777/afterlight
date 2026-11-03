@@ -13,6 +13,18 @@ from .splits import assert_disjoint
 RESERVED_QUALIFICATION_SEEDS = (7,)
 
 
+def validate_declared_exploration_seeds(value: object) -> list[int]:
+    """Validate an operator declaration, not proof of complete exploration history."""
+    if not isinstance(value, list) or any(
+        isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed < 2**31
+        for seed in value
+    ):
+        raise ValueError("declared_exploration_seeds must be an explicit list of integer seeds in [0, 2**31-1]")
+    if value != sorted(set(value)):
+        raise ValueError("declared_exploration_seeds must be sorted and unique")
+    return list(value)
+
+
 def canonical_bytes(value: object) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
 
@@ -59,7 +71,8 @@ def validate_episode_inventory(protocol: Mapping, *, require_regimes: bool = Fal
         by_id[item["episode_id"]] = item
     if set(heldout) != represented_heldout:
         raise ValueError("every declared held-out regime must be represented in the test inventory")
-    if "seed_assignments" in protocol or any("seed" in item for item in inventory):
+    declared = validate_declared_exploration_seeds(protocol["declared_exploration_seeds"]) if "declared_exploration_seeds" in protocol else []
+    if "declared_exploration_seeds" in protocol or "seed_assignments" in protocol or any("seed" in item for item in inventory):
         seeds = {}
         for item in inventory:
             seed = item.get("seed")
@@ -67,6 +80,8 @@ def validate_episode_inventory(protocol: Mapping, *, require_regimes: bool = Fal
                 raise ValueError("seed-bound inventory needs an explicit valid seed and regime for every episode")
             if seed in RESERVED_QUALIFICATION_SEEDS:
                 raise ValueError("software-qualification RNG seed is reserved, not untouched study data")
+            if seed in declared:
+                raise ValueError("operator-declared explored RNG seed cannot enter frozen study inventory")
             owner = {"split": item["split"], "regime": item["regime"]}
             if str(seed) in seeds and seeds[str(seed)] != owner:
                 raise ValueError("one RNG seed crosses split or regime in frozen inventory")
