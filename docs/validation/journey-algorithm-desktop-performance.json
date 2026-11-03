@@ -1,0 +1,335 @@
+{
+  "schema": "afterlight.journey-algorithm-desktop-performance.v1",
+  "status": "passed",
+  "reviewed_utc": "2026-11-03T21:34:40.784194+00:00",
+  "scope": "Independent read-only review of the completed Algorithm/journey-lock build with foreground reveal default ON. No new benchmark, browser, simulation, model fitting or data rewriting.",
+  "raw_report_sha256": "64c781f4904384e175f0d66ea583cd9fd3f23ab6fc437fb5eb69d1fed16fdc61",
+  "measurement_started_utc": "2026-11-03T21:27:46.339651+00:00",
+  "measurement_finished_utc": "2026-11-03T21:29:11.126252+00:00",
+  "source_commit": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+  "source_before_after_equal": true,
+  "source_inventory_sha256": "f8f69caafbb0427d5ea5a84e3b260fb00bd98bce921782c0801c69a701a9228a",
+  "recorded_source_files": 62,
+  "harness_files_sha256": {
+    "web/tests/desktop_product_acceptance.py": "a392add77a013fc9f910e035d7b00a52dcf98a5480b7d885899d362f71edb7fc",
+    "web/tests/real_replay_smoke.py": "c964db5f04419cc581a07eb26a88e3bad9fb070538ab5da5c9410217777ff8ba",
+    "web/tests/browser_map_selection_checks.py": "1d8caaa21240b940745d2e58e841224627ad6fbcd12c1cd589839f497f18aed8"
+  },
+  "frozen_build_manifest_sha256": "d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81",
+  "normalized_build_manifest_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6",
+  "served_build_before": {
+    "files": 63,
+    "bytes": 46973555,
+    "manifest_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6"
+  },
+  "served_build_after": {
+    "files": 63,
+    "bytes": 46973555,
+    "manifest_sha256": "6b1f326d33d6d85285d651685d9be46b7cf6e25e90f91f2a1436170c2a6f35b6"
+  },
+  "all_63_local_frozen_file_sizes_and_hashes_independently_rechecked": true,
+  "environment": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "browser_version": "156.0.8078.80",
+    "headed": true,
+    "css_viewport": [
+      1920,
+      1080
+    ],
+    "configured_DPR": 1,
+    "observed_DPR": 1.0000000298023224,
+    "renderer_vendor": "Google Inc. (AMD)",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "native_window_bounds": [
+      1724,
+      978
+    ],
+    "measured_canvas_buffer": [
+      1552,
+      737
+    ],
+    "native_bounds_differ_from_emulated_CSS_viewport": true
+  },
+  "recording": {
+    "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "bytes": 72828179,
+    "response_body_bytes": 6585636,
+    "measurement_start_s": 180.5,
+    "vehicles_at_start": 373
+  },
+  "identity": {
+    "title": "AFTERLIGHT \u2014 Traffic signal lab",
+    "canonical": "https://afterlight-gamma.vercel.app/",
+    "body_font": "Inter, \"Segoe UI\", system-ui, sans-serif",
+    "fonts": [
+      {
+        "family": "Inter",
+        "status": "loaded",
+        "weight": "100 900"
+      }
+    ],
+    "mark": {
+      "src": "/brand/mark.svg",
+      "complete": true,
+      "width": 150,
+      "height": 150,
+      "alt": "",
+      "rendered_width": 32,
+      "rendered_height": 32
+    }
+  },
+  "windows": {
+    "overview": {
+      "rendered_frames": 4579,
+      "observed_seconds": 30.0122,
+      "rendered_fps": 152.53796789305682,
+      "render_interval_ms": {
+        "median": 6.099999999998545,
+        "p95": 12.099999999998545,
+        "maximum": 30.5
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 4.600000001490116,
+        "p95": 8,
+        "maximum": 27.200000002980232
+      },
+      "long_tasks": [],
+      "lifecycle": [
+        {
+          "kind": "start",
+          "timestamp": 5259.9000000059605,
+          "visibility": "visible",
+          "focused": true
+        },
+        {
+          "kind": "end",
+          "timestamp": 35273.70000000298,
+          "visibility": "visible",
+          "focused": true
+        }
+      ],
+      "foreground_qualified": true,
+      "camera_orientation_and_zoom_stable": true,
+      "camera_mode": "orthographic",
+      "camera_zoom": 1,
+      "canvas_buffer": [
+        1552,
+        737
+      ],
+      "start_counters": {
+        "calls": 75,
+        "triangles": 380744,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      },
+      "end_counters": {
+        "calls": 75,
+        "triangles": 376384,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      },
+      "native_window_gate": {
+        "native_window_before": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "native_window_after": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "operator_marker_required": false
+      }
+    },
+    "close_follow": {
+      "rendered_frames": 3893,
+      "observed_seconds": 30.012100000000007,
+      "rendered_fps": 129.6810286517771,
+      "render_interval_ms": {
+        "median": 6.099999999998545,
+        "p95": 12.19999999999709,
+        "maximum": 18.099999999998545
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 3.2999999970197678,
+        "p95": 4.899999998509884,
+        "maximum": 10.599999994039536
+      },
+      "long_tasks": [],
+      "lifecycle": [
+        {
+          "kind": "start",
+          "timestamp": 36020.80000000447,
+          "visibility": "visible",
+          "focused": true
+        },
+        {
+          "kind": "end",
+          "timestamp": 66039.40000000596,
+          "visibility": "visible",
+          "focused": true
+        }
+      ],
+      "foreground_qualified": true,
+      "camera_orientation_and_zoom_stable": true,
+      "camera_mode": "perspective",
+      "camera_zoom": 12,
+      "canvas_buffer": [
+        1552,
+        737
+      ],
+      "start_counters": {
+        "calls": 69,
+        "triangles": 374620,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      },
+      "end_counters": {
+        "calls": 69,
+        "triangles": 370120,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      },
+      "native_window_gate": {
+        "native_window_before": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "native_window_after": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "operator_marker_required": false
+      }
+    }
+  },
+  "follow_setup": {
+    "control": ".follow-ambulance",
+    "pressed": true,
+    "world": "afterlight",
+    "time_s": 180.5,
+    "expected_target_from_genuine_pose": [
+      -668.38,
+      1.5,
+      318.5918
+    ],
+    "actual_camera": {
+      "mode": "perspective",
+      "position": [
+        -540.9994499888894,
+        153.14351191798886,
+        452.0380904878301
+      ],
+      "quaternion": [
+        -0.3130668345109635,
+        0.35012694516255943,
+        0.12543265204621973,
+        0.8738803860947282
+      ],
+      "target": [
+        -668.38,
+        1.5,
+        318.5918
+      ],
+      "zoom": 12,
+      "roll": 0,
+      "azimuth": 0.7621465405869854,
+      "elevation": 0.6880093420302718,
+      "viewport": [
+        1552,
+        737.3333740234375
+      ]
+    }
+  },
+  "foreground_reveal": {
+    "default_ON_source_checked": true,
+    "initial_renderer_counters": {
+      "calls": 34,
+      "triangles": 235604,
+      "geometries": 34,
+      "textures": 2,
+      "fadedBuildings": 3,
+      "occluderBuildings": 826,
+      "logarithmicDepth": true
+    },
+    "counter_scope": "Initial perspective reports 3 faded buildings. Both timed windows report 0 faded buildings at their start and end; enabled reveal does not imply fading in every view or a measured per-frame fading count.",
+    "camera_report_sha256": "b78e6ff0aa40e0b54474265533d031a38c422e0ac62a98179062f38bcd30971c",
+    "camera_report_status": "passed_paused_camera_stability_pending_pixel_review",
+    "reported_identical_paused_pairs": 18,
+    "reveal_default_and_reload_observations": [
+      {
+        "viewport": [
+          1920,
+          1080
+        ],
+        "initial_checked": true,
+        "opt_out_not_persisted_after_reload": true,
+        "overview_stays_opaque_with_reveal_enabled": true
+      },
+      {
+        "viewport": [
+          2560,
+          1440
+        ],
+        "initial_checked": true,
+        "opt_out_not_persisted_after_reload": true,
+        "overview_stays_opaque_with_reveal_enabled": true
+      }
+    ],
+    "review_scope": "Saved camera report metadata checked here; no second pixel comparison or GPU run is performed by this FPS review."
+  },
+  "full_product_gate_names": [
+    "camera",
+    "play_pause_world_switch",
+    "desktop_layout",
+    "text_contrast_run",
+    "text_contrast_results",
+    "text_contrast_settings",
+    "genuine_instance_matrices",
+    "canonical_map_controls",
+    "recovery"
+  ],
+  "page_errors": [],
+  "previous_default_OFF_record_preserved": {
+    "path": "docs/validation/final-desktop-performance.json",
+    "sha256": "308d1d4181722eeb59ad8a41c3a817b6695f4205a9ca5992e02a74e9fba8c57b"
+  },
+  "method": {
+    "fps": "(draw-bearing frames - 1) / first-to-last recorded RAF timestamp span",
+    "percentiles": "Nearest rank ceil(p*n), including the reported 50th-percentile median.",
+    "callback_CPU": "JavaScript callback and draw-submission elapsed time, not completed GPU execution.",
+    "foreground": "Exactly visible/focused start and end, with focus/blur/visibility listeners active and no intermediate events. The gate handles only its own Chrome window; no renderer or throttling flags changed.",
+    "served_files": "The bound original harness checked all 63 HTTP file bodies before and after. This independent review reconciles those checks and rehashes the immutable local snapshot."
+  },
+  "limitations": [
+    "One genuine recording and two 30-second windows on one browser/hardware profile; no all-scenario or cross-hardware FPS guarantee.",
+    "1920x1080 describes the emulated CSS viewport; native CDP bounds and actual canvas-buffer dimensions are separately retained.",
+    "Per-frame sample arrays are not retained in the original report. FPS arithmetic and the bound percentile implementation are reviewed; percentiles are not independently recomputed from unavailable arrays.",
+    "No long-task entries were recorded during the windows; no system-wide absence or exclusive-resource claim is made.",
+    "This fresh default-ON measurement is not a controlled causal comparison with the previous default-OFF release. Old measurements remain historical and unchanged.",
+    "Rendering cadence is separate from simulator throughput, selector inference, scientific policy benefit and remote loading latency."
+  ]
+}
