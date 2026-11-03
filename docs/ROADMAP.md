@@ -1,6 +1,10 @@
 # AFTERLIGHT roadmap — implementation checkpoint
 
-All times **IST (UTC+05:30)**. Planning begins November 3, 2026 around 01:00. Target submission-ready November 4 at 16:00; organizer deadline November 4 at 20:00. These are bounded work allocations, not guarantees that unmeasured training/rendering will finish in a stated time. Actual pilot results determine scope cuts.
+All times **IST (UTC+05:30)**. Target submission-ready November 4 at 16:00;
+recorded organizer deadline November 4 at 20:00, subject to the final rules check.
+The morning checkpoint is not completion. The owner authorized continued work
+while Omen is off; cloud development continues, but tests and experiments stay on
+Omen. Scope depends on actual acceptance and measured pilot runtime.
 
 ## Original documentation checkpoint — November 3, 02:30 IST
 
@@ -8,9 +12,9 @@ The original asset pack is published and verified: 25 primary junctions plus 32 
 
 Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
 
-## Updated progress — November 3, 10:25 IST
+## Updated progress — November 3, 10:45 IST
 
-The original time windows below are planning history, not completed gates. The
+The overnight allocations are superseded by the evidence gates below. The
 owner explicitly continued the whole-day build and then switched off Omen.
 Cloud implementation continues; all acceptance and experiments wait for Omen.
 Desktop-only is now the target (`AGENTS.md`); real 3D geometry and low-poly
@@ -34,20 +38,21 @@ breadth before correctness or the actual browser demo.
 
 Documentation checkpoint → three-junction legal scheduler and accounting → canonical full-city importer → genuine paired traces → truthful polished viewer → pilot → frozen evaluation. Frontend and simulation can proceed in parallel after this checkpoint; shared schemas and geometry remain authoritative. A small valid study is mandatory; photorealism is not.
 
-| Window (IST) | Focus | Exit evidence / decision |
-|---|---|---|
-| Nov 3 02:30–03:00 | Publish this final document pass; pin replay, coordinate and simulation interfaces; begin implementation. | Remote documentation commit precedes application code. Preserve original assets; do not repeat completed art work. |
-| 03:00–04:30 | Python three-junction fixture, legal scheduler and demand accounting; React/Three.js original-asset city and accessible controls in parallel. | Omen executes fixture/unit checks; city root transform preserved; no invented moving traffic or benchmark values. |
-| 04:30–06:00 | Full-city conversion, paired-run exporter and local API; synchronized recorded viewer and fallback/error states. | Real independent-world traces, matching demand hashes and absolute time; canonical roads and route selection; Omen integration checks. |
-| 06:00–08:00 | Iterate on Omen failures, pilot runtime/action diversity, responsive/keyboard/ghost review and documentation. | Working tested vertical slice and honest readiness report at 08:00. Continue useful passes to this checkpoint; completion is not assumed. |
-| 08:00–12:00 | If pilot supports it: freeze practical train/validation budget and residual model; otherwise strengthen valid baseline/evidence. | Group-disjoint manifests, measured runtime, candidate diversity, frozen objective and feature schema. No dataset-size promise before pilot. |
-| 12:00–16:00 | Freeze evaluation and run untouched held-out study when feasible; publish genuine replay subset. | Failure/censoring accounting and strong fixed-lead/analytical comparison. ML may be inconclusive. |
-| 16:00–21:00 | Targeted product polish, evidence inspector, measured frame-time/accessibility checks. | Exact metrics/trace agreement and Omen visual evidence; no unsupported route claims. |
-| 21:00–Nov 4 01:00 | Static release preparation, independent reproduction, provenance/license audit. | Local-only fallback if free hosting is unavailable; deployment only when authorized. |
-| Nov 4 01:00–09:00 | Contingency and correction of known failures; no new scope. | Stable demo cases, complete evidence, no critical accounting/replay defects. |
-| 09:00–13:00 | Capture actual browser demo, captions, screenshots and results table. | Actual app, explicit mode, civilian tradeoff, limitations and real sample count. |
-| 13:00–16:00 | Submission-readiness checklist and owner review. | Repository/demo links, exact team/rules/license details; submission requires authorization. |
-| 16:00–20:00 | Four-hour contingency before organizer deadline. | Authorized corrections and verified receipt if submission is requested. |
+| Next gate | Work and required evidence |
+|---|---|
+| While Omen is off | Finish scoped source fixes, preserve failed/unknown evidence, reconcile docs and prepare pinned acceptance commands. No cloud testing, training or invented replay. Latest V3/map-picking preview is source `a6b2c12`, aggregate `2710cd6`; later backend changes do not inherit its build. |
+| First reconnect | Resolve the interrupted Python batch from saved records/process state before retry. Run the selected source cohort's unit/build/desktop checks, V3 geometry and canonical map-picking regressions. |
+| Traffic correctness | Fresh three-junction pair and ordinary/ordinary negative control; retain failures. Audit city lane/stop-line placement, then sparse city traffic. Clean conversion alone does not pass this gate. |
+| Experiment feasibility | Measure runtime and useful lead diversity. Freeze feasible whole-realization splits, objective, model-selection rules and capture case IDs before collection. A pending offline learned-replay bridge must preserve the original fixed-candidate trace and separate selector provenance; it is not a live learned controller. |
+| Evaluation and replay | Only after valid collection: fit on training, choose on validation, freeze, evaluate untouched test. Retain invalid/censored cases and publish only audited real captures. No held-out gain means an honest inconclusive/non-learned result. |
+| Nov 4, by 13:00 | Capture the actual desktop product/demo and truthful results or limitations; reconcile reproduction, attribution, licensing and evidence links. Reduce experiment breadth before correctness. |
+| Nov 4, 13:00–16:00 | Owner review and submission-ready package. A missing validity/model gate remains visible; do not call an unfinished experiment complete. |
+| Nov 4, 16:00–20:00 | Protected contingency for authorized corrections/submission and receipt verification. |
+
+The desktop viewer keeps true 3D geometry, X/Y/Z camera controls and localized
+building transparency. The 25 MB map budget is a ceiling, not a target. Keep
+civilian cars/trucks/bikes simple and instanced. Existing responsive behavior is
+preserved, but mobile optimization/testing is not part of the current work.
 
 ## Parallel work boundaries
 
@@ -94,13 +99,13 @@ Blank fields are intentional pending work, not successful delivery claims.
 
 ## Post-three-pass scope revision — city, ghost and proper-product gate
 
-The expanded 20–25-intersection city, two hospitals/~100 pickups and baseline ghost were added after the original review. The documentation-first revision and original Blender asset work are complete. **Publish the implementation checkpoint before application code.** Keep the existing deadline; new scope does not extend time. Map and asset work can resume against one accepted graph after that gate.
+The expanded 20–25-intersection city, two hospitals/~100 pickups and baseline ghost were added after the original review. The documentation-first revision and original Blender asset work are complete. The documentation-before-code checkpoint was completed; do not repeat that gate. Keep the existing deadline; new scope does not extend time. Map and asset work can resume against one accepted graph after that gate.
 
 1. **Authoritative topology first:** graph IDs, roads, hospital access and pickup anchors; validate direction/connectivity. Existing three-junction fixture remains the first simulation test, not the final whole map.
 2. **Thin end-to-end spike:** graph → SUMO geometry → Blender GLB → renderer; cardinal/bumper fixtures; ordinary and AFTERLIGHT traces; render-only ghost with world-isolation tests.
 3. **Expanded runtime gate:** pilot actual city rollouts and route lengths before committing the old dataset budget. If full-city ML is not feasible, expose the city honestly with validated corridors and mark unsupported runs; do not fake arbitrary-route intelligence.
 4. **Low-poly production:** cuboid color-varied buildings, simple cars/trucks/bikes, two hospital landmarks, detailed ambulance shared with the ghost. Instancing/LOD/material sharing before extra decorative detail.
-5. **Product gate:** searchable valid pickup/hospital selection, clear local-live/public-replay modes, loading/error/retry, disconnect handling, responsive controls, keyboard/reduced motion, results fallback and no stale metrics.
+5. **Product gate:** searchable valid pickup/hospital selection, clear local-generation/public-recorded modes, loading/error/retry, disconnect handling, desktop controls, keyboard/reduced motion, results fallback and no stale metrics.
 6. **Performance gate:** measure worst demand and camera, per-file transfer, visible triangles/draw calls, frame-time p95 and memory stability. Optimize ghost overlay first; optional paired city is secondary.
 7. **Evidence gate:** group-held-out randomized scenarios, route coverage statement, actual baseline trajectory and unchanged timings. Randomness is not an anti-overfitting proof.
 

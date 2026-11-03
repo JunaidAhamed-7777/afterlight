@@ -70,7 +70,7 @@ Do use original Blender-authored modular assets, coherent lighting, instanced ve
 
 Do not use previous car-film assets, unknown-license music, stock emergency footage or decorative fake metrics. Do not spend the deadline on photoreal façades or offline Cycles rendering. A polished demo video captured from the real browser experience remains a core deliverable.
 
-Validation status: the UI is now implemented in source; product browser acceptance, contrast audit and performance measurements remain pending on Omen. An offline attempt to run the one-off design linter was blocked because its package was not cached (`ENOTCACHED`); no dependency was installed and no lint success is claimed.
+Validation status: earlier enhanced desktop geometry, camera, cutaway and usability checks passed on Omen through `7ef8ffe`. Current V3/map-selection revisions require a new pinned cohort; a complete contrast audit and loaded-traffic performance measurements remain open. An offline attempt to run the one-off design linter was blocked because its package was not cached (`ENOTCACHED`); no dependency was installed and no lint success is claimed.
 
 ## Post-review city and ghost revision
 
@@ -93,3 +93,15 @@ ceiling rather than a filesize target. Foreground transparency is limited to
 identified buildings, never a shared-color whole-city fade. See
 [3D map and camera contract](docs/CAMERA_AND_3D_MAP.md) for geometry, coordinate
 preservation and Omen acceptance gates.
+
+## Desktop usability hierarchy
+
+The first screen offers a clear available action, not absent traffic controls:
+explore the city, open a real recording, or use an enabled local runner. Replay
+comparison controls/legend appear only with actual evidence. Journey/status text
+owns a row outside the canvas; camera controls, compass and errors never compete
+for the same corner. Keep seed/policy/lead under a native advanced disclosure,
+while the submitted immutable request remains distinguishable from the next run.
+Opt-in map markers are actual canonical anchors, with click-versus-drag protection
+and complete search/dropdown alternatives. No change to palette, typography or
+runtime tokens is needed for this hierarchy.

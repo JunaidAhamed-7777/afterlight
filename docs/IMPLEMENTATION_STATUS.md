@@ -15,8 +15,9 @@ Windows PC; cloud code review/build is not an acceptance result.
 
 The initial API served recordings only. The optional local-generation adapter now
 connects to the real runner when explicitly enabled, with one active job, bounded
-inputs, real status and validated completed recordings. This source capability is
-pending Omen acceptance; it is not live streaming and does not invent progress.
+inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but accepted real
+generation remains blocked on traffic validity. It is not live streaming and
+does not invent progress.
 
 ## Reproduction commands — use the existing pinned environment
 
@@ -82,3 +83,23 @@ alter simulation validity, move vehicles, or certify a real traffic system.
 These are implemented source capabilities with authored regression tests, not
 new Omen test results. No pilot, trained model, held-out gain or accepted real
 replay has been produced. The public recorded catalog remains intentionally empty.
+
+## Desktop V3 and current acceptance boundary
+
+The current source-bound preview is aggregate `2710cd6`, compiled from `a6b2c12`.
+It includes V3 modeled building details and opt-in map selection with actual
+canonical markers, drag suppression, rolled-camera raycasting and a separate
+local-request map-selection lock. The earlier `7ef8ffe` acceptance does not cover
+these changes. Desktop is the sole optimization/test target; preserve existing
+responsive behavior without starting mobile-specific work.
+
+The map allowance is 25 MB; the current enhanced GLB is 4,439,048 bytes according
+to its asset manifest. Low-poly instanced vehicles and the original canonical
+coordinate system remain unchanged. New source tests are authored, not executed.
+
+An offline selected-replay provenance bridge is being designed/implemented
+separately. It is **pending**, with no released model or real selected capture.
+The intended bridge selects one retained fixed-lead candidate using a frozen
+selector, preserves that candidate's physical policy/events and records separate
+selection provenance. It must never imply a live learned controller or infer a
+study conclusion from one attractive replay.

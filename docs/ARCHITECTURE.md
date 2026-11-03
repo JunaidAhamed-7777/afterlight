@@ -20,7 +20,7 @@ Versioned network + explicit arrivals + seed manifest
        static React / Three.js replay viewer
 ```
 
-The browser consumes evidence; it does not generate experimental truth. Blender authors appearance, not traffic behavior. A local development adapter may invoke Python, but the public static site never implies a backend exists.
+The browser consumes evidence; it does not generate experimental truth. Blender authors appearance, not traffic behavior. The explicitly enabled loopback adapter invokes Python and later opens a recorded result; the public static site has no simulator backend. The diagram describes the intended research system: no trained artifact or accepted traffic study exists yet.
 
 ## Decision model
 
@@ -87,13 +87,13 @@ Maintain separate `world_id=afterlight` and `world_id=baseline` simulations. Pre
 
 Primary rendering uses AFTERLIGHT traffic/signals plus its solid ambulance. The baseline ambulance pose becomes a translucent light-blue, gently emissive **render-only ghost**. Never add it as a vehicle, collider, detector input, TraCI object, priority request or signal trigger in the AFTERLIGHT simulator. Baseline traffic/signals remain separately available for inspection rather than blended into active truth.
 
-Both worlds use the same absolute simulated timestamp, origin and route scale. Do not normalize journey duration, speed up a losing trace or interpolate invented progress to make a race. A local live pair may advance with a synchronization barrier; if one world stalls, pause shared playback and label the state rather than presenting stale pose as live. Static replays use the same adapter/time contract.
+Both worlds use the same absolute simulated timestamp, origin and route scale. Do not normalize journey duration, speed up a losing trace or interpolate invented progress to make a race. Current local generation completes before playback; it is not live streaming. Any future streamed adapter would require a synchronization barrier and an explicit stalled state, not stale poses presented as live.
 
 Ghost position may overlap active-world vehicles or appear to pass an active-world red light because its own world has different queues/signals. Show a permanent “Baseline ghost — separate world” label, ghost toggle and separate baseline inspection view. Never adjust its trajectory to avoid this visual discrepancy. Show actual elapsed/arrival times and censoring; distance gaps alone are not claimed seconds saved.
 
 ### Graph integration details
 
-The published canonical manifest defines an approximately 1 km² irregular 5×5 primary-junction district with service roads. Its graph/geometry checks pass; it is not yet a validated SUMO export. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
+The published canonical manifest defines an approximately 1 km² irregular 5×5 primary-junction district with service roads. Its graph/geometry checks pass, and fixture/city network conversion completed without warnings on Omen at `7ef8ffe`. Generated lane/stop-line alignment and actual city traffic acceptance remain separate open gates. Distinguish primary signal junctions from driveway/service geometry nodes. Final graph counts and hashes come from validation, not this plan.
 
 Use deterministic pickup/hospital IDs and valid network curb anchors rather than arbitrary building centroids. With 100 pickups and two hospitals, validate reachability for the 200 potential origin/destination pairs, including permitted vehicle access and endpoint placement. This is a graph-connectivity target, **not 200 benchmarked traffic cases**. Persist route availability and manifest revision for UI selection; do not expose a visually plausible but disconnected route.
 
@@ -128,3 +128,24 @@ a floating-point boundary postponing a cap by a whole tick; actual event
 timestamps are retained and meaningful early transitions remain prohibited.
 The supported grid follows [SUMO's documented time-step contract](https://sumo.dlr.de/docs/Simulation/Basic_Definition.html),
 with additional exact-controller-duration divisibility required by AFTERLIGHT.
+
+## Desktop rendering and selection boundary
+
+The enhanced city preserves the original glTF root and canonical map. Per-building
+identity permits material batching with selective foreground transparency; ground
+and shared-color trees must never enter the building fade mask. True-perspective
+Explore and orthographic Full city are views of the same physical world. X tilt,
+Y heading and Z view-roll affect rendering only. Low-poly traffic stays instanced.
+
+Opt-in map picking uses canonical curb/driveway anchors and the actual rendered
+camera, including roll. It cannot select a ghost or traffic vehicle. A route click
+must not be confused with a camera drag. The map-only lock covers loaded/loading
+recordings and active/recovering/uncertain local requests; existing dropdowns may
+still prepare a next journey without changing the immutable submitted request.
+Desktop controls retain keyboard alternatives and explicit failure/readiness states.
+
+A separate offline learned-selection replay bridge is pending. Its intended
+contract preserves the selected real fixed-lead world's policy, decision and
+trace, maps source world IDs explicitly, and adds model/protocol/report/trace
+provenance outside physical policy fields. It is not a new live learned controller;
+no trained model, selected capture or gain is claimed by this design.

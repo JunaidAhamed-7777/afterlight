@@ -32,9 +32,9 @@ The demo audience is a technical judge asking whether intelligent emergency prio
 
 ## Scope lock
 
-Current target: 20–25 primary intersections (25-primary-junction topology under preparation, plus separately identified service/driveway nodes), two hospitals and approximately 100 pickup locations; original low-poly city with simple multicolored buildings and traffic archetypes; one detailed stylized ambulance. Keep a three-intersection fixed-route fixture for controller correctness before city scaling. First validated learning experiment may remain corridor-scoped; exposing map pickup selection does not prove learned arbitrary-route performance. One ambulance per independently simulated world, one dispatch decision, shared legal scheduler across priority variants and seeded paired demand remain constraints. A render-only baseline ghost overlays the active AFTERLIGHT world.
+Current canonical map: 25 primary intersections plus separately identified service/driveway nodes, two hospitals and 100 pickup locations; original low-poly city with simple multicolored buildings and traffic archetypes; one detailed stylized ambulance. Keep a three-intersection fixed-route fixture for controller correctness before city scaling. First validated learning experiment may remain corridor-scoped; exposing map pickup selection does not prove learned arbitrary-route performance. One ambulance per independently simulated world, one dispatch decision, shared legal scheduler across priority variants and seeded paired demand remain constraints. A render-only baseline ghost overlays the active AFTERLIGHT world.
 
-Out of scope: real road control, multiple simultaneous emergency dispatches, arbitrary city import, reinforcement learning training, live sensor integration, cloud GPU inference, accounts, collaborative editing, map search, medical claims, paid APIs.
+Out of scope: real road control, multiple simultaneous emergency dispatches, arbitrary city import, reinforcement learning training, live sensor integration, cloud GPU inference, accounts, collaborative editing, external geographic address search, medical claims, paid APIs.
 
 ## Definition of impressive
 
@@ -42,6 +42,22 @@ The visual signature is one synchronized city shown in two counterfactual outcom
 
 ## Post-review scope change
 
-The expanded map and ghost overlay were requested after the original three-pass review. They require new topology, route-connectivity, runtime and world-isolation checks; the earlier review is not evidence those expanded checks already passed. Approximately 100 pickups are planned valid route anchors, not 100 extra intersections. Exact IDs, hospital connections and pickup placement belong to the authoritative graph manifest, not independently invented frontend coordinates.
+The expanded map and ghost overlay were requested after the original three-pass review. They require new topology, route-connectivity, runtime and world-isolation checks; the earlier review is not evidence those expanded checks already passed. The published 100 pickups are canonical route anchors, not 100 extra intersections. Exact IDs, hospital connections and pickup placement belong to the authoritative graph manifest, not independently invented frontend coordinates.
 
 Graph reachability acceptance targets all 200 possible pickup/hospital pairs, with deterministic curb-anchor IDs and valid vehicle permissions. Benchmark coverage is reported separately; a connected pair is not an evaluated scenario. The expanded district should feel roughly kilometer-scale while keeping primary intersections near 25; service-road geometry does not require hundreds of extra signal controllers.
+
+## Current desktop product requirements
+
+The owner prioritizes desktop-only usability and performance. Preserve keyboard
+access, reduced-motion support and normal window resizing; do not expand mobile
+optimization or testing. Use actual modeled 3D buildings and roads, not parallax
+or billboard substitutes. Provide true-perspective exploration at 2.5× visual
+magnification, X/Y/Z camera controls, a fitted overview and selective foreground
+building transparency. Magnification must not alter canonical meters or routes.
+
+The map asset ceiling is 25 MB. Simple low-poly cars/trucks/bikes and an identifiable
+hero ambulance remain intentional. Optional map picking must use real canonical
+anchors, distinguish a click from camera dragging and preserve complete HTML
+search/dropdown alternatives. Recorded-world comparison controls appear only
+when real paired evidence is loaded. Generation settings may be simplified, but
+saved request identity, failure reasons and uncertain-request recovery remain explicit.

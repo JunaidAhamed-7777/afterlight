@@ -9,11 +9,16 @@ Top level:
   Never overlay fixture trajectories on the full-city asset.
 - `coordinates`: source `canonical XY meters`, position reference `front_bumper`,
   render transform `[x,z,-y]`.
-- `provenance`: `source_commit`, `network_sha256`, `demand_sha256`, `sumo_version`.
+- `provenance`: `source_commit`, `network_sha256`, `demand_sha256`, `sumo_version`,
+  and `canonical_map_sha256` for city overlays (null for fixtures). The browser
+  compares the latter with the actual canonical-map bytes before overlaying traffic.
 - `duration_s`, `step_s` and `worlds: {afterlight, baseline}`.
-- Each world: `policy`, `status`, `metrics`, `events`, `frames`.
+- Each world: matching `world_id`, physical `policy`, optional `lead_s`, `status`,
+  `metrics`, `events`, `frames`. The baseline policy is `ordinary`.
+- Optional `network_geometry.signals` supplies actual imported controlled-link
+  shapes/indexes; this is distinct from canonical road-center route references.
 - Each frame: absolute `t`, `vehicles`, `signals`, `queue_count`.
-- Vehicle: `id`, `type`, `x`, `y`, `z`, `angle_deg`, `speed_mps`, `length_m`.
+- Vehicle: `id`, `type`, `x`, `y`, `z`, `angle_deg`, `speed_mps`, `length_m`, optional positive `width_m`.
   Angle is SUMO navigation degrees clockwise from north: 0 is +Y, 90 is +X.
   Pose is the front bumper: subtract half the length along heading before placing
   the center-origin Blender model. Preserve the glTF city root translation.
@@ -24,14 +29,34 @@ Both worlds are independent real SUMO simulations from the same exogenous demand
 file and share an absolute clock. Each may contain physical id `ambulance`; no
 physical id `ghost` is created. Ghost is a renderer-only baseline ambulance clone.
 Interpolate poses only, not outcomes; never retime either world or omit failed runs.
+Both frame arrays cover zero through the declared duration at identical timestamps.
+Undeclared sample gaps fail validation. Insertion/removal and signals are left-held
+at recorded sample boundaries; pose interpolation uses only IDs present on both
+adjacent frames and does not animate detected teleport discontinuities. No pose
+is extrapolated beyond trace support.
 
 ## Catalog and local adapter
 
 Static `replays/catalog.json`: `schema: afterlight.catalog.v1`, `runs: []`, with
 rows `id`, `title`, `url`, `seed`, `pickup_id`, `hospital_id`, `policy`, `duration_s`.
+`policy` is the machine identity, not a display label. Optional `lead_s`,
+`policy_label`, `sha256` and `bytes` retain presentation and exact-file provenance.
+Selected metadata must match the fetched recording; supplied bytes/hash are
+verified before displaying outcomes, with a bounded streaming response reader.
 Only available real recordings appear. Local `GET /api/catalog` returns the same
 shape with `/api/runs/{id}` URLs. Loopback API exposes health and recordings; generation is disabled by default.
 With explicit `--enable-generation`, POST /api/runs starts one real local paired
 SUMO job and GET /api/jobs/{id} reports its actual lifecycle. On completion it
 provides a validated recorded replay. This is local generation followed by playback,
 not live streaming. Static mode must not offer generation. See [API details](../api/README.md).
+
+## Pending offline selector provenance extension
+
+A separate optional `selection_evidence` bridge is in progress and is not yet an
+accepted replay/UI capability. The intended export retains a predeclared real
+fixed-lead candidate and ordinary comparison, with original physical policy,
+raw dispatch decision and timestamps unchanged. Separate metadata identifies
+the frozen selector/model, study/protocol/release/report and exact source trace
+aliases/hashes. It must not relabel the physical controller as live learned
+inference or infer held-out benefit from one selected run. There is currently no
+released trained model, accepted selected replay or performance conclusion.

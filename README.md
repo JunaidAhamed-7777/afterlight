@@ -2,9 +2,9 @@
 
 **Clear the ambulance’s path. Then clear the congestion left behind.**
 
-A proposed Python-first AI traffic-signal experiment for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
+A Python-first AI traffic-signal prototype under active validation for Neural Storm 2026, FT-01 Smart Traffic Signal Optimisation. AFTERLIGHT compares emergency clearance policies within a canonical 25-primary-junction city, beginning with a three-intersection correctness corridor and makes both the ambulance benefit and civilian aftermath visible.
 
-> **Status: product implementation in progress; acceptance testing on Omen.** Original city assets are verified. The React/Three.js viewer, legal scheduling/network conversion, evaluation guards and local recordings API are now implemented in source. Real SUMO runs and product acceptance are being validated separately; no trained model, measured traffic improvement or deployment is claimed. The recording catalog is intentionally empty until genuine paired runs are available.
+> **Status: desktop viewer built; traffic acceptance still open.** Omen has verified an earlier enhanced 3D viewer and clean fixture/city network conversion. The latest V3 geometry, map-selection and backend revisions are compiled/source-reviewed but await a new pinned Omen run. The prior real fixture pair was invalid because of a civilian collision; no accepted replay, pilot, trained model or measured improvement exists. The public recording catalog remains empty. See the [exact acceptance log](docs/validation/OMEN_LOG.md).
 
 ## Why Afterlight stands out
 
@@ -36,7 +36,7 @@ Emergency preemption itself is established work. Our intended distinction is the
 5. [Viewer behavior and demo](docs/VIEWER_AND_DEMO.md)
 6. [Zero-cost delivery](docs/DEPLOYMENT.md)
 7. [Research sources](docs/SOURCES.md) and [three-pass review record](docs/REVIEW_LOG.md)
-8. [Execution roadmap, written after pass 3](docs/ROADMAP.md)
+8. [Current execution roadmap](docs/ROADMAP.md)
 
 Three documentation passes, the final implementation review and original asset prototype are complete. Source implementation is underway; [checkpoint status](docs/IMPLEMENTATION_STATUS.md) separates implemented code from actual local acceptance. Submission still requires verified setup, actual screenshots/results, exact team attribution, licensing and AI-assistance review.
 
@@ -87,9 +87,26 @@ The published map has 25 primary junctions plus 32 access/bend/terminal nodes, t
 
 The ghost is a counterfactual overlay, not a second emergency vehicle in the active world. Its independent baseline queues/signals may differ, so apparent crossings through visible AFTERLIGHT cars or red lights must be explained with a label and optional separate-world view—not cosmetically corrected. See [the updated contracts](docs/ARCHITECTURE.md).
 
-## Verified asset milestone
+## Original assets and current 3D city
 
-The original low-poly city contains 25 primary intersections, two hospitals and 100 pickup anchors. Nine GLBs total **1,268,584 bytes**; the city is **14,552 triangles / 15 material primitives**, and the ambulance **2,378 triangles / 9 primitives**. All nine exports pass Khronos validation with zero errors or warnings. HTTP loading and GLTFLoader parsing passed for 9/9 assets, but cloud Chrome has WebGL disabled: browser drawing, frame times, ghost compositing and traffic behavior are not verified. The separate baseline-world ghost remains a runtime contract, not implemented comparison evidence.
+The original nine-GLB pack remains preserved: **1,268,584 bytes**, including the
+14,552-triangle city prototype and 2,378-triangle ambulance. Its Khronos checks
+passed with zero errors/warnings. These counts describe the original pack, not
+the current enhanced city.
+
+The current [V3 city manifest](assets/exports/city_enhanced_manifest.json) records
+**4,439,048 bytes**, 187 separately identified buildings and unchanged canonical
+roads/vehicle geometry, below the owner's **25 MB map ceiling**. Real modeled
+facades, roof details and hospital structures replace neither geometry with
+parallax nor simple vehicles with costly decoration. The viewer batches buildings
+by shared material and fades only foreground building geometry.
+
+Desktop controls include true-perspective Explore 2.5×, a fitted Full city view,
+X tilt/Y heading/Z view-roll, and opt-in canonical pickup/hospital selection.
+Camera magnification never rescales the simulation. Earlier enhanced geometry,
+selective transparency and desktop controls were observed on Omen; **V3 and the
+new map-picking flow still require their own acceptance**. There is no accepted
+traffic replay demonstrating the ghost comparison yet.
 
 [Explore the asset pack](assets/README.md) · [GLB validation report](assets/qa/glb_audit.json) · [Map checks](assets/map/validation_report.json)
 
