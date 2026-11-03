@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="500" viewBox="0 0 1500 500" role="img" aria-labelledby="hero-title hero-desc">
+  <title id="hero-title">AFTERLIGHT — Human Impact</title>
+  <desc id="hero-desc">One ambulance. A whole city to consider. A desktop traffic signal lab with a 4.1 square kilometre city, 826 buildings, 811 tests passed, and a 46.97 MB release. Simulation research.</desc>
+  <style>
+    text { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+    .value { fill: #F2F7FC; font-size: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .label { fill: #B0C7D9; font-size: 18px; font-weight: 400; }
+  </style>
+
+  <rect width="1500" height="500" rx="12" fill="#0A1F44"/>
+  <text x="72" y="64" fill="#72EAD2" font-size="18" font-weight="700" letter-spacing="4">HUMAN IMPACT</text>
+
+  <!-- The native route-intersection mark reuses web/public/brand/mark.svg. -->
+  <g transform="translate(66 111) scale(1.7)">
+    <g stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+      <path d="M32 15V54" fill="none" stroke="#2CB2A2"/>
+      <circle cx="32" cy="10" r="5" fill="none" stroke="#2CB2A2"/>
+      <circle cx="32" cy="54" r="5" fill="#2CB2A2" stroke="#2CB2A2"/>
+      <path d="M10 32H44" fill="none" stroke="#D98F2A"/>
+      <circle cx="10" cy="32" r="5" fill="#D98F2A" stroke="#D98F2A"/>
+      <circle cx="32" cy="32" r="6" fill="#0A1F44" stroke="#D98F2A"/>
+      <circle cx="55" cy="32" r="5" fill="#0A1F44" stroke="#D98F2A"/>
+    </g>
+  </g>
+  <text x="210" y="207" fill="#F2F7FC" font-size="116" font-weight="750" letter-spacing="6">AFTERLIGHT</text>
+  <text x="72" y="275" fill="#B0C7D9" font-size="30" font-weight="400">One ambulance. A whole city to consider.</text>
+
+  <g>
+    <rect x="72" y="326" width="328" height="108" rx="6" fill="#183052"/>
+    <path d="M96 326H376" stroke="#D98F2A" stroke-width="3"/>
+    <text class="value" x="96" y="377">4.1 km²</text>
+    <text class="label" x="96" y="409">city</text>
+  </g>
+  <g>
+    <rect x="416" y="326" width="328" height="108" rx="6" fill="#183052"/>
+    <path d="M440 326H720" stroke="#2CB2A2" stroke-width="3"/>
+    <text class="value" x="440" y="377">826</text>
+    <text class="label" x="440" y="409">buildings</text>
+  </g>
+  <g>
+    <rect x="760" y="326" width="328" height="108" rx="6" fill="#183052"/>
+    <path d="M784 326H1064" stroke="#72EAD2" stroke-width="3"/>
+    <text class="value" x="784" y="377">811</text>
+    <text class="label" x="784" y="409">tests passed</text>
+  </g>
+  <g>
+    <rect x="1104" y="326" width="328" height="108" rx="6" fill="#183052"/>
+    <path d="M1128 326H1408" stroke="#B0C7D9" stroke-width="3"/>
+    <text class="value" x="1128" y="377">46.97 MB</text>
+    <text class="label" x="1128" y="409">release</text>
+  </g>
+
+  <text x="72" y="472" fill="#B0C7D9" font-size="17" font-weight="400">Desktop traffic signal lab • simulation research</text>
+</svg>
