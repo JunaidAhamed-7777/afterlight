@@ -1,101 +1,193 @@
 # AFTERLIGHT
 
-A desktop traffic signal lab. Follow an ambulance through a miniature city, inspect the ordinary-signal response, and measure the traffic cost of giving it priority.
+**An AI-powered research solution for Human Impact — Healthcare, Education & Social Good.**
 
-[Open the lab](https://afterlight-gamma.vercel.app/) · [81-second walkthrough of the original release](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
+Accessible, responsible AI for emergency mobility, traffic education and citizen-service planning.
 
-![AFTERLIGHT running in the browser: colorful original city, two recorded journeys, visible follow controls and shared playback](docs/images/workspace.png)
+![AFTERLIGHT — desktop traffic signal lab. 4.1 square kilometres, 826 buildings, 811 tests passed, 46.97 MB release.](docs/images/readme-hero.svg)
 
-## Try a response
+**FT-01 · Smart Traffic Signal Optimisation**<br>
+**Team:** Crash Out · **Member:** Junaid Ahamed
 
-1. Open **Cross-city response** or **Westhaven response** and press **Play**.
-2. Select **Follow Ambulance**, beside Zoom. Orbit or zoom closer while it tracks the vehicle.
-3. Switch to **Ordinary** to inspect that world's traffic and signals. **Follow Ghost** puts its translucent ambulance over the Afterlight scene on the same clock.
-4. Pause, scrub, or use **10× / 20×** to explore the journey. Speed changes playback for both worlds together.
-5. Open **Results → This run** for outcomes, **Algorithm** for the exact route and display process, or **Study** for the separate held-out experiment.
+**[Open AFTERLIGHT ↗](https://afterlight-gamma.vercel.app/)** · [81-second original-release demo](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Evidence](docs/BENCHMARK_PROTOCOL.md)
 
-A five-step first-visit guide introduces these controls. Reopen it from Settings. The left pane scrolls; the map and playback stay on screen. Desktop, keyboard and mouse are the intended experience.
+## Index
 
-To choose another pickup or hospital, open **Explore another journey**. The fixed recording's controls stay blurred until **Leave recording & explore** unlocks them and focuses pickup search.
+[01 · Impact](#01--impact) · [02 · Experience](#02--experience) · [03 · Benchmarks](#03--benchmarks) · [04 · How it works](#04--how-it-works) · [05 · AI](#05--ai--evidence) · [06 · Quality](#06--quality) · [07 · Run locally](#07--run-locally) · [08 · Project guide](#08--project-guide) · [09 · Credits](#09--credits)
 
-![The journey card with its visible Leave recording action above the blurred, disabled controls](docs/images/journey-controls.png)
+## 01 · Impact
 
-![First-visit guide highlighting Follow Ambulance and Follow Ghost](docs/images/onboarding.png)
+**The problem:** ambulance priority changes traffic across a city. Measuring only the ambulance misses everyone waiting behind it.
 
-## The city and its traffic
+**The solution:** compare ordinary signals and ambulance priority under the same scheduled demand. Watch both journeys; measure ambulance time and civilian delay together.
 
-The original Blender city covers **4.1004 km²**, exactly four times the earlier map's area. It has 81 primary intersections, 77 signal controllers, 826 buildings, eight parks, 100 pickup anchors and hospitals in two diagonal quadrants. Cars, trucks and bikes follow genuine SUMO recordings. Movement arrows show the recorded signals.
+- **Healthcare:** explore simulated ambulance access to two hospitals.
+- **Education:** inspect signals, queues, routes and the algorithm behind each journey.
+- **Social good:** make public-service tradeoffs visible and reproducible.
 
-Both traffic worlds use the same external demand and routes. Each has its own vehicles, queues and signal decisions. The ghost comes from the ordinary world and never affects Afterlight traffic. Its overlap with a visible vehicle is a comparison between separate worlds.
+Research prototype; real-world deployment and safety certification are outside its scope. The hosted experience replays audited simulations.
 
-The roof lights alternate red and blue during playback. Reduced motion keeps them steady and disables continuous camera following. The model thumbnails in the legend are renders of the original ambulance.
+## 02 · Experience
 
-![Close desktop view of the ambulance, mixed traffic and ordinary-world ghost](docs/images/ambulance-follow.png)
+![Working desktop application: original 3D city, scrollable workspace, fixed map and playback controls.](docs/images/workspace.png)
 
-Logarithmic depth and separated road/plaza surfaces correct camera-dependent striping. **Reveal streets behind foreground buildings** starts enabled on every visit; Camera options can disable it for the current session. Eighteen paused camera-repeat pairs matched exactly across two desktop profiles, including default reveal, reload and explicitly opaque views. [Current camera acceptance](docs/validation/journey-algorithm-camera.json)
+1. **Two traffic worlds.** Shared demand and route; independent signals, vehicles and queues.
+2. **Follow either ambulance.** Solid priority ambulance + ordinary-world ghost, on one clock.
+3. **Inspect every moment.** Pause, scrub, orbit and play up to **20×** speed.
+4. **See through the city.** Street reveal enabled by default; red/blue roof lights.
+5. **Start confidently.** Five-step onboarding, keyboard controls and reduced-motion support.
+6. **Understand the route.** Results → Algorithm exposes exact road edges, Dijkstra and source links.
 
-Results → Algorithm explains distance-based Dijkstra, the original ordered road edges shared by both ambulances, each world's signal policy, coordinate conversion and recorded-pose interpolation. Source links and hashes identify the reviewed implementation. The saved SUMO lane reference is labeled separately from the path-search cost.
+![Close view of the original ambulance model, mixed traffic and comparison ghost.](docs/images/ambulance-follow.png)
 
-![Algorithm view explaining the selected recording's shared route, separate journeys and source-backed process](docs/images/algorithm.png)
+**4× original map area · 4.1004 km² · 81 primary intersections · 77 signal controllers**<br>
+**826 buildings · 411 trees · 288 streetlights · 8 parks · 100 pickup anchors · 2 hospitals**
 
-## What the recordings show
+[City geometry](assets/map/README.md) · [Original Blender assets](assets/PROVENANCE.md)
 
-These are **two exploratory examples**, each retaining every 0.5-second simulation step through 900 seconds:
+<details>
+<summary><strong>First response in three clicks + more screenshots</strong></summary>
 
-- **Cross-city, fixed 20 s lead:** ambulance journey **601 → 473 s**, saving 128 s. Mean civilian excess travel time increases **2.19 s**. All 398 civilians finish in each world.
-- **Westhaven, analytical lead:** ambulance journey **426.5 → 322.5 s**, saving 104 s. Mean civilian excess increases **1.14 s**. All 426 civilians finish in each world.
+1. Open **Cross-city response** or **Westhaven response**.
+2. Press **Play**, then **Follow Ambulance** beside Zoom.
+3. Select **Ordinary** or **Follow Ghost** to compare. Open **Results** for measurements.
 
-All four worlds report zero collisions and teleports. A separate presentation audit found no red/all-red or unresolved movements among 9,839 eligible stop-line crossings. These checks apply to the published recordings; the two examples do not establish held-out model performance. [Recording evidence](docs/validation/expanded-city-recordings.json) · [Presentation audit](docs/validation/expanded-city-presentation.json)
+![First-visit onboarding highlighting the two follow controls.](docs/images/onboarding.png)
 
-## The learned selector did not improve the held-out result
+**Explore another journey** exposes pickup and hospital controls. **Leave recording & explore** unlocks them and focuses search.
 
-The frozen study uses **24 training, 12 validation and 20 test episodes**, with seven policy worlds per episode. Heavy demand and one ordered route family are held out. The predeclared residual tree has 11 nodes, depth 3 and 120 finite candidate labels from the 24 training groups. Validation chooses the fixed comparator's 5-second lead.
+![Prominent journey card with the Leave action above blurred, disabled recording controls.](docs/images/journey-controls.png)
 
-The single test attempt retains **all 140 worlds: 134 completed and six collision-invalid**. Against fixed 5 s, the learned selection has **one failure versus zero**. Among the 19 pairs with valid objectives in both choices, mean objective difference is **+0.681 s**, with a 95% group-bootstrap interval of **−4.993 to +5.978 s**. Lower is better. The interval includes zero.
+![Algorithm view explaining the saved route, policies and recorded-pose display.](docs/images/algorithm.png)
 
-The learned and analytical selectors choose the **same action in all 20 test episodes**. There is no demonstrated learned benefit, and the model is not promoted. Selection operates offline over five cached candidates; the hosted site replays evidence.
+</details>
 
-![Actual held-out comparisons, retaining failures and showing the interval across zero](docs/images/study-comparisons.png)
+## 03 · Benchmarks
 
-The objective adds ambulance journey time to mean civilian excess travel time over all scheduled civilian demand, with weight 1. Failures stay in the counts; unavailable outcomes never become zero. A retained pre-fit metadata failure led to an explicitly frozen analysis correction before the model fit and test release. Original physics, data and failed evidence remain intact. [Protocol](docs/BENCHMARK_PROTOCOL.md) · [Analysis amendment](docs/ANALYSIS_AMENDMENT.md) · [Per-case results](https://afterlight-gamma.vercel.app/study/paired-records.csv)
+![Benchmark dashboard: two exploratory ambulance journey reductions, desktop rendering cadence and warm offline selector latency. Full values and measurement scopes follow.](docs/images/readme-benchmarks.svg)
 
-## Measured on the desktop
+**128 s / 104 s saved in two recorded examples · 152.5 FPS overview · 0.2241 ms median learned selection**
 
-The current build, with street reveal enabled, recorded **152.5 FPS overview / 129.7 FPS close follow** in separate 30-second foreground windows. The profile used a Ryzen 9 5900HX, integrated AMD Radeon graphics, Chrome 156, a 1920×1080 CSS viewport at DPR 1 and 373 vehicles at the chosen start frame. The native window was 1724×978; the canvas buffer was 1552×737. These measurements describe browser rendering cadence on this machine. [Current measurements and scope](docs/validation/journey-algorithm-desktop-performance.json) · [Earlier release measurements](docs/validation/final-desktop-performance.json)
+<details>
+<summary><strong>Exact benchmark values, hardware & measurement conditions</strong></summary>
 
-Complete warm Python selection across five candidates measured **0.2241 ms median / 0.2512 ms p95** for the learned method, versus **0.0429 / 0.0549 ms** analytical. That is 2,400 repeated decisions per method across 12 validation observations, excluding I/O, startup, simulation, browser and network. [Original timing samples](docs/validation/study-v4/selector-timing.json)
+### Recorded ambulance journeys
 
-The complete 63-file release is **46.97 MB**, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer. [Current release inventory](docs/validation/journey-algorithm-release.json)
+- **Cross-city: 128 s saved · 21.3% shorter.** **601 → 473 s** with fixed 20 s lead; civilian mean excess **+2.19 s/person**; **398/398** civilians finish in each world.
+- **Westhaven: 104 s saved · 24.4% shorter.** **426.5 → 322.5 s** with analytical priority; civilian mean excess **+1.14 s/person**; **426/426** finish in each world.
+- **Four published worlds:** zero collisions and teleports. **9,839 eligible stop-line crossings** presentation-audited; zero red/all-red or unresolved movements.
 
-## Verify the experiment
+Two exploratory examples, recorded every **0.5 s** through **900 s**. These demonstrate fixed/analytical priority; the learned-selector evaluation is separate. [Recording measurements](docs/validation/expanded-city-recordings.json) · [Crossing audit and scope](docs/validation/expanded-city-presentation.json)
 
-The public proof pack contains 28 files totaling 2,405,037 bytes, including four lossless grids representing **170,697,107 bytes of complete original JSON**, the model, selectors, original report, 40 comparison rows and amendment/release evidence.
+### Desktop rendering
 
-Recompute it with Python's standard library, without SUMO, model fitting or private inputs:
+- **152.5 FPS overview · 129.7 FPS close follow.** Frame-interval p95: **12.1 / 12.2 ms**.
+- Ryzen 9 **5900HX**, integrated AMD Radeon, Chrome 156; **373 vehicles** at measurement start.
+- Separate **30-second**, visible/focused windows; **1920×1080 CSS / DPR 1**, canvas **1552×737**; street reveal enabled.
+
+Browser rendering cadence on one desktop. [Exact environment and samples](docs/validation/journey-algorithm-desktop-performance.json)
+
+### AI selection & delivery
+
+- **Learned selector:** **0.2241 ms median / 0.2512 ms p95**.
+- **Analytical selector:** **0.0429 ms median / 0.0549 ms p95**.
+- **2,400 decisions/method**, 12 validation observations, five candidates/decision. Warm Python timing excludes loading, training, simulation, browser and network. [Timing record](docs/validation/study-v4/selector-timing.json)
+- **46.97 MB total · 63 files · under 50 MB**, including models, lossless recordings, evidence, font and walkthrough. [Release inventory](docs/validation/journey-algorithm-release.json)
+
+</details>
+
+## 04 · How it works
+
+```mermaid
+flowchart LR
+    A[Canonical city network] --> B[Dijkstra route + shared demand]
+    B --> C[Ordinary-signal SUMO world]
+    B --> D[Priority-signal SUMO world]
+    C --> E[Audited poses + signals + metrics]
+    D --> E
+    A --> F[Original Blender geometry]
+    E --> G[React + Three.js replay]
+    F --> G
+    G --> H[Shared clock + ghost + results]
+```
+
+**Routes:** permitted directed roads, minimum distance. **Priority:** minimum-green, yellow and all-red transitions. **Ghost:** ordinary-world recording, overlaid without affecting priority-world traffic.
+
+**Stack:** React 19 · TypeScript · Three.js · Vite · Python · SUMO/TraCI · scikit-learn · Blender 5.2.2 LTS · Canva · Vercel.
+
+[Architecture](docs/ARCHITECTURE.md) · [Signal scheduler](policies/scheduler.py) · [Blender pipeline](docs/BLENDER_PIPELINE.md)
+
+## 05 · AI & evidence
+
+The offline AI component adds a **learned residual tree** to an analytical cost estimate, then scores **five priority lead times**. Dijkstra handles routing; the learned model studies signal timing.
+
+```mermaid
+flowchart LR
+    A[24 training episodes] --> B[Fit residual tree]
+    B --> C[12 validation episodes]
+    C --> D[Freeze model + selectors]
+    D --> E[20 held-out test episodes]
+    E --> F[Publish complete evidence]
+```
+
+**11 tree nodes · depth 3 · 120 finite training labels · 140 test worlds audited**
+
+**28 public proof files · 2.41 MB pack · 170.70 MB original JSON preserved · 40 paired comparison rows**
+
+Predictive performance is reported as paired objectives and uncertainty in the [complete study results](docs/validation/study-v4/report-checkpoint.json). [Model details](models/README.md) · [Protocol](docs/BENCHMARK_PROTOCOL.md) · [Per-case CSV](https://afterlight-gamma.vercel.app/study/paired-records.csv)
+
+<details>
+<summary><strong>Recompute the public proof with standard-library Python</strong></summary>
 
 ```sh
 python scripts/verify_public_study.py --base-url https://afterlight-gamma.vercel.app/ --released-manifest-sha256 f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9
 ```
 
-The verifier checks original bytes, full world inventories, frozen choices, failures, per-case rows and confidence intervals. [Public verification instructions](docs/STUDY_BROWSER_ACCEPTANCE.md) · [Publication record](docs/validation/study-v4/publication.json)
+Checks original hashes, world inventories, model choices, per-case outcomes and intervals. No SUMO, fitting, API key or private inputs required. [Verification guide](docs/STUDY_BROWSER_ACCEPTANCE.md)
 
-The current source run passed **664 Python and 147 Node tests**, with five explicit Python skips. Both fixture and city network conversions passed. Desktop checks cover the journey lock, exact routing evidence, keyboard navigation, loading cancellation and default street reveal. [Current source checks and skip reasons](docs/validation/journey-algorithm-source-acceptance.json) · [Desktop feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Current public deployment checks](docs/validation/journey-algorithm-hosting.json)
+</details>
 
-## Run locally
+## 06 · Quality
 
-Use **Node ≥22.12** and the committed lockfile:
+1. **811 executed tests passed:** **664 Python + 147 Node**; five explicit Python skips. **11 source stages**, including **two network conversions**. [Source checks](docs/validation/journey-algorithm-source-acceptance.json)
+2. **200/200 pickup–hospital routes:** static directed connectivity validated. [Map qualification](docs/validation/expanded-network-qualification.json)
+3. **18/18 paused camera pairs:** exact image matches across **two desktop profiles**. [Camera checks](docs/validation/journey-algorithm-camera.json)
+4. **Two separate polish passes:** onboarding, playback, signal presentation, keyboard and graphics recovery. [Polish record](docs/validation/prehosting-two-polish-passes.json)
+5. **Public browser acceptance:** both recordings, journey lock/unlock, cancellation, Algorithm, Study and reload. [Public checks](docs/validation/journey-algorithm-public-browser.json)
+6. **63/63 hosted files:** published sizes and SHA-256 hashes match the accepted build. [Deployment checks](docs/validation/journey-algorithm-hosting.json)
+
+## 07 · Run locally
+
+**Desktop browser · Node ≥22.12 · npm**
 
 ```sh
+git clone https://github.com/JunaidAhamed-7777/afterlight.git
+cd afterlight
 npm --prefix web ci
 npm --prefix web run dev
 ```
 
-The static viewer needs no Python, SUMO, API key or environment file. For simulation or new recordings, follow the [local API instructions](api/README.md). See [viewer controls and tests](web/README.md), [architecture](docs/ARCHITECTURE.md), [source-bound preview](preview/README.md) and [current handoff](HANDOFF.md).
+Open the localhost URL printed by Vite. The viewer needs **no API key, Python, SUMO or environment file**.
 
-## Assets, identity and attribution
+```sh
+npm --prefix web test       # Frontend contracts
+npm --prefix web run build  # TypeScript + production build
+```
 
-The current city and model work used Blender 5.2.2 LTS through the existing Blender MCP bridge. Source scenes, generators and export records are retained. [Asset provenance](assets/PROVENANCE.md) · [Blender pipeline](docs/BLENDER_PIPELINE.md)
+For local simulation/generation, follow the [loopback API setup](api/README.md) and [simulation guide](sim/README.md). Generation completes before recorded playback.
 
-The [editable Canva identity guide](https://canva.link/plj2l49fb5akdcu) supplied the navy, amber, teal and Inter direction. The frontend implements the reviewed signal mark as SVG and self-hosts Inter under its full OFL license. [Design decisions](DESIGN.md) · [Runtime third-party notices](https://afterlight-gamma.vercel.app/THIRD_PARTY_NOTICES.txt)
+## 08 · Project guide
 
-ChatGPT/Codex assisted with source, tests, procedural Blender work, analysis tooling and documentation. Measurements and screenshots come from executed local runs. AFTERLIGHT is simulation research; it has no real-world traffic-control or safety certification.
+- **Viewer:** [Controls, setup and browser checks](web/README.md)
+- **Engine:** [Simulation](sim/README.md) · [Policies](policies/scheduler.py) · [Local API](api/README.md)
+- **AI:** [Models](models/README.md) · [Evaluation](evaluation/README.md) · [Benchmark protocol](docs/BENCHMARK_PROTOCOL.md)
+- **Design:** [Visual system](DESIGN.md) · [Editable Canva identity](https://canva.link/plj2l49fb5akdcu) · [Asset provenance](assets/PROVENANCE.md)
+- **Release:** [Accepted inventory](docs/validation/journey-algorithm-release.json) · [Roadmap](docs/ROADMAP.md) · [Handoff](HANDOFF.md) · [Compiled preview](preview/README.md)
+
+## 09 · Credits
+
+**Team Crash Out · Junaid Ahamed**
+
+**AI development disclosure:** ChatGPT/Codex assisted with source code, procedural Blender assets, tests, analysis tooling and documentation. Blender MCP supported model authoring; Canva supported the identity. Measurements and screenshots come from executed runs.
+
+Original city and vehicle assets; self-hosted Inter under the OFL. [Asset credits](assets/PROVENANCE.md) · [Third-party notices](https://afterlight-gamma.vercel.app/THIRD_PARTY_NOTICES.txt)
