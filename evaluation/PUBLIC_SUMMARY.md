@@ -37,7 +37,9 @@ companions are copied with original byte hashes. The public verifier checks
 these companions without executing downloaded analysis code.
 
 The output contains a bounded `manifest.json`, `summary.json`, and exact original
-report, study, protocol, selection, release and selector companions. Learned mode
+report, study, protocol, selection, release, exclusive attempt, completed collection
+manifest and selector companions. Attempt and collection bytes must match the
+original report's exact hashes. Learned mode
 also includes the original safe JSON model. A per-case CSV retains every test
 scenario under each comparison, including unavailable objectives and statuses;
 numeric differences keep their original precision. Copy this verified pack into

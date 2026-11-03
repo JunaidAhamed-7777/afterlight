@@ -29,6 +29,12 @@ def file_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def verify_execution_companion_bytes(attempt: bytes, collection: bytes, report: dict) -> None:
+    if (hashlib.sha256(attempt).hexdigest() != report['attempt_file_sha256'] or
+            hashlib.sha256(collection).hexdigest() != report['collection_files_sha256']['collection.json']):
+        raise ValueError('Copied original attempt/collection bytes differ from the verified report')
+
+
 def assert_no_overlap(output: Path, protected_directories: tuple[Path, ...]) -> None:
     for protected in protected_directories:
         if output == protected or output.is_relative_to(protected) or protected.is_relative_to(output):
@@ -250,6 +256,7 @@ def main() -> None:
         'protocol': study_dir/'frozen-protocol.json', 'selection': selection_dir/'selection.json',
         'release': study_dir/'test-release.json', 'fixed_selector': selection_dir/'fixed-selector.json',
         'analytical_selector': selection_dir/'analytical-selector.json',
+        'test_attempt': study_dir/'test-attempt.json', 'test_collection': collection/'collection.json',
     }
     if report['report']['mode'] == 'learned':
         sources['model'] = selection_dir/'model.json'
@@ -282,7 +289,8 @@ def main() -> None:
         if source.stat().st_size > 4*1024*1024:
             raise ValueError('Small public proof companion exceeds its 4 MiB bound')
         data = source.read_bytes()
-        filename = {'protocol': 'protocol.json', 'release': 'release.json'}.get(kind, source.name)
+        filename = {'protocol': 'protocol.json', 'release': 'release.json',
+                    'test_attempt': 'attempt.json', 'test_collection': 'collection.json'}.get(kind, source.name)
         filenames[kind] = filename
         payloads[filename] = data
         artifacts.append({'kind': kind, 'url': filename,
@@ -290,6 +298,7 @@ def main() -> None:
     verified_contents = {
         'report': report, 'study': study, 'selection': selection, 'release': context['release'],
         'protocol': {'sha256': report['report']['protocol_sha256'], 'protocol': study['study']['protocol']},
+        'test_attempt': context['attempt'], 'test_collection': verified['manifest'],
     }
     for kind, expected in verified_contents.items():
         if json.loads(payloads[filenames[kind]]) != expected:
@@ -299,6 +308,7 @@ def main() -> None:
         raise ValueError('Copied selection bytes differ from the pre-test release')
     if hashlib.sha256(payloads['release.json']).hexdigest() != context['release_file_sha256']:
         raise ValueError('Copied release bytes differ from verified report evidence')
+    verify_execution_companion_bytes(payloads['attempt.json'], payloads['collection.json'], report['report'])
     for kind in set(sources) - set(verified_contents) - amendment_kinds:
         if kind in sources:
             filename = filenames[kind]

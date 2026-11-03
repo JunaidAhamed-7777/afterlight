@@ -11,7 +11,8 @@ import subprocess
 import tempfile
 import unittest
 
-from scripts.export_study_summary import project_summary, assert_no_overlap, paired_records_csv, compressed_grid
+from scripts.export_study_summary import (project_summary, assert_no_overlap, paired_records_csv, compressed_grid,
+                                         verify_execution_companion_bytes)
 
 
 def fixtures(mode='learned'):
@@ -44,6 +45,19 @@ def fixtures(mode='learned'):
 
 
 class StudySummaryContractTests(unittest.TestCase):
+    def test_attempt_and_collection_preserve_original_bytes_not_only_json_values(self):
+        attempt=b'{"attempt": {"fixture": true}}\r\n'
+        collection=b'{"status": "synthetic-completed"}\r\n'
+        report={'attempt_file_sha256':hashlib.sha256(attempt).hexdigest(),
+                'collection_files_sha256':{'collection.json':hashlib.sha256(collection).hexdigest()}}
+        verify_execution_companion_bytes(attempt,collection,report)
+        for first,second in [(attempt.replace(b'\r\n',b'\n'),collection),
+                             (attempt,collection.replace(b'\r\n',b'\n'))]:
+            self.assertEqual(json.loads(first),json.loads(attempt))
+            self.assertEqual(json.loads(second),json.loads(collection))
+            with self.assertRaisesRegex(ValueError,'original attempt/collection bytes'):
+                verify_execution_companion_bytes(first,second,report)
+
     def test_failures_stay_headline_and_means_use_only_finite_pairs(self):
         result = project_summary(*fixtures())
         self.assertEqual(result['counts'], dict(train=1, validation=1, test=2, test_worlds=14, test_demand_groups=2))
