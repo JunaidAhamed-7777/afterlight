@@ -1,6 +1,7 @@
 """Recorded Omen acceptance steps; plan/status never execute tests.
 
-No build, traffic rollout, fitting, retries, resume, cancellation or process kill.
+Default: units and networks only. Traffic requires an explicit qualification profile.
+No build, fitting, retries, resume, cancellation or process kill.
 An interrupted record is UNKNOWN, not proof that its child process has stopped.
 """
 from __future__ import annotations
@@ -167,9 +168,26 @@ def capture_identity(root: Path) -> dict:
     return {'source':source,'acceptance_files':actual,'acceptance_input_sha256':digest(actual),'node_dependency_metadata':dependencies}
 
 
-def plan(root: Path, output: Path, *, python: str | None = None, node: str | None = None) -> dict:
+def plan(root: Path, output: Path, *, python: str | None = None, node: str | None = None, profile: str = 'units-network') -> dict:
     output=_output(root,output)
     python=python or sys.executable
+    if profile=='traffic-qualification':
+        steps=[]
+        from scripts.qualification_gate import CASES
+        for case,settings in CASES.items():
+            directory=output/'traffic'/case
+            argv=[python,'-B','-m','sim.run','--network',settings['network_kind'],'--output',str(directory),
+                '--seed','7','--regime',settings['regime'],'--policy',settings['policy'],'--lead','10',
+                '--pickup',settings['pickup_id'],'--hospital',settings['hospital_id'],'--dispatch','60',
+                '--demand-end','180','--horizon','240','--drain','360','--step','0.5','--sample','1','--split','pilot']
+            steps.extend([
+                {'id':case+'-run','argv':argv,'cwd':str(root)},
+                {'id':case+'-audit','argv':[python,'-B','-m','sim.audit','--run',str(directory)],'cwd':str(root)},
+                {'id':case+'-qualify','argv':[python,'-B','-m','scripts.qualification_gate','--attempt',str(output),'--case',case],'cwd':str(root)}])
+        return {'schema':'afterlight.acceptance-plan.v1','profile':profile,'steps':steps,'output_directory':str(output),
+            'allocation':{'worlds':6,'simulation_seconds_per_world':600,'total_simulation_seconds':3600,'hard_wall_time_limit_s':None},
+            'scope':'Exploratory traffic qualification only; no benchmark, study, fitting or held-out access; no timeout/kill'}
+    if profile!='units-network':raise ValueError('Unknown acceptance profile')
     node=node or shutil.which('node')
     if not node:raise ValueError('Existing Node executable required; this runner never installs dependencies')
     steps=[]
@@ -180,7 +198,7 @@ def plan(root: Path, output: Path, *, python: str | None = None, node: str | Non
     steps.append({'id':'node-units','argv':[node,'--experimental-strip-types','--test',*[str(path) for path in files]],'cwd':str(root/'web')})
     for kind in ('fixture','city'):
         steps.append({'id':'network-'+kind,'argv':[python,'-B','-m','sim.network','--kind',kind,'--output',str(output/'networks'/kind)],'cwd':str(root)})
-    return {'schema':'afterlight.acceptance-plan.v1','steps':steps,'output_directory':str(output),
+    return {'schema':'afterlight.acceptance-plan.v1','profile':profile,'steps':steps,'output_directory':str(output),
             'scope':'Python/Node units and network conversion only; no build, browser, traffic, training or held-out access'}
 
 
@@ -219,7 +237,7 @@ def _refuse_unresolved(root: Path) -> None:
 
 
 def execute(root: Path, output: Path, expected_commit: str, *, confirm_no_active_runs: bool,
-            identity_fn=None, popen_fn=None, node: str | None = None) -> dict:
+            identity_fn=None, popen_fn=None, node: str | None = None, profile: str = 'units-network') -> dict:
     if not confirm_no_active_runs:
         raise ValueError('Explicit operator confirmation that no prior/manual run is active is required; this runner does not detect unrelated processes')
     if not isinstance(expected_commit,str) or not re.fullmatch(r'(?:[a-f0-9]{40}|[a-f0-9]{64})',expected_commit):
@@ -232,7 +250,7 @@ def execute(root: Path, output: Path, expected_commit: str, *, confirm_no_active
     identity=identity_fn(root)
     if identity['source'].get('source_dirty') is not False or identity['source'].get('source_commit')!=expected_commit:
         raise ValueError('Actual clean source does not match expected commit')
-    specification=plan(root,output,node=node)
+    specification=plan(root,output,node=node,profile=profile)
     output.mkdir(parents=True,exist_ok=False)
     for directory in ('tmp','node-cache','steps'): (output/directory).mkdir()
     overrides={'PYTHONDONTWRITEBYTECODE':'1','TMPDIR':str(output/'tmp'),'TEMP':str(output/'tmp'),'TMP':str(output/'tmp'),
@@ -294,12 +312,13 @@ def main() -> None:
     mode=parser.add_mutually_exclusive_group(required=True)
     mode.add_argument('--plan',action='store_true');mode.add_argument('--execute',action='store_true');mode.add_argument('--status',action='store_true')
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--profile',choices=('units-network','traffic-qualification'),default='units-network')
     parser.add_argument('--expected-commit')
     parser.add_argument('--confirm-no-active-runs',action='store_true')
     args=parser.parse_args()
-    if args.plan:result=plan(ROOT,args.output)
+    if args.plan:result=plan(ROOT,args.output,profile=args.profile)
     elif args.status:result=status(ROOT,args.output)
-    else:result=execute(ROOT,args.output,args.expected_commit,confirm_no_active_runs=args.confirm_no_active_runs)
+    else:result=execute(ROOT,args.output,args.expected_commit,confirm_no_active_runs=args.confirm_no_active_runs,profile=args.profile)
     print(json.dumps(result,indent=2,allow_nan=False))
 
 
