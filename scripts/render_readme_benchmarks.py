@@ -191,6 +191,7 @@ def render(output_dir: Path) -> dict:
     raw = re.sub(r"<svg\b", '<svg role="img" aria-labelledby="benchmark-title benchmark-description"', raw, count=1)
     root_end = raw.index(">", raw.index("<svg")) + 1
     raw = raw[:root_end] + '\n <title id="benchmark-title">AFTERLIGHT benchmarks</title>\n <desc id="benchmark-description">' + escape(description) + "</desc>" + raw[root_end:]
+    raw = "\n".join(line.rstrip() for line in raw.splitlines()) + "\n"
     svg.write_text(raw, encoding="utf-8", newline="\n")
     return {
         "values": values,
