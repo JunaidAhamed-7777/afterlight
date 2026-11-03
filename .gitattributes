@@ -10,3 +10,7 @@
 *.zip binary
 *.whl binary
 *.tgz binary
+# Retained scientific companions bind exact original bytes, including CRLF.
+# Preserve their release/report hashes across clones and hosted builds.
+/docs/validation/study-v4/** -text
+/web/public/study/** -text
