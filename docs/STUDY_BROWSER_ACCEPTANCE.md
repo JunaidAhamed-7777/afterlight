@@ -1,15 +1,23 @@
 # Released Study browser acceptance
 
-This is a prepared workflow. **Do not run it until the actual audited public
-Study pack has been released.** There are no positive fixtures, guessed results,
-local outcome-directory inputs, or unpublished-report fallbacks.
+The audited Study pack is published at
+[the public lab](https://afterlight-gamma.vercel.app/). Actual-data browser
+acceptance and independent public recomputation have completed. The
+[publication record](validation/study-v4/publication.json),
+[actual Study browser acceptance](validation/study-v4/public-browser-acceptance.json),
+[post-identity browser review](validation/postbrand-desktop-acceptance.json) and
+[public HTTPS acceptance](validation/production-hosting-postbrand-acceptance.json)
+retain their original checks and hashes.
 
-Set `$publishedManifestSha` to the exact manifest SHA-256 recorded by the
-completed release, and use a fresh output directory:
+For any future pack, **run this workflow only after its actual audited public
+release**, using that release's exact manifest SHA-256 and a fresh output
+directory. There are no positive fixtures, guessed results, local outcome-directory
+inputs, or unpublished-report fallbacks. For the current publication:
 
 ```powershell
+$publishedManifestSha = 'f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9'
 .\.venv\Scripts\python.exe web/tests/study_positive_acceptance.py `
-  --base-url https://YOUR-VERIFIED-DEPLOYMENT.vercel.app/ `
+  --base-url https://afterlight-gamma.vercel.app/ `
   --released-manifest-sha256 $publishedManifestSha `
   --output local-runtime/released-study-browser-01
 ```
@@ -19,12 +27,11 @@ the check, using the same isolated-build inventory as desktop acceptance.
 
 ## One-command public reproduction
 
-This command is also prepared only. Run it **after the actual audited public
-pack is released**, from the repository root, with the publication's exact
-manifest SHA:
+Recompute the current published pack from the repository root with its exact
+released manifest identity:
 
 ```powershell
-python scripts/verify_public_study.py --base-url https://YOUR-VERIFIED-DEPLOYMENT.vercel.app/ --released-manifest-sha256 ACTUAL-RELEASED-MANIFEST-SHA256
+python scripts/verify_public_study.py --base-url https://afterlight-gamma.vercel.app/ --released-manifest-sha256 f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9
 ```
 
 It uses Python's standard library and the repository's original pure inference
