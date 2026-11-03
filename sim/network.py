@@ -239,7 +239,7 @@ def build_network(kind: str, output: Path) -> dict:
                '--edge-files', str(output/'edges.edg.xml'), '--connection-files', str(output/'connections.con.xml'),
                '--output-file', str(output/'network.net.xml'), '--offset.disable-normalization', 'true',
                '--no-turnarounds', 'true', '--tls.default-type', 'static', '--tls.green.time', '25',
-               '--tls.yellow.time', str(timing.yellow_s), '--tls.allred.time', str(timing.all_red_s)]
+               '--tls.yellow.time', format(timing.yellow_s,'g'), '--tls.allred.time', format(timing.all_red_s,'g')]
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
     (output/'netconvert.stdout.txt').write_text(completed.stdout, encoding='utf-8')
     (output/'netconvert.stderr.txt').write_text(completed.stderr, encoding='utf-8')
