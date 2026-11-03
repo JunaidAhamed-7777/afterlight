@@ -1,0 +1,90 @@
+{
+  "schema": "afterlight.final-study-figure-review.v1",
+  "status": "passed",
+  "reviewed_utc": "2026-11-03T19:13:16.146380+00:00",
+  "frontend_identity_commit": "fa0d88ce76c30545d0f5d454c249e10e184d09bd",
+  "canva_guide_url": "https://canva.link/plj2l49fb5akdcu",
+  "scope": "Final presentation only, after first public hosting and the Canva frontend identity commit. No simulation, fitting, candidate selection, outcome rewriting or evidence change.",
+  "render": {
+    "schema": "afterlight.study-figure.v1",
+    "scope": "Visualization only; no simulation, fitting or selector tuning.",
+    "renderer_source_sha256": "e63f3672463a6aa9018bee0c37ac8e80157649ec425d69541af13a2d156dea1a",
+    "source_summary_sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5",
+    "source_pack_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+    "source_report_file_sha256": "8682f7f6c7a642debe5a45b89c4b089699eaf9beed240e5923e8f24c974b4271",
+    "python": "3.12.15",
+    "matplotlib": "3.10.7",
+    "numpy": "2.3.4",
+    "palette": {
+      "accent": "#2CB2A2",
+      "background": "#0A1F44",
+      "ink": "#F2F7FC"
+    },
+    "files": {
+      "study-comparisons.png": {
+        "sha256": "ab1c4375e0f467789e442ea9708c7b05a71648f59b007745a6fb27493af008e6",
+        "bytes": 139511
+      },
+      "study-comparisons.svg": {
+        "sha256": "3e5bdd20a8f55eae60e8797c2f32c70d513f98e340978066f840c22b7a7c1ca5",
+        "bytes": 90645
+      },
+      "caption.txt": {
+        "sha256": "d8475fc36805026b0e209a166ed76c0f058b2923681801e768bc7c0aae77f906",
+        "bytes": 265
+      }
+    }
+  },
+  "visual_review": {
+    "png_dimensions": [
+      2232,
+      1116
+    ],
+    "png_visually_inspected": true,
+    "all_labels_and_annotations_visible_without_overlap_or_clipping": true,
+    "both_19_of_20_pair_denominators_and_failure_counts_visible": true,
+    "fixed_comparator_interval_crosses_zero": true,
+    "offline_no_improvement_or_safety_claim_scope_visible": true,
+    "svg_xml_parsed": true,
+    "svg_viewbox": "0 0 892.8 446.4",
+    "svg_all_references_internal": true,
+    "svg_script_image_foreignobject_count": 0,
+    "standard_scientific_font": "DejaVu Sans"
+  },
+  "plotted_comparisons": [
+    {
+      "id": "learned-vs-fixed",
+      "episodes": 20,
+      "paired_feasible_episodes": 19,
+      "selected_failures": 1,
+      "comparator_failures": 0,
+      "mean_delta_j_s": 0.6809887350426038,
+      "interval_95_j_s": [
+        -4.992861630530746,
+        5.978169418331287
+      ],
+      "interval_groups": 19,
+      "changed_action_rate": 0.95
+    },
+    {
+      "id": "learned-vs-analytical",
+      "episodes": 20,
+      "paired_feasible_episodes": 19,
+      "selected_failures": 1,
+      "comparator_failures": 1,
+      "mean_delta_j_s": 0.0,
+      "interval_95_j_s": [
+        0.0,
+        0.0
+      ],
+      "interval_groups": 19,
+      "changed_action_rate": 0
+    }
+  ],
+  "caption_generated": "Frozen offline study: 20 test scenarios / 20 independent demand groups. Signed conditional mean objective differences with 95% grouped intervals when eligible. Unavailable objectives and paired denominators are shown; no live controller or automatic benefit claim.",
+  "caption_readable": "Among 19 valid pairs from 20 held-out scenarios, the residual tree changed the objective by +0.68 s versus the fixed 5 s policy (95% grouped interval: -4.99 to +5.98 s). The learned selector had one failed outcome versus none for fixed 5 s, and matched the analytical policy\u2019s choices in all 20 cases. No learned improvement was demonstrated.",
+  "publication_targets": {
+    "study-comparisons.png": "docs/images/study-comparisons.png",
+    "study-comparisons.svg": "docs/images/study-comparisons.svg"
+  }
+}
