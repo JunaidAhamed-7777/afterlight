@@ -70,7 +70,7 @@ Do use original Blender-authored modular assets, coherent lighting, instanced ve
 
 Do not use previous car-film assets, unknown-license music, stock emergency footage or decorative fake metrics. Do not spend the deadline on photoreal façades or offline Cycles rendering. A polished demo video captured from the real browser experience remains a core deliverable.
 
-Validation status: scoped Omen checks through `3060716` accepted the corrected V3 viewer, real replay matrices/ghost isolation and numerical road contact. The later fixed-right viewport/left-scroller, follow-camera and intersection-symbol changes were frozen at the owner’s halt without a new build or test pass. A complete contrast audit, exact stop-line visual certification and loaded-traffic performance measurements remain open. The earlier offline design-linter attempt was blocked because its package was not cached (`ENOTCACHED`); no lint success is claimed.
+Historical validation through `3060716` belongs to the V3 viewer. Current expanded-city acceptance is recorded separately in [desktop-v4-acceptance.json](docs/validation/desktop-v4-acceptance.json), with exact build bindings and limits. Paused camera sweeps, selected actual rendered stop-line regressions, fixed desktop layout and measured dense playback have passed scoped checks. New source changes require their own affected checks; no blanket accessibility or traffic-safety certification is implied.
 
 ## Post-review city and ghost revision
 
@@ -128,6 +128,12 @@ The owner explicitly requested a complete UI overhaul and brighter, livelier col
 At 16:9 desktop sizes, a 324–368 px sidebar owns vertical scrolling. The right side owns fixed rows for title/world selection, journey, a flexible 3D view, compact camera dock, comparison legend and playback. A camera-options popover overlays the city instead of resizing the viewport. The boot screen reports actual ready resources, including city geometry and all four vehicle models. A failure offers retry or entry to the accessible workspace.
 
 Token ownership remains Model B: web/src/styles/tokens.css is canonical; this document mirrors accepted values. Canvas/surface/text/muted/ambulance/clearance/ghost map directly to identically named CSS variables. Hover and pressed surfaces are #2C5070 and #355F80; ambulance hover #FFD495. City sky/horizon are #A9D0E6/#D2E7E8. The global scrollbar baseline uses thumb #557A98, track #172D48 and hover #89B2CF. Components consume these semantic variables.
+
+The first successful visit offers five short anchored coachmarks: recording, play, timeline, follow and results. Native modal semantics, contained keyboard focus, Skip/Escape and persistent completion keep it predictable. Settings reopens the guide. The guide pauses playback and leaves the camera/transport rows visible.
+
+Follow Ambulance and Follow Ghost sit immediately after Zoom. The first tracks the visible world's physical ambulance; the second reveals the ordinary ambulance as a cyan overlay in the Afterlight scene. World changes end following; hiding the ghost ends ghost following. Manual camera movement also ends follow. Both controls retain explicit pressed states. Playback speed changes the shared clock at 0.5×, 1×, 2×, 4×, 10× or 20×, preserving the relative recorded physics.
+
+The comparison legend uses transparent renders of the actual ambulance and ghost models. Emergency flashing changes only the authored roof-light material, using wall time at 2.5 color changes per second independently of playback speed. Paused and reduced-motion views use steady blue; the ghost remains cyan. No invented vehicle motion, extra roof geometry or scene-wide flashing is introduced.
 
 ## Canonical UI Map
 
