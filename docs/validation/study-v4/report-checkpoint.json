@@ -1,0 +1,76 @@
+{
+  "report_sha256": "914697e102a6dc7a0c43d96264bf2be04da3ac74084ad5aabf6e6ef46aa74d26",
+  "report_file_sha256": "8682f7f6c7a642debe5a45b89c4b089699eaf9beed240e5923e8f24c974b4271",
+  "mode": "learned",
+  "all_world_status_counts": {
+    "completed": 134,
+    "invalid": 6
+  },
+  "candidate_status_counts": {
+    "completed": 95,
+    "invalid": 5
+  },
+  "comparisons": {
+    "learned-vs-fixed": {
+      "episodes": 20,
+      "demand_groups": 20,
+      "selected_failures": 1,
+      "comparator_failures": 0,
+      "selected_status_counts": {
+        "completed": 19,
+        "invalid": 1
+      },
+      "comparator_status_counts": {
+        "completed": 20
+      },
+      "paired_feasible_episodes": 19,
+      "conditional_mean_delta_j_s": 0.6809887350426038,
+      "changed_action_rate": 0.95,
+      "uncertainty": {
+        "interval": [
+          -4.992861630530746,
+          5.978169418331287
+        ],
+        "level": 0.95,
+        "method": "whole-demand-group percentile bootstrap",
+        "groups": 19,
+        "resamples": 2000,
+        "seed": 0,
+        "estimand": "episode-weighted mean over finite paired outcomes; failures reported separately"
+      },
+      "mean_delta_ambulance_s": 0.631578947368421,
+      "mean_delta_civilian_s": 0.04940978767418053
+    },
+    "learned-vs-analytical": {
+      "episodes": 20,
+      "demand_groups": 20,
+      "selected_failures": 1,
+      "comparator_failures": 1,
+      "selected_status_counts": {
+        "completed": 19,
+        "invalid": 1
+      },
+      "comparator_status_counts": {
+        "completed": 19,
+        "invalid": 1
+      },
+      "paired_feasible_episodes": 19,
+      "conditional_mean_delta_j_s": 0.0,
+      "changed_action_rate": 0,
+      "uncertainty": {
+        "interval": [
+          0.0,
+          0.0
+        ],
+        "level": 0.95,
+        "method": "whole-demand-group percentile bootstrap",
+        "groups": 19,
+        "resamples": 2000,
+        "seed": 0,
+        "estimand": "episode-weighted mean over finite paired outcomes; failures reported separately"
+      },
+      "mean_delta_ambulance_s": 0.0,
+      "mean_delta_civilian_s": 0.0
+    }
+  }
+}
