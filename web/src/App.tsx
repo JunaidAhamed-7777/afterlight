@@ -9,6 +9,7 @@ import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
 import { selectionLabel } from "./selectionEvidence.ts";
 import { ReplayEvidence } from "./ReplayEvidence.tsx";
+import { StudyResults } from "./StudyResults.tsx";
 import { Onboarding } from "./Onboarding.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt } from "./replay.ts";
@@ -87,6 +88,7 @@ export default function App() {
   const [tourRequest, setTourRequest] = useState(0);
   const [followTarget, setFollowTarget] = useState<"ambulance" | "ghost">("ambulance");
   const [panel, setPanel] = useState<"run" | "results" | "settings">("run");
+  const [resultScope, setResultScope] = useState<"recording" | "study">("recording");
   const [bootDismissed, setBootDismissed] = useState(false);
   const [assetLoad, setAssetLoad] = useState({
     completed: 0,
@@ -345,6 +347,10 @@ export default function App() {
     setPanel(next);
     settingsScroll.current?.scrollTo({ top: 0 });
   };
+  const showRecordingResults = () => {
+    setResultScope("recording");
+    switchPanel("results");
+  };
   const togglePlayback = () => {
     if (!replay || loading) return;
     if (time >= timelineMax) seekTime(0);
@@ -541,7 +547,7 @@ export default function App() {
                     </dl>
                     <button
                       className="text-button"
-                      onClick={() => switchPanel("results")}
+                      onClick={showRecordingResults}
                     >
                       View measured results <Icon name="arrow" />
                     </button>
@@ -703,7 +709,13 @@ export default function App() {
                 </div>
               )}
               <div hidden={panel !== "results"}>
-                {replay ? (
+                <div className="results-scope" role="group" aria-label="Results scope">
+                  <button aria-pressed={resultScope === "recording"} onClick={() => { setResultScope("recording"); settingsScroll.current?.scrollTo({ top: 0 }); }}>This run</button>
+                  <button aria-pressed={resultScope === "study"} onClick={() => { setResultScope("study"); settingsScroll.current?.scrollTo({ top: 0 }); }}>Study</button>
+                </div>
+                {resultScope === "study" ? (
+                  panel === "results" && <StudyResults />
+                ) : replay ? (
                   <ReplayEvidence replay={replay} />
                 ) : (
                   <div className="control-panel">
@@ -950,7 +962,7 @@ export default function App() {
                       ? "A separate network for checking signal control. Its outcomes are available in Results."
                       : "Traffic is hidden because this recording does not match the current city. Open Results to inspect the saved outcomes."}
                   </p>
-                  <button onClick={() => switchPanel("results")}>
+                  <button onClick={showRecordingResults}>
                     Inspect results <Icon name="arrow" />
                   </button>
                   <div className="fixture-clock">

@@ -1148,6 +1148,23 @@ footer a {
   padding: 28px 22px;
   min-width: 0;
 }
+.results-scope {
+  display: flex;
+  gap: 6px;
+  padding: 20px 22px 0;
+}
+.results-scope button {
+  flex: 1;
+  min-height: 36px;
+  font-size: 12px;
+  background: transparent;
+  color: var(--muted);
+}
+.results-scope button[aria-pressed="true"] {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--scroll-thumb);
+}
 .evidence .section-heading {
   margin-bottom: 4px;
 }
