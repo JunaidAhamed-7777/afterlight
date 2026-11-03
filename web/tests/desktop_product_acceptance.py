@@ -355,10 +355,12 @@ def foreground_gate(page, output: Path, phase: str, manual: bool):
                    'scope':'Operator must visibly activate this dedicated test window before creating the marker; no performance samples are collected while waiting.'}
         (output / 'foreground-request.json').write_text(json.dumps(request,indent=2),encoding='utf-8')
         print(json.dumps({'waiting_for_visible_test_window':request}),flush=True)
-        deadline = time.monotonic() + 120
+        deadline = time.monotonic() + 600
         while not marker.is_file():
             if time.monotonic() > deadline: raise AssertionError('Foreground operator gate timed out; no performance sample accepted')
             page.wait_for_timeout(100)
+    page.bring_to_front()
+    page.locator(CANVAS).focus()
     page.wait_for_function("document.visibilityState==='visible' && document.hasFocus()",polling=100,timeout=15000)
     return {'native_window_before':before,'native_window_after':after,'operator_marker_required':manual}
 
