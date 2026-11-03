@@ -1,0 +1,33 @@
+.evidence.algorithm-results { display: grid; gap: 16px; }
+.algorithm-results h2 { margin: 0; }
+.algorithm-results p { margin: 0; line-height: 1.55; }
+.algorithm-results h3 { margin: 0 0 5px; font-size: 14px; }
+.algorithm-results code { font-family: var(--mono); font-size: .88em; overflow-wrap: anywhere; }
+.algorithm-summary { color: var(--text); }
+.algorithm-endpoints { color: var(--muted); }
+.algorithm-endpoints code { color: var(--clearance); }
+.algorithm-worlds { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin: 0; padding-block: 12px; border-block: 1px solid var(--line); }
+.algorithm-worlds > div { min-width: 0; }
+.algorithm-worlds dt { min-height: 3em; line-height: 1.5; font-size: 12px; color: var(--muted); }
+.algorithm-worlds dt small { display: block; font-size: inherit; }
+.algorithm-worlds dd { display: grid; gap: 3px; margin: 8px 0 0; }
+.algorithm-worlds strong { font-size: 19px; font-variant-numeric: tabular-nums; }
+.algorithm-worlds dd > span { color: var(--muted); font-size: 12px; }
+.algorithm-results .algorithm-caption { color: var(--muted); font-size: 12px; }
+.algorithm-steps { display: grid; gap: 16px; margin: 0; padding-left: 22px; }
+.algorithm-steps > li { padding-left: 3px; }
+.algorithm-steps > li::marker { color: var(--clearance); font-variant-numeric: tabular-nums; }
+.algorithm-steps p { font-size: 13px; color: var(--muted); }
+.algorithm-results details { min-width: 0; border-top: 1px solid var(--line); padding-top: 12px; }
+.algorithm-results summary { cursor: pointer; font-size: 13px; font-weight: 600; line-height: 1.5; }
+.algorithm-results summary:hover { color: var(--clearance); }
+.algorithm-results summary:focus-visible { outline: 2px solid var(--clearance); outline-offset: 4px; }
+.algorithm-results details[open] > :not(summary) { margin-top: 12px; }
+.algorithm-route-edges { padding-left: 24px; margin-bottom: 0; font-variant-numeric: tabular-nums; }
+.algorithm-route-edges li { padding: 3px 0 3px 4px; font-size: 12px; }
+.algorithm-lane-distance, .algorithm-fingerprints { display: grid; gap: 10px; margin-bottom: 0; }
+.algorithm-lane-distance dt, .algorithm-fingerprints dt { color: var(--muted); font-size: 12px; }
+.algorithm-lane-distance dd, .algorithm-fingerprints dd { margin: 3px 0 0; font-size: 13px; font-variant-numeric: tabular-nums; }
+.algorithm-source-links { display: grid; gap: 9px; margin-bottom: 0; padding-left: 18px; font-size: 13px; }
+.algorithm-source-links a { overflow-wrap: anywhere; }
+.algorithm-source-links a:focus-visible { outline: 2px solid var(--clearance); outline-offset: 3px; }
