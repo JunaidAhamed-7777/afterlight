@@ -1,121 +1,106 @@
-# Interactive 3D city
+# Desktop 3D city and camera
 
-## Geometry, not parallax
+## Current geometry
 
-The city, roads, buildings, cars, trucks, bikes and ambulance are actual glTF mesh
-geometry. No camera-facing photographs or parallax layers stand in for those
-objects. The enhanced map adds modeled window bays, architectural ledges and
-small rooftop volumes to the original building masses. Hospitals retain their
-original modeled details, with structural canopy supports and roof-edge framing. Road slabs, sidewalks, parks and canonical road
-coordinates are preserved.
+The interactive map is `assets/exports/city_enhanced.glb`: original mesh geometry
+for a 2,040 × 2,010 m district, four times the original area. It has 81 primary
+junctions, 826 addressable buildings, eight landscaped parks and two distinct
+hospitals in diagonal quadrants. Cars, bikes, trucks and the ambulance use actual
+GLB geometry with runtime instancing. Traffic follows exported SUMO poses.
 
-`assets/exports/city_enhanced.glb` is the interactive map. Its companion manifest
-records its exact bytes, hashes, original source, per-building visual bounds and
-187 stable building IDs. `assets/afterlight_city_enhanced.blend` is editable source;
-`assets/src/enhance_city.py` reproduces the enhancement from the original Blender
-city without regenerating streets. Original map and vehicle assets remain in the
-repository. The 25 MB map allowance is a ceiling, not a target: this export is
-approximately 4.44 MB. Cars, trucks and bikes remain the original tiny low-poly
-models, rendered through the existing instanced vehicle layer.
+The city export is 14,380,920 bytes and 235,604 triangles. Its companion manifest
+binds the canonical map, generator, GLB and per-building bounds. Editable source
+is `assets/afterlight_city_expanded.blend`; `assets/src/generate_city_v4.py`
+reproduces it through the pinned Blender MCP bridge. Original prototype scenes
+and vehicle GLBs remain preserved. The project-wide shipped-asset ceiling is
+50,000,000 bytes, including compressed recordings; it is not a target file size.
 
-## Camera contract
+Blender XY/Z-up maps once to browser `[x,z,-y]`. Preserve the authored city root
+translation. Vehicles alone are centered around their measured footprint and
+scaled to recorded length/width. SUMO front-bumper coordinates determine the
+model nose. Lowest tyre geometry rests at recorded elevation plus the authored
+0.18 m road top. Visual hospital plaza slabs end at 0.14 m, leaving actual depth
+separation from their driveways.
 
-**Explore 2.5×** uses a real perspective camera and a closer, lower-angle view.
-The factor describes camera target-plane magnification relative to the fitted
-full-city view; it does not multiply physical road lengths or simulation
-coordinates. Near and far objects therefore have genuine perspective depth,
-not uniform screen scaling. **Full city** restores the padded orthographic
-inspection overview, including on narrow screens.
+## Desktop workspace
 
-- Drag to orbit; right-drag or the explicit Pan option pans.
-- Scroll/pinch or keyboard `+`/`-` zooms.
-- Native HTML buttons provide X tilt, Y turn and Z view-roll. These are camera
-  controls, not rotations of the canonical world. `X`, `Y`, `Z` work when the
-  canvas has focus; Shift reverses each direction.
-- `0` or Reset restores Full city and clears roll. Tab leaves the canvas.
-- Camera controls never change the shared simulation clock or either world's
-  traffic, signals or physical vehicle positions.
+Simulation, Results and Settings share an independently scrolling left pane.
+The right pane retains journey/world labels, city, camera dock and playback in
+normal 16:9 desktop windows. Desktop resizing, keyboard use and reduced motion
+are acceptance requirements. Mobile-specific optimization and tests remain
+outside the target; existing responsive behavior is preserved.
 
-No automatic decorative orbit is introduced. Reduced-motion preferences remain
-in force for playback/follow behavior; direct user camera actions remain usable.
+## Camera controls
 
-## Selective obstruction transparency
+- **Explore** starts at 2.5× target-plane magnification with genuine perspective.
+- **Full city**, the overview button or focused-canvas `0` fits the complete city
+  with padding and clears roll.
+- Drag to orbit. Right-drag, arrow keys or the Pan option move the camera target.
+- Scroll or `+`/`−` zoom; native zoom buttons are also available.
+- X tilt, Y heading and Z view-roll have native buttons and focused-canvas
+  keyboard shortcuts. Shift reverses the rotation. Tab leaves the map.
+- **Follow Ambulance** frames the solid ambulance in the inspected world.
+  **Follow Ghost** switches to Afterlight, enables the cyan ordinary-world
+  ambulance and follows it. Starting either target uses at least 12× target-plane
+  zoom; continued tracking preserves subsequent zoom, orbit and roll. Deliberate
+  pan, Explore or Full city releases follow.
 
-Only explicitly identified building nodes can become transparent. Ground,
-roads, trees, signals and vehicles are excluded, even when they share the same
-material color. The original city root translation is retained exactly once.
-Building geometry is consolidated into shared-material render batches while a
-small per-building opacity texture controls stable screen-door transparency.
-This avoids making all buildings transparent through a shared material and
-avoids adding a draw call for every building part.
+Both inspected worlds retain the same comparison camera and absolute clock.
+Changing the inspected world releases follow; the camera remains in place.
+Seeking or changing recordings handles discontinuities without a stale flight
+across the map; after
+the last observed ambulance pose, the camera can hold that endpoint. This camera
+behavior does not insert a vehicle after its recorded removal. Reduced motion
+disables continuous follow; deliberate camera actions and playback remain usable.
+The legend uses small transparent renders of the actual ambulance and cyan ghost,
+with text labels; these thumbnails do not substitute for scene geometry.
 
-The effect is optional and visual only. Foreground blockers on the camera's
-focus corridor are revealed; unrelated buildings retain their normal appearance.
-Turning the option off or returning to Full city restores opaque buildings.
-Actual browser rendering, close-range geometry, roll/pan interaction and
-occlusion witnesses must be inspected on Omen before acceptance.
+Logarithmic depth keeps kilometre-scale perspective compatible with thin road,
+roof and facade layers. Static buildings cast shared shadows once; ground receives
+them. Balanced and High change pixel ratio/shadow resolution. These settings do
+not rescale the city or alter simulation coordinates.
 
-## Evidence and validation
+## Optional building cutaway
 
-The reference URL supplied for interaction direction was not accessible through
-the available web reader. This implementation follows the explicit request;
-it does not claim a verified visual match to that site.
+Cutaway is **off by default**. Enable “Reveal streets behind foreground buildings”
+in Camera options when a building blocks the followed street. Identified building
+nodes share material batches and a per-building opacity mask. The effect uses
+screen-door transparency and changes with the view direction; roads, trees,
+vehicles and signals stay outside that mask. Turning it off restores solid
+buildings. Full city remains opaque.
 
-This revision has cloud build/export evidence only until its pinned Omen tests
-are recorded. It is not evidence of loaded-traffic frame rate or SUMO accuracy.
-The previous browser acceptance belongs to its older source/build checkpoint.
-Run asset structure tests, frontend unit tests, exact preview verification and
-headed browser checks on Omen. Capture desktop overview, perspective, resized desktop windows and a real
-foreground-occlusion witness; record actual renderer draw calls and frame times
-rather than inferring speed from file size. No fabricated traffic recording or
-benchmark is bundled to make the map appear busy.
+## Choosing a journey
 
-## Desktop-first, state-aware controls
+Leave a recording before selecting a new pickup/hospital. The map buttons show
+actual canonical anchors; a click commits the named anchor, while dragging moves
+the camera. Escape/Cancel preserves the journey and restores the initiating
+button's focus. Search and native dropdowns provide keyboard alternatives.
+Selectable anchor clouds appear only in pick mode; selected-journey markers can
+remain visible. Picking waits for a successful render and is locked during
+loaded/loading recordings and active/recovering/uncertain local requests.
+Submitted job parameters remain immutable when next-journey dropdowns change.
 
-Desktop is the sole optimization/acceptance target; see root `AGENTS.md`. Existing
-responsive behavior remains, but mobile-specific browser checks are opt-in and
-are not part of the default acceptance run. Keyboard access and reduced-motion
-settings remain essential desktop behaviors.
+## Verification scope
 
-The selected journey/status has its own row outside the canvas, so the camera
-controls cannot cover it. With no recording, the interface offers city exploration
-and (in local mode) generation rather than inactive playback and ghost controls.
-Comparison controls appear only when a real recording is loaded. Experimental
-seed/policy/lead settings live under a native Advanced disclosure; saved-job
-recovery keeps the exact submitted request identity and parameters.
+[Binary geometry acceptance](../assets/qa/city_expanded_acceptance.json) records
+nine checks, a byte-identical repeated Blender MCP build and the plaza-depth
+regression. [Khronos validation](../assets/qa/city_expanded_gltf_audit.json) has
+zero errors, warnings or informational issues for the current asset. These do
+not measure browser speed or certify every possible camera/GPU combination.
 
-## Choosing a journey directly on the map
+Current headed desktop acceptance includes actual instance-buffer comparisons,
+world/ghost isolation, close and overview cameras, keyboard actions, failure
+recovery and multi-angle paused/repeat captures. Run the current product harness
+from [web/README.md](../web/README.md). Keep the served-build manifest and source
+identity with each result; compilation and file size alone do not establish
+visual quality or frame time.
 
-Choose **pickup on map** or **hospital on map** beside the journey dropdowns.
-Only the existing canonical curb or driveway anchors appear; no freehand road
-coordinates, synthetic route nodes or vehicle picking are introduced. Markers
-use one small instanced geometry layer. Their position is converted from the
-same canonical coordinates as the city, and picking uses the actual rendered
-perspective/orthographic camera, including roll.
+## Historical V3 checkpoint
 
-A click commits the named location; dragging still moves the camera and never
-changes the journey. Escape or Cancel leaves the journey unchanged and restores
-focus to its initiating button. Search and native dropdowns remain the keyboard
-alternative. Markers disappear outside selection mode; hover names are not
-repeated live announcements.
-
-Selection waits for a successful first map render. It is unavailable while a
-recording is loading/playing or a generation request is active, recovering or
-uncertain. Leave the recording explicitly to choose a new journey. Saved job
-parameters remain immutable even if the next-journey dropdowns change. The map
-selection protocol harness uses intercepted, explicitly synthetic API responses;
-it is not a genuine traffic run or public recording.
-
-## Geometry revision v3
-
-V3 gives the 185 small rooftop service volumes a one-segment edge chamfer,
-producing actual directional-light facets without textures or subdivision.
-Both hospitals gain two canopy support columns, a shallow front fascia and
-upper-roof perimeter framing; the original roof H stays unobstructed. Original
-source faces, canonical roads, vehicle meshes and the 187 building IDs remain
-unchanged. New detail uses the existing 15 shared materials.
-
-The exported GLB is 4,439,048 bytes with 84,540 authored triangles. These are
-export inventory figures, not browser performance measurements. V2's actual
-Omen renderer counters must not be attributed to V3. Close-range appearance,
-cutaway correctness and loaded-traffic performance require new Omen acceptance.
+V3 was the earlier 187-building enhancement: 4,439,048 bytes and 84,540 triangles,
+with facade bays, ledges, chamfered rooftop service volumes and hospital canopy
+supports. Its source is `assets/afterlight_city_enhanced.blend` and
+`assets/src/enhance_city.py`. The old 25 MB allowance and original 25-primary-node
+map belonged to that scope. Earlier accepted measurements through `3060716`
+remain specific to those source/build bytes. They do not validate the later
+826-building city, depth fix or dense public recordings.

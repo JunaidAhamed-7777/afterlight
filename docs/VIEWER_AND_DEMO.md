@@ -1,80 +1,124 @@
-# Viewer behavior and demo direction
+# Viewer behavior and demo
 
-## One primary workflow
+## First use
 
-Start with one clear next action: explore the real 3D city, open an available
-paired recording, or generate a run through an enabled local runner. An empty
-catalog explains that no traffic is being simulated; it does not show fictional
-ambulances or a wall of disabled comparison controls. Public mode permits map
-inspection but only exported runs can be played.
+The public viewer opens an available genuine recording. The Simulation pane
+names its journey, seed and physical policy; **Play** advances both independent
+worlds on one absolute clock. Playback speeds run from 0.5× to 20×, including
+10× and 20× for longer journeys. **Follow Ambulance** frames the solid ambulance
+in the inspected world. **Follow Ghost** opens Afterlight with the ordinary-world
+ghost visible and follows that trajectory. Subsequent zoom/orbit adjustments
+are preserved. Switching **Afterlight/Ordinary** inspects that world's own traffic
+and signals and releases follow. Open **Results** for whole-run outcomes.
 
-With a recording: inspect the solid AFTERLIGHT ambulance and separate-world
-ghost, play/scrub their common clock, inspect either world and dispatch decision,
-then inspect aftermath and study evidence. Keep **Recorded simulation**, seed
-and physical policy explicit. Local generation shows real job status and offers
-its completed recording; it is not a live-streaming traffic mode.
+The left Simulation/Results/Settings pane scrolls independently. The right city,
+world selection, camera dock and playback stay visible in a normal 16:9 desktop
+window. With an empty catalog the same product offers city exploration. Public
+mode plays published captures; the explicitly enabled local runner can generate
+a new pair and then open its completed recording.
 
-Journey/status text owns a row outside the canvas. Camera controls, compass and
-errors must not obscure it. Native search/dropdowns remain complete alternatives
-to opt-in map selection. The map buttons require a ready renderer, show actual
-canonical anchors, suppress selection after dragging, and offer Escape/Cancel.
-A loaded recording requires an explicit new-journey action before map picking;
-active/recovering/uncertain jobs lock map picking without mutating saved requests.
-Advanced seed/policy/lead settings are disclosed below the simple generation
-workflow, with the immutable submitted settings clearly distinguished from a
-proposed next run.
+A short first-visit walkthrough introduces recording selection, playback,
+seeking, follow and results. Finishing or skipping is stored locally; Settings
+can reopen it. The legend pairs actual model thumbnails with text labels.
 
-## Behavior contract
+## Recorded evidence
 
-- The ghost overlay and optional separate views share one simulated clock, camera transform and playback speed. Pausing or scrubbing updates both.
-- Scenario changes reset playback and preserve clearly selected policies; never mix metrics from a previous run with new geometry.
-- A loading state names the requested scenario. Network failure offers retry and an accessible static summary, never fake data.
-- Invalid/missing trace displays an error with no benchmark values presented as valid.
-- A completed run keeps the results visible; a noncompleted ambulance is labeled, not animated out of view.
-- Keyboard controls support play/pause and the timeline without trapping focus; buttons have visible focus and meaningful labels.
-- Colors are accompanied by labels/shape cues. Charts and metrics remain text-readable without WebGL.
-- Reduced motion disables autoplay/cinematic camera movement; manual scrubbing remains.
-- Desktop is the current acceptance target. Preserve existing responsive behavior, but do not add mobile-specific optimization/testing without a new owner request.
+“Recorded simulation” remains visible during playback. The two current public
+city pairs use a 3 s all-red clearance and retain every 0.5 s SUMO integration
+boundary through 900 s. Gzip changes
+only transport size. Recordings, source hashes, original metrics and audit scope
+are documented in [public recording evidence](validation/expanded-city-recordings.json).
+These exploratory examples do not establish aggregate or held-out policy benefit.
+Their measured results include civilian cost as well as ambulance time:
 
-## Two-minute editorial storyboard
+- Cross-city, fixed 20 s lead: ambulance 601.0 → 473.0 s; mean civilian excess
+  travel time 111.49 → 113.68 s (Ordinary → Afterlight). All 398 civilians finished.
+- Westhaven, analytical 0 s lead: ambulance 426.5 → 322.5 s; mean civilian excess
+  travel time 106.85 → 107.98 s. All 426 civilians finished.
 
-These timings are a presentation choice, not a verified contest video limit.
+All four worlds reported zero collisions and teleports. The source-bound
+[presentation review](validation/expanded-city-presentation.json) found no red or
+unresolved classifications among 9,839 geometry-eligible stop-line crossings.
+That scoped presentation check is separate from raw physics audits and does not
+certify universal traffic safety.
 
-| Time | Evidence and image |
+The solid ambulance, civilians, queues and movement arrows belong to the inspected
+world. The optional cyan ghost is the actual baseline ambulance on the same clock.
+Its own cars and lamps exist in the Ordinary view; apparent overlap with active
+traffic is explained by the “Two traffic worlds” disclosure. The ghost is never
+inserted into the active simulator or used to trigger priority.
+
+Signals show individual controlled movements using imported lane geometry.
+Exact recorded control-event boundaries are used only when their reconstructed
+states match every saved lamp state; legacy recordings retain sampled states
+when that evidence is incomplete. Metrics are fixed whole-run measurements.
+Only display poses interpolate between adjacent real samples. New/removed IDs
+and teleports retain explicit lifecycle behavior.
+
+## Loading and recovery
+
+The initial loading screen reports completed resources. Dense recording fetch,
+gzip decode, checksum/schema validation and parsing run in a worker. The workspace
+stays responsive while a requested recording loads; cancellation terminates that
+worker. Failed or mismatched recordings offer retry and clear stale outcomes.
+A fixture or another-map recording opens its HTML evidence without placing those
+vehicles on the current city.
+
+Model requests have a 60 s deadline and are aborted when the renderer is replaced.
+Recording requests have a 30 s fetch deadline. Graphics failure shows a labeled
+Blender preview and retry while HTML results remain available. A local-generation
+failure preserves exact job identity; an uncertain POST is recovered with GET
+before an explicit retry using the same immutable request ID/settings. Closing
+the page does not cancel a simulator process.
+
+## Interaction contract
+
+- Pause and scrub update both worlds at the same absolute time and speed.
+- Changing recordings clears earlier traffic, errors and outcomes.
+- Journey/status text has a row outside the canvas; controls do not cover it.
+- Leave a recording explicitly to change its journey. Map picking distinguishes
+  a click from a drag and has complete search/dropdown alternatives.
+- Active/recovering/uncertain local jobs lock map picking. Saved parameters remain
+  separate from a proposed next run.
+- Camera shortcuts act only on the focused map. Native controls have meaningful
+  labels and visible focus. Tab can leave the map.
+- Reduced motion disables continuous follow; there is no automatic playback.
+- Building cutaway is optional and off by default. Logarithmic depth keeps thin
+  authored road/facade layers stable during perspective orbit.
+- Desktop is the acceptance target. Preserve responsive behavior without adding
+  mobile-specific optimization or default mobile checks.
+
+The camera contract and exact coordinate behavior are in
+[Desktop 3D city](CAMERA_AND_3D_MAP.md). The total shipped-asset ceiling is 50 MB;
+decoded recording memory is a separately measured desktop cost.
+
+## Demo capture outline
+
+This two-minute outline is an editorial option, not a verified contest limit.
+
+| Time | Show |
 |---|---|
-| 0:00–0:15 | Ambulance meets a queue. One clear problem statement and “simulation” label. |
-| 0:15–0:50 | Same demand, two futures. Show the selected lead, observed queue inputs and legal phase change. |
-| 0:50–1:20 | Pull the camera back after ambulance exit. Reveal civilian queue debt and recovery, not a victory freeze-frame. |
-| 1:20–1:45 | Held-out benchmark plus no-ML ablation; show actual sample count, intervals and tradeoff. |
-| 1:45–2:00 | Stress case/limitations, reproducible repository and local execution evidence. |
+| 0:00–0:15 | A real ambulance approaching a queue, with the simulation label. |
+| 0:15–0:50 | Same demand, separate worlds: observed inputs, chosen lead and legal signal transition. |
+| 0:50–1:20 | Civilian queues after the ambulance finishes, using the common drain window. |
+| 1:20–1:45 | The actual frozen study result and sample count, or a clear statement that it is not released. |
+| 1:45–2:00 | Limitations, reproducible source and local execution. |
 
-Record real playback and real metrics. Use overlays to clarify, not conceal missing behavior. A cinematic intro must not consume the time needed to demonstrate technical substance. Caption spoken content. Music is optional and only with verified reuse rights.
+Capture actual browser playback and measured outcomes. Caption narration; optional
+music requires reuse rights. Do not turn one favorable demonstration into an
+aggregate claim or replace an unfavorable measured result.
 
-## Acceptance evidence
+## Acceptance and historical records
 
-Capture desktop screenshots at normal window sizes, a keyboard walkthrough, reduced-motion behavior, trace-load failure, WebGL fallback and a synchronized seek. Check that counters exactly match exported metrics and that turning vehicles remain on roads. An attractive screenshot alone does not prove a working viewer.
+Current checks cover desktop layouts, keyboard use, reduced motion, cancellation,
+worker/graphics recovery, synchronized seeking and actual render-buffer poses.
+The dense regression additionally tests the stopped civilians that crossed red
+in the former coarse presentation. Review screenshots at several tilts/yaws;
+a single attractive frame does not establish a stable product.
 
-## Product-level ghost and scenario requirements
-
-When a genuine city recording is loaded, its default view shows active AFTERLIGHT civilians/signals and a solid detailed ambulance. The light-blue glowing baseline ghost is only a presentation of a second world’s ambulance trace. While displaying that comparison, keep the legend: “Solid: AFTERLIGHT world · Ghost: baseline, separate traffic world.” Do not display a traffic legend in asset-only exploration. Offer ghost visibility/opacity control, inspect-baseline view and reset camera. Use a shared absolute clock, never normalized completion animations. A short explanatory tooltip addresses apparent ghost overlaps with active traffic/signals. Keep glow restrained and inexpensive; opacity must not obscure the active ambulance or imply the ghost controls traffic.
-
-Pickup/hospital selection is backed by authoritative graph IDs and accessible searchable lists, not canvas-only clicking. Clearly show which of roughly 100 anchors and two hospitals are supported by a loaded run. Validate route availability; explain unavailable combinations. The explicitly enabled local runner validates requested canonical routes; accepted traffic outcomes still require real rollout/audit. Public replay mode selects existing captures. Changing selection resets the paired run deliberately and confirms the active scenario, not stale metrics.
-
-Loading exposes progress where known, cancellation where supported, retry and an error reason. Never leave an infinite blank canvas. A local-generation failure preserves its job identity and explains recovery; an uncertain response never silently submits a duplicate job. Browser context loss presents a recoverable fallback/results table. Keyboard focus stays visible after dialogs/selections, touch targets remain usable, reduced motion disables auto-follow and glow animation. Desktop world switching preserves the common clock and comparison camera.
-
-The user should be able to answer: What is running? Which pickup/hospital and seed? Is this recorded or live? What did each ambulance actually do? How much did civilians wait? What is supported and what failed? These are product acceptance questions, not optional presentation polish.
-
-## Camera and acceptance status
-
-Explore 2.5× uses actual perspective, not parallax; Full city restores the fitted
-overview. X/Y/Z controls mean tilt, heading and view-roll. Manual input never
-retimes replay. Foreground transparency affects identified building geometry,
-not roads, traffic state or a shared whole-city material. The 25 MB map ceiling
-and low-poly vehicle strategy remain performance constraints.
-
-Earlier desktop camera/cutaway/usability checks passed on Omen through `7ef8ffe`.
-V3 geometry, map picking and later source changes await a new pinned cohort. A
-static review or a successful build is not screenshot, shader, performance or
-traffic acceptance. No accepted paired replay, pilot or learned result exists.
-The planned offline learned-selection bridge must be labeled as selection of a
-recorded fixed-lead candidate, with study conclusions separate from one replay.
+Historical: earlier camera/cutaway/usability checks passed through `7ef8ffe`, and
+`3060716` accepted scoped replay/ghost matrices and corrected tyre contact on the
+smaller city. At the November 3 owner halt, the later desktop redesign was still
+unbuilt/untested. Those entries remain true for their recorded source cohorts;
+new product acceptance belongs to the current build and captures. See the
+[chronological Omen log](validation/OMEN_LOG.md) for those earlier outcomes.
