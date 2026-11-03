@@ -1,0 +1,460 @@
+{
+  "schema": "afterlight.postbrand-desktop-acceptance.v1",
+  "recorded_utc": "2026-11-03T19:53:48.550305+00:00",
+  "status": "verified_saved_postbrand_regressions_and_frozen_artifacts",
+  "intended_tracked_path": "docs/validation/postbrand-desktop-acceptance.json",
+  "scope": "Independent read-only verification of four saved desktop regression reports, frozen files and PNG hashes. No browser, GPU run, new timing measurement, model fitting or simulation was performed by this audit.",
+  "build": {
+    "manifest_artifact": "local-runtime/production-postbrand-01/manifest.json",
+    "manifest_file_sha256": "f9028c53a284914cd1a5a2ba1714b857ec8c80ca0e8c99363d4ff6246c05d3bc",
+    "recorded_HTTP_manifest_content_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70",
+    "compiled_source_head": "fa0d88ce76c30545d0f5d454c249e10e184d09bd",
+    "full_input_inventory_sha256": "23e71b578181da0c506a62f074cd828afc3977216153bd4559bb16b4aa49400d",
+    "full_input_files": 133,
+    "source_metadata_self_consistent": true,
+    "site_files": 61,
+    "site_bytes": 39870637,
+    "complete_disk_file_set_and_bytes_match_manifest": true,
+    "source_relation": "Reports record a later main HEAD. Every recorded source-file hash matches the frozen full input inventory; the compilation commit remains distinct."
+  },
+  "reports": {
+    "onboarding": {
+      "artifact": "local-runtime/final-postbrand-onboarding/report.json",
+      "artifact_sha256": "950329099e7696abeefe861541f70359a4a83e56bb5d6e7c9ee98b185207479f",
+      "status": "passed",
+      "page_error_count": 0,
+      "recorded_source_head": "2740c7be5aab20235cbfbb712a0c54e34c58245e",
+      "recorded_source_inventory_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+      "recorded_source_files": 59,
+      "source_before_after_equal": true,
+      "every_recorded_source_hash_matches_frozen_input": true,
+      "recorded_HTTP_build_binding": {
+        "served_build_before": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        },
+        "served_build_after": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        }
+      }
+    },
+    "follow": {
+      "artifact": "local-runtime/final-postbrand-follow/report.json",
+      "artifact_sha256": "4b380110e3061758ca31c801dd8c5c689fd3a6ccb8458385e22c88be80562b60",
+      "status": "passed_headed_dual_follow_playback_and_beacon_materials_pending_pixel_review",
+      "page_error_count": 0,
+      "recorded_source_head": "2740c7be5aab20235cbfbb712a0c54e34c58245e",
+      "recorded_source_inventory_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+      "recorded_source_files": 59,
+      "source_before_after_equal": true,
+      "every_recorded_source_hash_matches_frozen_input": true,
+      "recorded_HTTP_build_binding": {
+        "served_build_before": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        },
+        "served_build_after": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        }
+      }
+    },
+    "study": {
+      "artifact": "local-runtime/final-postbrand-study/report.json",
+      "artifact_sha256": "e410ef1c5d85fc0e26541f62248c4ab46c7b7ea618b7b335df9be05ace1c7564",
+      "status": "passed_actual_released_Study_positive_acceptance",
+      "page_error_count": 0,
+      "recorded_source_head": "2740c7be5aab20235cbfbb712a0c54e34c58245e",
+      "recorded_source_inventory_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+      "recorded_source_files": 59,
+      "source_before_after_equal": true,
+      "every_recorded_source_hash_matches_frozen_input": true,
+      "recorded_HTTP_build_binding": {
+        "served_build_before": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        },
+        "served_build_after": {
+          "files": 61,
+          "bytes": 39870637,
+          "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+        }
+      }
+    },
+    "camera": {
+      "artifact": "local-runtime/final-postbrand-camera/report.json",
+      "artifact_sha256": "94a579918329000427f043cbd7e86b3831a08f227d0c0220151c2b3c2b8f0890",
+      "status": "passed_paused_camera_stability_pending_pixel_review",
+      "page_error_count": 0,
+      "recorded_source_head": "2740c7be5aab20235cbfbb712a0c54e34c58245e",
+      "recorded_source_inventory_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+      "recorded_source_files": 59,
+      "source_before_after_equal": true,
+      "every_recorded_source_hash_matches_frozen_input": true,
+      "recorded_HTTP_build_binding": null
+    }
+  },
+  "onboarding": {
+    "cases": [
+      "first-visit-complete-and-reopen",
+      "renderer-unavailable-guide",
+      "malformed-storage",
+      "storage-blocked",
+      "empty-library-guide"
+    ],
+    "scope": "Recorded first-visit/reopen, keyboard/persistence/readiness, renderer-unavailable/recovered, malformed/blocked storage and empty-library cases."
+  },
+  "follow": {
+    "passed_check_names": [
+      "follow-visible-afterlight",
+      "selected-Afterlight-preserves-ambulance-follow",
+      "follow-visible-ordinary",
+      "selected-Ordinary-preserves-ambulance-follow",
+      "ghost-follow-activates-afterlight-scene",
+      "selected-Afterlight-preserves-ghost-follow",
+      "ghost-follow-restores-hidden-ghost",
+      "ambulance-follow-replaces-ghost-follow",
+      "10x-playback",
+      "20x-playback",
+      "paused-steady-blue",
+      "reduced-motion",
+      "authored-model-thumbnails",
+      "native-runtime-notices"
+    ],
+    "browser_version": "156.0.8078.80",
+    "beacon_phases": [
+      {
+        "phase": "roof-playing-red",
+        "artifact": "local-runtime/final-postbrand-follow/roof-playing-red.png",
+        "sha256": "6de38f96e526a7467949bf8cf2ca1309284b91ae29395539b9381bf2de0a7479",
+        "actual_material_color": "#ff304d"
+      },
+      {
+        "phase": "roof-playing-blue",
+        "artifact": "local-runtime/final-postbrand-follow/roof-playing-blue.png",
+        "sha256": "a25d2a8d07a4eddd64a2c9ee6a81f43acccff4b4f2532b5e7aa652cc0d522ea5",
+        "actual_material_color": "#2288ff"
+      }
+    ],
+    "paused_scene": {
+      "recorded_interval_ms": 900,
+      "crop_sha256": "6b612091fe7403f63d275159e0431dd41b7457ced715cc23f34e73209d857fa3",
+      "repeat_crop_sha256": "6b612091fe7403f63d275159e0431dd41b7457ced715cc23f34e73209d857fa3",
+      "camera_clock_vehicle_materials_unchanged": true,
+      "scene_pixels_byte_identical": true,
+      "full_page_PNG_identical": false,
+      "excluded_CSS_boundary_px": 2,
+      "scope": "Only the saved 3D scene crop is identical. Full-page PNGs differ; no whole-page pixel identity is claimed."
+    },
+    "reduced_motion_material_samples": [
+      "#2288ff",
+      "#2288ff",
+      "#2288ff",
+      "#2288ff",
+      "#2288ff",
+      "#2288ff",
+      "#2288ff",
+      "#2288ff"
+    ],
+    "runtime_notices": {
+      "bytes": 10305,
+      "sha256": "828a097c26abcab136257f678590fa51c6da07725eae20785a8c48d90fe39374",
+      "recorded_HTTP_status": 200,
+      "recorded_native_text_matches": true
+    }
+  },
+  "study": {
+    "browser_version": "156.0.8078.80",
+    "publication_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+    "summary_sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5",
+    "summary_bytes": 8208,
+    "counts": {
+      "train": 24,
+      "validation": 12,
+      "test": 20,
+      "test_worlds": 140,
+      "test_demand_groups": 20
+    },
+    "public_companions_bound_to_frozen_site": 26,
+    "recorded_public_proof": "Original claim/collection/amendment, four decoded original grids, frozen model choices, CSV and statistics verified by the saved actual-data run.",
+    "actual_UI_checks": {
+      "comparisons": [
+        {
+          "id": "learned-vs-fixed",
+          "all_episode_failures_and_statuses_match": true,
+          "paired_means_and_signs_match": true,
+          "interval_or_actual_missing_reason_matches": true,
+          "changed_action_rate_matches": true
+        },
+        {
+          "id": "learned-vs-analytical",
+          "all_episode_failures_and_statuses_match": true,
+          "paired_means_and_signs_match": true,
+          "interval_or_actual_missing_reason_matches": true,
+          "changed_action_rate_matches": true
+        }
+      ],
+      "holdouts_objective_and_provenance_match": true,
+      "all_download_labels_and_targets_match": true
+    },
+    "real_recording_clock_follow_camera_preserved": true,
+    "invalid_then_retry_real_publication_heading_focus": true,
+    "guide_skip_and_done_restore_This_run": true,
+    "browser_POST_count": 0,
+    "scientific_result_scope": "Saved UI/public proof retain all failures and conditional paired results. No learned-policy superiority is implied."
+  },
+  "camera": {
+    "status": "verified14_saved_repeat_pairs",
+    "HTTP_inventory_recorded_in_camera_report": false,
+    "base_URL_recorded_in_camera_report": false,
+    "binding_scope": "All saved source hashes match frozen inputs and reported PNG hashes match files. This report lacks independent served HTTP inventory/base URL; release-owner execution context supplies cohort association.",
+    "devices": [
+      {
+        "viewport_css": [
+          1920,
+          1080
+        ],
+        "DPR": 1,
+        "reported_gl_renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21925.1001)"
+      },
+      {
+        "viewport_css": [
+          2560,
+          1440
+        ],
+        "DPR": 1.5,
+        "reported_gl_renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11-31.0.21925.1001)"
+      }
+    ],
+    "pairs": [
+      {
+        "pose": "1920x1080-dpr1-overview",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-overview.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-overview-repeat.png",
+        "sha256": "2a5aab632533d42e643748038632f3cc76b098b036c10f3227d6a9719ada70f8",
+        "repeat_sha256": "2a5aab632533d42e643748038632f3cc76b098b036c10f3227d6a9719ada70f8",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-explore",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-explore.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-explore-repeat.png",
+        "sha256": "f16eebaf923aba3c3a886fe3a634d2e0106eeaf77c7e99594ec3ecafb90dcef0",
+        "repeat_sha256": "f16eebaf923aba3c3a886fe3a634d2e0106eeaf77c7e99594ec3ecafb90dcef0",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-near",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-near.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-near-repeat.png",
+        "sha256": "590eae0aa97337468dd0db61612d1034ef3df1238b85f590b3a08903a584eae1",
+        "repeat_sha256": "590eae0aa97337468dd0db61612d1034ef3df1238b85f590b3a08903a584eae1",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-yaw",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-yaw.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-yaw-repeat.png",
+        "sha256": "b9a55a371d68a99bc54101dcbbd07970fa8b9c5d1d59feccb56794193855f933",
+        "repeat_sha256": "b9a55a371d68a99bc54101dcbbd07970fa8b9c5d1d59feccb56794193855f933",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-tilt-up",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-tilt-up.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-tilt-up-repeat.png",
+        "sha256": "60075c65315bcde3f1365a45eb1e29a25c3a271dd86d6f0fcbeaed7f7c38169d",
+        "repeat_sha256": "60075c65315bcde3f1365a45eb1e29a25c3a271dd86d6f0fcbeaed7f7c38169d",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-tilt-down",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-tilt-down.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-tilt-down-repeat.png",
+        "sha256": "3435fcdb9109ef661595be5577fdb59d68129f3a17311e72dcfae80c745cda3e",
+        "repeat_sha256": "3435fcdb9109ef661595be5577fdb59d68129f3a17311e72dcfae80c745cda3e",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "1920x1080-dpr1-reverse-yaw",
+        "artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-reverse-yaw.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/1920x1080-dpr1-reverse-yaw-repeat.png",
+        "sha256": "437a8ede38f74fb13c90cc33eedcb21f7fa1c22027029797e0ade0c56c61c511",
+        "repeat_sha256": "437a8ede38f74fb13c90cc33eedcb21f7fa1c22027029797e0ade0c56c61c511",
+        "PNG_dimensions": [
+          1552,
+          738
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-overview",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-overview.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-overview-repeat.png",
+        "sha256": "017578cd5f5ae9ba8c270b6122de264b40100f4352133c9a4d66eb191d8a5151",
+        "repeat_sha256": "017578cd5f5ae9ba8c270b6122de264b40100f4352133c9a4d66eb191d8a5151",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-explore",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-explore.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-explore-repeat.png",
+        "sha256": "9d326df7929a5a9169773c8d33092d36bcd586bd3fc252634cb57fe3877d7305",
+        "repeat_sha256": "9d326df7929a5a9169773c8d33092d36bcd586bd3fc252634cb57fe3877d7305",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-near",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-near.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-near-repeat.png",
+        "sha256": "388a79e8c4a34d03f5376659e8622eb65ee56513e8a2adc78b98378ce2cd3574",
+        "repeat_sha256": "388a79e8c4a34d03f5376659e8622eb65ee56513e8a2adc78b98378ce2cd3574",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-yaw",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-yaw.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-yaw-repeat.png",
+        "sha256": "2360c907593c62c2a3be01b37c26123f313766d9b2fcd5d150b0e80f5fe8d67d",
+        "repeat_sha256": "2360c907593c62c2a3be01b37c26123f313766d9b2fcd5d150b0e80f5fe8d67d",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-tilt-up",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-tilt-up.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-tilt-up-repeat.png",
+        "sha256": "53d4c53ffc0ff58a07e2d967ce3a94c61eecf42c0f8ca885d3f38925d59c3680",
+        "repeat_sha256": "53d4c53ffc0ff58a07e2d967ce3a94c61eecf42c0f8ca885d3f38925d59c3680",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-tilt-down",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-tilt-down.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-tilt-down-repeat.png",
+        "sha256": "8c70d667fa1d1ec98549cc427f75310a82593abe147e691068e06cd8358263e2",
+        "repeat_sha256": "8c70d667fa1d1ec98549cc427f75310a82593abe147e691068e06cd8358263e2",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      },
+      {
+        "pose": "2560x1440-dpr1.5-reverse-yaw",
+        "artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-reverse-yaw.png",
+        "repeat_artifact": "local-runtime/final-postbrand-camera/2560x1440-dpr1.5-reverse-yaw-repeat.png",
+        "sha256": "28b57786cb0e8f1285f38c7ba3c3aac3fe0ddde4bf1d6f9c0685ad72e2429eb2",
+        "repeat_sha256": "28b57786cb0e8f1285f38c7ba3c3aac3fe0ddde4bf1d6f9c0685ad72e2429eb2",
+        "PNG_dimensions": [
+          3288,
+          1647
+        ],
+        "byte_identical": true,
+        "logarithmic_depth": true,
+        "faded_buildings": 0
+      }
+    ],
+    "recorded_events": "Only intentional browser-disconnected events at viewport closing stages."
+  },
+  "pixel_review": {
+    "status": "passed_scoped_review_reported_by_release_owner",
+    "reviewers": "Independent assets agent; release-owner spot checks",
+    "reviewed_unique_PNG_files": 26,
+    "scope_counts": {
+      "camera_angles": 14,
+      "camera_workspaces": 2,
+      "follow_and_notices": 6,
+      "Study": 4
+    },
+    "release_owner_spot_checks": [
+      "workspace",
+      "2560 near",
+      "playing red",
+      "playing blue",
+      "actual Study overview"
+    ],
+    "audit_scope": "Hash verification only in this step. Screenshot review is the release-owner supplied confirmation, not a new visual/GPU inspection by this audit."
+  },
+  "limits": [
+    "Camera report does not independently bind the served61-file HTTP inventory.",
+    "Paused comparison proves only the scene crop, not whole-page identity.",
+    "These four regressions do not constitute a new renderer benchmark, deployed-URL acceptance or final-video validation.",
+    "Desktop only; source/report/pixel scopes remain those explicitly recorded."
+  ]
+}
