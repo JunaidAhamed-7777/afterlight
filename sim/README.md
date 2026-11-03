@@ -77,3 +77,12 @@ use `max(dispatch, absolute_eta - selected_lead)` (zero lead is not immediate).
 Zero sensor lag remains supported only for the pre-action observation. Unknown
 future policy labels report timing coverage as not checked rather than silently
 passing it. This is an artifact-consistency gate, not proof of traffic benefit.
+
+### Passage observability
+
+Every world records `junction_passage_observed` once per controlled route junction,
+independently of whether priority was requested or already expired. It records the
+first simulation boundary where route-index advancement is observed (or arrival
+notification for an unsampled final advancement), not an exact continuous-time
+crossing or rear-bumper clearance. These events improve release/expiry inspection
+without changing controller decisions, physics or the shared simulation clock.

@@ -83,6 +83,34 @@ def route_controls(route: list[str], network: dict) -> list[dict]:
     return result
 
 
+
+def observed_junction_passages(controls: list[dict], seen: set[str], now: float,
+                               route_index: int, arrived: bool) -> list[dict]:
+    """Record first *sampled* route advancement, not exact physical clearance.
+
+    Runs identically in ordinary and priority worlds, independently of request
+    expiry. An arrival notification is fallback evidence for any unsampled final
+    advancement. No controller state or passage predicate is changed here.
+    """
+    if isinstance(now, bool) or not isinstance(now, (int, float)) or not math.isfinite(now) or now < 0:
+        raise ValueError('Passage observation time must be finite and nonnegative')
+    if isinstance(route_index, bool) or not isinstance(route_index, int) or route_index < -1 or not isinstance(arrived, bool):
+        raise ValueError('Invalid sampled ambulance route state')
+    result = []
+    for control in controls:
+        junction = control['junction']
+        if junction in seen or not (arrived or route_index > control['route_index']):
+            continue
+        result.append({'t': now, 'kind': 'junction_passage_observed', 'junction': junction,
+            'observation_basis': 'arrival_notification' if arrived else 'route_index_advance',
+            'ambulance_route_index': route_index if route_index >= 0 else None,
+            'controlled_route_index': control['route_index'],
+            'incoming_edge': control['incoming_edge'], 'outgoing_edge': control['outgoing_edge'],
+            'arrived': arrived, 'time_semantics': 'first_observed_simulation_boundary_not_exact_crossing'})
+        seen.add(junction)
+    return result
+
+
 def phase_queues(conn, signal: dict) -> list[float]:
     result = []
     for state in signal['greens']:
@@ -203,6 +231,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     schedulers = {j: Scheduler(j, tuple(s['greens'])) for j, s in network['signals'].items()}
     observations = deque()
     decision = None
+    observed_passages: set[str] = set()
     horizon_accounting = None
     burden_vehicle_s = 0.0
     drain_burden_vehicle_s = 0.0
@@ -240,6 +269,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
             ambulance_active = 'ambulance' in conn.vehicle.getIDList()
             route_index = conn.vehicle.getRouteIndex('ambulance') if ambulance_active else -1
             ambulance_arrived = 'ambulance' in ledger.completed
+            events.extend(observed_junction_passages(controls, observed_passages, now, route_index, ambulance_arrived))
             control_by_junction = {c['junction']: c for c in controls}
             for j, scheduler in schedulers.items():
                 c = control_by_junction.get(j)
@@ -282,6 +312,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         # Close the exact common endpoint with its own legal boundary update.
         ambulance_active = 'ambulance' in conn.vehicle.getIDList()
         route_index = conn.vehicle.getRouteIndex('ambulance') if ambulance_active else -1
+        events.extend(observed_junction_passages(controls, observed_passages, end_s, route_index, 'ambulance' in ledger.completed))
         for j, scheduler in schedulers.items():
             c = control_by_junction.get(j)
             passed = c is not None and ('ambulance' in ledger.completed or route_index > c['route_index'])
