@@ -184,8 +184,11 @@ export function StudyResults() {
       <details className="disclosure provenance study-provenance">
         <summary>Source and download artifacts</summary>
         <p>The summary’s {integer(manifest.bytes)} bytes match its published SHA-256. Artifact links and hashes below are published provenance; opening this panel does not download or independently audit every artifact.</p>
+        {summary.artifacts.some(artifact => artifact.kind === "analysis_amendment") && (
+          <p className="study-analysis-note">The analysis uses a documented pre-test correction to verify the frozen estimator configuration. The amendment and reviewed source diff are included below.</p>
+        )}
         <ul className="study-downloads">
-          <li><a href={`https://github.com/JunaidAhamed-7777/afterlight/tree/${summary.provenance.source_commit}`} target="_blank" rel="noreferrer">Scientific source commit</a></li>
+          <li><a href={`https://github.com/JunaidAhamed-7777/afterlight/tree/${summary.provenance.source_commit}`} target="_blank" rel="noreferrer">Simulation source commit</a></li>
           <li><a href={manifestUrl} download>Publication manifest</a></li>
           <li><a href={summaryUrl} download>Verified study summary</a></li>
           {summary.artifacts.map(artifact => (
