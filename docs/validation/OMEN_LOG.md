@@ -264,3 +264,29 @@ the failed unit checkpoint into a pass.
   through both stages without relaxing depth, UTF-8 or finite-number checks.
 - No full `f4b665d` journal or traffic run started. A fresh pinned cohort is
   required; no new paired-run/pilot/model result is claimed.
+
+## 2026-11-03, `11be524` complete units/desktop and fixture qualification (reported 07:21 UTC)
+
+Compiled preview source: `b2a5e60`, artifact checkpoint `99083b2`.
+
+- Full unit/network journal: **500 Python checks passed, four skipped; Node
+  85/85 passed** (585 passing checks in total). All nine source checks stayed
+  pinned. Both network conversions exited zero with empty warning logs.
+- All four desktop suites passed. Static network qualification passed **33/33**,
+  including all 200 city pickup/hospital routes. The focused V3 probe passed
+  pointer controls, selective building fading and unobscured journey text at
+  1440×1000 and 1280×720. This is desktop, not mobile acceptance.
+- Fixed-priority fixture and ordinary/ordinary negative-control pairs qualified.
+  Each world completed all **120 scheduled civilians**, with zero running or
+  uninserted vehicles, collisions or teleports. Exact negative-control trace and
+  controller equality passed. These are correctness qualifications, not a
+  policy-benefit benchmark or proof across all routes/traffic regimes.
+- The sparse-city pair was running when Omen transport disconnected. Its process
+  and traffic-journal outcome are **unknown**. No retry or cancellation was made.
+  Inspect the existing process and saved journal before any new attempt.
+- Actual city replay/ghost alignment and a real local-generation API job remain
+  unaccepted. No pilot, training or held-out evaluation was performed; the
+  public recording catalog remains empty.
+
+The original invalid fixture evidence is retained. The later qualified case
+does not erase that failure or turn source-only revisions into measured gains.

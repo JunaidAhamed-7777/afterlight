@@ -15,8 +15,7 @@ Windows PC; cloud code review/build is not an acceptance result.
 
 The initial API served recordings only. The optional local-generation adapter now
 connects to the real runner when explicitly enabled, with one active job, bounded
-inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but accepted real
-generation remains blocked on traffic validity. It is not live streaming and
+inputs, real status and validated completed recordings. Synthetic local-generation protocol checks passed on Omen, but real local-generation API acceptance remains pending city traffic qualification. It is not live streaming and
 does not invent progress.
 
 ## Reproduction commands — use the existing pinned environment
@@ -39,15 +38,24 @@ Official package source: https://pypi.org/project/eclipse-sumo/1.28.0/
 
 ## Local acceptance evidence
 
-See [Omen validation log](validation/OMEN_LOG.md) for scoped actual results and
-known failures. A newer source commit does not inherit a prior test pass. The
-complete pinned SUMO and npm dependencies were installed on Omen. A real fixture
-pair executed but was invalid due to a civilian collision; the insertion fix
-still needs a fresh paired run. At `7ef8ffe`, both fixture and city conversion
-completed with empty warning logs, and desktop browser acceptance passed.
-Conversion is not traffic acceptance. Later source revisions remain untested
-until the device returns; its last Python batch outcome is unknown and must be
-resolved from process state and saved logs before any retry.
+See [Omen validation log](validation/OMEN_LOG.md) for source-specific results.
+At `11be524`, the complete unit/network journal passed: **500 Python checks,
+four skips, and 85 Node checks**, with both network conversions warning-free.
+All four desktop suites and the focused V3 pointer/fade/layout probe passed;
+static network qualification passed 33 checks including all 200 city routes.
+
+The fresh fixed-priority fixture and ordinary/ordinary negative control both
+qualified. All four worlds completed their 120 scheduled civilians, with no
+running/uninserted vehicles, collisions or teleports. The negative control's
+trace/control equality passed. This resolves the previously observed insertion
+collision for this qualification case, not every possible traffic scenario.
+
+The sparse-city pair then lost the Omen connection. Its process/journal outcome
+is **unknown**, not a failed or successful simulation. Inspect saved records and
+process state before any retry; never infer termination from transport loss.
+City traffic, real city replay/ghost alignment, a real local-generation API job,
+pilot throughput/diversity and all learned evaluation remain open gates. The
+public recording catalog remains empty; no performance benefit is claimed.
 The [compiled preview](../preview/README.md) permits separate browser acceptance
 without npm installation, but does not waive the source-build or simulator gates.
 
@@ -80,9 +88,10 @@ alter simulation validity, move vehicles, or certify a real traffic system.
 - Desktop map selection uses actual canonical curb/driveway anchors, with
   drag-safe clicks, keyboard alternatives and explicit recording/job locks.
 
-These are implemented source capabilities with authored regression tests, not
-new Omen test results. No pilot, trained model, held-out gain or accepted real
-replay has been produced. The public recorded catalog remains intentionally empty.
+The current source/unit/desktop coverage is recorded at `11be524` above. It does
+not establish every scientific scenario or a learned result. No pilot, trained
+model, held-out gain or accepted city/public replay has been produced. The
+public recorded catalog remains intentionally empty.
 
 ## Desktop V3 and current acceptance boundary
 
@@ -90,17 +99,19 @@ The current source-bound preview is compiled from `b2a5e60`; its exact output
 hashes and source identity are recorded in `preview/manifest.json`.
 It includes V3 modeled building details and opt-in map selection with actual
 canonical markers, drag suppression, rolled-camera raycasting and a separate
-local-request map-selection lock. The earlier `7ef8ffe` acceptance does not cover
-these changes. Desktop is the sole optimization/test target; preserve existing
+local-request map-selection lock. The `11be524` source/desktop acceptance covers these changes, but does not
+establish actual city playback or learned-policy performance. Desktop is the sole optimization/test target; preserve existing
 responsive behavior without starting mobile-specific work.
 
 The map allowance is 25 MB; the current enhanced GLB is 4,439,048 bytes according
 to its asset manifest. Low-poly instanced vehicles and the original canonical
-coordinate system remain unchanged. New source tests are authored, not executed.
+coordinate system remain unchanged. Source/unit/desktop checks passed at
+`11be524`; real city traffic playback still needs acceptance.
 
 The offline selected-replay provenance bridge is implemented in source, including
 bounded predeclared trace capture, frozen-report verification, original-candidate
-export and a separate desktop evidence inspector. **Omen acceptance is pending**;
+export and a separate desktop evidence inspector. **Real scientific capture/export
+acceptance is pending**;
 there is no released model or real selected capture. It selects one retained
 fixed-lead candidate using a frozen selector, preserving physical policy, events
 and timing. The inspector distinguishes exporter-declared artifact references

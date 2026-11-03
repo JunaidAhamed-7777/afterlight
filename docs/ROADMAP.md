@@ -12,27 +12,29 @@ The original asset pack is published and verified: 25 primary junctions plus 32 
 
 Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
 
-## Updated progress — November 3, 10:45 IST
+## Updated progress — November 3, 12:51 IST
 
-The overnight allocations are superseded by the evidence gates below. The
-owner explicitly continued the whole-day build and then switched off Omen.
-Cloud implementation continues; all acceptance and experiments wait for Omen.
-Desktop-only is now the target (`AGENTS.md`); real 3D geometry and low-poly
-instanced civilian traffic remain mandatory.
+Desktop remains the sole optimization/test target (`AGENTS.md`). Real 3D geometry,
+selective building fading and low-poly instanced civilian traffic are retained.
+The owner requested continued cloud implementation and Omen-only testing.
 
-Actual `7ef8ffe` evidence: desktop browser 14/14, preview 9/9, asset 8/8, frontend
-Node 57/57 and production build passed; fixture/city network conversion had no
-warnings. A previous real fixture pair was invalid due to a collision. Its
-insertion fix has not yet passed a new real run. Last Python batch outcome is
-unknown after transport loss; inspect saved records/processes before retrying.
+At `11be524`, the unit/network journal passed **500 Python checks with four skips
+and 85 Node checks**. The four desktop suites and focused V3 pointer/fade/layout
+probe passed. Static network qualification passed 33 checks, including all 200
+city pickup/hospital routes, with no conversion warnings.
 
-Next critical gates, in order: resolve that unknown execution; validate newer
-source and geometry; run fresh fixture plus ordinary/ordinary control; inspect
-city lane/stopline geometry and sparse city traffic; only then measure pilot
-runtime/action diversity, freeze a feasible study, and evaluate untouched data.
-No public traffic recording or learned-performance claim until genuine evidence
-passes these gates. Retain the November 4 submission buffer; reduce experimental
-breadth before correctness or the actual browser demo.
+Fresh fixed-priority and ordinary/ordinary fixture pairs qualified: each world
+completed all 120 civilians with no running/uninserted vehicles, collisions or
+teleports; exact negative-control trace/control equality passed. This is software
+correctness evidence, not policy superiority. The sparse-city pair subsequently
+lost its Omen connection; its outcome is unknown pending process/journal review.
+
+Next: resolve that existing city execution without blind retries; qualify city
+traffic and real replay/ghost alignment; complete one real local-generation API
+flow; then measure pilot throughput/action diversity and freeze a feasible study.
+The public recording catalog remains empty. No trained model, held-out result or
+measured benefit is claimed. Keep the November 4 submission buffer; cut experiment
+breadth before correctness or an honest browser-recorded demonstration.
 
 ## Critical path
 
@@ -40,9 +42,9 @@ Documentation checkpoint → three-junction legal scheduler and accounting → c
 
 | Next gate | Work and required evidence |
 |---|---|
-| While Omen is off | Finish scoped source fixes, preserve failed/unknown evidence, reconcile docs and prepare pinned acceptance commands. No cloud testing, training or invented replay. The latest V3/map-picking/offline-evidence preview source and exact hashes are in `preview/manifest.json`; later source changes do not inherit its build. |
-| First reconnect | Resolve the interrupted Python batch from saved records/process state before retry. Run the selected source cohort's unit/build/desktop checks, V3 geometry and canonical map-picking regressions. |
-| Traffic correctness | Fresh three-junction pair and ordinary/ordinary negative control; retain failures. Audit city lane/stop-line placement, then sparse city traffic. Clean conversion alone does not pass this gate. |
+| During transport gaps | Preserve the active city attempt and all failed/unknown evidence; continue scoped source work and documentation. No cloud testing, training or invented replay. The latest V3/map-picking/offline-evidence preview source and exact hashes are in `preview/manifest.json`; later source changes do not inherit its build. |
+| First reconnect | Inspect the existing sparse-city process/journal before any retry. Do not pull source underneath an active run. Current unit/build/desktop gates passed at `11be524`; rerun affected gates after later code changes. |
+| Traffic correctness | Fixed fixture and ordinary/ordinary control qualified at `11be524`. Sparse city outcome remains unknown. Complete city lane/stop-line and real replay alignment checks before claiming the city gate passed. |
 | Experiment feasibility | Measure runtime and useful lead diversity. Freeze feasible whole-realization splits, objective, model-selection rules and capture case IDs before collection. The source-implemented offline selected-replay bridge must pass acceptance using actual captured traces, preserving original fixed-candidate physics and separate selector provenance; it is not a live learned controller. |
 | Evaluation and replay | Only after valid collection: fit on training, choose on validation, freeze, evaluate untouched test. Retain invalid/censored cases and publish only audited real captures. No held-out gain means an honest inconclusive/non-learned result. |
 | Nov 4, by 13:00 | Capture the actual desktop product/demo and truthful results or limitations; reconcile reproduction, attribution, licensing and evidence links. Reduce experiment breadth before correctness. |
