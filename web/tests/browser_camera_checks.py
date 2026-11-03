@@ -68,6 +68,24 @@ def assert_camera_exploration(page):
     pan.check()
     assert pan.is_checked()
     pan.uncheck()
+    before_toggle = json.loads(canvas.get_attribute('data-camera-state'))
+    reveal = page.get_by_label('Reveal streets behind foreground buildings', exact=True)
+    reveal.uncheck()
+    page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
+    page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.fadedBuildings) === 0")
+    after_toggle = json.loads(canvas.get_attribute('data-camera-state'))
+    assert before_toggle['mode'] == after_toggle['mode']
+    for field in ('position', 'quaternion', 'target'):
+        assert len(before_toggle[field]) == len(after_toggle[field])
+        assert all(abs(a-b) < 1e-8 for a,b in zip(before_toggle[field], after_toggle[field])), field
+    for field in ('zoom', 'roll', 'azimuth', 'elevation'):
+        assert abs(before_toggle[field]-after_toggle[field]) < 1e-8, field
+    # Viewport dimensions are layout observations, not physical camera pose.
+    # They may legitimately change when a scrollbar appears or a panel opens.
+    box = canvas.bounding_box()
+    assert box and abs(after_toggle['viewport'][0]-box['width']) < 1 and abs(after_toggle['viewport'][1]-box['height']) < 1
+    reveal.check()
+    page.evaluate('() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
     info = json.loads(canvas.get_attribute('data-render-info'))
     assert info['calls'] > 0 and info['triangles'] > 0, info
     assert 0 <= info['fadedBuildings'] <= info['occluderBuildings'], info

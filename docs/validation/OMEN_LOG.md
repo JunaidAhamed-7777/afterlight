@@ -150,3 +150,34 @@ Compiled application source: `1312e865`; preview/harness/refresh source: `3f679d
 The enhanced 3D city/camera revision `14ea738` and compiled preview `63b7874` are
 later work and are **not covered** by these results. Their new asset, cutaway and
 camera tests still require a pinned Omen run.
+
+## 2026-11-03, `63b7874` enhanced desktop city (reported 04:27 UTC)
+
+Compiled application source: `14ea738`. Actual Omen checks reported:
+
+- All 56 exact manifest hashes matched; enhanced asset structure tests **8/8**,
+  locked npm production build succeeded, frontend Node tests **57 passed**.
+- Headed desktop browser checks **13/13** and synthetic local-generation protocol
+  checks passed. No shader, browser console or uncaught page error was reported.
+- Actual perspective geometry, X/Y/Z rotation including roll, pan and zoom were
+  visually inspected. One foreground building out of 187 became transparent;
+  toggling the option restored it. This was a real renderer observation, not a
+  simulated traffic outcome.
+- Reported renderer counters were 19 draw calls and 78,564 triangles. Sampled
+  requestAnimationFrame intervals were median 6.10 ms, p95 6.30 ms, maximum
+  18.8 ms. These are scheduling intervals, **not GPU timings, loaded-traffic FPS,
+  or a whole-product performance benchmark**.
+- Preview unit checks were eight passed / one failed because a test hardcoded an
+  obsolete compiled-source SHA. Exact hash verification itself passed. The test
+  is being corrected to read the manifest's declared source rather than freeze
+  a historical build forever.
+- The camera panel visibly covered the journey/map-inspection label. The later
+  `b951090` preview moves that label into its own row and requires an overlap
+  regression; this acceptance does not validate that later fix.
+- A supplemental whole-camera-state comparison failed after a 10 px viewport
+  width change although its physical camera fields were identical. Viewport
+  metadata must be checked against actual layout separately from physical pose;
+  it is not evidence that a transparency toggle moved the camera.
+
+No new valid SUMO pair or collision-fix acceptance was reported with this UI
+cohort. Desktop-only acceptance is the current target; mobile work is excluded.

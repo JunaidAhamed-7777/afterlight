@@ -1,5 +1,6 @@
 """Preview server path contract. Execute on Omen, not in cloud development."""
 import importlib.util
+import json
 from pathlib import Path
 import unittest
 
@@ -23,4 +24,11 @@ class PreviewPaths(unittest.TestCase):
         self.assertEqual(server.resolve_request('/assets/map/city_manifest.json?v=1'), ROOT / 'assets/map/city_manifest.json')
 
     def test_manifest(self):
-        self.assertEqual(server.verify()['source_commit'], 'b33ced8d161defb019903dd3e98440a6a3e3bda1')
+        declared = json.loads((ROOT / 'preview/manifest.json').read_text(encoding='utf-8'))
+        # The compiled source may differ from HEAD after backend-only commits.
+        # The server must still verify every declared input's exact raw bytes.
+        verified = server.verify()
+        self.assertEqual(verified, declared)
+        self.assertRegex(verified['source_commit'], r'^[0-9a-f]{40}$')
+        for section in ('source_files', 'output_files', 'runtime_assets'):
+            self.assertTrue(verified[section], f'Missing {section}')
