@@ -201,7 +201,17 @@ def main():
             note('Switch to the genuine Westhaven hospital recording');until(59);shot('05-westhaven-response');until(62)
             pause();page.get_by_role('button',name='Results',exact=True).click()
             page.get_by_role('button',name='This run',exact=True).click()
-            expect(page.locator('.evidence:not(.study-results)')).to_be_visible();note('Read actual This run results');shot('06-recorded-results');until(65)
+            expect(page.locator('.evidence:not(.study-results)')).to_be_visible()
+            report['recorded_results_layout']=page.locator('.evidence-table-wrap').evaluate("""table => ({
+              overflow:table.scrollWidth>table.clientWidth,
+              statusCells:[...table.querySelectorAll('tbody tr:first-child td')].map(cell=>{
+                const range=document.createRange();range.selectNodeContents(cell);
+                return {text:cell.textContent,lines:range.getClientRects().length,overflow:cell.scrollWidth>cell.clientWidth};
+              })
+            })""")
+            assert not report['recorded_results_layout']['overflow']
+            assert all(row['lines']==1 and not row['overflow'] for row in report['recorded_results_layout']['statusCells']),'Run status split within a word'
+            note('Read actual This run results');shot('06-recorded-results');until(65)
             page.locator('.settings-scroll').evaluate("e=>e.scrollTo({top:Math.min(360,e.scrollHeight),behavior:'instant'})")
             note('Inspect civilian delay and vehicle accounting');shot('07-traffic-accounting');until(67)
             page.get_by_role('button',name='Study',exact=True).click()

@@ -1234,6 +1234,10 @@ thead th:nth-child(3) {
 td {
   font: 10px/1.5 var(--mono);
 }
+.evidence-table-wrap td {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
 .provenance {
   font-size: 12px;
 }
