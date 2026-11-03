@@ -243,8 +243,12 @@ def main()->None:
         page.on('console',lambda message:report['console_errors'].append(message.text) if message.type=='error' else None)
         query=dict(parse_qsl(base.query));query['inspect']='1'
         page.goto(urlunsplit((base.scheme,base.netloc,base.path,urlencode(query),'')),wait_until='networkidle')
-        select=page.get_by_label('Recorded experiment',exact=True);expect(select).to_be_visible(timeout=30000)
-        select.select_option(identity)
+        # The selector intentionally filters the current journey. A fresh page
+        # may default to another hospital, so use the product's first-run action
+        # which selects the available recording AND its original route.
+        page.get_by_role('button',name='Open available recording',exact=True).click(timeout=30000)
+        select=page.get_by_label('Recorded experiment',exact=True)
+        expect(select).to_have_value(identity,timeout=30000)
         expect(page.locator('.mode-label')).to_contain_text('Recorded simulation',timeout=30000)
         page.wait_for_selector('.three-host canvas',timeout=30000)
         page.wait_for_function("!document.querySelector('.canvas-status')",timeout=30000)
