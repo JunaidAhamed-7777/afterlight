@@ -1,3 +1,5 @@
+import { plainObject, validateOptionalDecision, validateSignalInventory } from "./replayContracts.ts";
+import { validateSelectionEvidence } from "./selectionEvidence.ts";
 import {
   validateWorldIdentity,
   validateCadence,
@@ -54,9 +56,8 @@ export function validateReplay(value: unknown): Replay {
     !Number.isFinite(r.scenario.seed) ||
     !Number.isFinite(r.scenario.dispatch_s) ||
     r.scenario.dispatch_s < 0 ||
-    !r.scenario.id ||
-    !r.provenance.source_commit ||
-    !r.provenance.sumo_version ||
+    ![r.scenario.id, r.scenario.pickup_id, r.scenario.hospital_id,
+      r.provenance.source_commit, r.provenance.sumo_version].every(value => typeof value === "string" && value.length > 0) ||
     !/^[a-f0-9]{64}$/i.test(r.provenance.network_sha256) ||
     !/^[a-f0-9]{64}$/i.test(r.provenance.demand_sha256)
   )
@@ -73,11 +74,11 @@ export function validateReplay(value: unknown): Replay {
     const point = (p: unknown): p is number[] =>
       Array.isArray(p) && p.length >= 2 && p.every(Number.isFinite);
     const ids = new Set<string>();
-    if (!Array.isArray(r.network_geometry.signals))
+    if (!plainObject(r.network_geometry) || !Array.isArray(r.network_geometry.signals))
       throw new Error("The recording has invalid signal geometry.");
     for (const signal of r.network_geometry.signals) {
       if (
-        !signal.id ||
+        typeof signal.id !== "string" || !signal.id ||
         ids.has(signal.id) ||
         !point(signal.position) ||
         !Array.isArray(signal.links)
@@ -88,10 +89,9 @@ export function validateReplay(value: unknown): Replay {
         if (
           !Number.isInteger(link.index) ||
           link.index < 0 ||
-          !link.from_edge ||
-          !link.to_edge ||
-          !link.from_lane ||
-          !link.to_lane ||
+          ![link.from_edge, link.to_edge, link.from_lane, link.to_lane].every(
+            value => typeof value === "string" && value.length > 0,
+          ) ||
           !point(link.stop_line) ||
           ![link.incoming_shape, link.outgoing_shape].every(
             (shape) =>
@@ -112,14 +112,15 @@ export function validateReplay(value: unknown): Replay {
       !["completed", "censored", "invalid", "infrastructure_error"].includes(
         w.status,
       ) ||
-      !w.policy ||
-      !w.metrics ||
+      typeof w.policy !== "string" || !w.policy ||
+      !plainObject(w.metrics) ||
       !Array.isArray(w.events) ||
       !Array.isArray(w.frames) ||
       !w.frames.length
     )
       throw new Error(`The ${name} world has no recorded frames.`);
     validateEvents(w.events, r.duration_s);
+    if (w.decision !== undefined) validateOptionalDecision(w.decision, r.duration_s);
     let previous = -Infinity;
     for (const f of w.frames) {
       if (
@@ -139,7 +140,7 @@ export function validateReplay(value: unknown): Replay {
       const signalIds = new Set<string>();
       for (const signal of f.signals) {
         if (
-          !signal.id ||
+          typeof signal.id !== "string" || !signal.id ||
           signalIds.has(signal.id) ||
           typeof signal.state !== "string" ||
           !signal.state ||
@@ -182,6 +183,8 @@ export function validateReplay(value: unknown): Replay {
     throw new Error(
       "The paired worlds do not cover the same absolute time interval.",
     );
+  validateSignalInventory(r);
+  validateSelectionEvidence(r);
   return r;
 }
 export const seconds = (value: unknown): string =>

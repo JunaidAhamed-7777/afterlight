@@ -1296,3 +1296,11 @@ footer {
 .map-pick-instructions small { display: block; margin-top: 8px; color: var(--muted); }
 .map-pick-hover { display: block; min-height: 24px; margin-bottom: 8px; }
 .map-pick-instructions button { min-height: 40px; }
+
+.offline-selection-evidence { grid-column: 2; padding: 16px 0; border-top: 1px solid var(--line); }
+.offline-selection-evidence h3 { margin: 0 0 10px; font-size: 16px; }
+.offline-selection-evidence p { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 72ch; }
+.offline-selection-evidence summary { cursor: pointer; padding: 12px 0; }
+.offline-selection-evidence dl > div { padding: 8px 0; }
+.offline-selection-evidence dt { color: var(--muted); font-size: 12px; }
+.offline-selection-evidence dd { margin: 4px 0 0; font: 12px var(--mono); overflow-wrap: anywhere; }

@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { SelectionEvidenceInspector } from "./SelectionEvidenceInspector.tsx";
 import type { Replay } from "./types.ts";
 export const DecisionInspector = memo(function DecisionInspector({
   replay,
@@ -6,7 +7,7 @@ export const DecisionInspector = memo(function DecisionInspector({
   replay: Replay;
 }) {
   const world = replay.worlds.afterlight;
-  const dispatch = world.events.find((e) => e.kind === "dispatch");
+  const dispatch = replay.selection_evidence ? world.decision : world.events.find((e) => e.kind === "dispatch");
   const transitions = world.events
     .filter((e) =>
       ["request_planned", "request", "priority_green", "release"].includes(
@@ -15,6 +16,8 @@ export const DecisionInspector = memo(function DecisionInspector({
     )
     .sort((a, b) => Number(a.t) - Number(b.t));
   return (
+    <>
+    {replay.selection_evidence && <SelectionEvidenceInspector evidence={replay.selection_evidence} />}
     <details className="provenance decision-inspector">
       <summary>Dispatch decision & legal priority sequence</summary>
       {dispatch ? (
@@ -87,5 +90,6 @@ export const DecisionInspector = memo(function DecisionInspector({
         </div>
       )}
     </details>
+    </>
   );
 });

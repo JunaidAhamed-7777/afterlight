@@ -25,6 +25,7 @@ export interface World {
   lead_s?: number | null;
   status: string;
   metrics: Record<string, unknown>;
+  decision?: Record<string, unknown>;
   events: Array<Record<string, unknown>>;
   frames: Frame[];
 }
@@ -34,6 +35,8 @@ export interface Replay {
   scenario: {
     network_kind: "fixture" | "city";
     regime?: string;
+    episode_id?: string;
+    split?: string;
     id: string;
     seed: number;
     pickup_id: string;
@@ -54,6 +57,7 @@ export interface Replay {
     sumo_version: string;
   };
   network_geometry?: { signals: SignalGeometry[] };
+  selection_evidence?: SelectionEvidence | null;
   duration_s: number;
   step_s: number;
   worlds: { afterlight: World; baseline: World };
@@ -107,4 +111,27 @@ export interface City {
     destination_node: string;
   }>;
   bounds: { min: number[]; max: number[] };
+}
+
+export interface SelectionEvidence {
+  schema: "afterlight.selection-evidence.v1";
+  selector_kind: "residual_tree" | "analytical";
+  selector_sha256: string;
+  model_sha256?: string | null;
+  model_file_sha256?: string | null;
+  study_sha256: string;
+  protocol_sha256: string;
+  release_sha256: string;
+  report_sha256: string;
+  selection_sha256: string;
+  trace_manifest_sha256: string;
+  collection_manifest_sha256: string;
+  comparison_artifact_sha256: string;
+  case_id: string;
+  episode_id: string;
+  selected_lead_s: number;
+  source_world_aliases: Record<"baseline" | "afterlight", {
+    original_world_id: string; trace_sha256: string; trace_file: string;
+  }>;
+  interpretation: string;
 }

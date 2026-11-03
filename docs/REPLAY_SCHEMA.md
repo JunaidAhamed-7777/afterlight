@@ -50,13 +50,19 @@ SUMO job and GET /api/jobs/{id} reports its actual lifecycle. On completion it
 provides a validated recorded replay. This is local generation followed by playback,
 not live streaming. Static mode must not offer generation. See [API details](../api/README.md).
 
-## Pending offline selector provenance extension
+## Optional offline selector provenance extension
 
-A separate optional `selection_evidence` bridge is in progress and is not yet an
-accepted replay/UI capability. The intended export retains a predeclared real
+The optional `afterlight.selection-evidence.v1` bridge is implemented in source,
+but actual selected-capture and desktop acceptance remain pending. The export
+retains a predeclared real
 fixed-lead candidate and ordinary comparison, with original physical policy,
 raw dispatch decision and timestamps unchanged. Separate metadata identifies
 the frozen selector/model, study/protocol/release/report and exact source trace
 aliases/hashes. It must not relabel the physical controller as live learned
 inference or infer held-out benefit from one selected run. There is currently no
 released trained model, accepted selected replay or performance conclusion.
+
+The viewer checks structural and cross-field consistency; it does not download
+or independently rehash referenced scientific artifacts. The offline exporter
+verifies the frozen report and original trace bindings before writing output.
+See [export usage and acceptance limits](../export/README.md).

@@ -97,9 +97,11 @@ The map allowance is 25 MB; the current enhanced GLB is 4,439,048 bytes accordin
 to its asset manifest. Low-poly instanced vehicles and the original canonical
 coordinate system remain unchanged. New source tests are authored, not executed.
 
-An offline selected-replay provenance bridge is being designed/implemented
-separately. It is **pending**, with no released model or real selected capture.
-The intended bridge selects one retained fixed-lead candidate using a frozen
-selector, preserves that candidate's physical policy/events and records separate
-selection provenance. It must never imply a live learned controller or infer a
-study conclusion from one attractive replay.
+The offline selected-replay provenance bridge is implemented in source, including
+bounded predeclared trace capture, frozen-report verification, original-candidate
+export and a separate desktop evidence inspector. **Omen acceptance is pending**;
+there is no released model or real selected capture. It selects one retained
+fixed-lead candidate using a frozen selector, preserving physical policy, events
+and timing. The inspector distinguishes exporter-declared artifact references
+from independently verified evidence. It is not a live learned controller, and
+one recording cannot establish a study conclusion. See [export contract](../export/README.md).

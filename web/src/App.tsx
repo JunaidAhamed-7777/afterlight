@@ -6,6 +6,7 @@ import { bindRecording, loadRecording } from "./recording.ts";
 import { LocalGeneration } from "./LocalGeneration.tsx";
 import { CanvasBoundary } from "./CanvasBoundary.tsx";
 import { loadCanonicalCity, geometryMatches } from "./city.ts";
+import { selectionLabel } from "./selectionEvidence.ts";
 import { DecisionInspector } from "./DecisionInspector.tsx";
 import { QueueChart } from "./QueueChart.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
@@ -620,7 +621,7 @@ export default function App() {
                 </span>
                 <span className="stage-subtitle">
                   {replay
-                    ? `Seed ${replay.scenario.seed} · ${replay.worlds[world].policy}`
+                    ? `Seed ${replay.scenario.seed} · ${world === "afterlight" && replay.selection_evidence ? selectionLabel(replay.selection_evidence) : replay.worlds[world].policy}`
                     : "25 primary junctions · two hospitals"}
                 </span>
               </div>
