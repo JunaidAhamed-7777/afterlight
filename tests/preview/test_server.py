@@ -23,4 +23,4 @@ class PreviewPaths(unittest.TestCase):
         self.assertEqual(server.resolve_request('/assets/map/city_manifest.json?v=1'), ROOT / 'assets/map/city_manifest.json')
 
     def test_manifest(self):
-        self.assertEqual(server.verify()['source_commit'], '1312e86564e45dad2b758336946cd692335049b8')
+        self.assertEqual(server.verify()['source_commit'], 'b33ced8d161defb019903dd3e98440a6a3e3bda1')
