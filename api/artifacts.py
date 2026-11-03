@@ -7,6 +7,9 @@ from pathlib import Path
 import stat
 
 MAX_REPLAY_BYTES = 128 * 1024 * 1024
+# Explicitly opt in only for dense local generation artifacts. Public-library
+# recordings, catalog/metadata readers, and ordinary JSON retain the lower cap.
+MAX_LOCAL_JOB_REPLAY_BYTES = 256 * 1024 * 1024
 MAX_JSON_DEPTH = 64  # Container nesting, including the root object; independent of Python recursion limits.
 
 

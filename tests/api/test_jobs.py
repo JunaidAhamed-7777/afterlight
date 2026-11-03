@@ -231,7 +231,7 @@ class JobTests(unittest.TestCase):
             args.output.mkdir(parents=True)
             (args.output/'replay.json').write_text(json.dumps(synthetic_replay()))
             return {'scenario_id':'unit-fixture'}
-        with tempfile.TemporaryDirectory() as root,patch('api.artifacts.MAX_REPLAY_BYTES',100):
+        with tempfile.TemporaryDirectory() as root,patch('api.jobs.MAX_LOCAL_JOB_REPLAY_BYTES',100):
             manager=JobManager(Path(root),runner)
             job=manager.submit({'network':'fixture'});manager.close()
             actual=manager.get(job['id'])
@@ -250,7 +250,7 @@ class JobTests(unittest.TestCase):
             self.assertEqual(manager.get(job['id'])['status'],'completed')
             recovered=JobManager(Path(root),runner)
             try:
-                with patch('api.artifacts.MAX_REPLAY_BYTES',100):
+                with patch('api.jobs.MAX_LOCAL_JOB_REPLAY_BYTES',100):
                     self.assertIsNone(manager.replay_data(job['id']))
                     self.assertEqual(manager.get(job['id'])['failure_kind'],'artifact_integrity')
                     self.assertEqual(recovered.get(job['id'])['status'],'failed')
@@ -263,8 +263,8 @@ class JobTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as root:
             path=Path(root)/'replay.json';path.write_text(json.dumps(expected))
             original=path.read_bytes();expected_hash=hashlib.sha256(original).hexdigest()
-            def read_then_change(target):
-                payload=read_bytes(target)
+            def read_then_change(target,**kwargs):
+                payload=read_bytes(target,**kwargs)
                 altered=synthetic_replay();altered['scenario']['seed']=999
                 target.write_text(json.dumps(altered))
                 return payload
@@ -273,6 +273,17 @@ class JobTests(unittest.TestCase):
             self.assertEqual(reader.call_count,1)
             self.assertEqual(data,expected);self.assertEqual(actual_hash,expected_hash)
             self.assertEqual(json.loads(path.read_text())['scenario']['seed'],999)
+
+    def test_local_job_budget_does_not_raise_public_or_metadata_limits(self):
+        from api.artifacts import MAX_REPLAY_BYTES,MAX_LOCAL_JOB_REPLAY_BYTES,ArtifactError,parse_json_object
+        self.assertEqual(MAX_REPLAY_BYTES,128*1024*1024)
+        self.assertEqual(MAX_LOCAL_JOB_REPLAY_BYTES,256*1024*1024)
+        payload=json.dumps(synthetic_replay()).encode()
+        with tempfile.TemporaryDirectory() as root,patch('api.artifacts.MAX_REPLAY_BYTES',100):
+            path=Path(root)/'replay.json';path.write_bytes(payload)
+            with self.assertRaises(ArtifactError):parse_json_object(payload)
+            with patch('api.jobs.MAX_LOCAL_JOB_REPLAY_BYTES',len(payload)):
+                self.assertEqual(load_job_replay(path,parameters({'network':'fixture'}))[0],synthetic_replay())
 
     def test_unbounded_numeric_duration_is_controlled_artifact_failure(self):
         from api.artifacts import ArtifactError

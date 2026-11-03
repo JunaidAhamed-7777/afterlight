@@ -16,7 +16,7 @@ import time
 from types import SimpleNamespace
 from typing import Callable
 from uuid import uuid4
-from api.artifacts import ArtifactError, read_bytes, parse_json_object
+from api.artifacts import ArtifactError, read_bytes, parse_json_object, MAX_LOCAL_JOB_REPLAY_BYTES
 
 
 class RequestError(ValueError):
@@ -78,11 +78,11 @@ def validate_request_binding(replay: dict, params: dict) -> None:
 def load_job_artifact(path: Path, params: dict, expected_sha256: str | None = None) -> tuple[bytes,dict,str]:
     """Hash, parse and validate the SAME bounded bytes returned to the caller."""
     from export.replay import validate_replay
-    payload = read_bytes(path)
+    payload = read_bytes(path,limit=MAX_LOCAL_JOB_REPLAY_BYTES)
     digest = hashlib.sha256(payload).hexdigest()
     if expected_sha256 is not None and digest != expected_sha256:
         raise ArtifactError('Saved replay hash differs from completed job')
-    data = parse_json_object(payload)
+    data = parse_json_object(payload,limit=MAX_LOCAL_JOB_REPLAY_BYTES)
     try:
         validate_replay(data)
         validate_request_binding(data,params)
@@ -246,7 +246,7 @@ class JobManager:
 
     def replay_data(self, job_id: str) -> dict | None:
         payload = self.replay_bytes(job_id)
-        return parse_json_object(payload) if payload is not None else None
+        return parse_json_object(payload,limit=MAX_LOCAL_JOB_REPLAY_BYTES) if payload is not None else None
 
     def replay_path(self, job_id: str) -> Path | None:
         """Compatibility file lookup; HTTP must use verified replay_bytes instead."""

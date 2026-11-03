@@ -52,7 +52,8 @@ verified recordings remain readable. Do not pull while a simulation is running.
 ## Artifact and source integrity
 
 HTTP replay reads, generation completion checks, and restarted-job recovery use
-one shared **128 MiB** byte cap. The cap applies to the actual read, not just a
+an explicit **256 MiB local-job** byte cap. Public-library replay reads retain a
+**128 MiB decoded** cap (20 MiB physical for gzip files). The cap applies to the actual read, not just a
 prior file-size check. Oversized or changed artifacts remain on disk but cannot
 be advertised/served as verified completions. Both replay endpoints return the exact original bytes that passed their
 recorded hash, schema and request/catalog checks. Original compact or formatted serialization is preserved,
@@ -65,14 +66,15 @@ containers including the root**. A quote/escape-aware linear scan enforces this
 bound before structure decoding, independently of interpreter recursion limits.
 The same depth bound covers requests, catalogs, replay bytes, recovered job
 records and generated HTTP metadata. Byte limits remain context-specific: replay
-and catalog reads default to 128 MiB, persisted job metadata to 1 MiB, and POST
+and catalog reads default to 128 MiB; only local generation completion, recovery
+and replay responses explicitly opt in to 256 MiB. Persisted job metadata is limited to 1 MiB, and POST
 bodies to 16 KiB. An explicit context cap is honored by both the reader and
 parser rather than being replaced by the replay cap. Exact-byte replay responses remain unchanged.
 
 Generation rechecks the server's startup source identity after the runner and
 again before recording completion. A mismatch is an explicit infrastructure
 failure, not a measured policy outcome; raw simulation evidence is retained.
-The fixed 600-second simulation horizon is **not a wall-clock timeout**. There
+The fixed 600-second fixture / 900-second city simulation endpoint is **not a wall-clock timeout**. There
 is no unsafe thread cancellation or global process-kill fallback: shutdown
 waits for the owned runner, and this checkpoint does not promise bounded wall
 runtime or automatic crash recovery.
