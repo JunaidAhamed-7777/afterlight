@@ -5,10 +5,10 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `d23c6c8f9f4794c6eb0b92b1246837b637b53923`.
+**Compiled source:** `b2a5e60a1b78d24a51e0ac24bae28f83f2df0647`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
-Compilation succeeded in the cloud. This build includes V3 modeled city details, canonical map selection and the offline selector evidence inspector and descriptive individual-civilian delay-tail row. It still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
+Compilation succeeded in the cloud. This build includes strict bounded browser JSON handling, V3 modeled city details, canonical map selection and the offline selector evidence inspector and descriptive individual-civilian delay-tail row. It still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
 acceptance is recorded in `docs/validation/OMEN_LOG.md`.
 A successful preview test does not establish npm installation reproducibility,
 SUMO correctness, performance improvement, or a trained model.
