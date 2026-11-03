@@ -235,3 +235,17 @@ the failed unit checkpoint into a pass.
 - Later acceptance gates stayed held. This result does not establish API,
   frontend, current geometry, browser, network or traffic acceptance for this
   checkpoint. No new real pair, pilot, model or held-out result is claimed.
+
+## 2026-11-03, `38ae571` runtime fixtures accepted; API depth failure (reported 06:51 UTC)
+
+- Focused pilot-runtime checks **19/19 passed**; strict preview verification and
+  offline production build passed.
+- Simulation checks **199 passed, 2 skips**; evaluation checks **186 passed,
+  2 skips**.
+- API checks **41 passed, 4 failed**. The interpreter accepted 2,000 nested
+  JSON arrays without raising `RecursionError`, exposing a real missing explicit
+  depth bound in the API. This is not a traffic outcome or a test expectation to
+  relax. The correction adds deterministic bounded JSON handling at the API
+  boundaries, with fresh Omen acceptance required.
+- The remaining six journal stages, browser acceptance and traffic were not run
+  in this cohort. No real paired-run, pilot, model or held-out result is claimed.

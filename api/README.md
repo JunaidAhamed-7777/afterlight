@@ -56,7 +56,12 @@ recorded hash, schema and request/catalog checks. Pretty-printing is preserved,
 so catalog SHA256 and byte counts remain valid in the viewer. They do not
 reserialize hash-bound replays or reopen a separately validated path. JSON
 nonfinite tokens, exponent overflow (such as `1e309`) and excessive parser depth
-are rejected as controlled errors, including nested metadata values.
+are rejected as controlled errors, including nested metadata values. JSON is
+UTF-8 (an optional UTF-8 BOM is accepted), with at most **64 nested object/array
+containers including the root**. A quote/escape-aware linear scan enforces this
+bound before structure decoding, independently of interpreter recursion limits.
+The same bound covers requests, catalogs, replay bytes, recovered job records
+and generated HTTP metadata. Exact-byte replay responses remain unchanged.
 
 Generation rechecks the server's startup source identity after the runner and
 again before recording completion. A mismatch is an explicit infrastructure

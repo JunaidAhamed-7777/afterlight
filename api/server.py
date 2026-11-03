@@ -15,7 +15,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 # Re-export existing names for callers, but keep one canonical byte cap/parser.
-from api.artifacts import MAX_REPLAY_BYTES, ArtifactError, reject_nonfinite, finite_float, read_json, read_bytes, parse_json_object
+from api.artifacts import MAX_REPLAY_BYTES, ArtifactError, reject_nonfinite, finite_float, read_json, read_bytes, parse_json_object, bounded_json_text
 
 SAFE_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,95}\Z")
 
@@ -103,9 +103,8 @@ def make_handler(replay_dir: Path, jobs=None):
             # leave a partial successful response or recurse into error output.
             try:
                 body = json.dumps(data,allow_nan=False,ensure_ascii=False,separators=(",",":")).encode('utf-8')
-                if len(body)>MAX_REPLAY_BYTES:
-                    raise ValueError('Metadata response exceeds local API limit')
-            except (ValueError,TypeError,OverflowError,RecursionError):
+                bounded_json_text(body)
+            except (ArtifactError,ValueError,TypeError,OverflowError,RecursionError):
                 code = 422
                 body = b'{"error":"Local response metadata could not be safely serialized"}'
             self.send_json_bytes(code,body)
@@ -198,11 +197,11 @@ def make_handler(replay_dir: Path, jobs=None):
                 raw = self.rfile.read(length)
                 if len(raw) != length:
                     raise ValueError("Incomplete request body")
-                body = json.loads(raw, parse_constant=reject_nonfinite, parse_float=finite_float)
+                body = parse_json_object(raw)
                 self.send_json(202, jobs.submit(body))
             except (socket.timeout, TimeoutError):
                 self.send_json(408, {"error": "Request body timed out"})
-            except (ValueError, TypeError, RecursionError) as exc:
+            except (ArtifactError, ValueError, TypeError, RecursionError) as exc:
                 self.send_json(400, {"error": str(exc)})
 
     return Handler

@@ -19,6 +19,15 @@ def synthetic_replay():
 
 
 class JobTests(unittest.TestCase):
+    def test_recovery_rejects_deterministically_overdeep_persisted_job(self):
+        from api.artifacts import MAX_JSON_DEPTH
+        with tempfile.TemporaryDirectory() as root:
+            identifier='a'*32;directory=Path(root)/identifier;directory.mkdir()
+            (directory/'job.json').write_bytes(b'{"extra":'+b'['*MAX_JSON_DEPTH+b'0'+b']'*MAX_JSON_DEPTH+b'}')
+            manager=JobManager(Path(root),lambda args:self.fail('Recovery must never execute a world'))
+            try:self.assertIsNone(manager.get(identifier))
+            finally:manager.close()
+
     def test_source_change_requires_server_restart_before_new_work(self):
         current = {"source_commit": "initial", "source_code_sha256": "initial"}
         with tempfile.TemporaryDirectory() as root:

@@ -7,6 +7,7 @@ from pathlib import Path
 import stat
 
 MAX_REPLAY_BYTES = 64 * 1024 * 1024
+MAX_JSON_DEPTH = 64  # Container nesting, including the root object; independent of Python recursion limits.
 
 
 class ArtifactError(Exception):
@@ -44,9 +45,47 @@ def read_bytes(path: Path, *, limit: int | None = None) -> bytes:
     return payload
 
 
-def parse_json_object(payload: bytes) -> dict:
+def bounded_json_text(payload: bytes) -> str:
+    """Reject deep UTF-8 JSON before decoding structures, with O(1) scan state.
+
+    Brackets inside quoted strings are data. A backslash escapes precisely the
+    next string character, so odd/even backslash runs and escaped quotes do not
+    alter container depth. Full syntax validation remains json.loads' job.
+    """
+    if len(payload) > MAX_REPLAY_BYTES:
+        raise ArtifactError('Artifact exceeds the local API size limit')
     try:
-        value = json.loads(payload,parse_constant=reject_nonfinite,parse_float=finite_float)
+        text = payload.decode('utf-8-sig')
+    except UnicodeError as error:
+        raise ArtifactError('Artifact is not UTF-8 JSON') from error
+    depth = 0
+    in_string = False
+    escaped = False
+    for character in text:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif character == '\\':
+                escaped = True
+            elif character == '"':
+                in_string = False
+        elif character == '"':
+            in_string = True
+        elif character in '{[':
+            depth += 1
+            if depth > MAX_JSON_DEPTH:
+                raise ArtifactError(f'JSON container nesting exceeds depth {MAX_JSON_DEPTH}')
+        elif character in '}]':
+            depth -= 1
+            if depth < 0:
+                raise ArtifactError('Artifact has malformed JSON container nesting')
+    return text
+
+
+def parse_json_object(payload: bytes) -> dict:
+    text = bounded_json_text(payload)
+    try:
+        value = json.loads(text,parse_constant=reject_nonfinite,parse_float=finite_float)
     except (UnicodeError,ValueError,RecursionError) as error:
         raise ArtifactError('Artifact is not readable JSON') from error
     if not isinstance(value,dict):

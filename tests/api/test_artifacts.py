@@ -6,7 +6,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from api.artifacts import ArtifactError, read_bytes, read_json, parse_json_object
+from api.artifacts import ArtifactError, read_bytes, read_json, parse_json_object, MAX_JSON_DEPTH
 
 
 class BoundedArtifactTests(unittest.TestCase):
@@ -33,6 +33,33 @@ class BoundedArtifactTests(unittest.TestCase):
     def test_excessive_json_depth_is_an_artifact_error(self):
         payload=b'{"deep":'+b'['*2000+b'0'+b']'*2000+b'}'
         with self.assertRaises(ArtifactError):parse_json_object(payload)
+
+    def test_exact_depth_boundary_and_overflow_precedes_structure_decode(self):
+        at_limit=b'{"x":'+b'['*(MAX_JSON_DEPTH-1)+b'0'+b']'*(MAX_JSON_DEPTH-1)+b'}'
+        self.assertIn('x',parse_json_object(at_limit))
+        over=b'{"x":'+b'['*MAX_JSON_DEPTH+b'0'+b']'*MAX_JSON_DEPTH+b'}'
+        with patch('api.artifacts.json.loads') as loads:
+            with self.assertRaisesRegex(ArtifactError,'depth'):parse_json_object(over)
+            loads.assert_not_called()
+
+    def test_brackets_escaped_quotes_and_backslash_runs_inside_strings_are_data(self):
+        strings=['['*1000+'}'*1000, 'quote: " [ ]', 'backslash: \\', '\\"[', '\\\\"{', 'unicode: \u2603']
+        value={'strings':strings,'nested':{'okay':True}}
+        self.assertEqual(parse_json_object(json.dumps(value).encode()),value)
+        # Escaped Unicode quote/bracket spellings do not delimit scanner strings.
+        self.assertEqual(parse_json_object(b'{"x":"\\u0022\\u005b"}'),{'x':'"['})
+
+    def test_utf8_bom_allowed_but_utf16_and_utf32_rejected(self):
+        self.assertEqual(parse_json_object(b'\xef\xbb\xbf{"x":1}'),{'x':1})
+        for encoding in ('utf-16','utf-32'):
+            with self.subTest(encoding=encoding),self.assertRaises(ArtifactError):
+                parse_json_object('{"x":1}'.encode(encoding))
+
+    def test_deep_wrong_root_type_still_hits_depth_guard_before_decode(self):
+        payload=b'['*(MAX_JSON_DEPTH+1)+b'0'+b']'*(MAX_JSON_DEPTH+1)
+        with patch('api.artifacts.json.loads') as loads:
+            with self.assertRaisesRegex(ArtifactError,'depth'):parse_json_object(payload)
+            loads.assert_not_called()
 
     def test_shared_read_json_uses_canonical_cap(self):
         with tempfile.TemporaryDirectory() as directory:
