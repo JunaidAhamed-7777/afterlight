@@ -337,6 +337,17 @@ def check_text_contrast(page):
 
 
 def foreground_gate(page, output: Path, phase: str, manual: bool):
+    # Restore only this dedicated test browser's own native window. Never disable
+    # Chromium's background throttling or change the product's renderer settings.
+    session = page.context.new_cdp_session(page)
+    try:
+        window = session.send('Browser.getWindowForTarget')
+        before = window['bounds']
+        if before['windowState'] == 'minimized':
+            session.send('Browser.setWindowBounds',{'windowId':window['windowId'],'bounds':{'windowState':'normal'}})
+        after = session.send('Browser.getWindowBounds',{'windowId':window['windowId']})['bounds']
+    finally:
+        session.detach()
     page.bring_to_front()
     if manual:
         marker = output / ('foreground-ready-' + phase)
@@ -349,6 +360,7 @@ def foreground_gate(page, output: Path, phase: str, manual: bool):
             if time.monotonic() > deadline: raise AssertionError('Foreground operator gate timed out; no performance sample accepted')
             page.wait_for_timeout(100)
     page.wait_for_function("document.visibilityState==='visible' && document.hasFocus()",polling=100,timeout=15000)
+    return {'native_window_before':before,'native_window_after':after,'operator_marker_required':manual}
 
 
 def measure(page, seconds: float):
@@ -527,7 +539,7 @@ def main():
                 seek(page, busiest["t"])
                 report["recording"]["measurement_start_s"] = busiest["t"]
                 report["recording"]["vehicles_at_start"] = len(busiest["vehicles"])
-                foreground_gate(page,output,'overview',args.foreground_gate)
+                report['foreground_overview'] = foreground_gate(page,output,'overview',args.foreground_gate)
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance"] = measure(page, args.measure_seconds)
                 assert report["performance"]["foreground_qualified"], "Overview lost visible foreground focus; retain measurements without a foreground benchmark claim"
@@ -554,7 +566,7 @@ def main():
                     "time_s": busiest["t"], "expected_target_from_genuine_pose": expected_target,
                     "actual_camera": page.locator(CANVAS).evaluate("c=>JSON.parse(c.dataset.cameraState)"),
                 }
-                foreground_gate(page,output,'follow',args.foreground_gate)
+                report['foreground_follow'] = foreground_gate(page,output,'follow',args.foreground_gate)
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance_close_follow"] = measure(page, args.measure_seconds)
                 assert report["performance_close_follow"]["foreground_qualified"], "Follow lost visible foreground focus; retain measurements without a foreground benchmark claim"
