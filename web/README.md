@@ -97,7 +97,7 @@ Replay acceptance now binds the exact requested catalog metadata, verifies publi
 
 Compilation is not runtime acceptance. Run all new unit/browser regressions on the pinned commit on Omen before treating this checkpoint as validated.
 
-Catalog `policy` is a machine identifier; optional `policy_label` is presentation only and `lead_s` binds the recorded lead. The matching exporter catalog contract is implemented; both sides still require acceptance on the same source cohort. Response readers enforce the 64 MiB decoded-byte limit while streaming, including missing/compressed Content-Length. Local job status and replay completion are guarded against a newer operation before any state update.
+Catalog `policy` is a machine identifier; optional `policy_label` is presentation only and `lead_s` binds the recorded lead. The matching exporter catalog contract is implemented; both sides still require acceptance on the same source cohort. All network JSON readers (catalog, canonical map, recordings and local-job responses) enforce the 64 MiB decoded-byte limit while streaming, including missing/compressed Content-Length. They require valid UTF-8, reject nesting beyond 64 containers including the root, and reject nonfinite numbers even in unused metadata. Quoted brackets do not count as nesting; exact original recording/map bytes remain the checksum input. These newer browser guards still need Omen acceptance. Local job status and replay completion are guarded against a newer operation before any state update.
 
 ## Offline selection evidence acceptance
 

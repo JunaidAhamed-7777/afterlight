@@ -1,3 +1,5 @@
+import { boundedBytes } from "./response.ts";
+import { parseJsonBytes } from "./strictJson.ts";
 import { validateCity } from "./validation.ts";
 import type { City } from "./types.ts";
 export async function loadCanonicalCity(
@@ -9,8 +11,8 @@ export async function loadCanonicalCity(
   });
   if (!response.ok)
     throw new Error(`City map request failed (${response.status}).`);
-  const bytes = await response.arrayBuffer();
-  const city = validateCity(JSON.parse(new TextDecoder().decode(bytes)));
+  const bytes = await boundedBytes(response);
+  const city = validateCity(parseJsonBytes(bytes));
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   const sha256 = Array.from(new Uint8Array(digest), (b) =>
     b.toString(16).padStart(2, "0"),

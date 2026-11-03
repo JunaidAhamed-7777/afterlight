@@ -1,3 +1,4 @@
+import { parseJsonBytes } from "./strictJson.ts";
 import { boundedBytes } from "./response.ts";
 import type { CatalogEntry, Replay } from "./types.ts";
 import { validateReplay } from "./replay.ts";
@@ -49,7 +50,7 @@ export async function loadRecording(
       );
   }
   return bindRecording(
-    validateReplay(JSON.parse(new TextDecoder().decode(bytes))),
+    validateReplay(parseJsonBytes(bytes)),
     entry,
   );
 }

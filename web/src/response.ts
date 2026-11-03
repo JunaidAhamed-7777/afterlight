@@ -1,5 +1,6 @@
+import { MAX_JSON_BYTES, parseJsonBytes } from "./strictJson.ts";
 /** Bound decoded response bytes while streaming, even without Content-Length. */
-export async function boundedBytes(response: Response, limit = 64 * 1024 * 1024): Promise<Uint8Array<ArrayBuffer>> {
+export async function boundedBytes(response: Response, limit = MAX_JSON_BYTES): Promise<Uint8Array<ArrayBuffer>> {
   const tooLarge = () => new Error("This response exceeds the supported trace size limit.");
   if (Number(response.headers.get("Content-Length")) > limit) {
     await response.body?.cancel();
@@ -32,5 +33,5 @@ export async function boundedBytes(response: Response, limit = 64 * 1024 * 1024)
   return bytes;
 }
 export async function boundedJson(response: Response): Promise<unknown> {
-  return JSON.parse(new TextDecoder().decode(await boundedBytes(response)));
+  return parseJsonBytes(await boundedBytes(response));
 }

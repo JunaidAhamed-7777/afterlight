@@ -1,3 +1,4 @@
+import { boundedJson } from "./response.ts";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
@@ -32,7 +33,7 @@ async function json(url: string, signal: AbortSignal) {
     throw new Error(
       `Request failed (${r.status}). Check the recording files and retry.`,
     );
-  return r.json();
+  return boundedJson(r);
 }
 function useReducedMotion() {
   const [reduced, setReduced] = useState(
