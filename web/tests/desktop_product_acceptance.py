@@ -38,7 +38,11 @@ UNSAFE_DEFAULTS = [
 # timer includes JavaScript work and draw submission, not completed GPU work.
 INSTRUMENT = """(() => {
   const qa = window.__desktopQA = {samples: [], longTasks: [], readyMs: null,
-    enabled: false, active: null, drawCount: 0};
+    enabled: false, active: null, drawCount: 0, lifecycle: []};
+  const state = kind => ({kind,timestamp:performance.now(),visibility:document.visibilityState,focused:document.hasFocus()});
+  qa.state = state;
+  for (const kind of ['focus','blur']) window.addEventListener(kind,()=>{if(qa.enabled)qa.lifecycle.push(state(kind));});
+  document.addEventListener('visibilitychange',()=>{if(qa.enabled)qa.lifecycle.push(state('visibilitychange'));});
   const originalRaf = window.requestAnimationFrame.bind(window);
   window.requestAnimationFrame = callback => originalRaf(timestamp => {
     const start = performance.now(), before = qa.drawCount;
@@ -332,12 +336,29 @@ def check_text_contrast(page):
     return {"checked_text_nodes": len(result["checked"]), "minimum_ratio": min((i["ratio"] for i in result["checked"]), default=None), "skipped": result["skipped"], "failures": failures}
 
 
+def foreground_gate(page, output: Path, phase: str, manual: bool):
+    page.bring_to_front()
+    if manual:
+        marker = output / ('foreground-ready-' + phase)
+        request = {'phase':phase,'title':page.title(),'ready_marker':marker.name,
+                   'scope':'Operator must visibly activate this dedicated test window before creating the marker; no performance samples are collected while waiting.'}
+        (output / 'foreground-request.json').write_text(json.dumps(request,indent=2),encoding='utf-8')
+        print(json.dumps({'waiting_for_visible_test_window':request}),flush=True)
+        deadline = time.monotonic() + 120
+        while not marker.is_file():
+            if time.monotonic() > deadline: raise AssertionError('Foreground operator gate timed out; no performance sample accepted')
+            page.wait_for_timeout(100)
+    page.wait_for_function("document.visibilityState==='visible' && document.hasFocus()",polling=100,timeout=15000)
+
+
 def measure(page, seconds: float):
     start = page.locator(CANVAS).evaluate("c => ({counters:JSON.parse(c.dataset.renderInfo),camera:JSON.parse(c.dataset.cameraState),buffer:[c.width,c.height]})")
-    page.evaluate("() => {const q=window.__desktopQA;q.samples=[];q.longTasks=[];q.enabled=true;}")
+    page.evaluate("() => {const q=window.__desktopQA;q.samples=[];q.longTasks=[];q.lifecycle=[q.state('start')];q.enabled=true;}")
     page.wait_for_timeout(seconds * 1000)
-    data = page.evaluate("() => {const q=window.__desktopQA;q.enabled=false;return {samples:q.samples,longTasks:q.longTasks};}")
+    data = page.evaluate("() => {const q=window.__desktopQA;q.lifecycle.push(q.state('end'));q.enabled=false;return {samples:q.samples,longTasks:q.longTasks,lifecycle:q.lifecycle};}")
     result = summarize(data["samples"], data["longTasks"])
+    result['lifecycle'] = data['lifecycle']
+    result['foreground_qualified'] = all(state['visibility']=='visible' and state['focused'] for state in data['lifecycle'])
     result["start"] = start
     result["end"] = page.locator(CANVAS).evaluate("c => ({counters:JSON.parse(c.dataset.renderInfo),camera:JSON.parse(c.dataset.cameraState),buffer:[c.width,c.height]})")
     end = result["end"]["camera"]
@@ -420,6 +441,7 @@ def main():
     parser.add_argument("--build-manifest", type=Path, help="Exact isolated production build inventory to verify over HTTP")
     parser.add_argument("--measure-seconds", type=float, default=15)
     parser.add_argument("--skip-recovery", action="store_true")
+    parser.add_argument("--foreground-gate", action="store_true", help="Pause before each measurement for an operator to activate the dedicated test window and create its output marker")
     parser.add_argument("--headless", action="store_true", help="Supplementary capture only; not headed-GPU evidence")
     args = parser.parse_args()
     url = urlsplit(args.base_url)
@@ -505,8 +527,10 @@ def main():
                 seek(page, busiest["t"])
                 report["recording"]["measurement_start_s"] = busiest["t"]
                 report["recording"]["vehicles_at_start"] = len(busiest["vehicles"])
+                foreground_gate(page,output,'overview',args.foreground_gate)
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance"] = measure(page, args.measure_seconds)
+                assert report["performance"]["foreground_qualified"], "Overview lost visible foreground focus; retain measurements without a foreground benchmark claim"
                 assert report["performance"]["camera_orientation_and_zoom_stable"], "Camera changed during untouched overview performance measurement"
                 page.get_by_role("button", name="Pause recording", exact=True).click()
                 ordinary = page.get_by_role("button", name=re.compile(r"^(Baseline|Ordinary)$"))
@@ -530,8 +554,10 @@ def main():
                     "time_s": busiest["t"], "expected_target_from_genuine_pose": expected_target,
                     "actual_camera": page.locator(CANVAS).evaluate("c=>JSON.parse(c.dataset.cameraState)"),
                 }
+                foreground_gate(page,output,'follow',args.foreground_gate)
                 page.get_by_role("button", name="Play recording", exact=True).click()
                 report["performance_close_follow"] = measure(page, args.measure_seconds)
+                assert report["performance_close_follow"]["foreground_qualified"], "Follow lost visible foreground focus; retain measurements without a foreground benchmark claim"
                 expect(follow).to_have_attribute("aria-pressed", "true")
                 assert report["performance_close_follow"]["camera_orientation_and_zoom_stable"], "Camera orientation/zoom changed during untouched follow performance measurement"
                 page.get_by_role("button", name="Pause recording", exact=True).click()
