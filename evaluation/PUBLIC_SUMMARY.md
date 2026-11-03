@@ -13,7 +13,7 @@ After actual report creation, run the main checkout's helper against the clean
 pinned scientific checkout:
 
 ```powershell
-.venv\Scripts\python.exe scripts/export_study_summary.py --checkout C:/Github/afterlight-final-study-v4 --study local-runtime/expanded-city-study-v4 --collection local-runtime/study-test-v4 --report local-runtime/study-report-v4 --output local-runtime/study-public-pack-v4
+.venv\Scripts\python.exe scripts/export_study_summary.py --checkout C:/Github/afterlight-final-study-v4 --study local-runtime/expanded-city-study-v4 --train local-runtime/study-train-v4 --validation local-runtime/study-validation-v4 --collection local-runtime/study-test-v4 --report local-runtime/study-report-v4 --output local-runtime/study-public-pack-v4
 ```
 
 The directory names above are examples; use the original frozen study,
@@ -37,6 +37,22 @@ numeric differences keep their original precision. Copy this verified pack into
 UTF-8 byte count and SHA256 before schema validation; all companion links remain
 relative to the same study directory. Manifest and summary limits are 16 KiB and
 1 MiB respectively.
+
+The reproduction companions also retain the **exact original** training and
+validation candidate grids, test candidate grid and full test scalar outcomes.
+These include every queue sample and lagged observation. Each is a single
+lossless XZ stream, bounded at 4 MiB physical / 128 MiB decoded with a 128 MiB
+decoder memory limit. `reproduction.json` binds original decoded hashes to the
+pre-test selection or final report, separately from physical download hashes.
+No JSON rewriting, row omission or temporal downsampling is used. The normal
+viewer links these optional downloads without decoding them eagerly.
+
+Original learned/fixed/analytical selector and frozen comparison envelopes are
+copied with their pre-test release byte hashes. The four grid input paths are
+explicit; the exporter does not scan directories for alternate datasets. The
+complete pack has a default 4 MiB physical ceiling. If it exceeds that allowance,
+publication fails; retain all data and revise the optional media budget rather
+than silently dropping evidence. Its completion manifest is written last.
 
 Every comparison includes failures over the full test denominator, status counts,
 the paired-complete denominator, signed mean differences and the objective's

@@ -2,13 +2,16 @@
 from copy import deepcopy
 import csv
 import io
+import hashlib
 import json
+import lzma
 from pathlib import Path
 import shutil
 import subprocess
+import tempfile
 import unittest
 
-from scripts.export_study_summary import project_summary, assert_no_overlap, paired_records_csv
+from scripts.export_study_summary import project_summary, assert_no_overlap, paired_records_csv, compressed_grid
 
 
 def fixtures(mode='learned'):
@@ -104,6 +107,27 @@ class StudySummaryContractTests(unittest.TestCase):
         self.assertTrue(all(row['selected_j_s']==row['paired_delta_j_s']==row['delta_civilian_s']=='' for row in unavailable))
         report['report']['comparisons']['learned-vs-fixed']['records'].pop()
         with self.assertRaisesRegex(ValueError, 'omits declared'): paired_records_csv(study, report)
+
+    def test_xz_preserves_original_crlf_bytes_and_rejects_changed_identity(self):
+        original = b'[\r\n  {"t": 0, "queue_count": 0}\r\n]\r\n'
+        with tempfile.NamedTemporaryFile(prefix='afterlight-grid-contract-', suffix='.json', delete=False) as stream:
+            stream.write(original)
+            source = Path(stream.name)
+        try:
+            digest = hashlib.sha256(original).hexdigest()
+            packed, item = compressed_grid(source, kind='train_candidates', split='train',
+                                          url='train-candidates.json.xz', expected_sha256=digest)
+            self.assertEqual(lzma.decompress(packed), original)
+            self.assertEqual(item['sha256'], digest)
+            self.assertEqual(item['bytes'], len(original))
+            self.assertEqual(item['transfer_sha256'], hashlib.sha256(packed).hexdigest())
+            self.assertEqual(item['transfer_bytes'], len(packed))
+            self.assertEqual(source.read_bytes(), original)
+            with self.assertRaisesRegex(ValueError, 'byte identity'):
+                compressed_grid(source, kind='train_candidates', split='train',
+                                url='train-candidates.json.xz', expected_sha256='f'*64)
+        finally:
+            source.unlink()
 
     @unittest.skipUnless(shutil.which('node'), 'Node is required for the cross-language viewer contract')
     def test_python_projection_is_accepted_by_the_production_typescript_validator(self):
