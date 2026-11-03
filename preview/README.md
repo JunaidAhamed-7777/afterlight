@@ -5,7 +5,7 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `b2a5e60a1b78d24a51e0ac24bae28f83f2df0647`.
+**Compiled source:** `92cc07dc1efb98a13e5ae843308f6ab3d7968e7d`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
 Compilation succeeded in the cloud. This build includes strict bounded browser JSON handling, V3 modeled city details, canonical map selection and the offline selector evidence inspector and descriptive individual-civilian delay-tail row. At `11be524`, Omen passed the source/desktop suites and focused V3 pointer, fade and layout checks for this build. Real city traffic playback remains unaccepted. Exact scoped evidence is recorded in `docs/validation/OMEN_LOG.md`.

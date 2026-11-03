@@ -103,7 +103,7 @@ public recorded catalog remains intentionally empty.
 
 ## Desktop V3 and current acceptance boundary
 
-The current source-bound preview is compiled from `b2a5e60`; its exact output
+The current source-bound preview is compiled from `92cc07d`; its exact output
 hashes and source identity are recorded in `preview/manifest.json`.
 It includes V3 modeled building details and opt-in map selection with actual
 canonical markers, drag suppression, rolled-camera raycasting and a separate
