@@ -17,6 +17,36 @@ completed release, and use a fresh output directory:
 An optional `--build-manifest` binds every served build file before and after
 the check, using the same isolated-build inventory as desktop acceptance.
 
+## One-command public reproduction
+
+This command is also prepared only. Run it **after the actual audited public
+pack is released**, from the repository root, with the publication's exact
+manifest SHA:
+
+```powershell
+python scripts/verify_public_study.py --base-url https://YOUR-VERIFIED-DEPLOYMENT.vercel.app/ --released-manifest-sha256 ACTUAL-RELEASED-MANIFEST-SHA256
+```
+
+It uses Python's standard library and the repository's original pure inference
+helpers. It needs no browser, SUMO, model fitting, optional ML installation,
+private outcome directory or local unpublished report. It prints actual split
+and world counts, paired comparisons/failures, grouped intervals and proof
+results after the complete public verification succeeds.
+
+Optional `--output local-runtime/public-study-proof.json` saves the public
+verification result to a **fresh** JSON file. Its parent must already exist;
+existing files are never overwritten. Failed verification prints no success
+result and creates no report.
+
+The CLI and shared proof helper refuse optimized Python (`-O`, `-OO` or enabled
+`PYTHONOPTIMIZE`) before verification/network access, because the proof code
+uses assertions. The isolated negative CLI/import guards block DNS and sockets
+and can run before publication:
+
+```powershell
+python web/tests/test_public_study_cli.py
+```
+
 ## Public evidence verification
 
 `released_study_pack.py` performs independent HTTP GETs. It verifies the explicit

@@ -6,6 +6,9 @@ This checks public hashes/accounting/arithmetic, not private raw SUMO evidence.
 """
 from __future__ import annotations
 
+if not __debug__:
+    raise RuntimeError('Public Study verification refuses optimized Python: its proof checks require assertions. Run without -O, -OO or PYTHONOPTIMIZE.')
+
 from collections import Counter, defaultdict
 import csv
 from datetime import datetime
