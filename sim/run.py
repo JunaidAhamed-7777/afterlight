@@ -234,6 +234,8 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     decision = None
     observed_passages: set[str] = set()
     horizon_accounting = None
+    last_signal_states = {}
+    signal_state_write_count = 0
     burden_vehicle_s = 0.0
     drain_burden_vehicle_s = 0.0
     sumo_stdout = None
@@ -246,6 +248,8 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         sumo_version = conn.getVersion()[1]
         for j, scheduler in schedulers.items():
             conn.trafficlight.setRedYellowGreenState(j, scheduler.state)
+            last_signal_states[j] = scheduler.state
+            signal_state_write_count += 1
         observations.append(snapshot(conn, controls, schedulers, network, 0, cache))
         queue_samples.append({'t': 0.0, 'queue_count': 0})
         total_steps = round(end_s / step_s)
@@ -278,7 +282,13 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                 c = control_by_junction.get(j)
                 passed = c is not None and (ambulance_arrived or route_index > c['route_index'])
                 state = scheduler.advance(now, passed=passed, queues=phase_queues(conn, network['signals'][j], cache))
-                conn.trafficlight.setRedYellowGreenState(j, state)
+                # TraCI manual states persist until changed. Re-sending the
+                # same state at every tick adds a socket round trip per signal
+                # without changing a physical transition or controller clock.
+                if state != last_signal_states[j]:
+                    conn.trafficlight.setRedYellowGreenState(j, state)
+                    last_signal_states[j] = state
+                    signal_state_write_count += 1
             # Signal state at timestamp t is the state after boundary control,
             # never the stale pre-transition state from the previous step.
             observations[-1] = snapshot(conn, controls, schedulers, network, now, cache)
@@ -331,7 +341,11 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         for j, scheduler in schedulers.items():
             c = control_by_junction.get(j)
             passed = c is not None and ('ambulance' in ledger.completed or route_index > c['route_index'])
-            conn.trafficlight.setRedYellowGreenState(j, scheduler.advance(end_s, passed=passed, queues=phase_queues(conn, network['signals'][j], cache)))
+            state = scheduler.advance(end_s, passed=passed, queues=phase_queues(conn, network['signals'][j], cache))
+            if state != last_signal_states[j]:
+                conn.trafficlight.setRedYellowGreenState(j, state)
+                last_signal_states[j] = state
+                signal_state_write_count += 1
         frames.append(pose_frame(conn, network, end_s, cache))
         events.extend(event for scheduler in schedulers.values() for event in scheduler.events)
         physical = set(conn.vehicle.getIDList())
@@ -371,7 +385,8 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                   'status': status, 'metrics': metrics, 'events': events, 'frames': frames,
                   'decision': decision, 'sumo_version': sumo_version,
                   'observation_transport': 'traci-subscriptions-v1',
-                  'direct_observation_verification': verify_observations}
+                  'direct_observation_verification': verify_observations,
+                  'signal_state_write_count': signal_state_write_count}
         write_json(output/'lifecycle.json', ledger.rows())
         write_json(output/'outcome.json', {k:v for k,v in result.items() if k != 'frames'})
         return result

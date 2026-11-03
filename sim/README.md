@@ -130,3 +130,21 @@ The expanded graph's independent static checks pass all 200 pickup/hospital
 routes. Its first SUMO 1.28 conversion produced no warnings on the owner's
 Windows/Python 3.12 environment. Traffic and benchmark evidence must bind this
 new map SHA; old-city recordings cannot certify this topology.
+
+
+### End-of-horizon censoring
+
+SUMO 1.28 may write `vaporized="end"` together with `arrival="-1"` when
+flushing unfinished and not-yet-inserted vehicles at the common endpoint. These
+remain running/not-inserted in the complete ledger and make the world
+**censored**. They are not silently removed or assigned finite delay targets.
+Actual collision/TraCI/vaporizer/teleport removal reasons remain invalid, as does
+an `end` marker on a claimed completed trip. This distinction was found during
+the expanded-city pilot, corrected with regression tests, and requires a fresh
+source-pinned pilot; older raw attempts remain unchanged.
+
+The exact behavior is visible in the official
+[SUMO 1.28 tripinfo implementation](https://github.com/eclipse-sumo/sumo/blob/v1_28_0/src/microsim/devices/MSDevice_Tripinfo.cpp#L356)
+and its unfinished-output path. The general
+[tripinfo documentation](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html#output-for-vehicles-that-have-not-arrived-at-simulation-end)
+describes the `--tripinfo-output.write-unfinished` option.
