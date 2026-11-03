@@ -235,6 +235,10 @@ for (const item of catalog.runs) {
             continue;
           }
           const values = lane.indices.map((i) => state[i]);
+          if (values.some((value) => !value || !/^[rRyYgGoOuUs]$/.test(value))) {
+            stats.unclassifiedWithoutTimeline++;
+            continue;
+          }
           const allRed = values.every((s) => s === "r" || s === "R");
           const details = {
             stopLine: lane.point,

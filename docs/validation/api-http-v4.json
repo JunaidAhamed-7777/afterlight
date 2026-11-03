@@ -1,0 +1,195 @@
+{
+  "schema": "afterlight.http-acceptance-evidence.v1",
+  "state": "recovery_verified",
+  "scope": "HTTP lifecycle/idempotency/restart and raw evidence only; no preview or browser acceptance",
+  "source_identity": {
+    "source": {
+      "source_commit": "a3d49efa0c540842c3ad1eb6aa13c3c2b1cea9e6",
+      "source_dirty": false,
+      "source_code_sha256": "e244375a758de4745da8de735e5b87b43fa2e8e2f1ef20a6152eb57e42aea693",
+      "source_files": {
+        "assets/map/city_manifest.json": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+        "evaluation/__init__.py": "533319bdb8d647837ca459637dc0f55f5f9e023742b519d1c1394c90a5d6d4cc",
+        "evaluation/__main__.py": "36a2c785086805e12d524a6bb0e877ce1e1aa2985e417c1f663e7dd5510aab18",
+        "evaluation/collector.py": "0c1efbecf28e284e393a665a5b48d516160c41ad81aedd6a83fd072dd06239d5",
+        "evaluation/comparison.py": "3e9271647e122e7147f1de4654f4776adc8e5eeb91db0d42f31130dab99e291e",
+        "evaluation/metrics.py": "ab1adbcdf08b6d3d4de9baf658d1761b4da8e2f96d413ef1a0c5fadf8e675a15",
+        "evaluation/pilot.py": "c219b122b29f68b0f0fbb24e5dcba615b371c27a8337a4b6ee89369f46b12b78",
+        "evaluation/protocol.py": "1e431da6b25dae03d0bdafdef4671977b84293b0becc62eb71733b18f42514cc",
+        "evaluation/selectors.py": "c5da9000edc488b40529b894df68461fa80e20b23865cd0e9571e59615d60a7d",
+        "evaluation/splits.py": "d11deb55604a4d645705f99e8580eb0f19fadcd680ba5de5b07243ae12aaaa3e",
+        "evaluation/study.py": "1239e565f8a4cb81c7062544de70ffb6b1ece94f9ddc537b84591d20b6145f0d",
+        "evaluation/study_manifest.py": "19d6e0a94b55d05d1bff5d98bd241cd1f167ae5ecb51ac56cfe61effa6a4a4d4",
+        "evaluation/study_release.py": "850ebd25c38ddd0d8887eb05119ab0b46ad6813bdb1a2ee0e0cf77409f12c32c",
+        "evaluation/study_reporting.py": "21858b4689b251eab05c9d0433aa9480fc1151bf30dca31a485dd994df26149c",
+        "export/__init__.py": "b7172d6fdd8069f299897a3de05038b1ec231c0c9652c00ed4323e46c9573213",
+        "export/catalog.py": "76842a5cd833e3a1f546065a4e3eec959bb609240bed0cf2c50206c91f0e2cc4",
+        "export/replay.py": "36eed3f8753ad2bb2b1f0c7fadcc4dbae8b71d6f94c96537f488ef118961e0bd",
+        "export/selected_replay.py": "7bb0fe53f3b4b10f47bb38836b5e25f41e4457fddd4fa25473a0c1c0ea5a29f5",
+        "export/validation_base.py": "1dee340d64f2b55ed26b8d7f2e585747c349fe0c85ad5b2087742179a236c6f0",
+        "models/__init__.py": "9b42a06ee6463c92b415fe0ed3a1b6b78767fdf80685d075ca6f3f05b4f2cbf4",
+        "models/__main__.py": "eb3a26e0d5f240616f924ff05eceadddca502cd3c42277d594a51e4beb41d3da",
+        "models/analytical.py": "6c7587d13e2b2613d141cd0f047b21efa2f9146910fd705179b6b5cbb249b122",
+        "models/residual.py": "09d86e2206cb0f3c28915353d592e3b031da325cbbfcd5bb502f27c90d018640",
+        "policies/__init__.py": "bf289f6fd8406c3940d3f2c67a8dc39726444e56e5d047e3d04971b43de4c2d0",
+        "policies/scheduler.py": "147de65ccf945292cb1185bb3ff2ce52f5392d7db9b2b7f4a19a31dca513ebb2",
+        "policies/timing.py": "70e6d162932c1d9dfd19db4fb0d1dbbdd72974fddba050cdc88e5184b43df5e2",
+        "sim/__init__.py": "f29935d76b2bd9c6d0e3afb5d59594ab2c130d935e72029b7b296563dca4cd13",
+        "sim/accounting.py": "43c340658bfc2a26a77e0d1962fcf8567f8f5d09f0580448e576ed09cf15d7b3",
+        "sim/audit.py": "bbc980ef5b1b5d4bdddc4f1dae96cb08a73771ed2a82bf1286790fec3e7eb1ac",
+        "sim/demand.py": "ac1a53592c5b02b9f12e18ec5e6b7ad9a4a8a5242f503fa20549453d9707e635",
+        "sim/environment.py": "f93de9b0fa267d931016f386c2d9894112239ffcbb1845bb88205ec7ddbc32a0",
+        "sim/geometry_audit.py": "0bbb0f1b55238c68b584ef11329472b8c2e2fd5f1f8b01a8577833c65d168879",
+        "sim/identity.py": "2e7ce63763d49465c25fda8b12df129cbb22a6f98458ea22a64266b2eca24978",
+        "sim/network.py": "34290be794285b686fac7756d190db32ad6d93ff7271e5f40908f06c2c44bfb0",
+        "sim/run.py": "f7bc0720d9d651b8d2db2135729fff91c4ceea473dc0ec41e556eb930d06d06c",
+        "sim/source_identity.py": "d743d65fde7c67e9906b0f56d8350f0262527bd55111610d7f2c2d755a212738",
+        "sim/traci_cache.py": "fc90f5e838483764eda0b073b65d3fc219211a10b8a2fb0dd568dd260625ecef"
+      }
+    },
+    "api_files_sha256": {
+      "api/README.md": "5d04205e65ed89792a02c008a94fe75062baf73d7ddfa79b4b36d2146bfa5b91",
+      "api/__init__.py": "4548eb5b70128050481ed1dd96912d3074c14f5fa96c71d87b2b2e13faf7c149",
+      "api/artifacts.py": "2ea10ae1cba03b8cc34e0182f61cb5ad26c0c260c600b9f4da60205ec14ddee8",
+      "api/jobs.py": "f2d008c17d105ba696a3034e84da4e9a9ff99deb06d35e26387ed266a1dc5d31",
+      "api/server.py": "9b62c18846f04742fbb5b4ca9ea145e01d872f600bdb0a4d440e531e7ce5cec8",
+      "requirements-sim.txt": "389bcf9d49bea020053477decfc2d43039c6d475d2864447f72b64a2cf006d5b",
+      "scripts/api_real_acceptance.py": "7bbad26eba5443242ed3d9044499d4b26129306e416297da209484282ce8dcf7",
+      "scripts/omen_acceptance.py": "89837057e0436ffb2bb6b3e168055c9ac6a7c716b290ee5916fa26089862ae66"
+    },
+    "api_input_sha256": "18cc689a5d96955f9165d3556b63c82572b645692f710a451dd92ac31006770a",
+    "python_version": "3.12.15",
+    "simulation_dependencies": {
+      "traci": "1.28.0",
+      "sumolib": "1.28.0",
+      "eclipse-sumo": "1.28.0",
+      "sumo-data": "1.28.0"
+    },
+    "verification_scope": "HTTP lifecycle/idempotency/restart and raw evidence only; no preview or browser acceptance"
+  },
+  "request": {
+    "network": "city",
+    "seed": 7,
+    "regime": "sparse",
+    "policy": "fixed",
+    "lead": 10,
+    "pickup": "P001",
+    "hospital": "HOSP_EAST",
+    "request_id": "e800050c020c43e1bab69816d6f0d612"
+  },
+  "base_url": "http://127.0.0.1:8784",
+  "replay_sha256": "fcc6acd9ccd7540cadf2d5ee5ac3961b9b07ec27711e84ebb953dced3c29ecb2",
+  "replay_bytes": 31584716,
+  "replay_step_s": 0.5,
+  "duration_s": 900.0,
+  "audit": {
+    "schema": "afterlight.audit.v1",
+    "run_id": "city-sparse-7-3d5cb1c65b26d4df-fixed-10-e244375a758d-dt0p5",
+    "replay_sha256": "fcc6acd9ccd7540cadf2d5ee5ac3961b9b07ec27711e84ebb953dced3c29ecb2",
+    "checks": [
+      {
+        "world": "baseline",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      },
+      {
+        "world": "afterlight",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      }
+    ],
+    "scalar_table_agreement": "passed",
+    "paired_dispatch_causality": {
+      "shared_pre_dispatch_history": "passed",
+      "shared_causal_observation_and_etas": "passed",
+      "pre_dispatch_frames": 120,
+      "pre_dispatch_events": 539,
+      "frozen_request_timing": {
+        "baseline": "passed",
+        "afterlight": "passed"
+      }
+    },
+    "ordinary_negative_control": "not_this_policy",
+    "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
+  },
+  "raw_files_sha256": {
+    "job.json": "212d6604e227a5202a44c584881b55ea2ff3c4fd6651ddec0aeff3edd1939c60",
+    "outcomes.json": "c00027ef44f1ebda5f900f84af00a0db0bde243200f20fbc01dfd426f05f85b6",
+    "replay-manifest.json": "e8c2a4b33a6afe87c322c642c8e9f023880069498db08e5033e49243eeae7341",
+    "replay.json": "fcc6acd9ccd7540cadf2d5ee5ac3961b9b07ec27711e84ebb953dced3c29ecb2",
+    "afterlight/command.json": "aa8200bb7fd8874e58498e6920e1f19ad5ccf37c252878e95e360cc5631902f4",
+    "afterlight/lifecycle.json": "c38a357579d73249d1624eacb5af641ac184f2495180fcb26bb23f4f328e2072",
+    "afterlight/outcome.json": "788a6c6480e9367307a24a313fe629176dc926422f2c82410fed4ff9a3b78fd0",
+    "afterlight/sumo-errors.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "afterlight/sumo-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "afterlight/tripinfo.xml": "5b240bc4901b1204f535649c96be6ff8df6964b7ab4b24ae34e03375ba604d90",
+    "baseline/command.json": "c21a4755a0f20aac27843351b20dd36a816ec1d9a03bd7ddd417d4d2626b72e2",
+    "baseline/lifecycle.json": "baf003365d65f7cda7ae7ed91b20e0c952b7bbd6a0fe0c9fd9edde1fd8eee76d",
+    "baseline/outcome.json": "aead6199f44c57657058f1066025bd2f00d55cd958c2853d2b3d61423f11ffe7",
+    "baseline/sumo-errors.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/sumo-stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "baseline/tripinfo.xml": "6ab6345426b84da1541483479f754cdf691a502c5ac45a1292742b2e89cdc4e4",
+    "demand/demand.json": "9727cb1490e8f7f2c73890bdcc482dc3efb84d43eab216075648df0e615ebce6",
+    "demand/demand.rou.xml": "4dc11ead14bdbfed0aba667fdaf9dec2490be1a7a3e20328cb89737cf8910bc3",
+    "network/connections.con.xml": "493ba18019f873d9e10b869aa0beba88786390c56d020ff1216ea0c87a79bfa2",
+    "network/edges.edg.xml": "f57111c74f88a6ddcd904f20732e1e52ce1e7376cd731cf88b02deb4ea09aaeb",
+    "network/graph.json": "f77c5ffb9488894947dc46dfd2aa00fc74f4c118be02af97ede40440af21fa42",
+    "network/netconvert.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "network/netconvert.stdout.txt": "1ee456262d7aaf011c85ff7c16892a3cc6e545dbe212e9869045160174d5ec42",
+    "network/network-manifest.json": "7f2cb2a8bd4ea218fd2bcd1fed86bb6420cb4d5c3c28bef1487e9ba951e29845",
+    "network/network.net.xml": "d97f361f4bf4afea2457813a673b9d41c080360ee72e6f1dad2c0ecd5bf5df01",
+    "network/nodes.nod.xml": "7a83f15c54bdd8faa433932b4ca25242624e4b9ae411c49e8071a1645e760788"
+  },
+  "post_requests": [
+    {
+      "http_status": 202,
+      "request_sha256": "19a450f55b2661399a96cec582e07b667b882ddf55f35df4401721f1b8f4dc1a"
+    },
+    {
+      "http_status": 202,
+      "request_sha256": "19a450f55b2661399a96cec582e07b667b882ddf55f35df4401721f1b8f4dc1a"
+    },
+    {
+      "http_status": 202,
+      "request_sha256": "19a450f55b2661399a96cec582e07b667b882ddf55f35df4401721f1b8f4dc1a"
+    }
+  ],
+  "physical_job_count": 1,
+  "raw_evidence_directory": "C:\\Github\\afterlight-api-v4\\local-runtime\\api-http-v4",
+  "restart_evidence": "Manual server restart is an operator assertion; API does not expose a process instance identifier",
+  "restart_operator_assertion": true,
+  "worlds": {
+    "baseline": {
+      "status": "completed",
+      "accounting": {
+        "scheduled": 137,
+        "inserted": 137,
+        "completed": 137,
+        "running": 0,
+        "not_inserted": 0
+      },
+      "ambulance_journey_s": 561.0
+    },
+    "afterlight": {
+      "status": "completed",
+      "accounting": {
+        "scheduled": 137,
+        "inserted": 137,
+        "completed": 137,
+        "running": 0,
+        "not_inserted": 0
+      },
+      "ambulance_journey_s": 465.0
+    }
+  }
+}

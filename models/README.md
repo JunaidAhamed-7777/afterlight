@@ -48,8 +48,14 @@ prediction diagnostics, not additional learned features.
 
 The civilian penalty is `scale*n*L^2/(2*cycle)*(1+o)` **seconds**, multiplied by the
 unchanged frozen objective weight. It is a coarse uncalibrated mean-delay
-surrogate, not measured all-demand delay or queue area. Defaults remain 2 seconds
-per queued vehicle, 4 seconds yellow+all-red, and a 58-second ordinary cycle.
+surrogate, not measured all-demand delay or queue area. Its frozen default
+parameters remain 2 seconds per queued vehicle, a 4-second transition-loss proxy,
+and a 58-second ordinary-cycle proxy. Those are analytical assumptions, not
+measurements of the imported city's signal programs. The expanded city's actual
+controller uses 3 seconds yellow plus 3 seconds all-red; different junctions can
+also have different numbers of green phases. The scalar study compares this
+unchanged analytical predictor and the learned residual against the same real
+candidate outcomes, without claiming that the predictor reproduces those cycles.
 Incoming-edge queues may include other turns; occupancy is route-averaged.
 The bounds apply only to the surrogate, not actual traffic guarantees. Individual
 phase/min-green constraints, actual clipped request schedules and future arrivals
