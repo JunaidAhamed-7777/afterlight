@@ -15,7 +15,7 @@ import time
 from urllib.parse import urlsplit
 
 from playwright.sync_api import expect, sync_playwright
-from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, ready, seek, settled, source_identity
+from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, ready, returning_visit, seek, settled, source_identity
 
 
 def capture(page, output: Path, label: str):
@@ -57,6 +57,7 @@ def main():
             browser.on("disconnected", lambda: report["events"].append({"event": "browser_disconnected", "stage": report["stage"]}))
             prefix = f"{width}x{height}-dpr{dpr:g}"
             context = browser.new_context(viewport={"width": width, "height": height}, device_scale_factor=dpr)
+            returning_visit(context)
             page = context.new_page(); page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
             page.on("crash", lambda: report["events"].append({"event": "page_crashed", "stage": report["stage"]}))
             page.add_init_script("window.__loadLongTasks=[];new PerformanceObserver(l=>window.__loadLongTasks.push(...l.getEntries().map(e=>({start:e.startTime,duration:e.duration})))).observe({type:'longtask',buffered:true});")
@@ -77,11 +78,12 @@ def main():
             report["samples"].append(capture(page, output, prefix + "-overview"))
             page.get_by_role("button", name=re.compile(r"^Explore(?: 2\.5×)?$")).click()
             report["samples"].append(capture(page, output, prefix + "-explore"))
-            page.get_by_role("button", name="Locate Afterlight ambulance", exact=True).click()
+            follow = page.locator(".follow-ambulance")
+            if follow.get_attribute("aria-pressed") != "true": follow.click()
+            expect(follow).to_have_attribute("aria-pressed", "true")
             page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.cameraZoom)>=11.9")
-            # Paused camera is already translated exactly by Locate. Disable the
+            # Paused camera is already translated exactly by Follow. Disable the
             # optional following blend before testing physical orbit stability.
-            follow = page.locator(".follow-button")
             if follow.get_attribute("aria-pressed") == "true": follow.click()
             report["samples"].append(capture(page, output, prefix + "-near"))
             canvas = page.locator(".three-host canvas"); canvas.focus()

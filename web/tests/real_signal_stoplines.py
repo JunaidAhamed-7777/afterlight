@@ -15,14 +15,15 @@ from urllib.parse import urljoin, urlencode
 from urllib.request import urlopen
 
 from playwright.sync_api import expect, sync_playwright
-from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, decoded_recording, digest, ready, seek, source_identity, verify_served_build
+from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, decoded_recording, digest, ready, returning_visit, seek, source_identity, verify_served_build
 from real_replay_smoke import inspect, sampled_vehicles
 
 KNOWN = [
-    {"id": "civilian_00107", "junction": "J45", "stop": [237.75, -1.62], "unit": [1, 0], "links": [9, 10, 11], "green": 145.0},
-    {"id": "civilian_00245", "junction": "J67", "stop": [712.25, 431.62], "unit": [-1, 0], "links": [3, 4, 5], "green": 203.0},
-    {"id": "civilian_00185", "junction": "J01", "stop": [-671.62, -862.75], "unit": [0, -1], "links": [0, 1], "green": 435.0},
+    {"id": "civilian_00022", "type": "bike", "junction": "J04", "from_lane": "H04_0_R_0", "stop": [7.25, -868.38], "unit": [-1, 0], "links": [2, 3], "green": 62.0},
+    {"id": "civilian_00076", "type": "car", "junction": "J18", "from_lane": "V81_0_R_0", "stop": [918.38, -649.5], "unit": [0, -1], "links": [0, 1], "green": 62.0},
+    {"id": "civilian_00065", "type": "truck", "junction": "J33", "from_lane": "H33_0_R_1", "stop": [-222.75, -223.38], "unit": [-1, 0], "links": [5, 6], "green": 62.0},
 ]
+KNOWN_RECORDING_SHA256 = "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441"
 
 
 def fetch(url: str) -> bytes:
@@ -106,6 +107,7 @@ def main():
     entry = next(row for row in catalog["runs"] if row["seed"] == 7)
     raw = decoded_recording(fetch(urljoin(urljoin(args.base_url, "replays/"), entry["url"])))
     assert digest(raw) == entry["sha256"] and len(raw) == entry["bytes"]
+    assert entry["sha256"] == KNOWN_RECORDING_SHA256, "Update declared regression cases if the final 3 s recording changes"
     replay = json.loads(raw); del raw; gc.collect()
     assert replay["step_s"] == .5, "This regression requires the dense genuine recapture"
     extra = held_examples(replay)
@@ -119,6 +121,7 @@ def main():
         playwright = sync_playwright().start()
         browser = playwright.chromium.launch(channel="chrome", headless=False, chromium_sandbox=True, ignore_default_args=UNSAFE_DEFAULTS)
         context = browser.new_context(viewport={"width": 1920, "height": 1080}, device_scale_factor=1)
+        returning_visit(context)
         manifest = json.loads(args.build_manifest.read_bytes()) if args.build_manifest else None
         if manifest:
             report["served_production_build"] = manifest
@@ -129,9 +132,11 @@ def main():
         expect(page.locator("#timeline")).to_be_enabled(timeout=90000)
         page.get_by_role("button", name="Full city", exact=True).click()
         for case in KNOWN:
-            for offset in (-.1, 0, .5):
-                report["samples"].append(check_pose(page, replay, case, case["green"]+offset, "afterlight", require_red=offset<0, require_green=offset>=0))
-            page.screenshot(path=str(output/f"known-{case['id']}-{case['junction']}.png"), full_page=True)
+            for world in ("afterlight", "baseline"):
+                rows = [check_pose(page, replay, case, case["green"]+offset, world, require_red=offset<0, require_green=offset>=0) for offset in (-.2, 0, .5, 1)]
+                report["samples"].extend(rows)
+                assert rows[-1]["signed_stop_line_progress_m"] > rows[0]["signed_stop_line_progress_m"] + .05, (case, world, "No recorded release on displayed green")
+                page.screenshot(path=str(output/f"known-{case['id']}-{case['junction']}-{world}.png"), full_page=True)
         for case in extra:
             report["samples"].append(check_pose(page, replay, case, case["time"], case["world"], require_red=True))
         assert {(c["world"], c["type"]) for c in extra} == {(w, kind) for w in ("afterlight", "baseline") for kind in ("car", "truck", "bike")}, "Missing held car/truck/bike coverage in one world"
