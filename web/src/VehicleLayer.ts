@@ -247,6 +247,13 @@ export class VehicleLayer {
       types,
       ambulances,
       selectedVehicles,
+      beaconMaterials: (this.batches.get("ambulance")?.beaconMaterials ?? []).map((material) => ({
+        name: material.name,
+        color: `#${material.color.getHexString()}`,
+        emissive: `#${material.emissive.getHexString()}`,
+        emissiveIntensity: material.emissiveIntensity,
+        toneMapped: material.toneMapped,
+      })),
     };
   }
   private create(template: THREE.Group, capacity: number, type: string): Batch {

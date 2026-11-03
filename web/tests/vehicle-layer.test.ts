@@ -366,6 +366,13 @@ test("actual roof beacons alternate without changing the source, vehicle pose or
   assert.equal(active.updateBeacons(1.21, false), true, "Paused or reduced-motion playback uses steady blue");
   assert.equal(active.updateBeacons(9.21, false), false);
   assert.equal(material.color.getHex(), 0x2288ff);
+  assert.deepEqual(active.inspect()!.beaconMaterials, [{
+    name: "AFTERLIGHT_EMERGENCY_BEACON", color: "#2288ff", emissive: "#2288ff",
+    emissiveIntensity: 3, toneMapped: false,
+  }]);
+  material.color.setHex(0x123456);
+  assert.equal(active.inspect()!.beaconMaterials[0].color, "#123456", "QA reads the assigned material, not a cached phase label");
+  material.color.setHex(0x2288ff);
   assert.deepEqual(active.inspect()!.ambulances[0], before);
   for (const [index, mesh] of meshes.entries()) {
     assert.deepEqual(originals[index].color.toArray(), sourceColors[index]);
