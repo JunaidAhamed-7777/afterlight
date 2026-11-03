@@ -1,0 +1,2810 @@
+{
+  "schema": "afterlight.prehosting-two-polish-passes.v1",
+  "status": "passed",
+  "scope": "Two separate desktop-only final product passes after actual Study publication. All checks use the same strict committed production candidate. Branding and final60s performance/video remain later gates.",
+  "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+  "build_manifest_sha256": "01c4f721daed9173dc8f1a155b047cb572685a525bfcc026305bba6b5f7e8615",
+  "files": 58,
+  "total_bytes": 39508625,
+  "publication_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+  "complete_build_file_set_and_bytes_verified_before_and_after": true,
+  "pass_1": {
+    "focus": "Complete interaction and evidence flows",
+    "onboarding": {
+      "status": "passed",
+      "report_sha256": "4673bd34eb90936411ea060d3fb26d66418c842c53bc29c7b0e3f1c44a404658",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "1280-reopened-step-1.png": "39dadcc023eba73a50fb8579bf5ca6696c4a6c1dc4359f30f44bf728325fdcea",
+        "1280-reopened-step-2.png": "c3bd4308deb3ac72d35c21746261527d2361669922b99b19f85b00a2e8fd3f48",
+        "1280-reopened-step-3.png": "35e0564724103a3b0b52fc4286407b660959a0ac25eed7ae4836409463e9310a",
+        "1280-reopened-step-4.png": "7dfeff038f6609c838d5d47f412fb66dca82170a12172a27671f6d30b5703374",
+        "1280-reopened-step-5.png": "b18583b81ea627d85decaf6e8986af8638eba5fceae9df2aeb808dd01646c4f8",
+        "1440-back-check-step-2.png": "91eeb7e2d5ef449577819ff7bd61e0cca01fde9591b6f7a8550a985378ba0e0d",
+        "1440-first-visit-step-1.png": "5528a2968167952f28c1c3139705a942af628673dc416c45838531b7209fb90d",
+        "1440-first-visit-step-2.png": "70e256377c2ba275d5d34a23ed2481d3c5859f45e8d44e9b3d94c2da0c8f3594",
+        "1440-first-visit-step-3.png": "8371f81f710d80f071e08a5d4a3d70fc9ef51d01e97da1b946ad8d8045372085",
+        "1440-first-visit-step-4.png": "4af4b9d69c37fbc764b1bd12de547309339e4929ba8c1b8bf73f570b32b07c44",
+        "1440-first-visit-step-5.png": "8ed6440543b18e9780cbc7a181b581f3299570d20ea4d0fb2bfac97f5a0a1a77",
+        "1440-returned-step-1.png": "81ea0c51a3c043ded6e1a0b84b64bfd49c197c1315ed6be3a181952c627829da",
+        "empty-library-guide.png": "6bb910760b4cb1ff1be54579b0d4b52f83436c61e90a20cb492cc5fa46cdd5dd",
+        "malformed-storage-step-1.png": "12bc9e2fa35ed09976c1ed4d4e23da1df827d9f5f0724ae436d04361a8062ffe",
+        "renderer-recovered-reopen-step-1.png": "d8e5e5883e3922974c08f74f406179a9f1ac2cad21b73dd53a1b0edecfbcbc9b",
+        "renderer-unavailable-guide.png": "0d6a06fc777d82269cf8021f9b3bed9d72801938d973a2dc628b26084514fd77",
+        "storage-blocked-step-1.png": "12bc9e2fa35ed09976c1ed4d4e23da1df827d9f5f0724ae436d04361a8062ffe"
+      }
+    },
+    "follow_playback_beacons_notices": {
+      "status": "passed_headed_dual_follow_playback_and_beacon_materials_pending_pixel_review",
+      "report_sha256": "fa7ae11508c8cf11343f8fcb71ac0fa996a95afd095fe4accc53b5bf3ae35893",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "paused-scene-repeat.png": "58de47afd8a96edb311c116fbb1575318f5cdebbf8363d923734f5370fca9c8f",
+        "paused-scene.png": "58de47afd8a96edb311c116fbb1575318f5cdebbf8363d923734f5370fca9c8f",
+        "roof-paused-steady-blue-repeat.png": "d8b93f9cf9f36f385c06697e1dde5665c0f9b372fdceb391347b6a0192cfd86c",
+        "roof-paused-steady-blue.png": "d8b93f9cf9f36f385c06697e1dde5665c0f9b372fdceb391347b6a0192cfd86c",
+        "roof-playing-blue.png": "10e6004a30f86c574d1c0d80513f9ac2f6d9f5c43f7c8eabfda6db5ad60b72b2",
+        "roof-playing-red.png": "53fafd1d6452d73175fac96baa5786740c6153c627a2b4db1fe6cbbce95e32ed",
+        "roof-reduced-motion-steady-blue.png": "b2c460f26680eb01c2a916d3c820d3d4d5b0c678c45796735a33e345f8ab6d36",
+        "runtime-notices-native-page.png": "51462ab3b003342ef7b2a76046c7550741f6097222bb8b185897eb840f5efbc9"
+      }
+    },
+    "actual_signal_stoplines": {
+      "status": "passed_actual_civilian_buffers_and_signal_stop_lines",
+      "report_sha256": "dffa5caa7c3d64b5884a8c9e2298c7c715b4e9f23303d98bb01a79b3d162c422",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "known-civilian_00022-J04-afterlight.png": "aeb84c9e918f0ae4cb846e65f308f1c5b4c41526a08d18cdf4fd1de1b4d4a2c7",
+        "known-civilian_00022-J04-baseline.png": "b034f8661fc6b5d25ef5a39d9b428955d950f35cb679969c8badce4a94f46a98",
+        "known-civilian_00065-J33-afterlight.png": "aeb84c9e918f0ae4cb846e65f308f1c5b4c41526a08d18cdf4fd1de1b4d4a2c7",
+        "known-civilian_00065-J33-baseline.png": "b034f8661fc6b5d25ef5a39d9b428955d950f35cb679969c8badce4a94f46a98",
+        "known-civilian_00076-J18-afterlight.png": "aeb84c9e918f0ae4cb846e65f308f1c5b4c41526a08d18cdf4fd1de1b4d4a2c7",
+        "known-civilian_00076-J18-baseline.png": "b034f8661fc6b5d25ef5a39d9b428955d950f35cb679969c8badce4a94f46a98"
+      }
+    },
+    "actual_released_study": {
+      "status": "passed_actual_released_Study_positive_acceptance",
+      "report_sha256": "c59dad2818a9d18ce23557e41cf3821b16f39969c5669a8aaf4d38855d8226e5",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "actual-study-amendment-downloads.png": "e9a5e3c91b823c34ecdb323626aaa7d9bc436b39348e416f0422ba42c6872206",
+        "actual-study-claim-downloads.png": "ede40807978b21c10aa9a2b9cf1186f9cc9abca375ebafbd4e35c30327ae6d78",
+        "actual-study-overview.png": "d09169812bb12d0c64ec759c53e0d74b23df578bba8c649d6bcc3022ed9efaf6",
+        "actual-study-provenance.png": "b8167401ff30dc28f86962c0bdb4917563f8cad6c69369c310fe3c9873423cc7"
+      }
+    },
+    "follow_checks": {
+      "follow-visible-afterlight": {
+        "expected_from_genuine_pose": [
+          -650.5321200000001,
+          1.5,
+          229.88
+        ],
+        "actual_camera_target": [
+          -650.5321200000002,
+          1.5000000000000002,
+          229.88
+        ],
+        "world": "afterlight"
+      },
+      "selected-Afterlight-preserves-ambulance-follow": {
+        "world": "afterlight",
+        "follow_still_pressed": true,
+        "camera_and_clock_unchanged": true
+      },
+      "follow-visible-ordinary": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "baseline"
+      },
+      "selected-Ordinary-preserves-ambulance-follow": {
+        "world": "baseline",
+        "follow_still_pressed": true,
+        "camera_and_clock_unchanged": true
+      },
+      "ghost-follow-activates-afterlight-scene": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "afterlight"
+      },
+      "selected-Afterlight-preserves-ghost-follow": {
+        "world": "afterlight",
+        "follow_still_pressed": true,
+        "camera_and_clock_unchanged": true
+      },
+      "ghost-follow-restores-hidden-ghost": {
+        "expected_from_genuine_pose": [
+          -667.4729557326067,
+          1.5,
+          234.025112947991
+        ],
+        "actual_camera_target": [
+          -667.4729557326067,
+          1.5,
+          234.02511294799098
+        ],
+        "world": "afterlight"
+      },
+      "ambulance-follow-replaces-ghost-follow": {
+        "expected_from_genuine_pose": [
+          -650.5321200000001,
+          1.5,
+          229.88
+        ],
+        "actual_camera_target": [
+          -650.5321200000002,
+          1.5000000000000002,
+          229.88
+        ],
+        "world": "afterlight"
+      },
+      "10x-playback": {
+        "wall_seconds_including_clicks": 2.1375,
+        "recorded_seconds_advanced": 20.50900000003034,
+        "observed_ratio": 9.594853801183785
+      },
+      "20x-playback": {
+        "wall_seconds_including_clicks": 2.1460999999940396,
+        "recorded_seconds_advanced": 41.27400000003075,
+        "observed_ratio": 19.232095428985314
+      },
+      "paused-steady-blue": {
+        "actual_material": [
+          {
+            "name": "AFTERLIGHT_EMERGENCY_BEACON",
+            "color": "#2288ff",
+            "emissive": "#2288ff",
+            "emissiveIntensity": 3,
+            "toneMapped": false
+          }
+        ],
+        "same_scene_pixels_over_900ms": true,
+        "scene_clip": {
+          "x": 370,
+          "y": 172.33334350585938,
+          "width": 1548,
+          "height": 733.3333435058594
+        },
+        "css_boundary_excluded_px": 2,
+        "camera_clock_vehicle_materials_unchanged": true,
+        "full_page_png_identical": true
+      },
+      "reduced-motion": {
+        "both_follow_controls_disabled": true,
+        "actual_material_samples": [
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff",
+          "#2288ff"
+        ],
+        "playback_remains_available": true
+      },
+      "authored-model-thumbnails": [
+        {
+          "src": "/assets/previews/ambulance_model.png",
+          "width": 320,
+          "height": 200
+        },
+        {
+          "src": "/assets/previews/ghost_model.png",
+          "width": 320,
+          "height": 200
+        }
+      ],
+      "native-runtime-notices": {
+        "url": "http://127.0.0.1:5206/THIRD_PARTY_NOTICES.txt",
+        "HTTP_status": 200,
+        "bytes": 5881,
+        "sha256": "e8fc9eb43bcd4068316f90891c7814f995be0e163fdb1a2c0b3c5c8be0491db1",
+        "source_bytes_exact": true,
+        "full_native_page_text_matches": true,
+        "pinned_components": [
+          "react",
+          "react-dom",
+          "scheduler",
+          "three",
+          "vite-runtime"
+        ]
+      }
+    },
+    "signal_sample_count": 30,
+    "pixel_review": "Red/blue roof bar, steady paused/reduced-motion bar, actual-model thumbnails, guide placement and real Study signs/failures/provenance/downloads inspected. No geometry flicker or clipped controls observed."
+  },
+  "pass_2": {
+    "focus": "Desktop layout, recovery, contrast, genuine rendering and camera stability",
+    "product": {
+      "status": "passed",
+      "report_sha256": "cd091157fba2a6a484fb8bb75b26957dae6fda87ed6cd2721693c52c149bbfce",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "catalog-error.png": "69e38ddec7ab73e135d4e06b811595daad0cc7df6ab61be8a0ffa5eb529b498d",
+        "desktop-1280x720.png": "5d2c3c3159c7522a81c6f7b55775b9b8d456a83138c4889a24a14e5155904ad4",
+        "desktop-1440x810.png": "f3efe2f0b47e475af2855daf7da7ac59288134bc52430db94cf44b94fef8dc5f",
+        "desktop-1920x1080.png": "fa0d9e766a2275f54bd60e1a93ca42f92d9489408ea2efec5d62a1f97d5de543",
+        "desktop-2560x1440.png": "bb32b5ed4192f577aacd4a6737dbdaf53aad90c39e19c0a478e4ddf08e1d7499",
+        "genuine-matrices-533s.png": "56edd57024557971daec075cb91a568316681f13224b85562beb38f476d87367",
+        "genuine-matrices-60.5s.png": "667af1368afc14072204767e9cca3f62103026692a2132c2ef802c16a4a3675a",
+        "genuine-matrices-60.7s.png": "d14ff6fef00f96702feaf5665273bfc267d266c4690cb968a0a6241887ebef3a",
+        "graphics-error.png": "a378f2edbb35b11c4b2a5c1f3572e04f3a325b8bf2b56080f8540d24759ecd9e",
+        "initial-1920x1080.png": "78976552d25c426cb6b55573fca18ab1576060069aa80b97c9956c720ffab00d",
+        "section-results.png": "8e7217b035359a2ceccc21fbbdc6ed0ed8cfc9bfc839563bdb1bdd23463e5747",
+        "section-run.png": "4d5c6009128dfb5300a68736fb8fba76d5ec865c3b01d8941c506da1479ef6ac",
+        "section-settings.png": "83f7a59af61ee4b5b6fd908a40aac2875afe3e9a9923eaa9a756d041c68d3670",
+        "traffic-close-follow.png": "c5a3f97220146bdfe47fddf4fd8cb046d64c7c448be429498202c89c1783f9a0"
+      }
+    },
+    "camera": {
+      "status": "passed_paused_camera_stability_pending_pixel_review",
+      "report_sha256": "7e2c966679e7c82c3dffb99a36d0c35e5712b5416149664c91ee5bf6b596dde5",
+      "source_commit": "41b3fa0d0c70d5f4524e8b25e928b77136d5b64c",
+      "source_stable": true,
+      "screenshots": {
+        "1920x1080-dpr1-explore-repeat.png": "1ec2781c8ef14da366d6b0ab2bbc4179b3103d1cef49163e3bfb040c1bcc2077",
+        "1920x1080-dpr1-explore.png": "1ec2781c8ef14da366d6b0ab2bbc4179b3103d1cef49163e3bfb040c1bcc2077",
+        "1920x1080-dpr1-near-repeat.png": "457869322ab6204f43ddc0951a1a896837a9ee665ff6743f3a581ff933a76b95",
+        "1920x1080-dpr1-near.png": "457869322ab6204f43ddc0951a1a896837a9ee665ff6743f3a581ff933a76b95",
+        "1920x1080-dpr1-overview-repeat.png": "95f4afc4c86f8c979590cc56d0c11a467667d77c80867695680edaebcefab443",
+        "1920x1080-dpr1-overview.png": "95f4afc4c86f8c979590cc56d0c11a467667d77c80867695680edaebcefab443",
+        "1920x1080-dpr1-reverse-yaw-repeat.png": "7593171b59be5e273dfacaa9b8db7af38b3ecfda343136360a4d41ce012a76a8",
+        "1920x1080-dpr1-reverse-yaw.png": "7593171b59be5e273dfacaa9b8db7af38b3ecfda343136360a4d41ce012a76a8",
+        "1920x1080-dpr1-tilt-down-repeat.png": "71bddfa7c8bfcfe8da71bad91dbc4a0d5ad95e54d654f1f51277f32c05b06ee8",
+        "1920x1080-dpr1-tilt-down.png": "71bddfa7c8bfcfe8da71bad91dbc4a0d5ad95e54d654f1f51277f32c05b06ee8",
+        "1920x1080-dpr1-tilt-up-repeat.png": "883a13fe16c38f52683b77c0e2811b1028252a4f515fd398488e5440c56f4a74",
+        "1920x1080-dpr1-tilt-up.png": "883a13fe16c38f52683b77c0e2811b1028252a4f515fd398488e5440c56f4a74",
+        "1920x1080-dpr1-workspace.png": "94e665e0d5f03b3d6eeafaaf7e7356556151e16b5310e8c50c5238645fb3d0dd",
+        "1920x1080-dpr1-yaw-repeat.png": "25028cd70c5cd285df79c8d0e3ef7a59bed169aec07d56452353636ea02c9ce3",
+        "1920x1080-dpr1-yaw.png": "25028cd70c5cd285df79c8d0e3ef7a59bed169aec07d56452353636ea02c9ce3",
+        "2560x1440-dpr1.5-explore-repeat.png": "12961377715fffba9facf12533bf1cd7655967b1162a6d40763d95f172ed2a76",
+        "2560x1440-dpr1.5-explore.png": "12961377715fffba9facf12533bf1cd7655967b1162a6d40763d95f172ed2a76",
+        "2560x1440-dpr1.5-near-repeat.png": "65a631205d2cc48af4a6b82c844e27e8bced006eda284c1e2e94c0685bb3e81d",
+        "2560x1440-dpr1.5-near.png": "65a631205d2cc48af4a6b82c844e27e8bced006eda284c1e2e94c0685bb3e81d",
+        "2560x1440-dpr1.5-overview-repeat.png": "ba4897a1f5c89831d1650b09e3d55726ba5ac74f127305ab1f7660bb59c8ac28",
+        "2560x1440-dpr1.5-overview.png": "ba4897a1f5c89831d1650b09e3d55726ba5ac74f127305ab1f7660bb59c8ac28",
+        "2560x1440-dpr1.5-reverse-yaw-repeat.png": "bd1e0044fbdd6f92d695eb34bec48465549969c2bf1affb6e1ba07fb728551ed",
+        "2560x1440-dpr1.5-reverse-yaw.png": "bd1e0044fbdd6f92d695eb34bec48465549969c2bf1affb6e1ba07fb728551ed",
+        "2560x1440-dpr1.5-tilt-down-repeat.png": "dcd4c0ff349c35f896483d3b8cf91a9f4130ae624fad590ac4c605b26c8f371e",
+        "2560x1440-dpr1.5-tilt-down.png": "dcd4c0ff349c35f896483d3b8cf91a9f4130ae624fad590ac4c605b26c8f371e",
+        "2560x1440-dpr1.5-tilt-up-repeat.png": "8d98828591a0ac366137c49572d7c1545e8cee572b143df714afc9055a8df7e0",
+        "2560x1440-dpr1.5-tilt-up.png": "8d98828591a0ac366137c49572d7c1545e8cee572b143df714afc9055a8df7e0",
+        "2560x1440-dpr1.5-workspace.png": "2cf72edfec518cedd503680fd8111b2a28904d7da299eb01701cf6fc20c81209",
+        "2560x1440-dpr1.5-yaw-repeat.png": "b4ca97a40624f7423537bd8e756b6062ab939ed06b82ab2883a31666aa8ae32f",
+        "2560x1440-dpr1.5-yaw.png": "b4ca97a40624f7423537bd8e756b6062ab939ed06b82ab2883a31666aa8ae32f"
+      }
+    },
+    "product_checks": {
+      "camera": {
+        "full_city_fit": {
+          "source": "world-transformed original glTF bounds",
+          "overview": true,
+          "maxX": 0.6522544239797,
+          "maxY": 0.8474576271186439,
+          "viewportWidth": 1552,
+          "viewportHeight": 777
+        },
+        "keyboard_zoom_pan_reset": true,
+        "camera_options_overlay": {
+          "x": 1586,
+          "y": 647.5416870117188,
+          "width": 310,
+          "height": 297.70831298828125
+        },
+        "axis_controls": {
+          "Tilt": {
+            "before": 0.4581903822728599,
+            "after": 0.28365745707342693
+          },
+          "Turn": {
+            "before": 0.7621465405869853,
+            "after": 0.9366794657864183
+          },
+          "Roll": {
+            "before": 0.0,
+            "after": 0.17453292519943295
+          }
+        }
+      },
+      "play_pause_world_switch": true,
+      "desktop_layout": [
+        {
+          "viewport": [
+            1920,
+            1080
+          ],
+          "geometry": {
+            "viewport": [
+              1920,
+              1080
+            ],
+            "document": [
+              1920,
+              1080
+            ],
+            "scroll": [
+              0,
+              0
+            ],
+            "stage": {
+              "x": 368,
+              "y": 60,
+              "width": 1552,
+              "height": 1020,
+              "bottom": 1080,
+              "right": 1920,
+              "scrollHeight": 1020,
+              "clientHeight": 1020
+            },
+            "canvas": {
+              "x": 368,
+              "y": 170.33334350585938,
+              "width": 1552,
+              "height": 737.3333740234375,
+              "bottom": 907.6667175292969,
+              "right": 1920,
+              "scrollHeight": 737,
+              "clientHeight": 737
+            },
+            "settings": {
+              "x": 0,
+              "y": 118,
+              "width": 367.3333435058594,
+              "height": 962,
+              "bottom": 1080,
+              "right": 367.3333435058594,
+              "scrollHeight": 962,
+              "clientHeight": 962
+            },
+            "transport": {
+              "x": 368,
+              "y": 998,
+              "width": 1552,
+              "height": 82,
+              "bottom": 1080,
+              "right": 1920,
+              "scrollHeight": 81,
+              "clientHeight": 81
+            },
+            "dock": {
+              "x": 368,
+              "y": 907.6666870117188,
+              "width": 1552,
+              "height": 50.66666793823242,
+              "bottom": 958.3333549499512,
+              "right": 1920,
+              "scrollHeight": 50,
+              "clientHeight": 50
+            }
+          },
+          "right_pane_stationary_on_left_scroll": true
+        },
+        {
+          "viewport": [
+            1440,
+            810
+          ],
+          "geometry": {
+            "viewport": [
+              1440,
+              810
+            ],
+            "document": [
+              1440,
+              810
+            ],
+            "scroll": [
+              0,
+              0
+            ],
+            "stage": {
+              "x": 352,
+              "y": 60,
+              "width": 1088,
+              "height": 750,
+              "bottom": 810,
+              "right": 1440,
+              "scrollHeight": 750,
+              "clientHeight": 750
+            },
+            "canvas": {
+              "x": 352,
+              "y": 170.33334350585938,
+              "width": 1088,
+              "height": 467.3333435058594,
+              "bottom": 637.6666870117188,
+              "right": 1440,
+              "scrollHeight": 467,
+              "clientHeight": 467
+            },
+            "settings": {
+              "x": 0,
+              "y": 118,
+              "width": 351.3333435058594,
+              "height": 692,
+              "bottom": 810,
+              "right": 351.3333435058594,
+              "scrollHeight": 779,
+              "clientHeight": 692
+            },
+            "transport": {
+              "x": 352,
+              "y": 728,
+              "width": 1088,
+              "height": 82,
+              "bottom": 810,
+              "right": 1440,
+              "scrollHeight": 81,
+              "clientHeight": 81
+            },
+            "dock": {
+              "x": 352,
+              "y": 637.6666870117188,
+              "width": 1088,
+              "height": 50.66666793823242,
+              "bottom": 688.3333549499512,
+              "right": 1440,
+              "scrollHeight": 50,
+              "clientHeight": 50
+            }
+          },
+          "right_pane_stationary_on_left_scroll": true
+        },
+        {
+          "viewport": [
+            1280,
+            720
+          ],
+          "geometry": {
+            "viewport": [
+              1280,
+              720
+            ],
+            "document": [
+              1280,
+              720
+            ],
+            "scroll": [
+              0,
+              0
+            ],
+            "stage": {
+              "x": 324,
+              "y": 52,
+              "width": 956,
+              "height": 668,
+              "bottom": 720,
+              "right": 1280,
+              "scrollHeight": 668,
+              "clientHeight": 668
+            },
+            "canvas": {
+              "x": 324,
+              "y": 150.33334350585938,
+              "width": 956,
+              "height": 407.3333435058594,
+              "bottom": 557.6666870117188,
+              "right": 1280,
+              "scrollHeight": 407,
+              "clientHeight": 407
+            },
+            "settings": {
+              "x": 0,
+              "y": 104,
+              "width": 323.3333435058594,
+              "height": 616,
+              "bottom": 720,
+              "right": 323.3333435058594,
+              "scrollHeight": 773,
+              "clientHeight": 616
+            },
+            "transport": {
+              "x": 324,
+              "y": 648,
+              "width": 956,
+              "height": 72,
+              "bottom": 720,
+              "right": 1280,
+              "scrollHeight": 71,
+              "clientHeight": 71
+            },
+            "dock": {
+              "x": 324,
+              "y": 557.6666870117188,
+              "width": 956,
+              "height": 50.66666793823242,
+              "bottom": 608.3333549499512,
+              "right": 1280,
+              "scrollHeight": 50,
+              "clientHeight": 50
+            }
+          },
+          "right_pane_stationary_on_left_scroll": true
+        },
+        {
+          "viewport": [
+            2560,
+            1440
+          ],
+          "geometry": {
+            "viewport": [
+              2560,
+              1440
+            ],
+            "document": [
+              2560,
+              1440
+            ],
+            "scroll": [
+              0,
+              0
+            ],
+            "stage": {
+              "x": 368,
+              "y": 60,
+              "width": 2192,
+              "height": 1380,
+              "bottom": 1440,
+              "right": 2560,
+              "scrollHeight": 1380,
+              "clientHeight": 1380
+            },
+            "canvas": {
+              "x": 368,
+              "y": 170.33334350585938,
+              "width": 2192,
+              "height": 1097.3333740234375,
+              "bottom": 1267.6667175292969,
+              "right": 2560,
+              "scrollHeight": 1097,
+              "clientHeight": 1097
+            },
+            "settings": {
+              "x": 0,
+              "y": 118,
+              "width": 367.3333435058594,
+              "height": 1322,
+              "bottom": 1440,
+              "right": 367.3333435058594,
+              "scrollHeight": 1322,
+              "clientHeight": 1322
+            },
+            "transport": {
+              "x": 368,
+              "y": 1358,
+              "width": 2192,
+              "height": 82,
+              "bottom": 1440,
+              "right": 2560,
+              "scrollHeight": 81,
+              "clientHeight": 81
+            },
+            "dock": {
+              "x": 368,
+              "y": 1267.666748046875,
+              "width": 2192,
+              "height": 50.66666793823242,
+              "bottom": 1318.3334159851074,
+              "right": 2560,
+              "scrollHeight": 50,
+              "clientHeight": 50
+            }
+          },
+          "right_pane_stationary_on_left_scroll": true
+        }
+      ],
+      "text_contrast_run": {
+        "checked_text_nodes": 73,
+        "minimum_ratio": 5.496329842700491,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_results": {
+        "checked_text_nodes": 89,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      },
+      "text_contrast_settings": {
+        "checked_text_nodes": 73,
+        "minimum_ratio": 6.285691213231109,
+        "skipped": [],
+        "failures": []
+      },
+      "genuine_instance_matrices": {
+        "times_s": [
+          60.5,
+          60.7,
+          533.0
+        ],
+        "fractional_sample": true,
+        "samples": [
+          {
+            "time_s": 60.5,
+            "world": "afterlight",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "car": 94,
+                "bike": 27,
+                "truck": 18
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.2,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.3000000000001,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.2,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.4000000000001,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.2999877929688,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.1999876625515,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.399987923386,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.1999876625515,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.399987923386,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {
+                "ambulance": 1
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.2,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.3000000000001,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.2,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.4000000000001,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.2999877929688,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.1999876625515,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.399987923386,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.1999876625515,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.399987923386,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "time_s": 60.5,
+            "world": "baseline",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "car": 94,
+                "bike": 27,
+                "truck": 18
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.2,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.3000000000001,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.2,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.4000000000001,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.2999877929688,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.1999876625515,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.399987923386,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.1999876625515,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.399987923386,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.2999877929688,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {},
+              "ambulance": null
+            }
+          },
+          {
+            "time_s": 60.7,
+            "world": "afterlight",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "car": 94,
+                "bike": 27,
+                "truck": 18
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.44844,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.54844,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.44844,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.64844,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.5484619140625,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.4484617836453,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.6484620444797,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.4484617836453,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.6484620444797,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {
+                "ambulance": 1
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.44844,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.54844,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.44844,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.64844,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.5484619140625,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.4484617836453,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.6484620444797,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.4484617836453,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.6484620444797,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "time_s": 60.7,
+            "world": "baseline",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "car": 94,
+                "bike": 27,
+                "truck": 18
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": -779.44844,
+                  "y": -868.38,
+                  "z": 0.0,
+                  "angle_deg": 270.0,
+                  "speed_mps": 0.0,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    -776.54844,
+                    868.38
+                  ],
+                  "nose": [
+                    -779.44844,
+                    868.38
+                  ],
+                  "rear": [
+                    -773.64844,
+                    868.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    -776.5484619140625,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "nose": [
+                    -779.4484617836453,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "rear": [
+                    -773.6484620444797,
+                    1.5719998478889465,
+                    868.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      -779.4484617836453,
+                      0.18000000715255737,
+                      867.2800048612742
+                    ],
+                    "max": [
+                      -773.6484620444797,
+                      2.9639996886253357,
+                      869.4800049043508
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ],
+                    [
+                      -1.836459279782541e-16,
+                      0,
+                      -0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      -2.464801290247786e-16,
+                      0,
+                      -776.5484619140625,
+                      0.17000001668930054,
+                      868.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {},
+              "ambulance": null
+            }
+          },
+          {
+            "time_s": 533.0,
+            "world": "afterlight",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "bike": 18,
+                "truck": 7,
+                "car": 32
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": 814.12,
+                  "y": 518.3986,
+                  "z": 0.0,
+                  "angle_deg": 0.0,
+                  "speed_mps": 3.8038,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    814.12,
+                    -515.4986
+                  ],
+                  "nose": [
+                    814.12,
+                    -518.3986
+                  ],
+                  "rear": [
+                    814.12,
+                    -512.5986
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    814.1199951171875,
+                    1.5719998478889465,
+                    -515.4985961914062
+                  ],
+                  "nose": [
+                    814.1199951171875,
+                    1.5719998478889465,
+                    -518.398596060989
+                  ],
+                  "rear": [
+                    814.1199951171875,
+                    1.5719998478889465,
+                    -512.5985963218235
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      813.0199950956492,
+                      0.18000000715255737,
+                      -518.398596060989
+                    ],
+                    "max": [
+                      815.2199951387258,
+                      2.9639996886253357,
+                      -512.5985963218235
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ],
+                    [
+                      0.8270677328109741,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1.1100478172302246,
+                      0,
+                      814.1199951171875,
+                      0.17000001668930054,
+                      -515.4985961914062,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {
+                "ambulance": 1
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": 515.5102,
+                  "y": 213.38,
+                  "z": 0.0,
+                  "angle_deg": 90.0,
+                  "speed_mps": 10.8518,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    512.6102000000001,
+                    -213.38
+                  ],
+                  "nose": [
+                    515.5102,
+                    -213.38
+                  ],
+                  "rear": [
+                    509.71020000000004,
+                    -213.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    512.6102294921875,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "nose": [
+                    515.5102293617703,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "rear": [
+                    509.71022962260474,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      509.71022962260474,
+                      0.18000000715255737,
+                      -214.48000490435084
+                    ],
+                    "max": [
+                      515.5102293617703,
+                      2.9639996886253357,
+                      -212.28000486127416
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "time_s": 533.0,
+            "world": "baseline",
+            "active": {
+              "counts": {
+                "ambulance": 1,
+                "bike": 20,
+                "truck": 7,
+                "car": 29
+              },
+              "ambulance": {
+                "raw_front_bumper": {
+                  "id": "ambulance",
+                  "type": "ambulance",
+                  "x": 515.5102,
+                  "y": 213.38,
+                  "z": 0.0,
+                  "angle_deg": 90.0,
+                  "speed_mps": 10.8518,
+                  "length_m": 5.8,
+                  "width_m": 2.2
+                },
+                "expected_xz": {
+                  "center": [
+                    512.6102000000001,
+                    -213.38
+                  ],
+                  "nose": [
+                    515.5102,
+                    -213.38
+                  ],
+                  "rear": [
+                    509.71020000000004,
+                    -213.38
+                  ]
+                },
+                "rendered": {
+                  "instance": 0,
+                  "consistentMatrices": true,
+                  "center": [
+                    512.6102294921875,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "nose": [
+                    515.5102293617703,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "rear": [
+                    509.71022962260474,
+                    1.5719998478889465,
+                    -213.3800048828125
+                  ],
+                  "length": 5.799999739165514,
+                  "width": 2.2000000430766704,
+                  "bounds": {
+                    "min": [
+                      509.71022962260474,
+                      0.18000000715255737,
+                      -214.48000490435084
+                    ],
+                    "max": [
+                      515.5102293617703,
+                      2.9639996886253357,
+                      -212.28000486127416
+                    ]
+                  },
+                  "primitiveMatrices": [
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ],
+                    [
+                      1.836459279782541e-16,
+                      0,
+                      0.8270677328109741,
+                      0,
+                      0,
+                      1,
+                      0,
+                      0,
+                      -1.1100478172302246,
+                      0,
+                      2.464801290247786e-16,
+                      0,
+                      512.6102294921875,
+                      0.17000001668930054,
+                      -213.3800048828125,
+                      1
+                    ]
+                  ]
+                }
+              }
+            },
+            "ghost": {
+              "counts": {},
+              "ambulance": null
+            }
+          }
+        ],
+        "ghost_disabled_empty": true
+      },
+      "canonical_map_controls": {
+        "selected_canonical_ids": {
+          "pickup": "P002",
+          "hospital": "HOSP_WEST"
+        },
+        "no_results_clear_focus": true,
+        "escape_does_not_change_route": true
+      },
+      "recovery": {
+        "catalog_error_retry": true,
+        "webgl_context_loss_retry": true,
+        "system_reduced_motion": true
+      }
+    },
+    "camera_angle_samples": 14,
+    "exact_paused_png_pairs": 14,
+    "viewport_profiles": [
+      "1920x1080 DPR1",
+      "2560x1440 DPR1.5"
+    ],
+    "desktop_layouts": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1440,
+        810
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        2560,
+        1440
+      ]
+    ],
+    "pixel_review": "Fourteen-angle contact sheet plus native1440p close view and desktop layout/recovery captures inspected. Roads, hospital grounds, roofs, windows and building bases stay stable without the prior striped depth artifacts; no camera-dependent asset replacement observed.",
+    "performance_scope": "Five-second overview and five-second actual close-follow smoke observations only. These are not the final post-identity benchmark and will not supply README performance claims."
+  },
+  "fixes_and_preserved_failures": {
+    "diagnostic": "paused-follow-polish-diagnostic.json",
+    "camera_fix": "9569900",
+    "flat_sky_fix": "41b3fa0",
+    "strict_paused_scene_pixels_and_camera_vehicle_clock_materials_now_identical": true
+  },
+  "limits": "Scoped desktop browser/software checks and manual pixels; not universal traffic-law, accessibility, hardware or real-world safety certification."
+}
