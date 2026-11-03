@@ -1,8 +1,50 @@
-# Benchmark protocol — planned, not achieved
+# Benchmark protocol
+
+## Frozen expanded-city study
+
+The current study has 56 independent demand groups: 24 training, 12 validation
+and 20 held-out test cases, each with seven complete-from-zero policy worlds.
+The map has 81 primary nodes and 77 signal controllers. The saved input and
+protocol identities are retained in [the frozen study proof](validation/study-v4/).
+The earlier 180-episode workload below is a historical planning proposal, not the
+size of this experiment.
+
+Each case runs ordinary signals, immediate priority and fixed leads of 0, 5, 10,
+20 and 30 seconds against identical saved demand and route inputs. All variants
+share the same 3-second yellow, 3-second all-red, minimum-green, release and
+maximum-hold rules. Integration uses 0.5 seconds; scalar scientific evidence uses
+5-second pose samples and the exact recorded control events. The common window
+ends at 3,000 seconds: demand ends at 180, the primary horizon is 360 and the
+drain is 2,640. Sparse, moderate and asymmetric demand appear in development;
+heavy demand and one ordered origin/hospital route family are held out.
+
+The matched expanded-city pilot completed all 84 declared worlds with valid
+accounting and audits before this study was frozen. Development then completed
+168 training and 84 validation worlds. One prespecified residual tree was fitted
+to 120 finite training candidate labels from 24 groups, with maximum depth 3,
+minimum leaf size 8 and random seed 0. Validation selected the shared fixed-lead
+comparator at 5 seconds. These are development facts, not held-out performance.
+
+The initial selection command stopped in raw verification before model fitting:
+a legacy pilot helper reconstructed an integer objective weight instead of using
+the complete frozen estimator configuration. The retained failure and explicit
+[pre-test analysis amendment](ANALYSIS_AMENDMENT.md) preserve all original source,
+input and evidence identities. The corrected separate analysis consumes the
+exact frozen estimator hash; the simulation and held-out collector stay pinned
+to their original source. Independent checks of the
+[descriptor](validation/study-v4/analysis-amendment-review.json) and
+[actual frozen model](validation/study-v4/model-pre-test-review.json) preceded
+the single learned-mode test release.
+
+The one complete 20-case/140-world test collection is in progress. Its results
+must pass the released-collection and report checks before any performance
+claim or public Study summary is published. Model fitting and test collection
+do not modify either public illustrative recording. Scientific 5-second traces
+stay private; public traffic playback requires actual 0.5-second captures.
 
 ## Experiment
 
-Use a three-intersection fixed-route correctness fixture first; scale to the planned 25-intersection city only after validity and runtime gates. Vary civilian arrival patterns, queue states, dispatch times and reproducible seeds. Keep full demand files and route permissions identical across policies. Replay each policy from `t=0`; do not assume save/load restores all RNG and route state.
+Use a three-intersection fixed-route correctness fixture first; scale to the expanded city only after validity and runtime gates. Vary civilian arrival patterns, queue states, dispatch times and reproducible seeds. Keep full demand files and route permissions identical across policies. Replay each policy from `t=0`; do not assume save/load restores all RNG and route state.
 
 Primary experiment disables SUMO bluelight behavior. Its documented privileges can ignore red lights, alter surrounding traffic or introduce emergency teleport behavior, confounding the controller. Ambulance visuals do not confer simulator privileges. Record all collision, teleport and signal-constraint events. Safety assertions are simulator checks, not real-world certification.
 
@@ -69,7 +111,7 @@ Seeded randomness creates reproducible variation, not proof against overfitting.
 
 The ghost must replay the ordinary baseline's actual trajectory from its independent simulation, not a synthetic speed curve. Unit/integration checks assert no ghost ID in AFTERLIGHT simulation vehicles/detectors/priority events, equal absolute timestamps, matching input hashes, and identical exported pose to the baseline trace. Traffic responds to the solid ambulance only in AFTERLIGHT; baseline has its own ordinary signal/traffic evolution. Apparent ghost/visible-traffic overlap is a rendering explanation issue, never a reason to alter benchmark trajectories.
 
-Re-run the complete runtime pilot on the expanded graph before carrying over dataset or latency estimates. Twenty-five intersections, longer routes and randomized traffic can change both simulation cost and feature distribution. The three-junction result is a fixture result until expanded evaluation passes. Freeze any new route-conditioned features or variable-length action semantics before that test; prior review does not validate new model scope.
+Re-run the complete runtime pilot on the expanded graph before carrying over dataset or latency estimates. More intersections, longer routes and randomized traffic can change both simulation cost and feature distribution. The three-junction result is a fixture result until expanded evaluation passes. Freeze any new route-conditioned features or variable-length action semantics before that test; prior review does not validate new model scope.
 
 ## Executable pre-study gates
 
