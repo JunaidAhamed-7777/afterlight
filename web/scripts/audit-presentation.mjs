@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { gunzipSync } from "node:zlib";
+import { fileURLToPath } from "node:url";
 import { buildSignalTimeline } from "../src/signalTimeline.ts";
 import { validateCatalog } from "../src/catalog.ts";
 import { validateReplay } from "../src/replay.ts";
@@ -18,17 +19,52 @@ function argument(name, fallback) {
 }
 if (
   args.some(
-    (arg, index) => index % 2 === 0 && !["--catalog", "--output"].includes(arg),
+    (arg, index) =>
+      index % 2 === 0 &&
+      !["--catalog", "--output", "--local-max-json-mib"].includes(arg),
   ) ||
-  args.length % 2
+  args.length % 2 ||
+  new Set(args.filter((_, index) => index % 2 === 0)).size !== args.length / 2
 )
   throw Error(
-    "Usage: node --experimental-strip-types web/scripts/audit-presentation.mjs [--catalog catalog.json] [--output new-report.json]",
+    "Usage: node --experimental-strip-types web/scripts/audit-presentation.mjs [--catalog catalog.json] [--output new-report.json] [--local-max-json-mib 256]",
   );
 const catalogPath = path.resolve(
   argument("--catalog", "web/public/replays/catalog.json"),
 );
 const outputPath = argument("--output", null);
+const localCap = argument("--local-max-json-mib", null);
+if (localCap !== null && (localCap !== "256" || !args.includes("--catalog")))
+  throw Error(
+    "Local audit allowance requires --local-max-json-mib 256 and an explicit local catalog",
+  );
+const localMode = localCap !== null;
+const decodedLimit = (localMode ? 256 : 128) * 1024 * 1024;
+const physicalLimit = (localMode ? 256 : 20) * 1024 * 1024;
+const checkoutRoot = fs.realpathSync(fileURLToPath(new URL("../../", import.meta.url)));
+const localDirectory = path.join(checkoutRoot, "local-runtime");
+const localRoot = localMode
+  ? fs.realpathSync(localDirectory)
+  : null;
+if (
+  localMode &&
+  (fs.lstatSync(localDirectory).isSymbolicLink() ||
+    !fs.lstatSync(localDirectory).isDirectory() ||
+    path.relative(localDirectory, localRoot) !== "")
+)
+  throw Error("This checkout's ignored local-runtime must not redirect elsewhere");
+function inside(root, target) {
+  const relative = path.relative(root, fs.realpathSync(target));
+  return (
+    relative !== ".." &&
+    !relative.startsWith(".." + path.sep) &&
+    !path.isAbsolute(relative)
+  );
+}
+if (localMode && !inside(localRoot, catalogPath))
+  throw Error(
+    "The explicit local audit catalog must stay inside this checkout's ignored local-runtime",
+  );
 const dir = path.dirname(catalogPath);
 if (fs.statSync(catalogPath).size > 1024 * 1024)
   throw Error("Presentation catalog exceeds the 1 MiB metadata bound");
@@ -121,10 +157,18 @@ for (const item of catalog.runs) {
   )
     throw Error("Expected a safe local catalog recording name");
   const file = path.join(dir, item.url);
+  if (localMode && !inside(localRoot, file))
+    throw Error(
+      "Local audit recording must stay inside this checkout's ignored local-runtime",
+    );
   const physicalSize = fs.statSync(file).size;
-  if (physicalSize > 20 * 1024 * 1024)
-    throw Error("Physical public recording exceeds 20 MiB");
+  if (physicalSize > physicalLimit)
+    throw Error(
+      `Physical ${localMode ? "local" : "public"} recording exceeds ${physicalLimit / 1024 / 1024} MiB`,
+    );
   const raw = fs.readFileSync(file);
+  if (raw.length > physicalLimit)
+    throw Error("Recording grew beyond its physical audit bound");
   if (
     item.encoding === "gzip" &&
     (raw.length !== item.transfer_bytes || sha256(raw) !== item.transfer_sha256)
@@ -132,16 +176,21 @@ for (const item of catalog.runs) {
     throw Error("Gzip transfer length/checksum differs: " + file);
   const bytes =
     raw[0] === 0x1f && raw[1] === 0x8b
-      ? gunzipSync(raw, { maxOutputLength: 128 * 1024 * 1024 })
+      ? gunzipSync(raw, { maxOutputLength: decodedLimit })
       : raw;
   const hash = sha256(bytes);
   if (
-    bytes.length > 128 * 1024 * 1024 ||
+    bytes.length > decodedLimit ||
     bytes.length !== item.bytes ||
     hash !== item.sha256
   )
-    throw Error("Decoded public recording length/checksum differs: " + file);
-  const replay = bindRecording(validateReplay(parseJsonBytes(bytes)), item);
+    throw Error(
+      `Decoded ${localMode ? "local" : "public"} recording length/checksum differs: ` + file,
+    );
+  const replay = bindRecording(
+    validateReplay(parseJsonBytes(bytes, decodedLimit)),
+    item,
+  );
   if (
     replay.scenario.network_kind !== "city" ||
     replay.provenance.source_dirty !== false ||
@@ -200,6 +249,7 @@ for (const item of catalog.runs) {
       throw Error("Actual pose samples do not match every simulation step");
     const stats = {
       crossings: 0,
+      crossingsByVehicleType: {},
       exactTimelineSignals: timeline.size,
       totalSignals: replay.network_geometry.signals.length,
       allRedJunction: 0,
@@ -258,6 +308,8 @@ for (const item of catalog.runs) {
           )
             continue;
           stats.crossings++;
+          stats.crossingsByVehicleType[v.type] =
+            (stats.crossingsByVehicleType[v.type] ?? 0) + 1;
           const changes = timeline.get(lane.signal),
             state = changes ? at(changes, t) : undefined;
           if (!state) {
@@ -366,14 +418,20 @@ for (const item of catalog.runs) {
         }
       }
     }
-    worlds[name] = { stats, red, ambiguous };
+    worlds[name] = { status: world.status, policy: world.policy, stats, red, ambiguous };
   }
   results.push({
     id: item.id,
     title: item.title,
+    physicalBytes: raw.length,
+    physicalSha256: sha256(raw),
+    decodedBytes: bytes.length,
     decodedSha256: hash,
+    duration_s: replay.duration_s,
     step_s: replay.step_s,
     sourceCommit: replay.provenance.source_commit,
+    networkSha256: replay.provenance.network_sha256,
+    demandSha256: replay.provenance.demand_sha256,
     worlds,
   });
 }
@@ -398,6 +456,12 @@ const report = {
   moduleSourceSha256,
   catalogSha256: sha256(fs.readFileSync(catalogPath)),
   nodeVersion: process.version,
+  limits: {
+    mode: localMode ? "explicit_local_only" : "public_default",
+    physicalBytes: physicalLimit,
+    decodedJsonBytes: decodedLimit,
+    publicViewerLimitsChanged: false,
+  },
   status: failed ? "failed" : "passed",
   results,
 };

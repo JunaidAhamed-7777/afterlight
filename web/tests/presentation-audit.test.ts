@@ -99,13 +99,24 @@ function fixture(red = false): Replay {
 function audit(
   replay: unknown,
   changeEntry?: (entry: Record<string, unknown>) => void,
+  options: {
+    local?: boolean;
+    args?: string[];
+    physicalBytes?: number;
+    redirectedRecording?: boolean;
+  } = {},
 ) {
+  const localRoot = fileURLToPath(new URL("../../local-runtime/", import.meta.url));
+  if (options.local) fs.mkdirSync(localRoot, { recursive: true });
   const directory = fs.mkdtempSync(
-    path.join(os.tmpdir(), "afterlight-audit-cli-"),
+    path.join(options.local ? localRoot : os.tmpdir(), "afterlight-audit-cli-"),
   );
+  let externalDirectory: string | undefined;
   try {
     const bytes = Buffer.from(JSON.stringify(replay));
     fs.writeFileSync(path.join(directory, "recording.json"), bytes);
+    if (options.physicalBytes !== undefined)
+      fs.truncateSync(path.join(directory, "recording.json"), options.physicalBytes);
     const entry: Record<string, unknown> = {
       id: "synthetic-audit-only",
       title: "Synthetic test only",
@@ -118,6 +129,12 @@ function audit(
       bytes: bytes.length,
       sha256: createHash("sha256").update(bytes).digest("hex"),
     };
+    if (options.redirectedRecording) {
+      externalDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "afterlight-audit-outside-"));
+      fs.renameSync(path.join(directory, "recording.json"), path.join(externalDirectory, "recording.json"));
+      fs.symlinkSync(externalDirectory, path.join(directory, "redirected"), process.platform === "win32" ? "junction" : "dir");
+      entry.url = "redirected/recording.json";
+    }
     changeEntry?.(entry);
     fs.writeFileSync(
       path.join(directory, "catalog.json"),
@@ -132,10 +149,17 @@ function audit(
         ),
         "--catalog",
         path.join(directory, "catalog.json"),
+        ...(options.args ?? []),
       ],
       { encoding: "utf8", timeout: 10000 },
     );
   } finally {
+    if (externalDirectory !== undefined) {
+      const link = path.join(directory, "redirected");
+      if (fs.existsSync(link)) fs.unlinkSync(link);
+      fs.unlinkSync(path.join(externalDirectory, "recording.json"));
+      fs.rmdirSync(externalDirectory);
+    }
     // Remove only this test's two known regular files, never a recursive target.
     for (const name of ["recording.json", "catalog.json"]) {
       const file = path.join(directory, name);
@@ -152,12 +176,111 @@ test("presentation CLI classifies a geometric green crossing and fails a red cro
     JSON.parse(green.stdout).results[0].worlds.afterlight.stats.crossings,
     1,
   );
+  assert.deepEqual(
+    JSON.parse(green.stdout).results[0].worlds.afterlight.stats.crossingsByVehicleType,
+    { ambulance: 1 },
+  );
+  assert.equal(JSON.parse(green.stdout).results[0].worlds.afterlight.status, "completed");
   const red = audit(fixture(true));
   assert.equal(red.status, 1, red.stderr);
   assert.equal(
     JSON.parse(red.stdout).results[0].worlds.afterlight.stats.allRedJunction,
     1,
   );
+});
+
+test("local presentation size allowance is explicit, confined and never changes public defaults", () => {
+  const normal = audit(fixture());
+  assert.equal(normal.status, 0, normal.stderr);
+  assert.deepEqual(JSON.parse(normal.stdout).limits, {
+    mode: "public_default", physicalBytes: 20 * 1024 * 1024,
+    decodedJsonBytes: 128 * 1024 * 1024, publicViewerLimitsChanged: false,
+  });
+  const local = audit(fixture(), undefined, { local: true, args: ["--local-max-json-mib", "256"] });
+  assert.equal(local.status, 0, local.stderr);
+  assert.deepEqual(JSON.parse(local.stdout).limits, {
+    mode: "explicit_local_only", physicalBytes: 256 * 1024 * 1024,
+    decodedJsonBytes: 256 * 1024 * 1024, publicViewerLimitsChanged: false,
+  });
+  const outside = audit(fixture(), undefined, { args: ["--local-max-json-mib", "256"] });
+  assert.notEqual(outside.status, 0);
+  assert.match(outside.stderr, /inside this checkout's ignored local-runtime/);
+  const arbitrary = audit(fixture(), undefined, { local: true, args: ["--local-max-json-mib", "512"] });
+  assert.notEqual(arbitrary.status, 0);
+  assert.match(arbitrary.stderr, /requires --local-max-json-mib 256/);
+  const redirected = audit(fixture(), undefined, {
+    local: true, args: ["--local-max-json-mib", "256"], redirectedRecording: true,
+  });
+  assert.notEqual(redirected.status, 0);
+  assert.match(redirected.stderr, /recording must stay inside this checkout's ignored local-runtime/);
+});
+
+test("local presentation allowance retains red-crossing and metadata/schema rejection", () => {
+  const options = { local: true, args: ["--local-max-json-mib", "256"] };
+  const red = audit(fixture(true), undefined, options);
+  assert.equal(red.status, 1);
+  assert.equal(JSON.parse(red.stdout).results[0].worlds.afterlight.stats.allRedJunction, 1);
+  const mismatch = audit(fixture(), entry => { entry.seed = 99; }, options);
+  assert.notEqual(mismatch.status, 0);
+  assert.match(mismatch.stderr, /does not match the selected experiment/);
+  const invalid = audit({ schema: "afterlight.replay.v1" }, undefined, options);
+  assert.notEqual(invalid.status, 0);
+  assert.match(invalid.stderr, /supported recorded AFTERLIGHT run/);
+});
+
+test("local presentation allowance rejects a redirected runtime root in an isolated checkout", () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "afterlight-audit-checkout-"));
+  const external = fs.mkdtempSync(path.join(os.tmpdir(), "afterlight-audit-runtime-"));
+  const web = path.join(directory, "web");
+  const scripts = path.join(web, "scripts");
+  const entrypoint = path.join(scripts, "audit-presentation.mjs");
+  const sourceLink = path.join(web, "src");
+  const runtimeLink = path.join(directory, "local-runtime");
+  fs.mkdirSync(scripts, { recursive: true });
+  try {
+    fs.copyFileSync(fileURLToPath(new URL("../scripts/audit-presentation.mjs", import.meta.url)), entrypoint);
+    const linkType = process.platform === "win32" ? "junction" : "dir";
+    fs.symlinkSync(fileURLToPath(new URL("../src/", import.meta.url)), sourceLink, linkType);
+    fs.symlinkSync(external, runtimeLink, linkType);
+    const result = spawnSync(process.execPath, [
+      "--experimental-strip-types", entrypoint,
+      "--catalog", path.join(runtimeLink, "catalog.json"),
+      "--local-max-json-mib", "256",
+    ], { encoding: "utf8", timeout: 10000 });
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /local-runtime must not redirect elsewhere/);
+  } finally {
+    // Only this isolated fixture's links and known copied file are removed.
+    if (fs.existsSync(runtimeLink)) fs.unlinkSync(runtimeLink);
+    if (fs.existsSync(sourceLink)) fs.unlinkSync(sourceLink);
+    if (fs.existsSync(entrypoint)) fs.unlinkSync(entrypoint);
+    fs.rmdirSync(scripts);
+    fs.rmdirSync(web);
+    fs.rmdirSync(directory);
+    fs.rmdirSync(external);
+  }
+});
+
+test("presentation physical bounds reject before JSON parsing in both modes", () => {
+  const publicOversize = audit(fixture(), undefined, {
+    physicalBytes: 20 * 1024 * 1024 + 1,
+  });
+  assert.notEqual(publicOversize.status, 0);
+  assert.match(publicOversize.stderr, /Physical public recording exceeds 20 MiB/);
+  const localOversize = audit(fixture(), undefined, {
+    local: true, args: ["--local-max-json-mib", "256"],
+    physicalBytes: 256 * 1024 * 1024 + 1,
+  });
+  assert.notEqual(localOversize.status, 0);
+  assert.match(localOversize.stderr, /Physical local recording exceeds 256 MiB/);
+  // The allowance passes the old physical ceiling; the unchanged byte binding
+  // still rejects these deliberately padded, synthetic bytes before JSON parse.
+  const localBinding = audit(fixture(), undefined, {
+    local: true, args: ["--local-max-json-mib", "256"],
+    physicalBytes: 20 * 1024 * 1024 + 1,
+  });
+  assert.notEqual(localBinding.status, 0);
+  assert.match(localBinding.stderr, /length\/checksum differs/);
 });
 
 test("presentation CLI rejects the independently found empty malformed replay", () => {
