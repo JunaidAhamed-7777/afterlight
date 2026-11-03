@@ -1,0 +1,691 @@
+{
+  "schema": "afterlight.final-source-acceptance-review.v1",
+  "status": "passed",
+  "reviewed_utc": "2026-11-03T20:33:06.064105+00:00",
+  "scope": "Independent read-only reconciliation of completed source/unit/network journals. No test, browser, traffic, fitting, source change or raw-evidence rewriting is performed by this review.",
+  "qualified_run": {
+    "retained_directory": "final-desktop-source-02",
+    "raw_run_json_sha256": "e972be89c36d0d81df351eb7bafb12eb36886d05b70282f8065e4b48c4380a40",
+    "status": "completed",
+    "source_commit": "b306167b23c33b5b3f94346030db3c8f66466b91",
+    "source_identity_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+    "acceptance_input_sha256": "14628aa69222eeedf5df377da57848645f11b3b3ae65fc1d7336d5df0c26d927",
+    "acceptance_input_file_count": 284,
+    "plan_sha256": "dfe9a9d3146c96702a90e8800e0cd897576baff999ee1a7ea78e5313cfa0bd10",
+    "profile": "units-network",
+    "started_utc": "2026-11-03T20:26:54.418157+00:00",
+    "finished_utc": "2026-11-03T20:28:28.382636+00:00",
+    "python": "3.12.15 (main, Oct  9 2026, 15:21:55) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "operator_confirmed_no_active_runs": true,
+    "temporary_environment": "TMPDIR/TEMP/TMP and Node compile cache isolated under this fresh ignored run directory; Python bytecode writes disabled.",
+    "steps": [
+      {
+        "id": "python-sim",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 2.6492161999995005,
+        "raw_step_json_sha256": "4c2abb786c703bdaadd11b81b9063bd990d79720feeb72a9fcbfdac42fc6a154",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-sim/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-sim/stderr.log",
+          "bytes": 31892,
+          "sha256": "3d101a03eb7164318d42a90060b99ca00473f435847142058a53db26a9795521"
+        },
+        "tests": {
+          "ran_including_skips": 213,
+          "executed_passed": 211,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_late_executable_mode_mutation_cannot_return_clean (test_source_identity.SourceIdentityTests.test_late_executable_mode_mutation_cannot_return_clean)",
+              "reason": "Windows does not represent Git executable mode"
+            },
+            {
+              "test": "test_posix_worktree_mode_change_is_dirty (test_source_identity.SourceIdentityTests.test_posix_worktree_mode_change_is_dirty)",
+              "reason": "Windows does not represent Git executable mode"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-evaluation",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 5.231836099999782,
+        "raw_step_json_sha256": "970f277ed1332b9463ddd81fd131cf6a72114ff58734c1a9677832a26281809e",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-evaluation/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-evaluation/stderr.log",
+          "bytes": 30773,
+          "sha256": "77178c5d27d62ee40ed62aba26c2f217fefb47c27e0e4283e311105b482b0686"
+        },
+        "tests": {
+          "ran_including_skips": 199,
+          "executed_passed": 197,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_json_tree_matches_sklearn_predictions (test_ml_optional.OptionalMLContractTests.test_json_tree_matches_sklearn_predictions)",
+              "reason": "optional synthetic ML contract disabled; requires explicit Omen opt-in and sklearn"
+            },
+            {
+              "test": "test_symlinked_runtime_root_rejected_before_output (test_study_manifest.StudyTests.test_symlinked_runtime_root_rejected_before_output)",
+              "reason": "symlink creation unavailable on this test machine"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-api",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 14.737345699999423,
+        "raw_step_json_sha256": "ba8b1a7a48cc74d0b84aa9c040e09d000ffc06204473f21717ea8ea164b48cc3",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-api/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-api/stderr.log",
+          "bytes": 12881,
+          "sha256": "b6a48226192e569dc3d32d2ed6d6ee95b5c8343ba2e79bdf4603349542d091cc"
+        },
+        "tests": {
+          "ran_including_skips": 71,
+          "executed_passed": 71,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-assets",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 3.2719909000006737,
+        "raw_step_json_sha256": "6b11898951fa9941e247c8cf261592d505195a5dee43c842b49fa0ec9a027206",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-assets/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-assets/stderr.log",
+          "bytes": 3083,
+          "sha256": "0cf0e0fd305d664948cfa6f328091f9179e9985c18d450c0f03f86eab67bf043"
+        },
+        "tests": {
+          "ran_including_skips": 18,
+          "executed_passed": 18,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-preview",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 15.130813199997647,
+        "raw_step_json_sha256": "1155dba7d394cb18c6ef73444981f3a1b8a6d6b037a1dc1e6814a5a8812a4c52",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-preview/stdout.log",
+          "bytes": 232,
+          "sha256": "9180432c361af81cd2c4031fee6f2b13a14cdb710b1b2f3164bea6f67dcaf732"
+        },
+        "stderr": {
+          "path": "steps/python-preview/stderr.log",
+          "bytes": 11163,
+          "sha256": "b744b14121336f6d1ed017015af13ce238881e493647269c3a870d8afc93f1f3"
+        },
+        "tests": {
+          "ran_including_skips": 70,
+          "executed_passed": 69,
+          "skipped": 1,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_study_symlink_aliases_are_refused_even_inside_the_public_tree (test_server.PreviewStudyRoutes.test_study_symlink_aliases_are_refused_even_inside_the_public_tree)",
+              "reason": "This Windows account cannot create symlinks"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-acceptance",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 4.541873499998474,
+        "raw_step_json_sha256": "b853b6e1c1b5c4f2b79d5fa769af9e6d3aa7d5eb5653d597e9e6b1d049c52844",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-acceptance/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-acceptance/stderr.log",
+          "bytes": 8471,
+          "sha256": "8577e682571fe04753a64d824b17ea76a86790437927955d3238c9bb87a348a6"
+        },
+        "tests": {
+          "ran_including_skips": 49,
+          "executed_passed": 49,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-study-proof-guards",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 1.1532254000048852,
+        "raw_step_json_sha256": "70e5770df5057482660ddee561ac1b034650149a60339779be80ddb156ab94a3",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-study-proof-guards/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-study-proof-guards/stderr.log",
+          "bytes": 6507,
+          "sha256": "0b384992b76990e0271fc26028a712a08024b4df2c3fe332041df3b2964ecfbc"
+        },
+        "tests": {
+          "ran_including_skips": 39,
+          "executed_passed": 39,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-study-proof-cli",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 4.789758699997037,
+        "raw_step_json_sha256": "d5d71d7a8253e4d13f65cf957c7251b23609766348913fc2923d6deed56dc7ab",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/python-study-proof-cli/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-study-proof-cli/stderr.log",
+          "bytes": 1700,
+          "sha256": "b6731d5594942f07898a2c608bba804040b8f4fbbf71ac45b307138d20a192f0"
+        },
+        "tests": {
+          "ran_including_skips": 10,
+          "executed_passed": 10,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "node-units",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 2.3551220999943325,
+        "raw_step_json_sha256": "cdd0052f53fea91c8bf132f53cb4ff7c93598702f1e71d2f3e49140c7cfa9eee",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/node-units/stdout.log",
+          "bytes": 12111,
+          "sha256": "2dca08ff2a65949b989379f5b51a74a3c36a0e3e5e7db886f758a2380a320fdb"
+        },
+        "stderr": {
+          "path": "steps/node-units/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tests": {
+          "tests": 139,
+          "pass": 139,
+          "fail": 0,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "network-fixture",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 2.234348999998474,
+        "raw_step_json_sha256": "aa4b6b14b2031d23257219f98f9af2cbc3d69223d12a139ae0cfca9361812cc1",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/network-fixture/stdout.log",
+          "bytes": 1619,
+          "sha256": "1276987f547ea190ee4061c50a0699809a1ae259da5e012cda2c968a65cb9eb5"
+        },
+        "stderr": {
+          "path": "steps/network-fixture/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "network_manifest_sha256": "1276987f547ea190ee4061c50a0699809a1ae259da5e012cda2c968a65cb9eb5",
+        "interpretation": "Static network conversion; no traffic rollout or model fitting."
+      },
+      {
+        "id": "network-city",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 1.6201233999963733,
+        "raw_step_json_sha256": "e0c7bdd20076cc81bfbf7f72054c598d889d3e2fcdf97cf11985d3131c93f342",
+        "source_after_sha256": "c23ac7eacf2e271269e4bc606dcf059cdb988e405c0d69edc45b63fbcf778d5d",
+        "stdout": {
+          "path": "steps/network-city/stdout.log",
+          "bytes": 1666,
+          "sha256": "694dc3ff6ace50bc2e8387c959c9e4f0974fd888545560612c8f13fb7948a8dc"
+        },
+        "stderr": {
+          "path": "steps/network-city/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "network_manifest_sha256": "694dc3ff6ace50bc2e8387c959c9e4f0974fd888545560612c8f13fb7948a8dc",
+        "interpretation": "Static network conversion; no traffic rollout or model fitting."
+      }
+    ]
+  },
+  "totals": {
+    "completed_steps": 11,
+    "python": {
+      "ran_including_skips": 669,
+      "executed_passed": 664,
+      "skipped": 5,
+      "failures": 0,
+      "errors": 0
+    },
+    "node": {
+      "tests": 139,
+      "pass": 139,
+      "fail": 0,
+      "skipped": 0
+    },
+    "combined_test_cases_including_skips": 808,
+    "combined_executed_passed": 803,
+    "network_conversions": 2,
+    "network_conversions_counted_as_unit_cases": false
+  },
+  "preserved_failed_run": {
+    "retained_directory": "final-desktop-source-01",
+    "raw_run_json_sha256": "fad6e1d9639882c646395055b6b3e0f8305dcbf6d0f6ccd5f0c36de008bc7487",
+    "status": "failed",
+    "source_commit": "076ef29007f986c5454b9fe54e50bc0b42e5bf84",
+    "source_identity_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+    "acceptance_input_sha256": "4bcf3ffa441a2a1a45c43524ac2baf85742d1055d38d5f225200c1c9f777db1e",
+    "acceptance_input_file_count": 284,
+    "plan_sha256": "d5744ff4b686892a96a694bf5d15bf83521c1d09f04254d5dca8c41008714007",
+    "profile": "units-network",
+    "started_utc": "2026-11-03T20:20:09.884682+00:00",
+    "finished_utc": "2026-11-03T20:21:21.801043+00:00",
+    "python": "3.12.15 (main, Oct  9 2026, 15:21:55) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "operator_confirmed_no_active_runs": true,
+    "temporary_environment": "TMPDIR/TEMP/TMP and Node compile cache isolated under this fresh ignored run directory; Python bytecode writes disabled.",
+    "steps": [
+      {
+        "id": "python-sim",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 3.964411000000837,
+        "raw_step_json_sha256": "4f229ff4cf136ccf4d39969da454be0601ba3bbb02e19670f758f45c74ae0cef",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-sim/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-sim/stderr.log",
+          "bytes": 31892,
+          "sha256": "b1634f697d43990bf1eb728519944440f94e6f9c637ef1c1957b1a79c85713f7"
+        },
+        "tests": {
+          "ran_including_skips": 213,
+          "executed_passed": 211,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_late_executable_mode_mutation_cannot_return_clean (test_source_identity.SourceIdentityTests.test_late_executable_mode_mutation_cannot_return_clean)",
+              "reason": "Windows does not represent Git executable mode"
+            },
+            {
+              "test": "test_posix_worktree_mode_change_is_dirty (test_source_identity.SourceIdentityTests.test_posix_worktree_mode_change_is_dirty)",
+              "reason": "Windows does not represent Git executable mode"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-evaluation",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 4.840205300002708,
+        "raw_step_json_sha256": "93ec94f647c43371882aef8f4bc081325e26e8d7854edb850563ddc71ffe3621",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-evaluation/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-evaluation/stderr.log",
+          "bytes": 30773,
+          "sha256": "5964b30f08d92e6cb2e2ff1225eb6221c41098b99f685c75efbd7d32f637b989"
+        },
+        "tests": {
+          "ran_including_skips": 199,
+          "executed_passed": 197,
+          "skipped": 2,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_json_tree_matches_sklearn_predictions (test_ml_optional.OptionalMLContractTests.test_json_tree_matches_sklearn_predictions)",
+              "reason": "optional synthetic ML contract disabled; requires explicit Omen opt-in and sklearn"
+            },
+            {
+              "test": "test_symlinked_runtime_root_rejected_before_output (test_study_manifest.StudyTests.test_symlinked_runtime_root_rejected_before_output)",
+              "reason": "symlink creation unavailable on this test machine"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-api",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 13.023507199999585,
+        "raw_step_json_sha256": "0b9548ec2deec3f8893b06c7998ed566e0f69141a0e2fcf6d7617d440b0d9a82",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-api/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-api/stderr.log",
+          "bytes": 12881,
+          "sha256": "e92d03134a18c5d7727cec92e10686bc13198e4ced5dfccc42e98e0e7b21de6b"
+        },
+        "tests": {
+          "ran_including_skips": 71,
+          "executed_passed": 71,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-assets",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 2.7948161000022083,
+        "raw_step_json_sha256": "d09ffea1b0315217d4fcb8700b0a28f83da3db73fd6873de429a9a6ac0d6b6b5",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-assets/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-assets/stderr.log",
+          "bytes": 3083,
+          "sha256": "487aff8503ffc2d78ceb30ac5dde7012363505b2221572b12cb2c79a9444cfc3"
+        },
+        "tests": {
+          "ran_including_skips": 18,
+          "executed_passed": 18,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-preview",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 11.852742999995826,
+        "raw_step_json_sha256": "c6df045888925c119ca78eec38f8f15ae36af37e8d1c18319ef2d056af912804",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-preview/stdout.log",
+          "bytes": 232,
+          "sha256": "9180432c361af81cd2c4031fee6f2b13a14cdb710b1b2f3164bea6f67dcaf732"
+        },
+        "stderr": {
+          "path": "steps/python-preview/stderr.log",
+          "bytes": 11163,
+          "sha256": "7e45e49a64af5d051205e6fc758054cffd875d0edaf5e9cdee11c4d5270738db"
+        },
+        "tests": {
+          "ran_including_skips": 70,
+          "executed_passed": 69,
+          "skipped": 1,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": [
+            {
+              "test": "test_study_symlink_aliases_are_refused_even_inside_the_public_tree (test_server.PreviewStudyRoutes.test_study_symlink_aliases_are_refused_even_inside_the_public_tree)",
+              "reason": "This Windows account cannot create symlinks"
+            }
+          ]
+        }
+      },
+      {
+        "id": "python-acceptance",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 3.5986256999967736,
+        "raw_step_json_sha256": "9c3336361d9c3a3bb795d1be2ef17de9a53a336f2f553718b329c5f8d230f8e3",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-acceptance/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-acceptance/stderr.log",
+          "bytes": 8471,
+          "sha256": "49112d6a9cedcc6b480c02fcd29f54c29618aba14e7dbb361d84d7d7498ca513"
+        },
+        "tests": {
+          "ran_including_skips": 49,
+          "executed_passed": 49,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-study-proof-guards",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 0.8513459999958286,
+        "raw_step_json_sha256": "5aff718cc7cca25fc9d8a0baeb92d238293c2955aa8e29cc6578bf72dea47b26",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-study-proof-guards/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-study-proof-guards/stderr.log",
+          "bytes": 6507,
+          "sha256": "c1205c78c1ce35402ce47c37773a135b884e8635598417cf5dd1e5a4f3225e2f"
+        },
+        "tests": {
+          "ran_including_skips": 39,
+          "executed_passed": 39,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "python-study-proof-cli",
+        "status": "completed",
+        "exit_code": 0,
+        "wall_time_s": 4.125830599994515,
+        "raw_step_json_sha256": "0a4c2625d4e0aea75d5bb774f9e07da977c397209a646f699c87c9c3fc8d78eb",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/python-study-proof-cli/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "steps/python-study-proof-cli/stderr.log",
+          "bytes": 1700,
+          "sha256": "18f6292610db09c22606dc9469eabd22b78d75094930d44275bd8e5fd6110770"
+        },
+        "tests": {
+          "ran_including_skips": 10,
+          "executed_passed": 10,
+          "skipped": 0,
+          "failures": 0,
+          "errors": 0,
+          "skip_details": []
+        }
+      },
+      {
+        "id": "node-units",
+        "status": "failed",
+        "exit_code": 1,
+        "wall_time_s": 2.2708056999981636,
+        "raw_step_json_sha256": "0f5ecf8e82b3c7430a1f80651ef8292e201ef2a79c2480c16b66e03d0c03f4f2",
+        "source_after_sha256": "ae927c54260255e03fb2dba29bf85b3d05d6a56eb809a9be19d7528b4e4b9490",
+        "stdout": {
+          "path": "steps/node-units/stdout.log",
+          "bytes": 13016,
+          "sha256": "720a726ebcf0938edb446b13b7f11d87b35a0e8656a6e775b38a924f0c88b057"
+        },
+        "stderr": {
+          "path": "steps/node-units/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "tests": {
+          "tests": 139,
+          "pass": 138,
+          "fail": 1,
+          "skipped": 0
+        }
+      },
+      {
+        "id": "network-fixture",
+        "status": "planned",
+        "interpretation": "Not started after the preceding step failure."
+      },
+      {
+        "id": "network-city",
+        "status": "planned",
+        "interpretation": "Not started after the preceding step failure."
+      }
+    ]
+  },
+  "failure_explanation": {
+    "failed_test": "local presentation size allowance is explicit, confined and never changes public defaults",
+    "observed_assertion": "Outside catalog unexpectedly returned status 0 under redirected acceptance temp storage.",
+    "cause": "The fixture assumed os.tmpdir was outside local-runtime. Acceptance intentionally redirects TMPDIR/TEMP/TMP inside it, so production validation correctly accepted that path.",
+    "fix_commit": "b306167b23c33b5b3f94346030db3c8f66466b91",
+    "fix_scope": "Only the synthetic test fixture path selection changed: use canonical OS temp outside runtime, otherwise a fresh checkout-root fixture with an actual outside-boundary assertion. Production validation unchanged.",
+    "fresh_run_scope": "A fresh whole source/unit/network acceptance, not another simulation, model fit, traffic study or favorable-outcome retry."
+  },
+  "focused_boundary_regression": {
+    "raw_report_sha256": "c6c99cdf5878b293a055916fec7d71eaa4b8db6c4e23000f83bd4d4be62f8ab8",
+    "runs": [
+      {
+        "environment": "normal",
+        "exit_code": 0,
+        "wall_seconds": 2.3440000000045984,
+        "stdout_sha256": "a7cd81774c05828bef6dfe33f4210b574600ea5a30743a90a00fa424481fb49b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "summary": [
+          "\u2139 tests 7",
+          "\u2139 pass 7",
+          "\u2139 fail 0",
+          "\u2139 skipped 0"
+        ]
+      },
+      {
+        "environment": "redirected",
+        "exit_code": 0,
+        "wall_seconds": 2.2809999999954016,
+        "stdout_sha256": "7344d160c49a79f32b1dfda7c8ec375456710385e1524065f7bdcd992a8c184b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "summary": [
+          "\u2139 tests 7",
+          "\u2139 pass 7",
+          "\u2139 fail 0",
+          "\u2139 skipped 0"
+        ]
+      }
+    ],
+    "executions": 14,
+    "distinct_existing_test_cases": 7,
+    "not_added_to_final_suite_totals": true,
+    "scope": "The same seven synthetic CLI cases ran normally and with all temp variables redirected into a fresh private runtime directory."
+  },
+  "retained_evidence_unchanged_during_review": true,
+  "retained_inventories": {
+    "final-desktop-source-01": {
+      "files": 119,
+      "bytes": 1097227,
+      "complete_relative_file_inventory_sha256": "edf3addcd6ae73da6fa30bbbf5319a68199890fe39d92c26a199b89f6170fd81"
+    },
+    "final-desktop-source-02": {
+      "files": 142,
+      "bytes": 3581543,
+      "complete_relative_file_inventory_sha256": "5c2dc74dc163c1454681f2681451e503bbaf56fd5e636aef0a7d8e77050dedc5"
+    },
+    "focused-boundary-regression": {
+      "files": 5,
+      "bytes": 2610,
+      "complete_relative_file_inventory_sha256": "709895d0ee0be302a5773aac1e291302c255be6df8c39b619ffbd6de92ea3965"
+    }
+  },
+  "limitations": [
+    "Five skipped Python cases are explicit omissions, not passed tests: two Windows executable-mode cases, two unavailable symlink-creation cases and one opt-in synthetic ML contract disabled in this invocation.",
+    "The optional scientific ML contract was executed separately before fitting; this source run does not claim to rerun it.",
+    "Operator no-active-run confirmation is retained as an operator assertion, not continuous system-wide monitoring.",
+    "Source acceptance is separate from genuine simulation evidence, public proof recomputation, desktop GPU measurements, visual review and hosted media verification."
+  ]
+}
