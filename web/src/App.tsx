@@ -1188,7 +1188,7 @@ export default function App() {
           </div>
         </section>
       </main>
-      <Onboarding ready={tourReady} openRequest={tourRequest} onOpen={() => { setTime(playbackClock.current); setPlaying(false); switchPanel("run"); }} />
+      <Onboarding ready={tourReady} openRequest={tourRequest} onOpen={() => { setTime(playbackClock.current); setPlaying(false); setResultScope("recording"); switchPanel("run"); }} />
       {!bootDismissed && (
         <div
           className="boot-screen"
