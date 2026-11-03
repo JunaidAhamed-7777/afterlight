@@ -62,6 +62,12 @@ def main():
     output = args.output.resolve()
     if not output.is_relative_to((ROOT/'local-runtime').resolve()):parser.error('Use fresh local-runtime output')
     output.mkdir(parents=True,exist_ok=False)
+    expected_notices=(ROOT/'web/public/THIRD_PARTY_NOTICES.txt').read_bytes()
+    assert len(expected_notices)<=256*1024,'Runtime notice file exceeds its QA body bound'
+    package_lock=json.loads((ROOT/'web/package-lock.json').read_bytes())
+    for package,label in (('react','react'),('react-dom','react-dom'),('scheduler','scheduler'),('three','three'),('vite','vite-runtime')):
+        version=package_lock['packages']['node_modules/'+package]['version']
+        assert f'===== {label} ({version}) =====' in expected_notices.decode('utf-8-sig'),('Missing pinned runtime component notice',package)
     catalog = json.loads(fetched(urljoin(args.base_url,'replays/catalog.json')))
     entry = next(row for row in catalog['runs'] if row['seed']==7)
     raw = decoded_recording(fetched(urljoin(urljoin(args.base_url,'replays/'),entry['url'])))
@@ -98,14 +104,28 @@ def main():
             state = observed(page)
             report['checks'][label] = {'expected_from_genuine_pose':expected,'actual_camera_target':state['camera']['target'],'world':state['vehicles']['world']}
             return state
+        def selected_world_preserves_follow(label,following,world):
+            before=observed(page)
+            button=page.get_by_role('button',name=label,exact=True)
+            expect(button).to_have_attribute('aria-pressed','true');button.click()
+            page.wait_for_timeout(80)
+            expect(following).to_have_attribute('aria-pressed','true')
+            after=observed(page)
+            assert before['camera']==after['camera'] and before['vehicles']['absoluteTime']==after['vehicles']['absoluteTime'],('Selected world changed paused camera/time',label)
+            assert after['vehicles']['world']==world
+            report['checks']['selected-'+label+'-preserves-'+('ghost' if following is g else 'ambulance')+'-follow']={
+                'world':world,'follow_still_pressed':True,'camera_and_clock_unchanged':True}
         a.click();expect(a).to_have_attribute('aria-pressed','true');expect(g).to_have_attribute('aria-pressed','false')
         check_target('afterlight','follow-visible-afterlight')
+        selected_world_preserves_follow('Afterlight',a,'afterlight')
         page.get_by_role('button',name='Ordinary',exact=True).click()
         expect(a).to_have_attribute('aria-pressed','false');expect(g).to_have_attribute('aria-pressed','false')
         a.click();check_target('baseline','follow-visible-ordinary')
+        selected_world_preserves_follow('Ordinary',a,'baseline')
         g.click();expect(g).to_have_attribute('aria-pressed','true');expect(a).to_have_attribute('aria-pressed','false')
         expect(page.get_by_role('button',name='Afterlight',exact=True)).to_have_attribute('aria-pressed','true')
         check_target('baseline','ghost-follow-activates-afterlight-scene')
+        selected_world_preserves_follow('Afterlight',g,'afterlight')
         page.get_by_role('button',name='Settings',exact=True).click()
         ghost = page.get_by_role('checkbox',name='Show baseline ghost',exact=False)
         expect(ghost).to_be_checked();ghost.uncheck()
@@ -155,6 +175,25 @@ def main():
         thumbnails=page.locator('.legend-model').evaluate_all('imgs=>imgs.map(i=>({src:new URL(i.src).pathname,width:i.naturalWidth,height:i.naturalHeight}))')
         assert len(thumbnails)==2 and all(row['width']>20 and row['height']>20 for row in thumbnails) and thumbnails[0]['src']!=thumbnails[1]['src'],thumbnails
         report['checks']['authored-model-thumbnails']=thumbnails
+        about=page.get_by_text('About this experiment',exact=True)
+        about.click()
+        notices=page.get_by_role('link',name='Third-party notices',exact=False)
+        expect(notices).to_be_visible()
+        expected_url=urljoin(args.base_url,'THIRD_PARTY_NOTICES.txt')
+        assert notices.get_attribute('target')=='_blank'
+        with page.expect_popup() as popup_info:notices.click()
+        popup=popup_info.value;popup.wait_for_load_state('domcontentloaded')
+        assert popup.url==expected_url,(popup.url,expected_url)
+        response=context.request.get(popup.url)
+        assert response.status==200
+        body=response.body()
+        assert len(body)<=256*1024 and digest(body)==digest(expected_notices),'Served notices differ from pinned source bytes'
+        assert popup.locator('body').inner_text().replace('\r\n','\n').strip()==expected_notices.decode('utf-8-sig').replace('\r\n','\n').strip(),'Native notice page omitted or changed notice text'
+        popup.screenshot(path=str(output/'runtime-notices-native-page.png'),full_page=True)
+        report['checks']['native-runtime-notices']={'url':popup.url,'HTTP_status':response.status,'bytes':len(body),
+            'sha256':digest(body),'source_bytes_exact':True,'full_native_page_text_matches':True,
+            'pinned_components':['react','react-dom','scheduler','three','vite-runtime']}
+        popup.close()
         assert not report['page_errors'],report['page_errors']
         if manifest:report['served_build_after']=verify_served_build(context,args.base_url,manifest)
         report['status']='passed_headed_dual_follow_playback_and_beacon_materials_pending_pixel_review'
