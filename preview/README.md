@@ -5,7 +5,7 @@ Windows tester use the existing Python and browser while npm downloads are
 unreliable. Runtime library and emitted Vite runtime-helper MIT notices are in `licenses/`. Original authored
 GLBs/map/preview are served from their existing repository paths, not duplicated.
 
-**Compiled source:** `93e375f6edd26ff65642be1a53cb044d451caa09`.
+**Compiled source:** `8f65d6a5f7eac475b276ed1b39b85aa2ff3feeb0`.
 `manifest.json` records source, output and original asset SHA-256 hashes. The
 server refuses missing/changed inputs rather than quietly testing stale code.
 Compilation succeeded in the cloud. This build includes V3 modeled city details, canonical map selection and the offline selector evidence inspector. It still requires Omen structural, shader, interaction and browser regression checks. Earlier scoped
