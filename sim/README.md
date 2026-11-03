@@ -1,4 +1,4 @@
-# SUMO backend — implementation checkpoint
+# SUMO backend â€” implementation checkpoint
 
 These commands are **pending Omen validation**, not claimed test results. All experiments and tests run on the owner's Omen; cloud work authors code only.
 
@@ -19,7 +19,7 @@ Use `eclipse-sumo==1.28.0`, its required `sumo-data==1.28.0` companion, `traci==
 
 ## What is actually implemented
 
-- Three-crossroad fixture and full canonical graph → netconvert XML, explicit permitted connections, no coordinate normalization. Netconvert's generated signal greens are reused; the controller does not invent conflicting phase combinations.
+- Three-crossroad fixture and full canonical graph â†’ netconvert XML, explicit permitted connections, no coordinate normalization. Netconvert's generated signal greens are reused; the controller does not invent conflicting phase combinations.
 - Deterministic, pre-generated explicit civilian demand and exactly one ambulance in each independent world. Same full route-file hash in both worlds. All vehicles use normal passenger permissions, including the ambulance; no bluelight device, red-light privilege or emergency speed mode override.
 - Ordinary fixed cycle and immediate/fixed-lead/analytical preemption share minimum green (8 s), yellow (3 s), all-red (1 s). Ordinary greens 25 s; priority hold capped at 35 s; request timeout 90 s; one debt/queue-selected recovery service of 25 s then ordinary cycling. Recovery is not learned and does not claim bounded waits under infeasible demand.
 - Frozen absolute ETA at dispatch: external-lane free-flow time plus 2 s per observed route queue vehicle, using a snapshot at least 1 s old. Zero lead requests at ETA, immediate requests at dispatch. Actual passage cancels stale future requests. Request timing is quantized to the declared simulation step and logged.
@@ -91,9 +91,9 @@ without changing controller decisions, physics or the shared simulation clock.
 ## Individual-civilian descriptive tail
 
 New runs retain `civilian_excess_p95_s`, the **within-world individual vehicle**
-95th percentile of `max(0, arrival − scheduled departure − reference_s)` across
+95th percentile of `max(0, arrival âˆ’ scheduled departure âˆ’ reference_s)` across
 **every scheduled civilian**. It excludes the ambulance and includes insertion
-waiting. The estimator is nearest rank `ceil(0.95 × n)` (one-based), without
+waiting. The estimator is nearest rank `ceil(0.95 Ã— n)` (one-based), without
 interpolation. `civilian_excess_p95_population` records the scheduled/completed/
 included counts, eligibility, method, units and reference convention.
 
@@ -101,7 +101,7 @@ The value is null for invalid or censored worlds, incomplete civilian demand,
 or an empty civilian population; no completed-only subset is substituted. The
 existing mean's empty-population convention remains unchanged. The underlying
 reference is the saved external-lane free-flow lower bound, excluding internal
-junctions and acceleration—not a calibrated no-traffic journey.
+junctions and accelerationâ€”not a calibrated no-traffic journey.
 
 This is descriptive, not a paired individual harm metric, not the percentile
 of episode-level mean differences in evaluation reports, and not a real-world
@@ -109,3 +109,24 @@ safety claim. It does not alter the objective J, selector, recovery metric or
 any comparison inference. Raw lifecycle/tripinfo audit recomputes the value
 and population whenever these optional new fields occur; legacy recordings
 without either field remain compatible.
+
+
+## Expanded city — November 3, 2026
+
+The canonical map now covers **2,040 × 2,010 m**, exactly four times the old
+1,020 × 1,005 m footprint. A 9 × 9 main grid keeps the original street/block
+scale: 81 primary junctions, 233 streets including local loops and hospital
+driveways, 826 buildings, and 100 distributed curb pickups. Westhaven Medical
+is in the southwest; Eastbank General is in the northeast.
+
+City demand uses an explicitly recorded fourfold arrival-rate multiplier,
+with 68% cars, 12% trucks and 20% compact motorbikes. The three-junction
+fixture retains its original rates and type mix. Every vehicle still uses
+normal passenger-class permissions and SUMO car-following/right-of-way
+behavior; motorbikes are compact motor-traffic proxies, not validated bicycle
+dynamics. The demand manifest records the actual arrival rate and mix.
+
+The expanded graph's independent static checks pass all 200 pickup/hospital
+routes. Its first SUMO 1.28 conversion produced no warnings on the owner's
+Windows/Python 3.12 environment. Traffic and benchmark evidence must bind this
+new map SHA; old-city recordings cannot certify this topology.

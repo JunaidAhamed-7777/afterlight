@@ -15,6 +15,10 @@ TYPES = {
     'ambulance': {'length': '5.8', 'width': '2.2', 'maxSpeed': '13.89', 'accel': '2.6', 'decel': '4.5'},
 }
 RATES = {'sparse': .18, 'moderate': .55, 'heavy': 1.2, 'asymmetric': .7}
+# Expanded city has four times the original area. Preserve the fixture stream
+# while making city intensity explicit and independent of the selected route.
+CITY_DEMAND_SCALE = 4.0
+CITY_TYPE_WEIGHTS = (.68, .12, .20)  # cars, service trucks, compact motorbikes
 
 # SUMO lane positions identify the FRONT bumper. A numeric zero places the
 # whole body behind the lane start, potentially inside an upstream junction.
@@ -117,10 +121,13 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
     if not candidates:
         raise ValueError('No eligible civilian start edges can contain the complete vehicle body; no demand rows were discarded')
     endpoints = sorted(n['id'] for n in graph['nodes'] if not n['signalized'])
+    city = graph.get('schema') == 'afterlight.city.v1'
+    arrival_rate = RATES[regime] * (CITY_DEMAND_SCALE if city else 1.0)
+    type_weights = CITY_TYPE_WEIGHTS if city else (.82, .1, .08)
     now = 0.0
     index = 0
     while True:
-        now += rng.expovariate(RATES[regime])
+        now += rng.expovariate(arrival_rate)
         if now >= demand_end_s:
             break
         route = None
@@ -140,7 +147,7 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
                 break
         if route is None:
             raise ValueError('Unable to sample a permitted civilian route')
-        kind = rng.choices(('car', 'truck', 'bike'), weights=(.82, .1, .08))[0]
+        kind = rng.choices(('car', 'truck', 'bike'), weights=type_weights)[0]
         civilian_position = float(TYPES[kind]['length'])+INSERTION_REAR_MARGIN_M
         vehicles.append({'id': f'civilian_{index:05d}', 'type': kind, 'depart_s': round(now, 3),
                          'depart_pos_m': civilian_position, 'depart_lane': 'best', 'route': route,
@@ -150,6 +157,9 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
     vehicles.sort(key=lambda v: (v['depart_s'], v['id']))
     return {'schema': 'afterlight.demand.v1', 'seed': seed, 'regime': regime,
             'dispatch_s': dispatch_s, 'demand_end_s': demand_end_s,
+            'arrival_process': {'distribution': 'exponential_interarrival', 'rate_vehicles_per_s': arrival_rate,
+                                'city_area_scale': CITY_DEMAND_SCALE if city else 1.0,
+                                'type_probabilities': dict(zip(('car','truck','bike'), type_weights))},
             'pickup_id': pickup['id'], 'hospital_id': hospital['id'], 'vehicles': vehicles,
             'reference_definition': 'max(0, arrival - scheduled_departure - external SUMO lane free-flow lower bound); reference excludes internal junctions and acceleration',
             'vehicle_class_note': 'All types including ambulance use passenger permissions. Bike is a compact low-speed motor-traffic proxy, not SUMO bicycle dynamics.',

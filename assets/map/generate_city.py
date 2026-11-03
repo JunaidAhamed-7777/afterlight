@@ -4,7 +4,9 @@ import json, math, random, hashlib
 from pathlib import Path
 OUT=Path(__file__).resolve().parent
 rng=random.Random(250100)
-X=[-440,-230,0,245,460]; Y=[-435,-225,0,215,450]
+# Twice the original linear extent, with infill streets at the original block scale.
+X=[-880,-670,-460,-230,0,245,490,705,920]; Y=[-870,-660,-450,-225,0,215,430,665,900]
+GRID=len(X); BLOCKS=GRID-1; ARTERIAL_ROWS={1,3,5,7}; ARTERIAL_COLUMNS={2,6}
 nodes=[]; roads=[]; buildings=[]; parcels=[]; hospitals=[]
 def node(id,x,y,kind='connector',signal=False):
     n=dict(id=id,position=[x,y,0],kind=kind,signalized=signal);nodes.append(n);return id
@@ -12,16 +14,18 @@ def road(id,a,b,width,kind='local',lanes=1):
     lookup={n['id']:n for n in nodes}
     r=dict(id=id,from_node=a,to_node=b,centerline=[lookup[a]['position'],lookup[b]['position']],width_m=width,sidewalk_width_m=3 if kind=='arterial' else 2,kind=kind,lanes_per_direction=lanes,lane_width_m=3.25,speed_kph=40 if kind=='arterial' else 25 if kind=='local' else 15,travel_permissions=['passenger','emergency'],two_way=True);roads.append(r);return r
 for j,y in enumerate(Y):
- for i,x in enumerate(X):node(f'J{j}{i}',x,y,'primary_intersection',i in [1,2,3] or j in [1,2,3])
-for j in range(5):
- for i in range(4):road(f'H{j}{i}',f'J{j}{i}',f'J{j}{i+1}',18 if j in [1,3] else 10,'arterial' if j in [1,3] else 'local',2 if j in [1,3] else 1)
-for i in range(5):
- for j in range(4):road(f'V{i}{j}',f'J{j}{i}',f'J{j+1}{i}',18 if i==2 else 10,'arterial' if i==2 else 'local',2 if i==2 else 1)
+ for i,x in enumerate(X):node(f'J{j}{i}',x,y,'primary_intersection',0<i<GRID-1 or 0<j<GRID-1)
+for j in range(GRID):
+ for i in range(BLOCKS):road(f'H{j}{i}',f'J{j}{i}',f'J{j}{i+1}',18 if j in ARTERIAL_ROWS else 10,'arterial' if j in ARTERIAL_ROWS else 'local',2 if j in ARTERIAL_ROWS else 1)
+for i in range(GRID):
+ for j in range(BLOCKS):road(f'V{i}{j}',f'J{j}{i}',f'J{j+1}{i}',18 if i in ARTERIAL_COLUMNS else 10,'arterial' if i in ARTERIAL_COLUMNS else 'local',2 if i in ARTERIAL_COLUMNS else 1)
 # Roads retain canonical unsplit geometry; graph edges split them at attachment nodes.
 attachments={r['id']:[] for r in roads}
-parks={(1,2),(2,0)}; hospital_blocks={(0,1):'HOSP_WEST',(3,2):'HOSP_EAST'}
-for j in range(4):
- for i in range(4):
+parks={(1,2),(2,0),(5,1),(6,3),(1,6),(3,5),(5,6),(6,7)}
+# Opposite diagonal quadrants, on dedicated driveways with independent arrival nodes.
+hospital_blocks={(0,1):'HOSP_WEST',(7,6):'HOSP_EAST'}
+for j in range(BLOCKS):
+ for i in range(BLOCKS):
   x0,x1=X[i],X[i+1];y0,y1=Y[j],Y[j+1]
   if (i,j) in parks:
    parcels.append(dict(id=f'PARK_{i}{j}',kind='park',center=[(x0+x1)/2,(y0+y1)/2],size=[x1-x0-42,y1-y0-42],color=[0.32,0.61,0.39]));continue
@@ -44,16 +48,16 @@ def roadrect(r,pad=0):
  a,b=r['centerline'];h=r['width_m']/2+pad
  return(min(a[0],b[0])-h,min(a[1],b[1])-h,max(a[0],b[0])+h,max(a[1],b[1])+h)
 colors=[[0.74,0.53,0.40],[0.76,0.69,0.49],[0.52,0.65,0.68],[0.65,0.57,0.72]]
-for j in range(4):
- for i in range(4):
+for j in range(BLOCKS):
+ for i in range(BLOCKS):
   if (i,j) in parks or (i,j) in hospital_blocks:continue
   for x in range(X[i]+36,X[i+1]-20,40):
    for y in range(Y[j]+36,Y[j+1]-20,40):
     size=[rng.randint(22,29),rng.randint(22,29)];rr=rect([x,y],[size[0]+6,size[1]+6])
     if any(overlap(rr,roadrect(r,3)) for r in roads):continue
-    bid=f'B{len(buildings):04d}';pid=bid+'_PARCEL';height=rng.randint(15,48) if i in [1,2] else rng.randint(8,25)
+    bid=f'B{len(buildings):04d}';pid=bid+'_PARCEL';height=rng.randint(15,48) if i in [2,3,4,5] else rng.randint(8,25)
     parcels.append(dict(id=pid,kind='building',center=[x,y],size=[size[0]+6,size[1]+6],color=[0.55,0.62,0.53]))
-    buildings.append(dict(id=bid,kind='residential' if i in [0,3] else 'mixed_use',center=[x,y],size=size,height_m=height,color=colors[(i+j)%4],parcel_id=pid))
+    buildings.append(dict(id=bid,kind='residential' if i in [0,1,6,7] else 'mixed_use',center=[x,y],size=size,height_m=height,color=colors[(i+j)%4],parcel_id=pid))
 lookup={n['id']:n for n in nodes};edges=[]
 for r in roads:
  a,b=r['centerline'];dx=b[0]-a[0];dy=b[1]-a[1];length=math.hypot(dx,dy)
@@ -87,6 +91,6 @@ for r in roads:
 assert len(pickups)>=100
 pickups=[pickups[round(k*(len(pickups)-1)/99)] for k in range(100)]
 for k,p in enumerate(pickups):p['id']=f'P{k+1:03}'
-manifest=dict(schema='afterlight.city.v1',seed=250100,coordinate_system=dict(units='meters',ground_plane='XY',up='Z',origin='city center; local Cartesian, no georeference',traffic_side='right'),bounds=dict(min=[-500,-495,0],max=[520,510,70]),primary_intersection_count=25,nodes=nodes,roads=roads,edges=edges,connections=connections,buildings=buildings,parcels=parcels,hospitals=hospitals,pickups=pickups,neighborhoods=[dict(id='WESTHAVEN',label='Westhaven',center=[-335,0]),dict(id='CIVIC',label='Civic Quarter',center=[-115,110]),dict(id='MARKET',label='Market Gardens',center=[120,-110]),dict(id='EASTBANK',label='Eastbank',center=[350,110])],render_budget=dict(static_triangles_target=150000,glb_bytes_target=10000000,building_style='original low-poly cuboids; shared palette; no textures required'),simulation=dict(status='topology and permissions only; no SUMO controller or AI implemented',ghost_baseline='separate nonphysical simulation overlay; never inserted into road graph or traffic vehicle population'))
+manifest=dict(schema='afterlight.city.v1',seed=250100,coordinate_system=dict(units='meters',ground_plane='XY',up='Z',origin='city center; local Cartesian, no georeference',traffic_side='right'),bounds=dict(min=[-1000,-990,0],max=[1040,1020,70]),expansion=dict(linear_factor=2,area_factor=4,original_bounds=dict(min=[-500,-495,0],max=[520,510,70]),grid_shape=[GRID,GRID],block_count=BLOCKS*BLOCKS),primary_intersection_count=GRID*GRID,nodes=nodes,roads=roads,edges=edges,connections=connections,buildings=buildings,parcels=parcels,hospitals=hospitals,pickups=pickups,neighborhoods=[dict(id='WESTHAVEN',label='Westhaven',center=[-650,-400]),dict(id='CIVIC',label='Civic Quarter',center=[-200,350]),dict(id='MARKET',label='Market Gardens',center=[300,-350]),dict(id='EASTBANK',label='Eastbank',center=[700,400])],render_budget=dict(static_triangles_target=600000,glb_bytes_target=20000000,building_style='original low-poly cuboids; shared palette; no textures required'),simulation=dict(status='canonical expanded topology; SUMO scheduler and independent-world replay implemented; qualification is recorded separately',ghost_baseline='separate nonphysical simulation overlay; never inserted into road graph or traffic vehicle population'))
 (OUT/'city_manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print('Wrote',OUT/'city_manifest.json', {k:len(manifest[k]) for k in ['nodes','roads','edges','buildings','parcels','pickups','hospitals']})

@@ -16,7 +16,11 @@ def point_segment(p,a,b):
 nodes={n['id']:n for n in m['nodes']};roads={r['id']:r for r in m['roads']};edges={e['id']:e for e in m['edges']}
 for key in ['nodes','roads','edges','buildings','parcels','hospitals','pickups']:
  check(key+'_unique_ids',len({x['id'] for x in m[key]})==len(m[key]))
-check('25_primary_intersections',sum(n['kind']=='primary_intersection' for n in nodes.values())==25)
+check('81_primary_intersections',sum(n['kind']=='primary_intersection' for n in nodes.values())==81==m['primary_intersection_count'])
+original=m['expansion']['original_bounds'];lo=m['bounds']['min'];hi=m['bounds']['max']
+check('four_times_original_map_area',(hi[0]-lo[0])*(hi[1]-lo[1])==4*(original['max'][0]-original['min'][0])*(original['max'][1]-original['min'][1]))
+centres=[next(b['center'] for b in m['buildings'] if b['id']==h['building_id']) for h in m['hospitals']]
+check('hospitals_in_diagonal_quadrants',len(centres)==2 and centres[0][0]*centres[1][0]<0 and centres[0][1]*centres[1][1]<0)
 check('100_pickups',len(m['pickups'])==100);check('2_hospitals',len(m['hospitals'])==2)
 check('edge_references',all(e['from_node'] in nodes and e['to_node'] in nodes and e['road_id'] in roads for e in edges.values()))
 check('road_endpoints_match_nodes',all(r['centerline']==[nodes[r['from_node']]['position'],nodes[r['to_node']]['position']] for r in roads.values()))
@@ -74,5 +78,5 @@ for i,a in enumerate(m['roads']):
    common={e['from_node'] for e in edges.values() if e['road_id']==a['id']} & {e['from_node'] for e in edges.values() if e['road_id']==b['id']}
    if not any(nodes[n]['position'][:2]==[x,y] for n in common):cross_fail.append([a['id'],b['id']])
 check('all_centerline_crossings_have_graph_nodes',not cross_fail,cross_fail)
-report=dict(manifest_sha256=hashlib.sha256(raw).hexdigest(),status='PASS' if all(c['passed'] for c in checks) else 'FAIL',checks=checks,counts={k:len(m[k]) for k in ['nodes','roads','edges','connections','buildings','parcels','pickups','hospitals']},primary_intersections=25,additional_nodes=32,limitations=['No SUMO/netconvert run; binaries unavailable in this workspace.','Signal metadata is not signal phases or a deployed controller.','Turn connections are topological, not lane-level swept paths.','Static GLB budget is a target; actual triangles/bytes must be checked after Blender export.','Ghost baseline is a separate nonphysical overlay, not present in this graph.'])
+report=dict(manifest_sha256=hashlib.sha256(raw).hexdigest(),status='PASS' if all(c['passed'] for c in checks) else 'FAIL',checks=checks,counts={k:len(m[k]) for k in ['nodes','roads','edges','connections','buildings','parcels','pickups','hospitals']},primary_intersections=m['primary_intersection_count'],additional_nodes=len(nodes)-m['primary_intersection_count'],limitations=['This independent static report does not run SUMO; executed conversion/traffic evidence is recorded separately.','Signal metadata is not signal phases or a deployed controller.','Turn connections are topological, not lane-level swept paths.','Static GLB budget is a target; actual triangles/bytes must be checked after Blender export.','Ghost baseline is a separate nonphysical overlay, not present in this graph.'])
 (P/'validation_report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2));raise SystemExit(0 if report['status']=='PASS' else 1)

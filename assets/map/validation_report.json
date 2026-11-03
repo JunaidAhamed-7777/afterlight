@@ -1,5 +1,5 @@
 {
-  "manifest_sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
+  "manifest_sha256": "f77c5ffb9488894947dc46dfd2aa00fc74f4c118be02af97ede40440af21fa42",
   "status": "PASS",
   "checks": [
     {
@@ -38,7 +38,17 @@
       "detail": ""
     },
     {
-      "name": "25_primary_intersections",
+      "name": "81_primary_intersections",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "four_times_original_map_area",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "hospitals_in_diagonal_quadrants",
       "passed": true,
       "detail": ""
     },
@@ -115,7 +125,7 @@
       "name": "pickups_outside_intersections",
       "passed": true,
       "detail": {
-        "minimum_node_distance_m": 27.29999999999999,
+        "minimum_node_distance_m": 27.299999999999937,
         "required_minimum_m": 27
       }
     },
@@ -161,19 +171,19 @@
     }
   ],
   "counts": {
-    "nodes": 57,
-    "roads": 63,
-    "edges": 158,
-    "connections": 312,
-    "buildings": 187,
-    "parcels": 189,
+    "nodes": 201,
+    "roads": 233,
+    "edges": 586,
+    "connections": 1240,
+    "buildings": 826,
+    "parcels": 834,
     "pickups": 100,
     "hospitals": 2
   },
-  "primary_intersections": 25,
-  "additional_nodes": 32,
+  "primary_intersections": 81,
+  "additional_nodes": 120,
   "limitations": [
-    "No SUMO/netconvert run; binaries unavailable in this workspace.",
+    "This independent static report does not run SUMO; executed conversion/traffic evidence is recorded separately.",
     "Signal metadata is not signal phases or a deployed controller.",
     "Turn connections are topological, not lane-level swept paths.",
     "Static GLB budget is a target; actual triangles/bytes must be checked after Blender export.",
