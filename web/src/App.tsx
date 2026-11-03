@@ -531,7 +531,16 @@ export default function App() {
                   className="route-control disclosure"
                   open={!catalog.length || Boolean(apiBase)}
                 >
-                  <summary>
+                  <summary onClick={(event) => {
+                    const disclosure = event.currentTarget.parentElement as HTMLDetailsElement;
+                    const pane = settingsScroll.current;
+                    if (disclosure.open || !pane) return;
+                    requestAnimationFrame(() => {
+                      if (!disclosure.open || !disclosure.getClientRects().length) return;
+                      const top = disclosure.getBoundingClientRect().top - pane.getBoundingClientRect().top + pane.scrollTop - 12;
+                      pane.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+                    });
+                  }}>
                     <span>
                       <strong>
                         {journeyLocked ? "Explore another journey" : "Choose a journey"}
