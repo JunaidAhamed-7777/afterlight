@@ -4,6 +4,31 @@ Only actual execution on the designated Omen belongs in this log. Source review
 and compilation alone are not acceptance. Entries retain their original source
 and scope; newer evidence does not retroactively upgrade a historical checkpoint.
 
+## 2026-11-04 — final release accepted
+
+All eleven [source acceptance stages](final-source-acceptance.json) passed at
+`b306167`: 664 executed Python tests and 139 Node tests, five explicit Python
+skips, plus both network conversions. The earlier run stopped at a boundary
+fixture that assumed system temporary files were outside local-runtime; its
+failure is retained. The test-only correction passed normal and redirected
+TEMP environments before the fresh full run. No production allowance changed.
+
+The [final frozen release](final-production-release.json) contains 63 files and
+46,958,509 bytes. The actual READY production deployment passed anonymous full
+byte/hash verification, seven private-path 404 checks and video prefix/suffix
+206 range checks. The actual [hosted acceptance](production-hosting-final-acceptance.json)
+also records complete public Study recomputation and the final browser flow:
+first-visit guide, both follow modes, 20× playback, paused-camera stability,
+real Study counts, native 81.28 s video playback and seeking. No page errors.
+
+Both complete native/encoded walkthrough files decode successfully. Independent
+review accepted the corrected video while retaining its original failed
+packaging report: that guard double-counted the replaced video. The corrected
+helper, complete final filesystem inventory and exact hosted bytes establish
+the real size. Failed reports, raw evidence and scientific outcomes are intact.
+The illustrated README, Canva-derived frontend identity and source-bound
+public/local previews are complete. No required product-release gate remains.
+
 ## 2026-11-04 — released Study, hosting and post-brand desktop evidence
 
 - **Study publication passed.** The actual [28-file proof pack](study-v4/publication.json),

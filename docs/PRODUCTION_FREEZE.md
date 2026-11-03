@@ -7,10 +7,13 @@ inventory. See [prehosting acceptance](validation/prehosting-two-polish-passes.j
 and [post-brand performance](validation/final-desktop-performance.json). Earlier
 QA12 remains historical evidence of its exact served files.
 
-The final media/README candidate is still pending. Freeze it only after its
-intended source and public assets are committed, then perform the final checks
-and hosted file/proof verification against that new inventory. Earlier
-acceptance does not automatically transfer to a later build.
+The completed final media/README candidate contains 63 files and 46,958,509
+bytes. Its externally pinned manifest is
+`4998110c8087813d777a6d9c715b6f9194b373c098ead36620f5df1ac32d2128`.
+[The release record](validation/final-production-release.json) and
+[public HTTPS acceptance](validation/production-hosting-final-acceptance.json)
+retain the exact inventory and original failure disclosures. Future candidates
+must pass their own guards; this acceptance belongs to its recorded source.
 
 Run from the repository root after committing the complete intended source,
 public recordings/Study proof, notices, brand/media and deployment configuration.
