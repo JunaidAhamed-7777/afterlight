@@ -13,7 +13,7 @@ After actual report creation, run the main checkout's helper against the clean
 pinned scientific checkout:
 
 ```powershell
-.venv\Scripts\python.exe scripts/export_study_summary.py --checkout C:/Github/afterlight-final-study-v4 --study local-runtime/expanded-city-study-v4 --train local-runtime/study-train-v4 --validation local-runtime/study-validation-v4 --collection local-runtime/study-test-v4 --report local-runtime/study-report-v4 --output local-runtime/study-public-pack-v4
+.venv\Scripts\python.exe scripts/export_study_summary.py --checkout C:/Github/afterlight-final-study-v4 --study local-runtime/expanded-city-study-v4 --train local-runtime/study-train-v4 --validation local-runtime/study-validation-v4 --collection local-runtime/study-test-v4 --report local-runtime/study-report-v4 --analysis-amendment local-runtime/analysis-amendment-v1/analysis-amendment.json --output local-runtime/study-public-pack-v4
 ```
 
 The directory names above are examples; use the original frozen study,
@@ -27,6 +27,14 @@ full report and grouped intervals from the original released evidence before
 projecting the summary. It neither simulates nor fits, chooses new actions,
 creates a release, or rewrites original artifacts. Copied selection/model bytes
 must match the pre-test release's exact hashes.
+
+An amended selection/report requires the explicit `--analysis-amendment` above.
+The exporter checks the separate frozen descriptor against the original source
+and exact estimator before loading its verified raw analysis source bytes. It
+requires the selection/report bindings to agree and rechecks the same descriptor
+identity before its completion marker. All seven descriptor/source/patch/failure
+companions are copied with original byte hashes. The public verifier checks
+these companions without executing downloaded analysis code.
 
 The output contains a bounded `manifest.json`, `summary.json`, and exact original
 report, study, protocol, selection, release and selector companions. Learned mode

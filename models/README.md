@@ -1,6 +1,14 @@
 # Residual selector implementation
 
-No trained model, predictive accuracy or policy gain is claimed. The baseline remains the deployable choice until Omen runs real training/validation and a frozen untouched test comparison.
+One real residual tree has been fitted on the owner's Omen to 120 finite SUMO
+candidate labels from 24 training groups, with maximum depth 3, minimum leaf size
+8 and random seed 0. The resulting JSON tree has 11 nodes. The independent
+[pre-test model review](../docs/validation/study-v4/model-pre-test-review.json)
+binds its training identity and original source; the
+[analysis correction](../docs/ANALYSIS_AMENDMENT.md) is disclosed separately.
+The held-out comparison is still in progress, so fitting establishes no policy
+gain. Public recordings remain fixed/analytical demonstrations, and the hosted
+viewer does not run a live learned traffic controller.
 
 `models.residual` implements:
 

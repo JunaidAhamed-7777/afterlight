@@ -57,6 +57,23 @@ evidence without publishing it as a visual demo. No model,
 trace, selected replay or benefit is supplied as a fake fallback. Source is
 implemented; actual Omen end-to-end acceptance remains required.
 
+The current source-pinned study has a disclosed
+[pre-test analysis correction](../docs/ANALYSIS_AMENDMENT.md). For its report,
+use the explicit main-checkout adapter after final report verification:
+
+```powershell
+.venv\Scripts\python.exe scripts/export_selected_amended.py --checkout C:/Github/afterlight-final-study-v4 --study local-runtime/expanded-city-study-v4 --collection local-runtime/study-test-v4 --report local-runtime/study-report-v4 --amendment local-runtime/analysis-amendment-v1/analysis-amendment.json --case test-sparse-01 --output local-runtime/study-selected-offline-v4
+```
+
+This uses the unchanged original trace verification, replay assembly, frozen
+selector decisions and paired raw audit. It records both the amendment and the
+adapter's exact source hash. An existing or rejected evidence directory receives
+no new files. Its final identity-failure marker is permitted only after creating
+a fresh owned export. The current study's scientific traces are sampled at
+5 seconds; this selected export stays offline and cannot inherit the dense
+0.5-second public-demo presentation checks. No resampling or rerun supplies
+missing physical poses.
+
 
 Public city registration now requires captures at every recorded integration
 boundary when simulation-step provenance is present. A 2 s or 5 s vehicle trace

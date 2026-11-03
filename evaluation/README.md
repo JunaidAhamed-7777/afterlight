@@ -1,6 +1,12 @@
 # Evaluation tools
 
-These modules are implementation, **not measured experiment results**. Test fixtures use explicitly synthetic inputs. All execution/acceptance is on Omen, not the cloud development PC.
+The matched expanded-city pilot completed 84 audited worlds; development then
+completed 168 training and 84 validation worlds. One frozen residual model has
+passed [pre-test review](../docs/validation/study-v4/model-pre-test-review.json).
+The single released 140-world test collection is in progress, with no held-out
+performance claim yet. [Current protocol and provenance](../docs/BENCHMARK_PROTOCOL.md)
+distinguish these measured artifacts from the explicitly synthetic unit fixtures.
+All experiments, fitting and acceptance run on the owner's Omen.
 
 From repository root, Python 3.12+:
 
@@ -80,8 +86,10 @@ preparation, a frozen episode inventory, and audited train/validation collection
 It requires a genuine matching pilot and refuses pilot-group reuse. Test collection requires an explicit immutable release digest and a one-attempt
 claim after selector freezing; ordinary train/validation commands cannot open
 test outcomes. The report revalidates the full claimed test inventory and both
-strong comparators without fitting. New tooling has not yet been accepted on
-Omen; source compilation is not a study result.
+strong comparators without fitting. The current study's separately frozen
+[exact-estimator analysis correction](../docs/ANALYSIS_AMENDMENT.md) retains the
+original simulation and collector source. Source compilation alone is not a
+study result.
 
 The study `select` command now verifies complete audited train/validation evidence,
 selects the validation-best fixed lead, and optionally fits one declared residual

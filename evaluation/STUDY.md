@@ -3,7 +3,19 @@
 This workflow prepares a finite, declared study from an **actually completed,
 audited pilot**. It does not turn pilot data into training data, run an experiment
 implicitly, or manufacture a model. Execute commands and tests only on the
-assigned Omen machine. New study tooling still needs its first local verification.
+assigned Omen machine. The current expanded-city pilot and development
+collections have been executed and audited locally; the one released held-out
+collection is in progress. The exact frozen design and current evidence are in
+[the benchmark protocol](../docs/BENCHMARK_PROTOCOL.md).
+
+The current source-pinned study uses an explicit
+[pre-test analysis amendment](../docs/ANALYSIS_AMENDMENT.md) because its original
+study verifier reconstructed the legacy pilot estimator configuration. The
+separate frozen entry point consumes the complete original frozen configuration
+and binds the correction into selection/report hashes; the simulation and
+original one-shot test collector remain unchanged. For this study, use the
+amended entry point for selection/report verification and the amended publication
+helpers described below, rather than relabeling or rewriting the original data.
 
 ## Lock source before generating data
 
@@ -249,8 +261,8 @@ weaker lead in consistently rehashed metadata cannot certify it as best-fixed.
 There is no held-out access or model refit in this check.
 
 Version 1 selections or missing snapshots are rejected explicitly; do not guess,
-relabel, silently upgrade or reconstruct evidence from test outcomes. No actual
-scientific study has yet been executed. Once actual artifacts exist, changing
+relabel, silently upgrade or reconstruct evidence from test outcomes. No study
+may be relabeled or rewritten to upgrade its schema. Changing
 source/protocol requires preserving the prior evidence and reviewing a fresh
 study, not recycling an exposed test set.
 

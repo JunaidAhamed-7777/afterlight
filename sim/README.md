@@ -1,15 +1,21 @@
-# SUMO backend â€” implementation checkpoint
+# SUMO backend — implementation checkpoint
 
-These commands are **pending Omen validation**, not claimed test results. All experiments and tests run on the owner's Omen; cloud work authors code only.
+The expanded city has genuine source-bound recordings and an ordinary/ordinary
+negative control accepted on the owner's Omen. The matched 84-world pilot and
+252 development worlds are complete; the released held-out study still needs
+its final report. See [recording evidence](../docs/validation/expanded-city-recordings.json),
+[negative control](../docs/validation/expanded-city-negative-control.json) and
+[the current study protocol](../docs/BENCHMARK_PROTOCOL.md). Commands below create
+new evidence; running a command is not a claim of policy improvement.
 
 From repository root in the pinned Python 3.12 virtual environment:
 
 ```powershell
 python -m unittest discover -s tests/sim -v
-python -m sim.run --network fixture --output local-runtime/fixture-7 --seed 7 --policy fixed --lead 10
+python -m sim.run --network fixture --output local-runtime/fixture-7 --seed 7 --policy fixed --lead 10 --sample 0.5
 python -m sim.audit --run local-runtime/fixture-7
 # Only after fixture correctness passes:
-python -m sim.run --network city --output local-runtime/city-7 --seed 7 --regime sparse --policy fixed --lead 10 --pickup P001 --hospital HOSP_EAST
+python -m sim.run --network city --output local-runtime/city-7 --seed 7 --regime sparse --policy fixed --lead 10 --pickup P001 --hospital HOSP_EAST --sample 0.5
 python -m sim.audit --run local-runtime/city-7
 ```
 
@@ -19,12 +25,12 @@ Use `eclipse-sumo==1.28.0`, its required `sumo-data==1.28.0` companion, `traci==
 
 ## What is actually implemented
 
-- Three-crossroad fixture and full canonical graph â†’ netconvert XML, explicit permitted connections, no coordinate normalization. Netconvert's generated signal greens are reused; the controller does not invent conflicting phase combinations.
+- Three-crossroad fixture and full canonical graph → netconvert XML, explicit permitted connections, no coordinate normalization. Netconvert's generated signal greens are reused; the controller does not invent conflicting phase combinations.
 - Deterministic, pre-generated explicit civilian demand and exactly one ambulance in each independent world. Same full route-file hash in both worlds. All vehicles use normal passenger permissions, including the ambulance; no bluelight device, red-light privilege or emergency speed mode override.
 - Ordinary fixed cycle and immediate/fixed-lead/analytical preemption share minimum green (8 s), yellow (3 s), and network-specific all-red clearance (city 3 s; fixture 1 s). Ordinary greens 25 s; priority hold capped at 35 s; request timeout 90 s; one debt/queue-selected recovery service of 25 s then ordinary cycling. Recovery is not learned and does not claim bounded waits under infeasible demand.
 - Frozen absolute ETA at dispatch: external-lane free-flow time plus 2 s per observed route queue vehicle, using a snapshot at least 1 s old. Zero lead requests at ETA, immediate requests at dispatch. Actual passage cancels stale future requests. Request timing is quantized to the declared simulation step and logged.
 - Ambulance dispatch is projected onto the actual clipped outer lane polyline adjacent to the curb marker; it is not placed at the pedestrian marker. Front-bumper poses and actual vehicle length are exported. Source XY maps to render `[x,z,-y]`; SUMO heading is clockwise from north.
-- Full scheduled/inserted/completed/running/not-inserted civilian accounting, per-vehicle lifecycle, raw SUMO tripinfo, collisions/teleports retained, common 240 s horizon plus 360 s drain. No completion-only mean on censored or invalid runs. Ambulance journey includes insertion delay from scheduled dispatch. Final trip timestamps are reconciled from flushed SUMO tripinfo; TraCI list notifications retain their separate discovery timestamps rather than introducing a one-step measurement bias.
+- Full scheduled/inserted/completed/running/not-inserted civilian accounting, per-vehicle lifecycle, raw SUMO tripinfo and retained collision/teleport records. CLI defaults are a 240 s horizon plus 360 s drain for the fixture, and 360 s plus 540 s for city demos. The frozen scientific study uses its own common 3,000 s endpoint. No completion-only mean on censored or invalid runs. Ambulance journey includes insertion delay from scheduled dispatch. Final trip timestamps are reconciled from flushed SUMO tripinfo; TraCI list notifications retain their separate discovery timestamps rather than introducing a one-step measurement bias.
 - Paired replay is genuine SUMO data; every frame uses one absolute clock. Baseline ambulance becomes a render-only ghost in the viewer, never a second active simulator vehicle. Fixture traces must not be overlaid on the city asset.
 
 ## Metric limits and experiments
@@ -91,9 +97,9 @@ without changing controller decisions, physics or the shared simulation clock.
 ## Individual-civilian descriptive tail
 
 New runs retain `civilian_excess_p95_s`, the **within-world individual vehicle**
-95th percentile of `max(0, arrival âˆ’ scheduled departure âˆ’ reference_s)` across
+95th percentile of `max(0, arrival − scheduled departure − reference_s)` across
 **every scheduled civilian**. It excludes the ambulance and includes insertion
-waiting. The estimator is nearest rank `ceil(0.95 Ã— n)` (one-based), without
+waiting. The estimator is nearest rank `ceil(0.95 × n)` (one-based), without
 interpolation. `civilian_excess_p95_population` records the scheduled/completed/
 included counts, eligibility, method, units and reference convention.
 
@@ -101,7 +107,7 @@ The value is null for invalid or censored worlds, incomplete civilian demand,
 or an empty civilian population; no completed-only subset is substituted. The
 existing mean's empty-population convention remains unchanged. The underlying
 reference is the saved external-lane free-flow lower bound, excluding internal
-junctions and accelerationâ€”not a calibrated no-traffic journey.
+junctions and acceleration—not a calibrated no-traffic journey.
 
 This is descriptive, not a paired individual harm metric, not the percentile
 of episode-level mean differences in evaluation reports, and not a real-world
@@ -140,8 +146,8 @@ remain running/not-inserted in the complete ledger and make the world
 **censored**. They are not silently removed or assigned finite delay targets.
 Actual collision/TraCI/vaporizer/teleport removal reasons remain invalid, as does
 an `end` marker on a claimed completed trip. This distinction was found during
-the expanded-city pilot, corrected with regression tests, and requires a fresh
-source-pinned pilot; older raw attempts remain unchanged.
+the expanded-city pilot and corrected with regression tests. The subsequent
+matched 84-world pilot passed; older raw attempts remain unchanged.
 
 The exact behavior is visible in the official
 [SUMO 1.28 tripinfo implementation](https://github.com/eclipse-sumo/sumo/blob/v1_28_0/src/microsim/devices/MSDevice_Tripinfo.cpp#L356)
@@ -165,5 +171,5 @@ fixed, and analytical worlds. Native SUMO programs and the external scheduler
 share it. Each new world's metrics record the complete timing dictionary;
 signal audits use those recorded durations, and pilot/study verification binds
 them to the declared network profile. Historical one-second recordings remain
-auditable with their original source. Fresh pilot/study evidence is required
-after this revision; old results are never relabeled.
+auditable with their original source. The current matched pilot, dense demos and
+development collections use this profile; old results are never relabeled.
