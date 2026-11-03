@@ -14,7 +14,7 @@ import time
 from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright, expect
-from browser_camera_checks import assert_overview_fits, assert_favicon_served
+from browser_camera_checks import assert_overview_fits, assert_favicon_served, assert_camera_exploration
 
 
 def main() -> None:
@@ -57,6 +57,7 @@ def main() -> None:
             passed("original_city_glb_drawn_without_fallback")
             passed("desktop_original_city_fits", assert_overview_fits(page))
             passed("original_favicon_served", assert_favicon_served(page))
+            passed("perspective_camera_xyz_and_keyboard", assert_camera_exploration(page))
             canvas = page.locator(".three-host canvas")
             canvas.focus()
             original_zoom = float(canvas.get_attribute("data-camera-zoom"))

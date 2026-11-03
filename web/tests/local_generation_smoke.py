@@ -14,7 +14,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright, expect
-from browser_camera_checks import assert_overview_fits, assert_favicon_served
+from browser_camera_checks import assert_overview_fits, assert_favicon_served, assert_camera_exploration
 
 
 def main() -> None:
@@ -106,6 +106,7 @@ def main() -> None:
             expect(page.get_by_role("button", name="Open completed recording")).to_have_count(0)
             report["local_generation_city_fit"] = assert_overview_fits(page)
             report["favicon"] = assert_favicon_served(page)
+            report["camera_exploration"] = assert_camera_exploration(page)
             page.set_viewport_size({"width": 760, "height": 1200})
             report["tall_generation_city_fit"] = assert_overview_fits(page)
             page.set_viewport_size({"width": 390, "height": 844})

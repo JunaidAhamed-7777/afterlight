@@ -79,3 +79,17 @@ Low-poly is the art direction and performance strategy, not a temporary excuse. 
 Ghost cyan `#87D7FF` is exclusive to the baseline ambulance. Use transparency/emissive material with a subtle outline or low-cost halo rather than mandatory full-screen bloom. It does not cast meaningful shadows or alter road lighting/signals. The primary scene always remains AFTERLIGHT truth; an alternate inspection view is explicitly baseline. Render-only overlaps are explained, never animated away.
 
 The three-junction corridor is a correctness fixture inside a larger map target, not the visual limit. Zoom-level detail and landmark hierarchy keep the 25-node overview readable. Keep stable overview, deliberate follow mode and reset; no mandatory orbit. Product controls, errors, provenance and route availability are core design, not a demo-only overlay.
+
+## Interactive camera and enhanced geometry
+
+The architectural miniature is now explicitly explorable in true perspective.
+Explore 2.5× changes camera magnification, not the physical map scale; Full city
+retains the stable fitted overview. X tilt, Y heading and Z view-roll have native
+HTML controls and focused-canvas keyboard equivalents. No automatic orbit or
+parallax substitute is permitted. Original low-poly traffic assets remain
+unchanged and instanced. Enhanced building detail must stay subordinate to
+legible traffic and measured browser performance; the 25 MB map allowance is a
+ceiling rather than a filesize target. Foreground transparency is limited to
+identified buildings, never a shared-color whole-city fade. See
+[3D map and camera contract](docs/CAMERA_AND_3D_MAP.md) for geometry, coordinate
+preservation and Omen acceptance gates.

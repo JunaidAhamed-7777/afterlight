@@ -1,0 +1,6205 @@
+{
+  "schema": "afterlight.city-enhancement.v1",
+  "provenance": {
+    "source_blend_sha256": "4d7248908e4efd068b52046a1f3375e01bc843e974ddb67c9169c51b8021cced",
+    "canonical_map_sha256": "87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b",
+    "generator_sha256": "e94990e35344ebb8fc8feb7d287551c75596dead1a2e47d4f687f8183955abd6",
+    "blender_version": "4.3.2"
+  },
+  "asset": "city_enhanced.glb",
+  "asset_bytes": 4106136,
+  "asset_sha256": "9ad513c55f7934e95933a5c617351941f2ca6e0a21dc0f010ba1982f1d072b0c",
+  "source_original_faces": 7360,
+  "added_faces": 31950,
+  "root_blender_translation_m": [
+    10.0,
+    7.5,
+    -3.0
+  ],
+  "root_render_translation_m": [
+    10.0,
+    -3.0,
+    -7.5
+  ],
+  "building_count": 187,
+  "buildings": [
+    {
+      "building_id": "HOSP_WEST_BUILDING",
+      "node_name": "AL_BUILDING_HOSP_WEST_BUILDING",
+      "kind": "hospital",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          -373.0,
+          -136.5,
+          0.0
+        ],
+        [
+          -297.0,
+          -68.5,
+          30.05099868774414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -373.0,
+          0.0,
+          68.5
+        ],
+        [
+          -297.0,
+          30.05099868774414,
+          136.5
+        ]
+      ],
+      "original_faces": 312,
+      "added_faces": 0,
+      "detail_style": "original_landmark"
+    },
+    {
+      "building_id": "HOSP_EAST_BUILDING",
+      "node_name": "AL_BUILDING_HOSP_EAST_BUILDING",
+      "kind": "hospital",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          314.5,
+          83.5,
+          0.0
+        ],
+        [
+          390.5,
+          151.5,
+          30.05099868774414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          314.5,
+          0.0,
+          -151.5
+        ],
+        [
+          390.5,
+          30.05099868774414,
+          -83.5
+        ]
+      ],
+      "original_faces": 312,
+      "added_faces": 0,
+      "detail_style": "original_landmark"
+    },
+    {
+      "building_id": "B0002",
+      "node_name": "AL_BUILDING_B0002",
+      "kind": "residential",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          -415.2749938964844,
+          -292.32501220703125,
+          0.0
+        ],
+        [
+          -392.7250061035156,
+          -265.67498779296875,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -415.2749938964844,
+          0.0,
+          265.67498779296875
+        ],
+        [
+          -392.7250061035156,
+          21.5,
+          292.32501220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0003",
+      "node_name": "AL_BUILDING_B0003",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -378.86248779296875,
+          -292.8374938964844,
+          0.0
+        ],
+        [
+          -349.13751220703125,
+          -265.1625061035156,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -378.86248779296875,
+          0.0,
+          265.1625061035156
+        ],
+        [
+          -349.13751220703125,
+          22.575000762939453,
+          292.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0004",
+      "node_name": "AL_BUILDING_B0004",
+      "kind": "residential",
+      "canonical_body_height_m": 16,
+      "world_bounds_blender_m": [
+        [
+          -338.3500061035156,
+          -410.7875061035156,
+          0.0
+        ],
+        [
+          -309.6499938964844,
+          -387.2124938964844,
+          17.279998779296875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -338.3500061035156,
+          0.0,
+          387.2124938964844
+        ],
+        [
+          -309.6499938964844,
+          17.279998779296875,
+          410.7875061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0005",
+      "node_name": "AL_BUILDING_B0005",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -338.3500061035156,
+          -373.3500061035156,
+          0.0
+        ],
+        [
+          -309.6499938964844,
+          -344.6499938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -338.3500061035156,
+          0.0,
+          344.6499938964844
+        ],
+        [
+          -309.6499938964844,
+          22.575000762939453,
+          373.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0006",
+      "node_name": "AL_BUILDING_B0006",
+      "kind": "residential",
+      "canonical_body_height_m": 13,
+      "world_bounds_blender_m": [
+        [
+          -335.7875061035156,
+          -293.86248779296875,
+          0.0
+        ],
+        [
+          -312.2124938964844,
+          -264.13751220703125,
+          14.190000534057617
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -335.7875061035156,
+          0.0,
+          264.13751220703125
+        ],
+        [
+          -312.2124938964844,
+          14.190000534057617,
+          293.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0007",
+      "node_name": "AL_BUILDING_B0007",
+      "kind": "residential",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          -296.29998779296875,
+          -293.86248779296875,
+          0.0
+        ],
+        [
+          -271.70001220703125,
+          -264.13751220703125,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -296.29998779296875,
+          0.0,
+          264.13751220703125
+        ],
+        [
+          -271.70001220703125,
+          16.25,
+          293.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0008",
+      "node_name": "AL_BUILDING_B0008",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -205.27499389648438,
+          -411.29998779296875,
+          0.0
+        ],
+        [
+          -182.72500610351562,
+          -386.70001220703125,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -205.27499389648438,
+          0.0,
+          386.70001220703125
+        ],
+        [
+          -182.72500610351562,
+          22.575000762939453,
+          411.29998779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0009",
+      "node_name": "AL_BUILDING_B0009",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 28,
+      "world_bounds_blender_m": [
+        [
+          -206.3000030517578,
+          -373.86248779296875,
+          0.0
+        ],
+        [
+          -181.6999969482422,
+          -344.13751220703125,
+          30.10000228881836
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -206.3000030517578,
+          0.0,
+          344.13751220703125
+        ],
+        [
+          -181.6999969482422,
+          30.10000228881836,
+          373.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0010",
+      "node_name": "AL_BUILDING_B0010",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 39,
+      "world_bounds_blender_m": [
+        [
+          -206.3000030517578,
+          -331.8125,
+          0.0
+        ],
+        [
+          -181.6999969482422,
+          -306.1875,
+          41.92499923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -206.3000030517578,
+          0.0,
+          306.1875
+        ],
+        [
+          -181.6999969482422,
+          41.92499923706055,
+          331.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0011",
+      "node_name": "AL_BUILDING_B0011",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 45,
+      "world_bounds_blender_m": [
+        [
+          -207.83749389648438,
+          -291.8125,
+          0.0
+        ],
+        [
+          -180.16250610351562,
+          -266.1875,
+          48.150001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -207.83749389648438,
+          0.0,
+          266.1875
+        ],
+        [
+          -180.16250610351562,
+          48.150001525878906,
+          291.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0012",
+      "node_name": "AL_BUILDING_B0012",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          -168.35000610351562,
+          -411.29998779296875,
+          0.0
+        ],
+        [
+          -139.64999389648438,
+          -386.70001220703125,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -168.35000610351562,
+          0.0,
+          386.70001220703125
+        ],
+        [
+          -139.64999389648438,
+          18.309999465942383,
+          411.29998779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0013",
+      "node_name": "AL_BUILDING_B0013",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 34,
+      "world_bounds_blender_m": [
+        [
+          -166.8125,
+          -373.3500061035156,
+          0.0
+        ],
+        [
+          -141.1875,
+          -344.6499938964844,
+          36.54999923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -166.8125,
+          0.0,
+          344.6499938964844
+        ],
+        [
+          -141.1875,
+          36.54999923706055,
+          373.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0014",
+      "node_name": "AL_BUILDING_B0014",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 34,
+      "world_bounds_blender_m": [
+        [
+          -168.8625030517578,
+          -330.2749938964844,
+          0.0
+        ],
+        [
+          -139.1374969482422,
+          -307.7250061035156,
+          36.54999923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -168.8625030517578,
+          0.0,
+          307.7250061035156
+        ],
+        [
+          -139.1374969482422,
+          36.54999923706055,
+          330.2749938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0015",
+      "node_name": "AL_BUILDING_B0015",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 47,
+      "world_bounds_blender_m": [
+        [
+          -165.27499389648438,
+          -291.29998779296875,
+          0.0
+        ],
+        [
+          -142.72500610351562,
+          -266.70001220703125,
+          50.21000289916992
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -165.27499389648438,
+          0.0,
+          266.70001220703125
+        ],
+        [
+          -142.72500610351562,
+          50.21000289916992,
+          291.29998779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0016",
+      "node_name": "AL_BUILDING_B0016",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          -125.78750610351562,
+          -413.86248779296875,
+          0.0
+        ],
+        [
+          -102.2125015258789,
+          -384.13751220703125,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -125.78750610351562,
+          0.0,
+          384.13751220703125
+        ],
+        [
+          -102.2125015258789,
+          20.424999237060547,
+          413.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0017",
+      "node_name": "AL_BUILDING_B0017",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 31,
+      "world_bounds_blender_m": [
+        [
+          -126.8125,
+          -372.8374938964844,
+          0.0
+        ],
+        [
+          -101.1875,
+          -345.1625061035156,
+          33.32499694824219
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -126.8125,
+          0.0,
+          345.1625061035156
+        ],
+        [
+          -101.1875,
+          33.32499694824219,
+          372.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0018",
+      "node_name": "AL_BUILDING_B0018",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          -126.30000305175781,
+          -330.7875061035156,
+          0.0
+        ],
+        [
+          -101.69999694824219,
+          -307.2124938964844,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -126.30000305175781,
+          0.0,
+          307.2124938964844
+        ],
+        [
+          -101.69999694824219,
+          19.350000381469727,
+          330.7875061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0019",
+      "node_name": "AL_BUILDING_B0019",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -125.78750610351562,
+          -293.3500061035156,
+          0.0
+        ],
+        [
+          -102.2125015258789,
+          -264.6499938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -125.78750610351562,
+          0.0,
+          264.6499938964844
+        ],
+        [
+          -102.2125015258789,
+          22.575000762939453,
+          293.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0020",
+      "node_name": "AL_BUILDING_B0020",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          -87.32499694824219,
+          -412.32501220703125,
+          0.0
+        ],
+        [
+          -60.67500305175781,
+          -385.67498779296875,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -87.32499694824219,
+          0.0,
+          385.67498779296875
+        ],
+        [
+          -60.67500305175781,
+          25.80000114440918,
+          412.32501220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0021",
+      "node_name": "AL_BUILDING_B0021",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          -85.2750015258789,
+          -373.3500061035156,
+          0.0
+        ],
+        [
+          -62.724998474121094,
+          -344.6499938964844,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -85.2750015258789,
+          0.0,
+          344.6499938964844
+        ],
+        [
+          -62.724998474121094,
+          25.80000114440918,
+          373.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0022",
+      "node_name": "AL_BUILDING_B0022",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 38,
+      "world_bounds_blender_m": [
+        [
+          -88.86250305175781,
+          -332.8374938964844,
+          0.0
+        ],
+        [
+          -59.13749694824219,
+          -305.1625061035156,
+          40.849998474121094
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -88.86250305175781,
+          0.0,
+          305.1625061035156
+        ],
+        [
+          -59.13749694824219,
+          40.849998474121094,
+          332.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0023",
+      "node_name": "AL_BUILDING_B0023",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          -85.2750015258789,
+          -292.32501220703125,
+          0.0
+        ],
+        [
+          -62.724998474121094,
+          -265.67498779296875,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -85.2750015258789,
+          0.0,
+          265.67498779296875
+        ],
+        [
+          -62.724998474121094,
+          24.725000381469727,
+          292.32501220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0024",
+      "node_name": "AL_BUILDING_B0024",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 37,
+      "world_bounds_blender_m": [
+        [
+          -46.8125,
+          -413.3500061035156,
+          0.0
+        ],
+        [
+          -21.1875,
+          -384.6499938964844,
+          39.775001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -46.8125,
+          0.0,
+          384.6499938964844
+        ],
+        [
+          -21.1875,
+          39.775001525878906,
+          413.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0025",
+      "node_name": "AL_BUILDING_B0025",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          -46.29999923706055,
+          -370.7875061035156,
+          0.0
+        ],
+        [
+          -21.700000762939453,
+          -347.2124938964844,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -46.29999923706055,
+          0.0,
+          347.2124938964844
+        ],
+        [
+          -21.700000762939453,
+          24.725000381469727,
+          370.7875061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0026",
+      "node_name": "AL_BUILDING_B0026",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 48,
+      "world_bounds_blender_m": [
+        [
+          -46.8125,
+          -333.3500061035156,
+          0.0
+        ],
+        [
+          -21.1875,
+          -304.6499938964844,
+          51.2400016784668
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -46.8125,
+          0.0,
+          304.6499938964844
+        ],
+        [
+          -21.1875,
+          51.2400016784668,
+          333.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0027",
+      "node_name": "AL_BUILDING_B0027",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 41,
+      "world_bounds_blender_m": [
+        [
+          -45.275001525878906,
+          -292.8374938964844,
+          0.0
+        ],
+        [
+          -22.724998474121094,
+          -265.1625061035156,
+          44.03000259399414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -45.275001525878906,
+          0.0,
+          265.1625061035156
+        ],
+        [
+          -22.724998474121094,
+          44.03000259399414,
+          292.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0028",
+      "node_name": "AL_BUILDING_B0028",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          267.1625061035156,
+          -413.86248779296875,
+          0.0
+        ],
+        [
+          294.8374938964844,
+          -384.13751220703125,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          267.1625061035156,
+          0.0,
+          384.13751220703125
+        ],
+        [
+          294.8374938964844,
+          22.575000762939453,
+          413.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0029",
+      "node_name": "AL_BUILDING_B0029",
+      "kind": "residential",
+      "canonical_body_height_m": 10,
+      "world_bounds_blender_m": [
+        [
+          268.70001220703125,
+          -371.8125,
+          0.0
+        ],
+        [
+          293.29998779296875,
+          -346.1875,
+          11.09999942779541
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          268.70001220703125,
+          0.0,
+          346.1875
+        ],
+        [
+          293.29998779296875,
+          11.09999942779541,
+          371.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0030",
+      "node_name": "AL_BUILDING_B0030",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          267.1625061035156,
+          -333.3500061035156,
+          0.0
+        ],
+        [
+          294.8374938964844,
+          -304.6499938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          267.1625061035156,
+          0.0,
+          304.6499938964844
+        ],
+        [
+          294.8374938964844,
+          22.575000762939453,
+          333.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0031",
+      "node_name": "AL_BUILDING_B0031",
+      "kind": "residential",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          267.1625061035156,
+          -292.32501220703125,
+          0.0
+        ],
+        [
+          294.8374938964844,
+          -265.67498779296875,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          267.1625061035156,
+          0.0,
+          265.67498779296875
+        ],
+        [
+          294.8374938964844,
+          18.309999465942383,
+          292.32501220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0032",
+      "node_name": "AL_BUILDING_B0032",
+      "kind": "residential",
+      "canonical_body_height_m": 8,
+      "world_bounds_blender_m": [
+        [
+          306.13751220703125,
+          -411.8125,
+          0.0
+        ],
+        [
+          335.86248779296875,
+          -386.1875,
+          9.039999961853027
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          306.13751220703125,
+          0.0,
+          386.1875
+        ],
+        [
+          335.86248779296875,
+          9.039999961853027,
+          411.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0033",
+      "node_name": "AL_BUILDING_B0033",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          308.70001220703125,
+          -370.7875061035156,
+          0.0
+        ],
+        [
+          333.29998779296875,
+          -347.2124938964844,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          308.70001220703125,
+          0.0,
+          347.2124938964844
+        ],
+        [
+          333.29998779296875,
+          20.424999237060547,
+          370.7875061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0034",
+      "node_name": "AL_BUILDING_B0034",
+      "kind": "residential",
+      "canonical_body_height_m": 14,
+      "world_bounds_blender_m": [
+        [
+          309.2124938964844,
+          -331.29998779296875,
+          0.0
+        ],
+        [
+          332.7875061035156,
+          -306.70001220703125,
+          15.219999313354492
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          309.2124938964844,
+          0.0,
+          306.70001220703125
+        ],
+        [
+          332.7875061035156,
+          15.219999313354492,
+          331.29998779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0035",
+      "node_name": "AL_BUILDING_B0035",
+      "kind": "residential",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          308.1875,
+          -293.3500061035156,
+          0.0
+        ],
+        [
+          333.8125,
+          -264.6499938964844,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          308.1875,
+          0.0,
+          264.6499938964844
+        ],
+        [
+          333.8125,
+          25.80000114440918,
+          293.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0036",
+      "node_name": "AL_BUILDING_B0036",
+      "kind": "residential",
+      "canonical_body_height_m": 10,
+      "world_bounds_blender_m": [
+        [
+          347.67498779296875,
+          -411.29998779296875,
+          0.0
+        ],
+        [
+          374.32501220703125,
+          -386.70001220703125,
+          11.09999942779541
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          347.67498779296875,
+          0.0,
+          386.70001220703125
+        ],
+        [
+          374.32501220703125,
+          11.09999942779541,
+          411.29998779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0037",
+      "node_name": "AL_BUILDING_B0037",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          347.1625061035156,
+          -372.8374938964844,
+          0.0
+        ],
+        [
+          374.8374938964844,
+          -345.1625061035156,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          347.1625061035156,
+          0.0,
+          345.1625061035156
+        ],
+        [
+          374.8374938964844,
+          20.424999237060547,
+          372.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0038",
+      "node_name": "AL_BUILDING_B0038",
+      "kind": "residential",
+      "canonical_body_height_m": 25,
+      "world_bounds_blender_m": [
+        [
+          346.13751220703125,
+          -333.86248779296875,
+          0.0
+        ],
+        [
+          375.86248779296875,
+          -304.13751220703125,
+          26.875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          346.13751220703125,
+          0.0,
+          304.13751220703125
+        ],
+        [
+          375.86248779296875,
+          26.875,
+          333.86248779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0039",
+      "node_name": "AL_BUILDING_B0039",
+      "kind": "residential",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          346.13751220703125,
+          -290.7875061035156,
+          0.0
+        ],
+        [
+          375.86248779296875,
+          -267.2124938964844,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          346.13751220703125,
+          0.0,
+          267.2124938964844
+        ],
+        [
+          375.86248779296875,
+          25.80000114440918,
+          290.7875061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0040",
+      "node_name": "AL_BUILDING_B0040",
+      "kind": "residential",
+      "canonical_body_height_m": 11,
+      "world_bounds_blender_m": [
+        [
+          386.13751220703125,
+          -412.8374938964844,
+          0.0
+        ],
+        [
+          415.86248779296875,
+          -385.1625061035156,
+          12.129999160766602
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          386.13751220703125,
+          0.0,
+          385.1625061035156
+        ],
+        [
+          415.86248779296875,
+          12.129999160766602,
+          412.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0041",
+      "node_name": "AL_BUILDING_B0041",
+      "kind": "residential",
+      "canonical_body_height_m": 10,
+      "world_bounds_blender_m": [
+        [
+          386.6499938964844,
+          -370.2749938964844,
+          0.0
+        ],
+        [
+          415.3500061035156,
+          -347.7250061035156,
+          11.09999942779541
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          386.6499938964844,
+          0.0,
+          347.7250061035156
+        ],
+        [
+          415.3500061035156,
+          11.09999942779541,
+          370.2749938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0042",
+      "node_name": "AL_BUILDING_B0042",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          388.70001220703125,
+          -333.3500061035156,
+          0.0
+        ],
+        [
+          413.29998779296875,
+          -304.6499938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          388.70001220703125,
+          0.0,
+          304.6499938964844
+        ],
+        [
+          413.29998779296875,
+          22.575000762939453,
+          333.3500061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0043",
+      "node_name": "AL_BUILDING_B0043",
+      "kind": "residential",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          387.1625061035156,
+          -292.8374938964844,
+          0.0
+        ],
+        [
+          414.8374938964844,
+          -265.1625061035156,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          387.1625061035156,
+          0.0,
+          265.1625061035156
+        ],
+        [
+          414.8374938964844,
+          19.350000381469727,
+          292.8374938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0044",
+      "node_name": "AL_BUILDING_B0044",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 44,
+      "world_bounds_blender_m": [
+        [
+          -206.8125,
+          -202.3249969482422,
+          0.0
+        ],
+        [
+          -181.1875,
+          -175.6750030517578,
+          47.12000274658203
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -206.8125,
+          0.0,
+          175.6750030517578
+        ],
+        [
+          -181.1875,
+          47.12000274658203,
+          202.3249969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0045",
+      "node_name": "AL_BUILDING_B0045",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 47,
+      "world_bounds_blender_m": [
+        [
+          -205.78750610351562,
+          -163.35000610351562,
+          0.0
+        ],
+        [
+          -182.21249389648438,
+          -134.64999389648438,
+          50.21000289916992
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -205.78750610351562,
+          0.0,
+          134.64999389648438
+        ],
+        [
+          -182.21249389648438,
+          50.21000289916992,
+          163.35000610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0046",
+      "node_name": "AL_BUILDING_B0046",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 39,
+      "world_bounds_blender_m": [
+        [
+          -206.3000030517578,
+          -123.35000610351562,
+          0.0
+        ],
+        [
+          -181.6999969482422,
+          -94.6500015258789,
+          41.92499923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -206.3000030517578,
+          0.0,
+          94.6500015258789
+        ],
+        [
+          -181.6999969482422,
+          41.92499923706055,
+          123.35000610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0047",
+      "node_name": "AL_BUILDING_B0047",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 45,
+      "world_bounds_blender_m": [
+        [
+          -208.8625030517578,
+          -81.8125,
+          0.0
+        ],
+        [
+          -179.1374969482422,
+          -56.1875,
+          48.150001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -208.8625030517578,
+          0.0,
+          56.1875
+        ],
+        [
+          -179.1374969482422,
+          48.150001525878906,
+          81.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0048",
+      "node_name": "AL_BUILDING_B0048",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          -208.35000610351562,
+          -43.349998474121094,
+          0.0
+        ],
+        [
+          -179.64999389648438,
+          -14.650001525878906,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -208.35000610351562,
+          0.0,
+          14.650001525878906
+        ],
+        [
+          -179.64999389648438,
+          23.650001525878906,
+          43.349998474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0049",
+      "node_name": "AL_BUILDING_B0049",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 36,
+      "world_bounds_blender_m": [
+        [
+          -165.27499389648438,
+          -80.2750015258789,
+          0.0
+        ],
+        [
+          -142.72500610351562,
+          -57.724998474121094,
+          38.70000076293945
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -165.27499389648438,
+          0.0,
+          57.724998474121094
+        ],
+        [
+          -142.72500610351562,
+          38.70000076293945,
+          80.2750015258789
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0050",
+      "node_name": "AL_BUILDING_B0050",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          -168.35000610351562,
+          -43.86249923706055,
+          0.0
+        ],
+        [
+          -139.64999389648438,
+          -14.137500762939453,
+          27.94999885559082
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -168.35000610351562,
+          0.0,
+          14.137500762939453
+        ],
+        [
+          -139.64999389648438,
+          27.94999885559082,
+          43.86249923706055
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0051",
+      "node_name": "AL_BUILDING_B0051",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 37,
+      "world_bounds_blender_m": [
+        [
+          -128.8625030517578,
+          -202.3249969482422,
+          0.0
+        ],
+        [
+          -99.13749694824219,
+          -175.6750030517578,
+          39.775001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -128.8625030517578,
+          0.0,
+          175.6750030517578
+        ],
+        [
+          -99.13749694824219,
+          39.775001525878906,
+          202.3249969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0052",
+      "node_name": "AL_BUILDING_B0052",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 39,
+      "world_bounds_blender_m": [
+        [
+          -127.83749389648438,
+          -161.8125,
+          0.0
+        ],
+        [
+          -100.1624984741211,
+          -136.1875,
+          41.92499923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -127.83749389648438,
+          0.0,
+          136.1875
+        ],
+        [
+          -100.1624984741211,
+          41.92499923706055,
+          161.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0053",
+      "node_name": "AL_BUILDING_B0053",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 40,
+      "world_bounds_blender_m": [
+        [
+          -128.8625030517578,
+          -81.8125,
+          0.0
+        ],
+        [
+          -99.13749694824219,
+          -56.1875,
+          43.0
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -128.8625030517578,
+          0.0,
+          56.1875
+        ],
+        [
+          -99.13749694824219,
+          43.0,
+          81.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0054",
+      "node_name": "AL_BUILDING_B0054",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 40,
+      "world_bounds_blender_m": [
+        [
+          -128.35000610351562,
+          -41.8125,
+          0.0
+        ],
+        [
+          -99.6500015258789,
+          -16.1875,
+          43.0
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -128.35000610351562,
+          0.0,
+          16.1875
+        ],
+        [
+          -99.6500015258789,
+          43.0,
+          41.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0055",
+      "node_name": "AL_BUILDING_B0055",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 35,
+      "world_bounds_blender_m": [
+        [
+          -86.30000305175781,
+          -83.86250305175781,
+          0.0
+        ],
+        [
+          -61.69999694824219,
+          -54.13750076293945,
+          37.625
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -86.30000305175781,
+          0.0,
+          54.13750076293945
+        ],
+        [
+          -61.69999694824219,
+          37.625,
+          83.86250305175781
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0056",
+      "node_name": "AL_BUILDING_B0056",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 29,
+      "world_bounds_blender_m": [
+        [
+          -88.86250305175781,
+          -41.8125,
+          0.0
+        ],
+        [
+          -59.13749694824219,
+          -16.1875,
+          31.174999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -88.86250305175781,
+          0.0,
+          16.1875
+        ],
+        [
+          -59.13749694824219,
+          31.174999237060547,
+          41.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0057",
+      "node_name": "AL_BUILDING_B0057",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          -45.275001525878906,
+          -201.3000030517578,
+          0.0
+        ],
+        [
+          -22.724998474121094,
+          -176.6999969482422,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -45.275001525878906,
+          0.0,
+          176.6999969482422
+        ],
+        [
+          -22.724998474121094,
+          23.650001525878906,
+          201.3000030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0058",
+      "node_name": "AL_BUILDING_B0058",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          -46.8125,
+          -162.83749389648438,
+          0.0
+        ],
+        [
+          -21.1875,
+          -135.16250610351562,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -46.8125,
+          0.0,
+          135.16250610351562
+        ],
+        [
+          -21.1875,
+          18.309999465942383,
+          162.83749389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0059",
+      "node_name": "AL_BUILDING_B0059",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 43,
+      "world_bounds_blender_m": [
+        [
+          -48.349998474121094,
+          -121.8125,
+          0.0
+        ],
+        [
+          -19.650001525878906,
+          -96.1875,
+          46.09000015258789
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -48.349998474121094,
+          0.0,
+          96.1875
+        ],
+        [
+          -19.650001525878906,
+          46.09000015258789,
+          121.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0060",
+      "node_name": "AL_BUILDING_B0060",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          -45.275001525878906,
+          -82.32499694824219,
+          0.0
+        ],
+        [
+          -22.724998474121094,
+          -55.67499923706055,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -45.275001525878906,
+          0.0,
+          55.67499923706055
+        ],
+        [
+          -22.724998474121094,
+          29.02499771118164,
+          82.32499694824219
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0061",
+      "node_name": "AL_BUILDING_B0061",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 46,
+      "world_bounds_blender_m": [
+        [
+          -48.86249923706055,
+          -42.837501525878906,
+          0.0
+        ],
+        [
+          -19.137500762939453,
+          -15.162500381469727,
+          49.18000030517578
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -48.86249923706055,
+          0.0,
+          15.162500381469727
+        ],
+        [
+          -19.137500762939453,
+          49.18000030517578,
+          42.837501525878906
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0062",
+      "node_name": "AL_BUILDING_B0062",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 28,
+      "world_bounds_blender_m": [
+        [
+          22.162500381469727,
+          -201.3000030517578,
+          0.0
+        ],
+        [
+          49.837501525878906,
+          -176.6999969482422,
+          30.10000228881836
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          22.162500381469727,
+          0.0,
+          176.6999969482422
+        ],
+        [
+          49.837501525878906,
+          30.10000228881836,
+          201.3000030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0063",
+      "node_name": "AL_BUILDING_B0063",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 31,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          -161.8125,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          -136.1875,
+          33.32499694824219
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          136.1875
+        ],
+        [
+          47.275001525878906,
+          33.32499694824219,
+          161.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0064",
+      "node_name": "AL_BUILDING_B0064",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          -121.30000305175781,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          -96.69999694824219,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          96.69999694824219
+        ],
+        [
+          47.275001525878906,
+          16.25,
+          121.30000305175781
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0065",
+      "node_name": "AL_BUILDING_B0065",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 41,
+      "world_bounds_blender_m": [
+        [
+          23.1875,
+          -81.8125,
+          0.0
+        ],
+        [
+          48.8125,
+          -56.1875,
+          44.03000259399414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          23.1875,
+          0.0,
+          56.1875
+        ],
+        [
+          48.8125,
+          44.03000259399414,
+          81.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0066",
+      "node_name": "AL_BUILDING_B0066",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          -40.787498474121094,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          -17.212501525878906,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          17.212501525878906
+        ],
+        [
+          47.275001525878906,
+          21.5,
+          40.787498474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0067",
+      "node_name": "AL_BUILDING_B0067",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 29,
+      "world_bounds_blender_m": [
+        [
+          62.162498474121094,
+          -202.83749389648438,
+          0.0
+        ],
+        [
+          89.8375015258789,
+          -175.16250610351562,
+          31.174999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          62.162498474121094,
+          0.0,
+          175.16250610351562
+        ],
+        [
+          89.8375015258789,
+          31.174999237060547,
+          202.83749389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0068",
+      "node_name": "AL_BUILDING_B0068",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          62.67499923706055,
+          -163.8625030517578,
+          0.0
+        ],
+        [
+          89.32499694824219,
+          -134.1374969482422,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          62.67499923706055,
+          0.0,
+          134.1374969482422
+        ],
+        [
+          89.32499694824219,
+          34.400001525878906,
+          163.8625030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0069",
+      "node_name": "AL_BUILDING_B0069",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          61.13750076293945,
+          -122.83749389648438,
+          0.0
+        ],
+        [
+          90.86250305175781,
+          -95.1624984741211,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          61.13750076293945,
+          0.0,
+          95.1624984741211
+        ],
+        [
+          90.86250305175781,
+          20.424999237060547,
+          122.83749389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0070",
+      "node_name": "AL_BUILDING_B0070",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 34,
+      "world_bounds_blender_m": [
+        [
+          62.67499923706055,
+          -83.86250305175781,
+          0.0
+        ],
+        [
+          89.32499694824219,
+          -54.13750076293945,
+          36.54999923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          62.67499923706055,
+          0.0,
+          54.13750076293945
+        ],
+        [
+          89.32499694824219,
+          36.54999923706055,
+          83.86250305175781
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0071",
+      "node_name": "AL_BUILDING_B0071",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 34,
+      "world_bounds_blender_m": [
+        [
+          64.7249984741211,
+          -43.349998474121094,
+          0.0
+        ],
+        [
+          87.2750015258789,
+          -14.650001525878906,
+          36.54999923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          64.7249984741211,
+          0.0,
+          14.650001525878906
+        ],
+        [
+          87.2750015258789,
+          36.54999923706055,
+          43.349998474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0072",
+      "node_name": "AL_BUILDING_B0072",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 37,
+      "world_bounds_blender_m": [
+        [
+          101.6500015258789,
+          -200.27499389648438,
+          0.0
+        ],
+        [
+          130.35000610351562,
+          -177.72500610351562,
+          39.775001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          101.6500015258789,
+          0.0,
+          177.72500610351562
+        ],
+        [
+          130.35000610351562,
+          39.775001525878906,
+          200.27499389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0073",
+      "node_name": "AL_BUILDING_B0073",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 45,
+      "world_bounds_blender_m": [
+        [
+          102.1624984741211,
+          -162.83749389648438,
+          0.0
+        ],
+        [
+          129.83749389648438,
+          -135.16250610351562,
+          48.150001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          102.1624984741211,
+          0.0,
+          135.16250610351562
+        ],
+        [
+          129.83749389648438,
+          48.150001525878906,
+          162.83749389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0074",
+      "node_name": "AL_BUILDING_B0074",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          103.1875,
+          -123.35000610351562,
+          0.0
+        ],
+        [
+          128.8125,
+          -94.6500015258789,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          103.1875,
+          0.0,
+          94.6500015258789
+        ],
+        [
+          128.8125,
+          19.350000381469727,
+          123.35000610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0075",
+      "node_name": "AL_BUILDING_B0075",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          102.67500305175781,
+          -81.8125,
+          0.0
+        ],
+        [
+          129.3249969482422,
+          -56.1875,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          102.67500305175781,
+          0.0,
+          56.1875
+        ],
+        [
+          129.3249969482422,
+          19.350000381469727,
+          81.8125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0076",
+      "node_name": "AL_BUILDING_B0076",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 40,
+      "world_bounds_blender_m": [
+        [
+          103.69999694824219,
+          -40.275001525878906,
+          0.0
+        ],
+        [
+          128.3000030517578,
+          -17.725000381469727,
+          43.0
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          103.69999694824219,
+          0.0,
+          17.725000381469727
+        ],
+        [
+          128.3000030517578,
+          43.0,
+          40.275001525878906
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0077",
+      "node_name": "AL_BUILDING_B0077",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          141.64999389648438,
+          -202.3249969482422,
+          0.0
+        ],
+        [
+          170.35000610351562,
+          -175.6750030517578,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          141.64999389648438,
+          0.0,
+          175.6750030517578
+        ],
+        [
+          170.35000610351562,
+          19.350000381469727,
+          202.3249969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0078",
+      "node_name": "AL_BUILDING_B0078",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          142.6750030517578,
+          -162.3249969482422,
+          0.0
+        ],
+        [
+          169.3249969482422,
+          -135.6750030517578,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.6750030517578,
+          0.0,
+          135.6750030517578
+        ],
+        [
+          169.3249969482422,
+          16.25,
+          162.3249969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0079",
+      "node_name": "AL_BUILDING_B0079",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          142.6750030517578,
+          -123.86250305175781,
+          0.0
+        ],
+        [
+          169.3249969482422,
+          -94.13749694824219,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.6750030517578,
+          0.0,
+          94.13749694824219
+        ],
+        [
+          169.3249969482422,
+          24.725000381469727,
+          123.86250305175781
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0080",
+      "node_name": "AL_BUILDING_B0080",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          142.16250610351562,
+          -83.86250305175781,
+          0.0
+        ],
+        [
+          169.83749389648438,
+          -54.13750076293945,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.16250610351562,
+          0.0,
+          54.13750076293945
+        ],
+        [
+          169.83749389648438,
+          18.309999465942383,
+          83.86250305175781
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0081",
+      "node_name": "AL_BUILDING_B0081",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 44,
+      "world_bounds_blender_m": [
+        [
+          141.64999389648438,
+          -43.86249923706055,
+          0.0
+        ],
+        [
+          170.35000610351562,
+          -14.137500762939453,
+          47.12000274658203
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          141.64999389648438,
+          0.0,
+          14.137500762939453
+        ],
+        [
+          170.35000610351562,
+          47.12000274658203,
+          43.86249923706055
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0082",
+      "node_name": "AL_BUILDING_B0082",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          184.72500610351562,
+          -202.3249969482422,
+          0.0
+        ],
+        [
+          207.27499389648438,
+          -175.6750030517578,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          184.72500610351562,
+          0.0,
+          175.6750030517578
+        ],
+        [
+          207.27499389648438,
+          23.650001525878906,
+          202.3249969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0083",
+      "node_name": "AL_BUILDING_B0083",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          184.21249389648438,
+          -163.35000610351562,
+          0.0
+        ],
+        [
+          207.78750610351562,
+          -134.64999389648438,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          184.21249389648438,
+          0.0,
+          134.64999389648438
+        ],
+        [
+          207.78750610351562,
+          16.25,
+          163.35000610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0084",
+      "node_name": "AL_BUILDING_B0084",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 25,
+      "world_bounds_blender_m": [
+        [
+          183.6999969482422,
+          -122.83749389648438,
+          0.0
+        ],
+        [
+          208.3000030517578,
+          -95.1624984741211,
+          26.875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          183.6999969482422,
+          0.0,
+          95.1624984741211
+        ],
+        [
+          208.3000030517578,
+          26.875,
+          122.83749389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0085",
+      "node_name": "AL_BUILDING_B0085",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          183.6999969482422,
+          -83.3499984741211,
+          0.0
+        ],
+        [
+          208.3000030517578,
+          -54.650001525878906,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          183.6999969482422,
+          0.0,
+          54.650001525878906
+        ],
+        [
+          208.3000030517578,
+          29.02499771118164,
+          83.3499984741211
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0086",
+      "node_name": "AL_BUILDING_B0086",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 40,
+      "world_bounds_blender_m": [
+        [
+          182.6750030517578,
+          -42.837501525878906,
+          0.0
+        ],
+        [
+          209.3249969482422,
+          -15.162500381469727,
+          43.0
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          182.6750030517578,
+          0.0,
+          15.162500381469727
+        ],
+        [
+          209.3249969482422,
+          43.0,
+          42.837501525878906
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0087",
+      "node_name": "AL_BUILDING_B0087",
+      "kind": "residential",
+      "canonical_body_height_m": 8,
+      "world_bounds_blender_m": [
+        [
+          266.6499938964844,
+          -83.3499984741211,
+          0.0
+        ],
+        [
+          295.3500061035156,
+          -54.650001525878906,
+          9.039999961853027
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          266.6499938964844,
+          0.0,
+          54.650001525878906
+        ],
+        [
+          295.3500061035156,
+          9.039999961853027,
+          83.3499984741211
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0088",
+      "node_name": "AL_BUILDING_B0088",
+      "kind": "residential",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          266.13751220703125,
+          -40.275001525878906,
+          0.0
+        ],
+        [
+          295.86248779296875,
+          -17.725000381469727,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          266.13751220703125,
+          0.0,
+          17.725000381469727
+        ],
+        [
+          295.86248779296875,
+          24.725000381469727,
+          40.275001525878906
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0089",
+      "node_name": "AL_BUILDING_B0089",
+      "kind": "residential",
+      "canonical_body_height_m": 14,
+      "world_bounds_blender_m": [
+        [
+          306.6499938964844,
+          -82.32499694824219,
+          0.0
+        ],
+        [
+          335.3500061035156,
+          -55.67499923706055,
+          15.219999313354492
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          306.6499938964844,
+          0.0,
+          55.67499923706055
+        ],
+        [
+          335.3500061035156,
+          15.219999313354492,
+          82.32499694824219
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0090",
+      "node_name": "AL_BUILDING_B0090",
+      "kind": "residential",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          309.2124938964844,
+          -42.32500076293945,
+          0.0
+        ],
+        [
+          332.7875061035156,
+          -15.674999237060547,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          309.2124938964844,
+          0.0,
+          15.674999237060547
+        ],
+        [
+          332.7875061035156,
+          23.650001525878906,
+          42.32500076293945
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0091",
+      "node_name": "AL_BUILDING_B0091",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          349.7250061035156,
+          -203.8625030517578,
+          0.0
+        ],
+        [
+          372.2749938964844,
+          -174.1374969482422,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          349.7250061035156,
+          0.0,
+          174.1374969482422
+        ],
+        [
+          372.2749938964844,
+          20.424999237060547,
+          203.8625030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0092",
+      "node_name": "AL_BUILDING_B0092",
+      "kind": "residential",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          348.1875,
+          -163.8625030517578,
+          0.0
+        ],
+        [
+          373.8125,
+          -134.1374969482422,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          348.1875,
+          0.0,
+          134.1374969482422
+        ],
+        [
+          373.8125,
+          18.309999465942383,
+          163.8625030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0093",
+      "node_name": "AL_BUILDING_B0093",
+      "kind": "residential",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          349.7250061035156,
+          -80.7874984741211,
+          0.0
+        ],
+        [
+          372.2749938964844,
+          -57.212501525878906,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          349.7250061035156,
+          0.0,
+          57.212501525878906
+        ],
+        [
+          372.2749938964844,
+          18.309999465942383,
+          80.7874984741211
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0094",
+      "node_name": "AL_BUILDING_B0094",
+      "kind": "residential",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          349.2124938964844,
+          -40.787498474121094,
+          0.0
+        ],
+        [
+          372.7875061035156,
+          -17.212501525878906,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          349.2124938964844,
+          0.0,
+          17.212501525878906
+        ],
+        [
+          372.7875061035156,
+          21.5,
+          40.787498474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0095",
+      "node_name": "AL_BUILDING_B0095",
+      "kind": "residential",
+      "canonical_body_height_m": 11,
+      "world_bounds_blender_m": [
+        [
+          387.1625061035156,
+          -80.2750015258789,
+          0.0
+        ],
+        [
+          414.8374938964844,
+          -57.724998474121094,
+          12.129999160766602
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          387.1625061035156,
+          0.0,
+          57.724998474121094
+        ],
+        [
+          414.8374938964844,
+          12.129999160766602,
+          80.2750015258789
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0096",
+      "node_name": "AL_BUILDING_B0096",
+      "kind": "residential",
+      "canonical_body_height_m": 12,
+      "world_bounds_blender_m": [
+        [
+          388.1875,
+          -43.349998474121094,
+          0.0
+        ],
+        [
+          413.8125,
+          -14.650001525878906,
+          13.15999984741211
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          388.1875,
+          0.0,
+          14.650001525878906
+        ],
+        [
+          413.8125,
+          13.15999984741211,
+          43.349998474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0097",
+      "node_name": "AL_BUILDING_B0097",
+      "kind": "residential",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          -416.29998779296875,
+          142.6750030517578,
+          0.0
+        ],
+        [
+          -391.70001220703125,
+          169.3249969482422,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -416.29998779296875,
+          0.0,
+          -169.3249969482422
+        ],
+        [
+          -391.70001220703125,
+          18.309999465942383,
+          -142.6750030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0098",
+      "node_name": "AL_BUILDING_B0098",
+      "kind": "residential",
+      "canonical_body_height_m": 10,
+      "world_bounds_blender_m": [
+        [
+          -375.2749938964844,
+          21.137500762939453,
+          0.0
+        ],
+        [
+          -352.7250061035156,
+          50.86249923706055,
+          11.09999942779541
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -375.2749938964844,
+          0.0,
+          -50.86249923706055
+        ],
+        [
+          -352.7250061035156,
+          11.09999942779541,
+          -21.137500762939453
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0099",
+      "node_name": "AL_BUILDING_B0099",
+      "kind": "residential",
+      "canonical_body_height_m": 16,
+      "world_bounds_blender_m": [
+        [
+          -378.3500061035156,
+          143.1875,
+          0.0
+        ],
+        [
+          -349.6499938964844,
+          168.8125,
+          17.279998779296875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -378.3500061035156,
+          0.0,
+          -168.8125
+        ],
+        [
+          -349.6499938964844,
+          17.279998779296875,
+          -143.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0100",
+      "node_name": "AL_BUILDING_B0100",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          -338.86248779296875,
+          22.674999237060547,
+          0.0
+        ],
+        [
+          -309.13751220703125,
+          49.32500076293945,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -338.86248779296875,
+          0.0,
+          -49.32500076293945
+        ],
+        [
+          -309.13751220703125,
+          20.424999237060547,
+          -22.674999237060547
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0101",
+      "node_name": "AL_BUILDING_B0101",
+      "kind": "residential",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          -335.2749938964844,
+          63.1875,
+          0.0
+        ],
+        [
+          -312.7250061035156,
+          88.8125,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -335.2749938964844,
+          0.0,
+          -88.8125
+        ],
+        [
+          -312.7250061035156,
+          16.25,
+          -63.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0102",
+      "node_name": "AL_BUILDING_B0102",
+      "kind": "residential",
+      "canonical_body_height_m": 13,
+      "world_bounds_blender_m": [
+        [
+          -337.8374938964844,
+          144.72500610351562,
+          0.0
+        ],
+        [
+          -310.1625061035156,
+          167.27499389648438,
+          14.190000534057617
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -337.8374938964844,
+          0.0,
+          -167.27499389648438
+        ],
+        [
+          -310.1625061035156,
+          14.190000534057617,
+          -144.72500610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0103",
+      "node_name": "AL_BUILDING_B0103",
+      "kind": "residential",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          -297.8374938964844,
+          141.1374969482422,
+          0.0
+        ],
+        [
+          -270.1625061035156,
+          170.8625030517578,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -297.8374938964844,
+          0.0,
+          -170.8625030517578
+        ],
+        [
+          -270.1625061035156,
+          24.725000381469727,
+          -141.1374969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0104",
+      "node_name": "AL_BUILDING_B0104",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 38,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          23.700000762939453,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          48.29999923706055,
+          40.849998474121094
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          -48.29999923706055
+        ],
+        [
+          47.275001525878906,
+          40.849998474121094,
+          -23.700000762939453
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0105",
+      "node_name": "AL_BUILDING_B0105",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          22.162500381469727,
+          61.13750076293945,
+          0.0
+        ],
+        [
+          49.837501525878906,
+          90.86250305175781,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          22.162500381469727,
+          0.0,
+          -90.86250305175781
+        ],
+        [
+          49.837501525878906,
+          24.725000381469727,
+          -61.13750076293945
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0106",
+      "node_name": "AL_BUILDING_B0106",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          22.674999237060547,
+          103.1875,
+          0.0
+        ],
+        [
+          49.32500076293945,
+          128.8125,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          22.674999237060547,
+          0.0,
+          -128.8125
+        ],
+        [
+          49.32500076293945,
+          34.400001525878906,
+          -103.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0107",
+      "node_name": "AL_BUILDING_B0107",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          22.162500381469727,
+          141.1374969482422,
+          0.0
+        ],
+        [
+          49.837501525878906,
+          170.8625030517578,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          22.162500381469727,
+          0.0,
+          -170.8625030517578
+        ],
+        [
+          49.837501525878906,
+          18.309999465942383,
+          -141.1374969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0108",
+      "node_name": "AL_BUILDING_B0108",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          63.1875,
+          144.72500610351562,
+          0.0
+        ],
+        [
+          88.8125,
+          167.27499389648438,
+          27.94999885559082
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          63.1875,
+          0.0,
+          -167.27499389648438
+        ],
+        [
+          88.8125,
+          27.94999885559082,
+          -144.72500610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0109",
+      "node_name": "AL_BUILDING_B0109",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 34,
+      "world_bounds_blender_m": [
+        [
+          104.2125015258789,
+          23.1875,
+          0.0
+        ],
+        [
+          127.7874984741211,
+          48.8125,
+          36.54999923706055
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          104.2125015258789,
+          0.0,
+          -48.8125
+        ],
+        [
+          127.7874984741211,
+          36.54999923706055,
+          -23.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0110",
+      "node_name": "AL_BUILDING_B0110",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 31,
+      "world_bounds_blender_m": [
+        [
+          104.7249984741211,
+          63.70000076293945,
+          0.0
+        ],
+        [
+          127.2750015258789,
+          88.30000305175781,
+          33.32499694824219
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          104.7249984741211,
+          0.0,
+          -88.30000305175781
+        ],
+        [
+          127.2750015258789,
+          33.32499694824219,
+          -63.70000076293945
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0111",
+      "node_name": "AL_BUILDING_B0111",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          102.67500305175781,
+          143.1875,
+          0.0
+        ],
+        [
+          129.3249969482422,
+          168.8125,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          102.67500305175781,
+          0.0,
+          -168.8125
+        ],
+        [
+          129.3249969482422,
+          34.400001525878906,
+          -143.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0112",
+      "node_name": "AL_BUILDING_B0112",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          141.64999389648438,
+          23.700000762939453,
+          0.0
+        ],
+        [
+          170.35000610351562,
+          48.29999923706055,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          141.64999389648438,
+          0.0,
+          -48.29999923706055
+        ],
+        [
+          170.35000610351562,
+          20.424999237060547,
+          -23.700000762939453
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0113",
+      "node_name": "AL_BUILDING_B0113",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 33,
+      "world_bounds_blender_m": [
+        [
+          142.16250610351562,
+          62.162498474121094,
+          0.0
+        ],
+        [
+          169.83749389648438,
+          89.8375015258789,
+          35.474998474121094
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.16250610351562,
+          0.0,
+          -89.8375015258789
+        ],
+        [
+          169.83749389648438,
+          35.474998474121094,
+          -62.162498474121094
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0114",
+      "node_name": "AL_BUILDING_B0114",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          141.1374969482422,
+          144.72500610351562,
+          0.0
+        ],
+        [
+          170.8625030517578,
+          167.27499389648438,
+          27.94999885559082
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          141.1374969482422,
+          0.0,
+          -167.27499389648438
+        ],
+        [
+          170.8625030517578,
+          27.94999885559082,
+          -144.72500610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0115",
+      "node_name": "AL_BUILDING_B0115",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          184.21249389648438,
+          144.72500610351562,
+          0.0
+        ],
+        [
+          207.78750610351562,
+          167.27499389648438,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          184.21249389648438,
+          0.0,
+          -167.27499389648438
+        ],
+        [
+          207.78750610351562,
+          29.02499771118164,
+          -144.72500610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0116",
+      "node_name": "AL_BUILDING_B0116",
+      "kind": "residential",
+      "canonical_body_height_m": 11,
+      "world_bounds_blender_m": [
+        [
+          -416.8125,
+          238.1875,
+          0.0
+        ],
+        [
+          -391.1875,
+          263.8125,
+          12.129999160766602
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -416.8125,
+          0.0,
+          -263.8125
+        ],
+        [
+          -391.1875,
+          12.129999160766602,
+          -238.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0117",
+      "node_name": "AL_BUILDING_B0117",
+      "kind": "residential",
+      "canonical_body_height_m": 14,
+      "world_bounds_blender_m": [
+        [
+          -418.3500061035156,
+          278.1875,
+          0.0
+        ],
+        [
+          -389.6499938964844,
+          303.8125,
+          15.219999313354492
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -418.3500061035156,
+          0.0,
+          -303.8125
+        ],
+        [
+          -389.6499938964844,
+          15.219999313354492,
+          -278.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0118",
+      "node_name": "AL_BUILDING_B0118",
+      "kind": "residential",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          -416.8125,
+          319.2124938964844,
+          0.0
+        ],
+        [
+          -391.1875,
+          342.7875061035156,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -416.8125,
+          0.0,
+          -342.7875061035156
+        ],
+        [
+          -391.1875,
+          19.350000381469727,
+          -319.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0119",
+      "node_name": "AL_BUILDING_B0119",
+      "kind": "residential",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          -416.8125,
+          359.7250061035156,
+          0.0
+        ],
+        [
+          -391.1875,
+          382.2749938964844,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -416.8125,
+          0.0,
+          -382.2749938964844
+        ],
+        [
+          -391.1875,
+          23.650001525878906,
+          -359.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0120",
+      "node_name": "AL_BUILDING_B0120",
+      "kind": "residential",
+      "canonical_body_height_m": 16,
+      "world_bounds_blender_m": [
+        [
+          -418.3500061035156,
+          399.7250061035156,
+          0.0
+        ],
+        [
+          -389.6499938964844,
+          422.2749938964844,
+          17.279998779296875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -418.3500061035156,
+          0.0,
+          -422.2749938964844
+        ],
+        [
+          -389.6499938964844,
+          17.279998779296875,
+          -399.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0121",
+      "node_name": "AL_BUILDING_B0121",
+      "kind": "residential",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          -378.3500061035156,
+          237.6750030517578,
+          0.0
+        ],
+        [
+          -349.6499938964844,
+          264.32501220703125,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -378.3500061035156,
+          0.0,
+          -264.32501220703125
+        ],
+        [
+          -349.6499938964844,
+          21.5,
+          -237.6750030517578
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0122",
+      "node_name": "AL_BUILDING_B0122",
+      "kind": "residential",
+      "canonical_body_height_m": 13,
+      "world_bounds_blender_m": [
+        [
+          -376.29998779296875,
+          279.7250061035156,
+          0.0
+        ],
+        [
+          -351.70001220703125,
+          302.2749938964844,
+          14.190000534057617
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -376.29998779296875,
+          0.0,
+          -302.2749938964844
+        ],
+        [
+          -351.70001220703125,
+          14.190000534057617,
+          -279.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0123",
+      "node_name": "AL_BUILDING_B0123",
+      "kind": "residential",
+      "canonical_body_height_m": 11,
+      "world_bounds_blender_m": [
+        [
+          -377.8374938964844,
+          316.13751220703125,
+          0.0
+        ],
+        [
+          -350.1625061035156,
+          345.86248779296875,
+          12.129999160766602
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -377.8374938964844,
+          0.0,
+          -345.86248779296875
+        ],
+        [
+          -350.1625061035156,
+          12.129999160766602,
+          -316.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0124",
+      "node_name": "AL_BUILDING_B0124",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          -378.3500061035156,
+          359.2124938964844,
+          0.0
+        ],
+        [
+          -349.6499938964844,
+          382.7875061035156,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -378.3500061035156,
+          0.0,
+          -382.7875061035156
+        ],
+        [
+          -349.6499938964844,
+          20.424999237060547,
+          -359.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0125",
+      "node_name": "AL_BUILDING_B0125",
+      "kind": "residential",
+      "canonical_body_height_m": 8,
+      "world_bounds_blender_m": [
+        [
+          -375.7875061035156,
+          399.2124938964844,
+          0.0
+        ],
+        [
+          -352.2124938964844,
+          422.7875061035156,
+          9.039999961853027
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -375.7875061035156,
+          0.0,
+          -422.7875061035156
+        ],
+        [
+          -352.2124938964844,
+          9.039999961853027,
+          -399.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0126",
+      "node_name": "AL_BUILDING_B0126",
+      "kind": "residential",
+      "canonical_body_height_m": 10,
+      "world_bounds_blender_m": [
+        [
+          -335.2749938964844,
+          236.64999389648438,
+          0.0
+        ],
+        [
+          -312.7250061035156,
+          265.3500061035156,
+          11.09999942779541
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -335.2749938964844,
+          0.0,
+          -265.3500061035156
+        ],
+        [
+          -312.7250061035156,
+          11.09999942779541,
+          -236.64999389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0127",
+      "node_name": "AL_BUILDING_B0127",
+      "kind": "residential",
+      "canonical_body_height_m": 14,
+      "world_bounds_blender_m": [
+        [
+          -335.2749938964844,
+          279.2124938964844,
+          0.0
+        ],
+        [
+          -312.7250061035156,
+          302.7875061035156,
+          15.219999313354492
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -335.2749938964844,
+          0.0,
+          -302.7875061035156
+        ],
+        [
+          -312.7250061035156,
+          15.219999313354492,
+          -279.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0128",
+      "node_name": "AL_BUILDING_B0128",
+      "kind": "residential",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          -337.8374938964844,
+          318.1875,
+          0.0
+        ],
+        [
+          -310.1625061035156,
+          343.8125,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -337.8374938964844,
+          0.0,
+          -343.8125
+        ],
+        [
+          -310.1625061035156,
+          25.80000114440918,
+          -318.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0129",
+      "node_name": "AL_BUILDING_B0129",
+      "kind": "residential",
+      "canonical_body_height_m": 13,
+      "world_bounds_blender_m": [
+        [
+          -337.8374938964844,
+          359.2124938964844,
+          0.0
+        ],
+        [
+          -310.1625061035156,
+          382.7875061035156,
+          14.190000534057617
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -337.8374938964844,
+          0.0,
+          -382.7875061035156
+        ],
+        [
+          -310.1625061035156,
+          14.190000534057617,
+          -359.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0130",
+      "node_name": "AL_BUILDING_B0130",
+      "kind": "residential",
+      "canonical_body_height_m": 13,
+      "world_bounds_blender_m": [
+        [
+          -337.32501220703125,
+          398.1875,
+          0.0
+        ],
+        [
+          -310.67498779296875,
+          423.8125,
+          14.190000534057617
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -337.32501220703125,
+          0.0,
+          -423.8125
+        ],
+        [
+          -310.67498779296875,
+          14.190000534057617,
+          -398.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0131",
+      "node_name": "AL_BUILDING_B0131",
+      "kind": "residential",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          -298.86248779296875,
+          236.1374969482422,
+          0.0
+        ],
+        [
+          -269.13751220703125,
+          265.86248779296875,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -298.86248779296875,
+          0.0,
+          -265.86248779296875
+        ],
+        [
+          -269.13751220703125,
+          20.424999237060547,
+          -236.1374969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0132",
+      "node_name": "AL_BUILDING_B0132",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -298.3500061035156,
+          277.1625061035156,
+          0.0
+        ],
+        [
+          -269.6499938964844,
+          304.8374938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -298.3500061035156,
+          0.0,
+          -304.8374938964844
+        ],
+        [
+          -269.6499938964844,
+          22.575000762939453,
+          -277.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0133",
+      "node_name": "AL_BUILDING_B0133",
+      "kind": "residential",
+      "canonical_body_height_m": 23,
+      "world_bounds_blender_m": [
+        [
+          -296.8125,
+          319.2124938964844,
+          0.0
+        ],
+        [
+          -271.1875,
+          342.7875061035156,
+          24.725000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -296.8125,
+          0.0,
+          -342.7875061035156
+        ],
+        [
+          -271.1875,
+          24.725000381469727,
+          -319.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0134",
+      "node_name": "AL_BUILDING_B0134",
+      "kind": "residential",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          -296.29998779296875,
+          356.13751220703125,
+          0.0
+        ],
+        [
+          -271.70001220703125,
+          385.86248779296875,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -296.29998779296875,
+          0.0,
+          -385.86248779296875
+        ],
+        [
+          -271.70001220703125,
+          23.650001525878906,
+          -356.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0135",
+      "node_name": "AL_BUILDING_B0135",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -298.86248779296875,
+          397.67498779296875,
+          0.0
+        ],
+        [
+          -269.13751220703125,
+          424.32501220703125,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -298.86248779296875,
+          0.0,
+          -424.32501220703125
+        ],
+        [
+          -269.13751220703125,
+          22.575000762939453,
+          -397.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0136",
+      "node_name": "AL_BUILDING_B0136",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          -205.78750610351562,
+          317.67498779296875,
+          0.0
+        ],
+        [
+          -182.21249389648438,
+          344.32501220703125,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -205.78750610351562,
+          0.0,
+          -344.32501220703125
+        ],
+        [
+          -182.21249389648438,
+          34.400001525878906,
+          -317.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0137",
+      "node_name": "AL_BUILDING_B0137",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 41,
+      "world_bounds_blender_m": [
+        [
+          -205.27499389648438,
+          359.7250061035156,
+          0.0
+        ],
+        [
+          -182.72500610351562,
+          382.2749938964844,
+          44.03000259399414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -205.27499389648438,
+          0.0,
+          -382.2749938964844
+        ],
+        [
+          -182.72500610351562,
+          44.03000259399414,
+          -359.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0138",
+      "node_name": "AL_BUILDING_B0138",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 25,
+      "world_bounds_blender_m": [
+        [
+          -206.3000030517578,
+          397.1625061035156,
+          0.0
+        ],
+        [
+          -181.6999969482422,
+          424.8374938964844,
+          26.875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -206.3000030517578,
+          0.0,
+          -424.8374938964844
+        ],
+        [
+          -181.6999969482422,
+          26.875,
+          -397.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0139",
+      "node_name": "AL_BUILDING_B0139",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 16,
+      "world_bounds_blender_m": [
+        [
+          -168.35000610351562,
+          356.6499938964844,
+          0.0
+        ],
+        [
+          -139.64999389648438,
+          385.3500061035156,
+          17.279998779296875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -168.35000610351562,
+          0.0,
+          -385.3500061035156
+        ],
+        [
+          -139.64999389648438,
+          17.279998779296875,
+          -356.6499938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0140",
+      "node_name": "AL_BUILDING_B0140",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          -166.8125,
+          396.13751220703125,
+          0.0
+        ],
+        [
+          -141.1875,
+          425.86248779296875,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -166.8125,
+          0.0,
+          -425.86248779296875
+        ],
+        [
+          -141.1875,
+          22.575000762939453,
+          -396.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0141",
+      "node_name": "AL_BUILDING_B0141",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 46,
+      "world_bounds_blender_m": [
+        [
+          -126.8125,
+          237.16250610351562,
+          0.0
+        ],
+        [
+          -101.1875,
+          264.8374938964844,
+          49.18000030517578
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -126.8125,
+          0.0,
+          -264.8374938964844
+        ],
+        [
+          -101.1875,
+          49.18000030517578,
+          -237.16250610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0142",
+      "node_name": "AL_BUILDING_B0142",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 38,
+      "world_bounds_blender_m": [
+        [
+          -126.8125,
+          279.7250061035156,
+          0.0
+        ],
+        [
+          -101.1875,
+          302.2749938964844,
+          40.849998474121094
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -126.8125,
+          0.0,
+          -302.2749938964844
+        ],
+        [
+          -101.1875,
+          40.849998474121094,
+          -279.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0143",
+      "node_name": "AL_BUILDING_B0143",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 44,
+      "world_bounds_blender_m": [
+        [
+          -125.27499389648438,
+          357.1625061035156,
+          0.0
+        ],
+        [
+          -102.7249984741211,
+          384.8374938964844,
+          47.12000274658203
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -125.27499389648438,
+          0.0,
+          -384.8374938964844
+        ],
+        [
+          -102.7249984741211,
+          47.12000274658203,
+          -357.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0144",
+      "node_name": "AL_BUILDING_B0144",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          -127.83749389648438,
+          399.2124938964844,
+          0.0
+        ],
+        [
+          -100.1624984741211,
+          422.7875061035156,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -127.83749389648438,
+          0.0,
+          -422.7875061035156
+        ],
+        [
+          -100.1624984741211,
+          21.5,
+          -399.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0145",
+      "node_name": "AL_BUILDING_B0145",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          -86.30000305175781,
+          358.70001220703125,
+          0.0
+        ],
+        [
+          -61.69999694824219,
+          383.29998779296875,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -86.30000305175781,
+          0.0,
+          -383.29998779296875
+        ],
+        [
+          -61.69999694824219,
+          29.02499771118164,
+          -358.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0146",
+      "node_name": "AL_BUILDING_B0146",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          -86.30000305175781,
+          396.13751220703125,
+          0.0
+        ],
+        [
+          -61.69999694824219,
+          425.86248779296875,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -86.30000305175781,
+          0.0,
+          -425.86248779296875
+        ],
+        [
+          -61.69999694824219,
+          18.309999465942383,
+          -396.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0147",
+      "node_name": "AL_BUILDING_B0147",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          -48.349998474121094,
+          237.16250610351562,
+          0.0
+        ],
+        [
+          -19.650001525878906,
+          264.8374938964844,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -48.349998474121094,
+          0.0,
+          -264.8374938964844
+        ],
+        [
+          -19.650001525878906,
+          19.350000381469727,
+          -237.16250610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0148",
+      "node_name": "AL_BUILDING_B0148",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          -45.787498474121094,
+          279.2124938964844,
+          0.0
+        ],
+        [
+          -22.212501525878906,
+          302.7875061035156,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -45.787498474121094,
+          0.0,
+          -302.7875061035156
+        ],
+        [
+          -22.212501525878906,
+          20.424999237060547,
+          -279.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0149",
+      "node_name": "AL_BUILDING_B0149",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 40,
+      "world_bounds_blender_m": [
+        [
+          -46.8125,
+          316.6499938964844,
+          0.0
+        ],
+        [
+          -21.1875,
+          345.3500061035156,
+          43.0
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -46.8125,
+          0.0,
+          -345.3500061035156
+        ],
+        [
+          -21.1875,
+          43.0,
+          -316.6499938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0150",
+      "node_name": "AL_BUILDING_B0150",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 45,
+      "world_bounds_blender_m": [
+        [
+          -45.787498474121094,
+          358.70001220703125,
+          0.0
+        ],
+        [
+          -22.212501525878906,
+          383.29998779296875,
+          48.150001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -45.787498474121094,
+          0.0,
+          -383.29998779296875
+        ],
+        [
+          -22.212501525878906,
+          48.150001525878906,
+          -358.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0151",
+      "node_name": "AL_BUILDING_B0151",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 38,
+      "world_bounds_blender_m": [
+        [
+          -48.86249923706055,
+          396.13751220703125,
+          0.0
+        ],
+        [
+          -19.137500762939453,
+          425.86248779296875,
+          40.849998474121094
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          -48.86249923706055,
+          0.0,
+          -425.86248779296875
+        ],
+        [
+          -19.137500762939453,
+          40.849998474121094,
+          -396.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0152",
+      "node_name": "AL_BUILDING_B0152",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 16,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          239.21249389648438,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          262.7875061035156,
+          17.279998779296875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          -262.7875061035156
+        ],
+        [
+          47.275001525878906,
+          17.279998779296875,
+          -239.21249389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0153",
+      "node_name": "AL_BUILDING_B0153",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          24.725000381469727,
+          277.67498779296875,
+          0.0
+        ],
+        [
+          47.275001525878906,
+          304.32501220703125,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          24.725000381469727,
+          0.0,
+          -304.32501220703125
+        ],
+        [
+          47.275001525878906,
+          29.02499771118164,
+          -277.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0154",
+      "node_name": "AL_BUILDING_B0154",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 36,
+      "world_bounds_blender_m": [
+        [
+          23.700000762939453,
+          318.70001220703125,
+          0.0
+        ],
+        [
+          48.29999923706055,
+          343.29998779296875,
+          38.70000076293945
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          23.700000762939453,
+          0.0,
+          -343.29998779296875
+        ],
+        [
+          48.29999923706055,
+          38.70000076293945,
+          -318.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0155",
+      "node_name": "AL_BUILDING_B0155",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 43,
+      "world_bounds_blender_m": [
+        [
+          23.1875,
+          359.2124938964844,
+          0.0
+        ],
+        [
+          48.8125,
+          382.7875061035156,
+          46.09000015258789
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          23.1875,
+          0.0,
+          -382.7875061035156
+        ],
+        [
+          48.8125,
+          46.09000015258789,
+          -359.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0156",
+      "node_name": "AL_BUILDING_B0156",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 26,
+      "world_bounds_blender_m": [
+        [
+          21.137500762939453,
+          399.2124938964844,
+          0.0
+        ],
+        [
+          50.86249923706055,
+          422.7875061035156,
+          27.94999885559082
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          21.137500762939453,
+          0.0,
+          -422.7875061035156
+        ],
+        [
+          50.86249923706055,
+          27.94999885559082,
+          -399.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0157",
+      "node_name": "AL_BUILDING_B0157",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 29,
+      "world_bounds_blender_m": [
+        [
+          61.650001525878906,
+          239.72500610351562,
+          0.0
+        ],
+        [
+          90.3499984741211,
+          262.2749938964844,
+          31.174999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          61.650001525878906,
+          0.0,
+          -262.2749938964844
+        ],
+        [
+          90.3499984741211,
+          31.174999237060547,
+          -239.72500610351562
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0158",
+      "node_name": "AL_BUILDING_B0158",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          63.1875,
+          278.70001220703125,
+          0.0
+        ],
+        [
+          88.8125,
+          303.29998779296875,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          63.1875,
+          0.0,
+          -303.29998779296875
+        ],
+        [
+          88.8125,
+          23.650001525878906,
+          -278.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0159",
+      "node_name": "AL_BUILDING_B0159",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          63.1875,
+          317.67498779296875,
+          0.0
+        ],
+        [
+          88.8125,
+          344.32501220703125,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          63.1875,
+          0.0,
+          -344.32501220703125
+        ],
+        [
+          88.8125,
+          19.350000381469727,
+          -317.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0160",
+      "node_name": "AL_BUILDING_B0160",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 36,
+      "world_bounds_blender_m": [
+        [
+          64.2125015258789,
+          358.1875,
+          0.0
+        ],
+        [
+          87.7874984741211,
+          383.8125,
+          38.70000076293945
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          64.2125015258789,
+          0.0,
+          -383.8125
+        ],
+        [
+          87.7874984741211,
+          38.70000076293945,
+          -358.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0161",
+      "node_name": "AL_BUILDING_B0161",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 48,
+      "world_bounds_blender_m": [
+        [
+          64.7249984741211,
+          398.70001220703125,
+          0.0
+        ],
+        [
+          87.2750015258789,
+          423.29998779296875,
+          51.2400016784668
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          64.7249984741211,
+          0.0,
+          -423.29998779296875
+        ],
+        [
+          87.2750015258789,
+          51.2400016784668,
+          -398.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0162",
+      "node_name": "AL_BUILDING_B0162",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          103.69999694824219,
+          236.1374969482422,
+          0.0
+        ],
+        [
+          128.3000030517578,
+          265.86248779296875,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          103.69999694824219,
+          0.0,
+          -265.86248779296875
+        ],
+        [
+          128.3000030517578,
+          34.400001525878906,
+          -236.1374969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0163",
+      "node_name": "AL_BUILDING_B0163",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          103.1875,
+          279.2124938964844,
+          0.0
+        ],
+        [
+          128.8125,
+          302.7875061035156,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          103.1875,
+          0.0,
+          -302.7875061035156
+        ],
+        [
+          128.8125,
+          16.25,
+          -279.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0164",
+      "node_name": "AL_BUILDING_B0164",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 42,
+      "world_bounds_blender_m": [
+        [
+          104.7249984741211,
+          319.7250061035156,
+          0.0
+        ],
+        [
+          127.2750015258789,
+          342.2749938964844,
+          45.060001373291016
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          104.7249984741211,
+          0.0,
+          -342.2749938964844
+        ],
+        [
+          127.2750015258789,
+          45.060001373291016,
+          -319.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0165",
+      "node_name": "AL_BUILDING_B0165",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 22,
+      "world_bounds_blender_m": [
+        [
+          104.7249984741211,
+          359.7250061035156,
+          0.0
+        ],
+        [
+          127.2750015258789,
+          382.2749938964844,
+          23.650001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          104.7249984741211,
+          0.0,
+          -382.2749938964844
+        ],
+        [
+          127.2750015258789,
+          23.650001525878906,
+          -359.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0166",
+      "node_name": "AL_BUILDING_B0166",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          102.67500305175781,
+          399.7250061035156,
+          0.0
+        ],
+        [
+          129.3249969482422,
+          422.2749938964844,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          102.67500305175781,
+          0.0,
+          -422.2749938964844
+        ],
+        [
+          129.3249969482422,
+          16.25,
+          -399.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0167",
+      "node_name": "AL_BUILDING_B0167",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 48,
+      "world_bounds_blender_m": [
+        [
+          143.6999969482422,
+          239.21249389648438,
+          0.0
+        ],
+        [
+          168.3000030517578,
+          262.7875061035156,
+          51.2400016784668
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          143.6999969482422,
+          0.0,
+          -262.7875061035156
+        ],
+        [
+          168.3000030517578,
+          51.2400016784668,
+          -239.21249389648438
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0168",
+      "node_name": "AL_BUILDING_B0168",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 42,
+      "world_bounds_blender_m": [
+        [
+          142.16250610351562,
+          276.6499938964844,
+          0.0
+        ],
+        [
+          169.83749389648438,
+          305.3500061035156,
+          45.060001373291016
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.16250610351562,
+          0.0,
+          -305.3500061035156
+        ],
+        [
+          169.83749389648438,
+          45.060001373291016,
+          -276.6499938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0169",
+      "node_name": "AL_BUILDING_B0169",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 19,
+      "world_bounds_blender_m": [
+        [
+          142.16250610351562,
+          317.67498779296875,
+          0.0
+        ],
+        [
+          169.83749389648438,
+          344.32501220703125,
+          20.424999237060547
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.16250610351562,
+          0.0,
+          -344.32501220703125
+        ],
+        [
+          169.83749389648438,
+          20.424999237060547,
+          -317.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0170",
+      "node_name": "AL_BUILDING_B0170",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 27,
+      "world_bounds_blender_m": [
+        [
+          143.1875,
+          358.1875,
+          0.0
+        ],
+        [
+          168.8125,
+          383.8125,
+          29.02499771118164
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          143.1875,
+          0.0,
+          -383.8125
+        ],
+        [
+          168.8125,
+          29.02499771118164,
+          -358.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0171",
+      "node_name": "AL_BUILDING_B0171",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 42,
+      "world_bounds_blender_m": [
+        [
+          142.16250610351562,
+          397.1625061035156,
+          0.0
+        ],
+        [
+          169.83749389648438,
+          424.8374938964844,
+          45.060001373291016
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          142.16250610351562,
+          0.0,
+          -424.8374938964844
+        ],
+        [
+          169.83749389648438,
+          45.060001373291016,
+          -397.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0172",
+      "node_name": "AL_BUILDING_B0172",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 37,
+      "world_bounds_blender_m": [
+        [
+          181.1374969482422,
+          236.1374969482422,
+          0.0
+        ],
+        [
+          210.8625030517578,
+          265.86248779296875,
+          39.775001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          181.1374969482422,
+          0.0,
+          -265.86248779296875
+        ],
+        [
+          210.8625030517578,
+          39.775001525878906,
+          -236.1374969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0173",
+      "node_name": "AL_BUILDING_B0173",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 24,
+      "world_bounds_blender_m": [
+        [
+          181.64999389648438,
+          277.1625061035156,
+          0.0
+        ],
+        [
+          210.35000610351562,
+          304.8374938964844,
+          25.80000114440918
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          181.64999389648438,
+          0.0,
+          -304.8374938964844
+        ],
+        [
+          210.35000610351562,
+          25.80000114440918,
+          -277.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0174",
+      "node_name": "AL_BUILDING_B0174",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 32,
+      "world_bounds_blender_m": [
+        [
+          181.1374969482422,
+          316.6499938964844,
+          0.0
+        ],
+        [
+          210.8625030517578,
+          345.3500061035156,
+          34.400001525878906
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          181.1374969482422,
+          0.0,
+          -345.3500061035156
+        ],
+        [
+          210.8625030517578,
+          34.400001525878906,
+          -316.6499938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0175",
+      "node_name": "AL_BUILDING_B0175",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 28,
+      "world_bounds_blender_m": [
+        [
+          183.1875,
+          358.70001220703125,
+          0.0
+        ],
+        [
+          208.8125,
+          383.29998779296875,
+          30.10000228881836
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          183.1875,
+          0.0,
+          -383.29998779296875
+        ],
+        [
+          208.8125,
+          30.10000228881836,
+          -358.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0176",
+      "node_name": "AL_BUILDING_B0176",
+      "kind": "mixed_use",
+      "canonical_body_height_m": 41,
+      "world_bounds_blender_m": [
+        [
+          182.16250610351562,
+          398.70001220703125,
+          0.0
+        ],
+        [
+          209.83749389648438,
+          423.29998779296875,
+          44.03000259399414
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          182.16250610351562,
+          0.0,
+          -423.29998779296875
+        ],
+        [
+          209.83749389648438,
+          44.03000259399414,
+          -398.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 210,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0177",
+      "node_name": "AL_BUILDING_B0177",
+      "kind": "residential",
+      "canonical_body_height_m": 14,
+      "world_bounds_blender_m": [
+        [
+          267.1625061035156,
+          359.7250061035156,
+          0.0
+        ],
+        [
+          294.8374938964844,
+          382.2749938964844,
+          15.219999313354492
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          267.1625061035156,
+          0.0,
+          -382.2749938964844
+        ],
+        [
+          294.8374938964844,
+          15.219999313354492,
+          -359.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0178",
+      "node_name": "AL_BUILDING_B0178",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          267.1625061035156,
+          399.2124938964844,
+          0.0
+        ],
+        [
+          294.8374938964844,
+          422.7875061035156,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          267.1625061035156,
+          0.0,
+          -422.7875061035156
+        ],
+        [
+          294.8374938964844,
+          22.575000762939453,
+          -399.2124938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0179",
+      "node_name": "AL_BUILDING_B0179",
+      "kind": "residential",
+      "canonical_body_height_m": 20,
+      "world_bounds_blender_m": [
+        [
+          309.7250061035156,
+          356.13751220703125,
+          0.0
+        ],
+        [
+          332.2749938964844,
+          385.86248779296875,
+          21.5
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          309.7250061035156,
+          0.0,
+          -385.86248779296875
+        ],
+        [
+          332.2749938964844,
+          21.5,
+          -356.13751220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0180",
+      "node_name": "AL_BUILDING_B0180",
+      "kind": "residential",
+      "canonical_body_height_m": 21,
+      "world_bounds_blender_m": [
+        [
+          308.1875,
+          397.1625061035156,
+          0.0
+        ],
+        [
+          333.8125,
+          424.8374938964844,
+          22.575000762939453
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          308.1875,
+          0.0,
+          -424.8374938964844
+        ],
+        [
+          333.8125,
+          22.575000762939453,
+          -397.1625061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0181",
+      "node_name": "AL_BUILDING_B0181",
+      "kind": "residential",
+      "canonical_body_height_m": 12,
+      "world_bounds_blender_m": [
+        [
+          346.6499938964844,
+          238.6999969482422,
+          0.0
+        ],
+        [
+          375.3500061035156,
+          263.29998779296875,
+          13.15999984741211
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          346.6499938964844,
+          0.0,
+          -263.29998779296875
+        ],
+        [
+          375.3500061035156,
+          13.15999984741211,
+          -238.6999969482422
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0182",
+      "node_name": "AL_BUILDING_B0182",
+      "kind": "residential",
+      "canonical_body_height_m": 15,
+      "world_bounds_blender_m": [
+        [
+          348.1875,
+          278.70001220703125,
+          0.0
+        ],
+        [
+          373.8125,
+          303.29998779296875,
+          16.25
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          348.1875,
+          0.0,
+          -303.29998779296875
+        ],
+        [
+          373.8125,
+          16.25,
+          -278.70001220703125
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0183",
+      "node_name": "AL_BUILDING_B0183",
+      "kind": "residential",
+      "canonical_body_height_m": 18,
+      "world_bounds_blender_m": [
+        [
+          348.1875,
+          357.67498779296875,
+          0.0
+        ],
+        [
+          373.8125,
+          384.32501220703125,
+          19.350000381469727
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          348.1875,
+          0.0,
+          -384.32501220703125
+        ],
+        [
+          373.8125,
+          19.350000381469727,
+          -357.67498779296875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0184",
+      "node_name": "AL_BUILDING_B0184",
+      "kind": "residential",
+      "canonical_body_height_m": 25,
+      "world_bounds_blender_m": [
+        [
+          349.2124938964844,
+          396.6499938964844,
+          0.0
+        ],
+        [
+          372.7875061035156,
+          425.3500061035156,
+          26.875
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          349.2124938964844,
+          0.0,
+          -425.3500061035156
+        ],
+        [
+          372.7875061035156,
+          26.875,
+          -396.6499938964844
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0185",
+      "node_name": "AL_BUILDING_B0185",
+      "kind": "residential",
+      "canonical_body_height_m": 17,
+      "world_bounds_blender_m": [
+        [
+          386.13751220703125,
+          359.7250061035156,
+          0.0
+        ],
+        [
+          415.86248779296875,
+          382.2749938964844,
+          18.309999465942383
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          386.13751220703125,
+          0.0,
+          -382.2749938964844
+        ],
+        [
+          415.86248779296875,
+          18.309999465942383,
+          -359.7250061035156
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    },
+    {
+      "building_id": "B0186",
+      "node_name": "AL_BUILDING_B0186",
+      "kind": "residential",
+      "canonical_body_height_m": 12,
+      "world_bounds_blender_m": [
+        [
+          388.70001220703125,
+          398.1875,
+          0.0
+        ],
+        [
+          413.29998779296875,
+          423.8125,
+          13.15999984741211
+        ]
+      ],
+      "world_bounds_render_m": [
+        [
+          388.70001220703125,
+          0.0,
+          -423.8125
+        ],
+        [
+          413.29998779296875,
+          13.15999984741211,
+          -398.1875
+        ]
+      ],
+      "original_faces": 12,
+      "added_faces": 150,
+      "detail_style": "shallow_3d_bays_ledges_rooftop"
+    }
+  ],
+  "ground_node": "AL_GROUND",
+  "ground_original_faces": 4516,
+  "canonical_geometry_changed": false,
+  "vehicle_geometry_changed": false,
+  "material_policy": "shared_immutable_asset_materials; preserve palette and glass; renderer must isolate building fade from ground, using per-building clones or per-vertex building masks",
+  "validation_status": "build_only_omen_visual_and_runtime_validation_pending",
+  "notes": "Original source faces retained exactly once. New building details only; rooftop volume expands visual Z bounds. No render or simulation executed."
+}

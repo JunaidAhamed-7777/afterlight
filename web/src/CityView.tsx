@@ -4,6 +4,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
 import type { City, Frame, SignalGeometry } from "./types.ts";
 import { GeometryLayer } from "./GeometryLayer.ts";
+import { BuildingCutaway } from "./BuildingCutaway.ts";
+import { CameraControls, type CameraAction } from "./CameraControls.tsx";
 import { fitOrthographic } from "./cameraFit.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
 import { interpolatedFrame, vehiclePose } from "./replay.ts";
@@ -36,6 +38,13 @@ export function CityView(props: Props) {
   const [status, setStatus] = useState("Loading original city assets…");
   const [failed, setFailed] = useState(false);
   const [retry, setRetry] = useState(0);
+  const [exploring, setExploring] = useState(true);
+  const [pan, setPan] = useState(false);
+  const [cutaway, setCutaway] = useState(true);
+  const [occluderCount, setOccluderCount] = useState(0);
+  const cameraAction = useRef<(action: CameraAction) => void>(() => {});
+  const preferences = useRef({ pan, cutaway });
+  preferences.current = { pan, cutaway };
   useEffect(() => {
     const container = host.current!;
     let disposed = false,
@@ -73,13 +82,13 @@ export function CityView(props: Props) {
     renderer.toneMappingExposure = 1.35;
     renderer.domElement.setAttribute(
       "aria-label",
-      "Interactive original AFTERLIGHT city. Drag or use arrow keys to pan; scroll or use plus and minus to zoom; press zero to reset. Tab leaves the map. HTML controls select a pickup and hospital.",
+      "Interactive original AFTERLIGHT city. Drag to orbit; use arrow keys or Pan mode to pan. Scroll or plus and minus zoom. X, Y, Z turn the camera; Shift reverses. Zero restores Full city. Tab leaves the map.",
     );
     renderer.domElement.setAttribute("role", "img");
     renderer.domElement.tabIndex = 0;
     renderer.domElement.setAttribute(
       "aria-keyshortcuts",
-      "ArrowUp ArrowDown ArrowLeft ArrowRight + - 0",
+      "ArrowUp ArrowDown ArrowLeft ArrowRight + - 0 X Y Z",
     );
     container.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
@@ -89,7 +98,13 @@ export function CityView(props: Props) {
     let viewportWidth = 1,
       viewportHeight = 1;
     const camera = new THREE.OrthographicCamera(-850, 850, 650, -650, 1, 5000);
+    const perspectiveCamera = new THREE.PerspectiveCamera(42, 1, 1, 10000);
+    let renderCamera: THREE.Camera = camera;
+    let perspectiveMode = true;
+    let roll = 0;
     let overviewMode = true;
+    let navigationTouched = false;
+    const buildingCutaway = new BuildingCutaway();
     let assetBounds: THREE.Box3 | null = null;
     const cityBounds = () => {
       if (assetBounds) return assetBounds;
@@ -119,30 +134,78 @@ export function CityView(props: Props) {
       camera.bottom = -fit.halfHeight;
       camera.updateProjectionMatrix();
     };
+    let programmaticNavigation = false;
+    const updateNavigation = () => {
+      programmaticNavigation = true;
+      try { controls.update(); } finally { programmaticNavigation = false; }
+    };
     const overview = () => {
+      perspectiveMode = false;
+      roll = 0;
+      setExploring(false);
       overviewMode = true;
       const center = cityBounds().getCenter(new THREE.Vector3());
       camera.position.copy(center).add(new THREE.Vector3(1050, 1250, 1100));
       camera.zoom = 1;
       controls.target.copy(center);
-      controls.update();
+      updateNavigation();
       fitOverview();
       dirty = true;
     };
     const controls = new MapControls(camera, renderer.domElement);
     controls.enableDamping = false;
+    controls.screenSpacePanning = true;
     controls.minZoom = 0.65;
     controls.maxZoom = 12;
     controls.maxPolarAngle = Math.PI * 0.44;
     controls.minPolarAngle = Math.PI * 0.12;
-    overview();
+    const explore = () => {
+      overview();
+      perspectiveMode = true;
+      overviewMode = false;
+      setExploring(true);
+      camera.zoom = 2.5;
+      const center = controls.target.clone();
+      camera.position.copy(center).add(new THREE.Vector3(1050, 750, 1100));
+      camera.updateProjectionMatrix();
+      updateNavigation();
+      dirty = true;
+    };
+    explore();
+    controls.mouseButtons.LEFT = preferences.current.pan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+    controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
+    controls.touches.ONE = preferences.current.pan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+    controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
     controls.listenToKeyEvents(renderer.domElement);
     const manualCamera = () => {
+      navigationTouched = true;
       overviewMode = false;
       current.current.onManualCamera();
     };
     controls.addEventListener("start", manualCamera);
+    cameraAction.current = (action) => {
+      manualCamera();
+      if (action === "overview") { overview(); return; }
+      if (action === "explore") { explore(); return; }
+      const direction = action.endsWith("+") ? 1 : -1;
+      if (action.startsWith("z")) roll += direction * Math.PI / 18;
+      else {
+        const offset = camera.position.clone().sub(controls.target);
+        const spherical = new THREE.Spherical().setFromVector3(offset);
+        if (action.startsWith("x")) spherical.phi = THREE.MathUtils.clamp(
+          spherical.phi + direction * Math.PI / 18, controls.minPolarAngle, controls.maxPolarAngle);
+        else spherical.theta += direction * Math.PI / 18;
+        camera.position.copy(controls.target).add(offset.setFromSpherical(spherical));
+        updateNavigation();
+      }
+      dirty = true;
+    };
     const cameraKeys = (event: KeyboardEvent) => {
+      if (["x", "y", "z"].includes(event.key.toLowerCase())) {
+        event.preventDefault();
+        cameraAction.current(`${event.key.toLowerCase()}${event.shiftKey ? "-" : "+"}` as CameraAction);
+        return;
+      }
       if (
         ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)
       ) {
@@ -160,12 +223,24 @@ export function CityView(props: Props) {
           controls.maxZoom,
         );
         camera.updateProjectionMatrix();
-        controls.update();
+        updateNavigation();
       }
       dirty = true;
     };
     renderer.domElement.addEventListener("keydown", cameraKeys);
+    const lastNavigationTarget = controls.target.clone();
     controls.addEventListener("change", () => {
+      if (!programmaticNavigation && roll !== 0) {
+        const delta = controls.target.clone().sub(lastNavigationTarget);
+        if (delta.lengthSq() > 0) {
+          const direction = camera.getWorldDirection(new THREE.Vector3());
+          const correction = delta.clone().applyAxisAngle(direction, -roll).sub(delta);
+          controls.target.add(correction);
+          camera.position.add(correction);
+          camera.updateMatrixWorld(true);
+        }
+      }
+      lastNavigationTarget.copy(controls.target);
       dirty = true;
     });
     scene.add(new THREE.HemisphereLight(0xc3daec, 0x4b5661, 2.1));
@@ -216,7 +291,7 @@ export function CityView(props: Props) {
     const load = async () => {
       try {
         const gltf = await loader.loadAsync(
-          `${base}assets/exports/city_static.glb`,
+          `${base}assets/exports/city_enhanced.glb`,
         );
         if (disposed || halted) {
           disposeObject(gltf.scene);
@@ -227,7 +302,10 @@ export function CityView(props: Props) {
         gltf.scene.updateMatrixWorld(true);
         const loadedBounds = new THREE.Box3().setFromObject(gltf.scene);
         if (!loadedBounds.isEmpty()) assetBounds = loadedBounds;
-        if (overviewMode && !current.current.follow) overview();
+        buildingCutaway.install(gltf.scene);
+        setOccluderCount(buildingCutaway.count);
+        if (!current.current.follow && !navigationTouched && perspectiveMode) explore();
+        else if (overviewMode && !current.current.follow) overview();
         dirty = true;
         setStatus("Loading original vehicle assets…");
         await Promise.all(
@@ -289,11 +367,20 @@ export function CityView(props: Props) {
       lastQuality = "",
       lastProps: Props | null = null,
       lastModelsRevision = -1,
-      lastTime = -1;
+      lastTime = -1,
+      lastPan = pan,
+      lastCutaway = cutaway;
     const loop = () => {
       if (disposed || halted) return;
       try {
         const p = current.current;
+        if (lastPan !== preferences.current.pan || lastCutaway !== preferences.current.cutaway) {
+          lastPan = preferences.current.pan;
+          lastCutaway = preferences.current.cutaway;
+          controls.mouseButtons.LEFT = lastPan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+          controls.touches.ONE = lastPan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+          dirty = true;
+        }
         const changed =
           p !== lastProps ||
           modelsRevision !== lastModelsRevision ||
@@ -384,9 +471,35 @@ export function CityView(props: Props) {
           lastModelsRevision = modelsRevision;
           lastTime = p.clock.current;
         }
-        controls.update();
+        updateNavigation();
         if (dirty) {
-          renderer.render(scene, camera);
+          // Navigation stays unrolled; the presentation camera adds perspective and roll.
+          // Neither camera changes canonical geometry or the shared simulation clock.
+          if (perspectiveMode) {
+            const targetHalfHeight = (camera.top - camera.bottom) / (2 * camera.zoom);
+            const distance = targetHalfHeight / Math.tan(THREE.MathUtils.degToRad(perspectiveCamera.fov / 2));
+            perspectiveCamera.position.copy(camera.position).sub(controls.target).normalize()
+              .multiplyScalar(distance).add(controls.target);
+            perspectiveCamera.quaternion.copy(camera.quaternion);
+            perspectiveCamera.aspect = viewportWidth / viewportHeight;
+            perspectiveCamera.updateProjectionMatrix();
+            renderCamera = perspectiveCamera;
+          } else {
+            renderCamera = camera;
+          }
+          const unrolled = renderCamera.quaternion.clone();
+          renderCamera.rotateZ(roll);
+          renderCamera.updateMatrixWorld(true);
+          const focus = controls.target.clone();
+          const forward = renderCamera.getWorldDirection(new THREE.Vector3());
+          const groundDistance = Math.abs(forward.y) > 1e-6 ? (2 - renderCamera.position.y) / forward.y : -1;
+          const hasGroundFocus = Number.isFinite(groundDistance) && groundDistance > 0;
+          if (p.follow && !p.reducedMotion) focus.y = 2;
+          else if (hasGroundFocus) focus.copy(renderCamera.position).addScaledVector(forward, groundDistance);
+          const fadedBuildings = buildingCutaway.update(preferences.current.cutaway && perspectiveMode && camera.zoom > 1.3 && hasGroundFocus, focus, renderCamera);
+          renderer.domElement.dataset.fadedBuildings = String(fadedBuildings);
+          renderer.domElement.dataset.occluderBuildings = String(buildingCutaway.count);
+          renderer.render(scene, renderCamera);
           renderer.domElement.dataset.cameraZoom = String(camera.zoom);
           // Inspectable actual asset bounds, for viewport-fit QA, never simulated evidence.
           if (assetBounds) {
@@ -394,7 +507,7 @@ export function CityView(props: Props) {
             for (const x of [assetBounds.min.x, assetBounds.max.x])
               for (const y of [assetBounds.min.y, assetBounds.max.y])
                 for (const z of [assetBounds.min.z, assetBounds.max.z]) {
-                  const corner = new THREE.Vector3(x, y, z).project(camera);
+                  const corner = new THREE.Vector3(x, y, z).project(renderCamera);
                   maxX = Math.max(maxX, Math.abs(corner.x));
                   maxY = Math.max(maxY, Math.abs(corner.y));
                 }
@@ -407,15 +520,34 @@ export function CityView(props: Props) {
           renderer.domElement.dataset.cameraTarget = controls.target
             .toArray()
             .join(",");
-          projectedOrigin.copy(controls.target).project(camera);
+          projectedOrigin.copy(controls.target).project(renderCamera);
           projectedNorth
             .copy(controls.target)
             .add(northDirection)
-            .project(camera);
+            .project(renderCamera);
           const dx = (projectedNorth.x - projectedOrigin.x) * viewportWidth;
           const dy = -(projectedNorth.y - projectedOrigin.y) * viewportHeight;
           if (compass.current)
             compass.current.style.transform = `rotate(${(Math.atan2(dx, -dy) * 180) / Math.PI}deg)`;
+          renderer.domElement.dataset.renderInfo = JSON.stringify({
+            calls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
+            geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,
+            fadedBuildings, occluderBuildings: buildingCutaway.count,
+          });
+          renderer.domElement.dataset.cameraPresentation = perspectiveMode ? "perspective" : "orthographic";
+          renderer.domElement.dataset.cameraRoll = String(roll);
+          const orbit = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+          renderer.domElement.dataset.cameraAzimuth = String(orbit.theta);
+          renderer.domElement.dataset.cameraElevation = String(Math.PI / 2 - orbit.phi);
+          renderer.domElement.dataset.cameraState = JSON.stringify({
+            mode: perspectiveMode ? "perspective" : "orthographic",
+            position: renderCamera.position.toArray(), quaternion: renderCamera.quaternion.toArray(),
+            target: controls.target.toArray(), zoom: camera.zoom, roll,
+            azimuth: orbit.theta, elevation: Math.PI / 2 - orbit.phi,
+            viewport: [viewportWidth, viewportHeight],
+          });
+          renderCamera.quaternion.copy(unrolled);
+          renderCamera.updateMatrixWorld(true);
           dirty = false;
         }
         raf = requestAnimationFrame(loop);
@@ -430,12 +562,14 @@ export function CityView(props: Props) {
       disposed = true;
       cancelAnimationFrame(raf);
       observer.disconnect();
+      cameraAction.current = () => {};
       controls.dispose();
       renderer.domElement.removeEventListener("keydown", cameraKeys);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
       geometryLayer.dispose();
       active.dispose();
       ghosts.dispose();
+      buildingCutaway.dispose();
       disposeObject(scene);
       for (const model of models.values()) disposeObject(model);
       renderer.dispose();
@@ -445,6 +579,8 @@ export function CityView(props: Props) {
   return (
     <div className="city-view">
       <div className="three-host" ref={host} />
+      <CameraControls exploring={exploring} pan={pan} cutaway={cutaway} occluderCount={occluderCount} disabled={failed || Boolean(status)}
+        onAction={action => cameraAction.current(action)} onPan={setPan} onCutaway={setCutaway} />
       {failed && (
         <img
           className="city-fallback"

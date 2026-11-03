@@ -1220,3 +1220,31 @@ footer {
   outline: 2px solid var(--clearance);
   outline-offset: -4px;
 }
+
+.camera-console {
+  position: absolute;
+  z-index: 3;
+  left: 16px;
+  bottom: 16px;
+  width: min(360px, calc(100% - 32px));
+  color: var(--text);
+  background: var(--canvas);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+}
+.camera-presets { display: flex; gap: 6px; }
+.camera-presets button { flex: 1; min-height: 40px; }
+.camera-presets button[aria-pressed="true"] { color: var(--clearance); background: var(--surface); }
+.camera-console summary { cursor: pointer; padding: 10px 4px 2px; }
+.camera-console details[open] { max-height: min(330px, 45vh); overflow: auto; }
+.camera-console p { color: var(--muted); line-height: 1.5; margin: 10px 4px; }
+.camera-console label { display: flex; align-items: center; gap: 8px; padding: 8px 4px; }
+.camera-axes { display: grid; gap: 6px; }
+.camera-axes > div { display: flex; align-items: center; gap: 6px; }
+.camera-axes span { flex: 1; padding-left: 4px; }
+.camera-axes button { min-width: 44px; min-height: 40px; }
+@media (max-width: 760px) {
+  .camera-console { left: 10px; bottom: 10px; width: min(320px, calc(100% - 20px)); }
+}
