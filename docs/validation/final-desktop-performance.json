@@ -1,0 +1,755 @@
+{
+  "schema": "afterlight.final-desktop-performance-review.v1",
+  "status": "passed",
+  "reviewed_utc": "2026-11-03T19:44:01.530671+00:00",
+  "scope": "Independent read-only review of a completed local production-build desktop measurement. No new browser, measurement, traffic, fitting or data mutation.",
+  "original_report_sha256": "b58a01eb76629fd640fec4b65e19fa4dbafc66e0542b8cb557352a93fe3c510c",
+  "measurement_started_utc": "2026-11-03T19:33:20.534106+00:00",
+  "measurement_finished_utc": "2026-11-03T19:37:15.229492+00:00",
+  "harness_source_commit": "2740c7be5aab20235cbfbb712a0c54e34c58245e",
+  "harness_files_sha256": {
+    "web/tests/desktop_product_acceptance.py": "5dfbee69df2476264195c7d1a1ef38c5b48c7fb2f059cac1321a1c193f20ac43",
+    "web/tests/real_replay_smoke.py": "c964db5f04419cc581a07eb26a88e3bad9fb070538ab5da5c9410217777ff8ba",
+    "web/tests/browser_map_selection_checks.py": "1d8caaa21240b940745d2e58e841224627ad6fbcd12c1cd589839f497f18aed8"
+  },
+  "product_source_commit": "fa0d88ce76c30545d0f5d454c249e10e184d09bd",
+  "frozen_build_manifest_sha256": "f9028c53a284914cd1a5a2ba1714b857ec8c80ca0e8c99363d4ff6246c05d3bc",
+  "normalized_build_manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70",
+  "served_build_before": {
+    "files": 61,
+    "bytes": 39870637,
+    "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+  },
+  "served_build_after": {
+    "files": 61,
+    "bytes": 39870637,
+    "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+  },
+  "served_files": {
+    "THIRD_PARTY_NOTICES.txt": {
+      "bytes": 10305,
+      "sha256": "828a097c26abcab136257f678590fa51c6da07725eae20785a8c48d90fe39374"
+    },
+    "assets/CityView-BJQO51Bz.js": {
+      "bytes": 662982,
+      "sha256": "c44124bad6b059831d574f672e470d29c2a639acc564a9a224ed6730e2562320"
+    },
+    "assets/exports/ambulance.glb": {
+      "bytes": 161212,
+      "sha256": "df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1"
+    },
+    "assets/exports/bike.glb": {
+      "bytes": 18848,
+      "sha256": "ccd19f98a55621bfa19c52fa89b19ed018c001e2a9f8f8208cd2ab78358f8236"
+    },
+    "assets/exports/building_clay.glb": {
+      "bytes": 3944,
+      "sha256": "7ddec80f9d5893b6e2dc2b78b70a121890f6aa259d7822dfe7616906df61defb"
+    },
+    "assets/exports/building_sage.glb": {
+      "bytes": 3924,
+      "sha256": "74cde827e2304d28edc95a07fa57b936586a88642286656d4d33a9e1c1ed66dd"
+    },
+    "assets/exports/building_sand.glb": {
+      "bytes": 3940,
+      "sha256": "2a0908cb0d0d5bf717dc7cd1e5c2986082d5534cfc0bacfd7a2f4711dfd80a5e"
+    },
+    "assets/exports/building_slate.glb": {
+      "bytes": 3944,
+      "sha256": "ff317271ed512f33c6023ae2fe53f01ac4642be49e426042382855026b059a56"
+    },
+    "assets/exports/car.glb": {
+      "bytes": 32596,
+      "sha256": "a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591"
+    },
+    "assets/exports/city_enhanced.glb": {
+      "bytes": 14380920,
+      "sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac"
+    },
+    "assets/exports/city_enhanced_manifest.json": {
+      "bytes": 701022,
+      "sha256": "f33a9ccc09bd208750603dca839b45d3489e17ec2bb939ee6757f0298aa77911"
+    },
+    "assets/exports/city_instances.json": {
+      "bytes": 61051,
+      "sha256": "2a51e8181a9dfdb8bab45a1614d729a247c227cce5951670fd7a26c85af7a9f5"
+    },
+    "assets/exports/city_static.glb": {
+      "bytes": 1010792,
+      "sha256": "31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe"
+    },
+    "assets/exports/ghost_material.json": {
+      "bytes": 676,
+      "sha256": "ab8898a9e8788f519f91a2890671d760b98c17d98c64871c67bf3a44513ae4b4"
+    },
+    "assets/exports/truck.glb": {
+      "bytes": 29384,
+      "sha256": "7d7483075d1b716f4d808dc964b426f1ef86e609a8187ae927d95935b2d799b4"
+    },
+    "assets/index-Be_2DwKr.js": {
+      "bytes": 264521,
+      "sha256": "049909257acaa757cac51f242b984b79149bfbfc0f8bcfb3cebbc7f1fb8304d4"
+    },
+    "assets/index-DFHnypaa.css": {
+      "bytes": 30906,
+      "sha256": "fde027e77f00ac4f182c42918cbcc26d770691626b4384f294b975f529485065"
+    },
+    "assets/map/city_manifest.json": {
+      "bytes": 1042452,
+      "sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b"
+    },
+    "assets/previews/ambulance_model.png": {
+      "bytes": 44991,
+      "sha256": "1748907a1c7771e322fcaaf4057c237c27bc5357618a0b5ef346263622d2d6ad"
+    },
+    "assets/previews/city_expanded.png": {
+      "bytes": 3125704,
+      "sha256": "17bb1814cb7c58c30fb6850a5294e3a115e06d9e07f1450e410b2e77a8bd47ae"
+    },
+    "assets/previews/city_overview.png": {
+      "bytes": 1596667,
+      "sha256": "1633cf1fcfdfe3d6ab6502c08e86ae5addb78eab3fc179e8c3950071c3908037"
+    },
+    "assets/previews/ghost_model.png": {
+      "bytes": 38534,
+      "sha256": "26b814f3094c37620194c0ae6f030492d7f0b494a1636efc647e79edef4f2a31"
+    },
+    "assets/recording.worker-DdqdYQIB.js": {
+      "bytes": 12342,
+      "sha256": "45407607bd9bc9cba76c742d263eba9c5a3aeead2d2dbe7569d897846a105364"
+    },
+    "brand/mark.svg": {
+      "bytes": 594,
+      "sha256": "6f876b64f80027bca4389d6c884580b0d4978b3dcde7904010e0f3edcf921233"
+    },
+    "favicon.svg": {
+      "bytes": 650,
+      "sha256": "54d0dcba3207303c12ad3ce2537705caa6c1561c78012833066ecee7089a3d93"
+    },
+    "fonts/Inter-LICENSE.txt": {
+      "bytes": 4380,
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    },
+    "fonts/InterVariable.woff2": {
+      "bytes": 352240,
+      "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3"
+    },
+    "index.html": {
+      "bytes": 1253,
+      "sha256": "2bb5742cd566e9ff515eba30d04d5f5a68997da15419a292f20d3cb42d15ee82"
+    },
+    "replays/catalog.json": {
+      "bytes": 1949,
+      "sha256": "b69d26f06a6b002c5a904b65f288144672f96bf8eb0568d78656471f3c4820f9"
+    },
+    "replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json": {
+      "bytes": 279358,
+      "sha256": "5f34f44a04cebd6abc8c20791280283f3979f3392c273dd28b104ad9fdf7d3c9"
+    },
+    "replays/city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz": {
+      "bytes": 6585636,
+      "sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
+    },
+    "replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.evidence.json": {
+      "bytes": 279080,
+      "sha256": "de1b989eb24df4ea7d31ecc379c1d82cfbacffa8f451a9a56fbc9bd5c141849d"
+    },
+    "replays/city-moderate-8-a15238629c993a88-analytical-0-0d63fcec4c36-dt0p5.json.gz": {
+      "bytes": 6718803,
+      "sha256": "bab80cd0acdb6462ce5c31af4c99a226303f936704d21fec8b7496be82f33b69"
+    },
+    "study/afterlight_analysis_amendment_v1.py": {
+      "bytes": 39837,
+      "sha256": "67c706bea0d1b776a99bb8dff738aceb59ee49d236d4bde60254533f3ec70adb"
+    },
+    "study/afterlight_analysis_binding_v1.py": {
+      "bytes": 2454,
+      "sha256": "a33e95210b26e0a2f44099e516d04fb7a5bd343562cc13df9af173662e7ce92b"
+    },
+    "study/analysis-amendment.json": {
+      "bytes": 7098,
+      "sha256": "9cc3c3edabf2af1075392e06cf16468d2a6ef90e93da86ffe46e5ccb50a144eb"
+    },
+    "study/analysis-amendment.patch": {
+      "bytes": 15052,
+      "sha256": "eb1cd6489d7ffc70910fb4f2a970bb7127f9b2620f31e060a48210c6d2a8a034"
+    },
+    "study/analysis-failed-selection-journal.json": {
+      "bytes": 1276,
+      "sha256": "6a2971bbee6fa967dd2386e3d74b1c336955fa84967273784a4427e33303e427"
+    },
+    "study/analysis-failure.txt": {
+      "bytes": 1602,
+      "sha256": "a1957d535b2d30011ce3c86c74880dbb5e68a96467e6b7fe3f371a134fb0c721"
+    },
+    "study/analytical-selector.json": {
+      "bytes": 268,
+      "sha256": "4af9ae61f9dc6bf76e8bdbc99b9f300bc386d466ec71f011c39ad4c4abbd02f2"
+    },
+    "study/attempt.json": {
+      "bytes": 713,
+      "sha256": "74890c19f9f6500d89a1febf96ff46fd4c4c4fef756053fc92d0117eb6c79369"
+    },
+    "study/collection.json": {
+      "bytes": 43689,
+      "sha256": "90580b7c279694b14764286d21b2b116e84a10ce6fb0fb83920e4537874b7d19"
+    },
+    "study/fixed-selector.json": {
+      "bytes": 2222,
+      "sha256": "c4c982f6c14d608ec558044bf16d028f264cd36a3c57dccd4172cf6a9aa98c07"
+    },
+    "study/learned-selector.json": {
+      "bytes": 5512,
+      "sha256": "4dc49dc5615a8bf851eb8b5481d6c697612ab9f6d0177a57656d72b86210cd46"
+    },
+    "study/learned-vs-analytical.json": {
+      "bytes": 6661,
+      "sha256": "7a7bbb6d75438e65a630a72adf4e4da12957e878dac9ca9231eedfe16cb70349"
+    },
+    "study/learned-vs-fixed.json": {
+      "bytes": 8815,
+      "sha256": "885417b372e7a34bca6f43dadd3db50799fce5b457b0430007284ff0b46230ca"
+    },
+    "study/manifest.json": {
+      "bytes": 177,
+      "sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9"
+    },
+    "study/model.json": {
+      "bytes": 4691,
+      "sha256": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d"
+    },
+    "study/paired-records.csv": {
+      "bytes": 11599,
+      "sha256": "f7b859937277e4f69f2de447bf710a2c17c9f4c30de5eb6012b41c88771fe7fa"
+    },
+    "study/protocol.json": {
+      "bytes": 45566,
+      "sha256": "ccb32d3149e9203ad524e283e7c17732449b959cd1bdf3cff628a016a1ab41a1"
+    },
+    "study/release.json": {
+      "bytes": 7110,
+      "sha256": "876c0e8a6aef48ad2adcfb54b94e72a2d2281193477d2eedcdd538b8f1b35d22"
+    },
+    "study/report.json": {
+      "bytes": 165110,
+      "sha256": "8682f7f6c7a642debe5a45b89c4b089699eaf9beed240e5923e8f24c974b4271"
+    },
+    "study/reproduction.json": {
+      "bytes": 2285,
+      "sha256": "3f05730faedfc4c477aa9d8228dfef63bf9784ec7a82cb8373988b569ac57426"
+    },
+    "study/run_analysis_amendment.py": {
+      "bytes": 14454,
+      "sha256": "dea9a7153d6705187237a93989b7107316740dfabb4f6dc78933f17c6313b3a5"
+    },
+    "study/selection.json": {
+      "bytes": 173788,
+      "sha256": "4acc0e915ad625e8f598398e46216c27d16f9b1c22c46f7e7ca4147d49c89165"
+    },
+    "study/study.json": {
+      "bytes": 205694,
+      "sha256": "5dda85d4c90175af130710b7680653f459821bbb8874e1a86eb8525cea7b003b"
+    },
+    "study/summary.json": {
+      "bytes": 8208,
+      "sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5"
+    },
+    "study/test-candidates.json.xz": {
+      "bytes": 394952,
+      "sha256": "b4160b991fe3ce2d179a2b55a51425783a27c9cec43b8d15fb1b349f497c220a"
+    },
+    "study/test-outcomes.json.xz": {
+      "bytes": 538852,
+      "sha256": "221a33dc19869f71491896a7731012f7794bf3b7a6cd7b9aeeb5807e5aa3fe1b"
+    },
+    "study/train-candidates.json.xz": {
+      "bytes": 459620,
+      "sha256": "9d9f99388b5e9e158dbb6074f1a7757076c6163d3f18001dac878c87a21dc565"
+    },
+    "study/validation-candidates.json.xz": {
+      "bytes": 237732,
+      "sha256": "a212e44a371693f46cfb32e6f70aa593f471d59011dd6d9b9c7c8b3cb4c32551"
+    }
+  },
+  "local_frozen_file_bytes_and_hashes_independently_rechecked": 61,
+  "source_before_after_stable": true,
+  "product_source_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+  "environment": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "browser_version": "156.0.8078.80",
+    "headed": true,
+    "css_viewport": [
+      1920,
+      1080
+    ],
+    "configured_device_scale_factor": 1,
+    "observed_device_pixel_ratio": 1.0000000298023224,
+    "renderer_vendor": "Google Inc. (AMD)",
+    "renderer": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "measurement_canvas_buffer": [
+      1552,
+      737
+    ],
+    "native_window_bounds_are_distinct_from_emulated_css_viewport": true
+  },
+  "loaded_identity": {
+    "title": "AFTERLIGHT \u2014 Traffic signal lab",
+    "canonical": "https://afterlight-gamma.vercel.app/",
+    "body_font": "Inter, \"Segoe UI\", system-ui, sans-serif",
+    "fonts": [
+      {
+        "family": "Inter",
+        "status": "loaded",
+        "weight": "100 900"
+      }
+    ],
+    "mark": {
+      "src": "/brand/mark.svg",
+      "complete": true,
+      "width": 150,
+      "height": 150,
+      "alt": "",
+      "rendered_width": 32,
+      "rendered_height": 32
+    }
+  },
+  "recording": {
+    "catalog_entry": {
+      "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+      "title": "Cross-city response",
+      "url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+      "seed": 7,
+      "pickup_id": "P001",
+      "hospital_id": "HOSP_EAST",
+      "policy": "fixed",
+      "lead_s": 20,
+      "policy_label": "fixed \u00b7 20 s lead",
+      "duration_s": 900.0,
+      "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+      "bytes": 72828179,
+      "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+      "world_status": {
+        "baseline": "completed",
+        "afterlight": "completed"
+      },
+      "evidence_url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
+      "encoding": "gzip",
+      "transfer_bytes": 6585636,
+      "transfer_sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
+    },
+    "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "bytes": 72828179,
+    "response_body_bytes": 6585636,
+    "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+    "measurement_start_s": 180.5,
+    "vehicles_at_start": 373
+  },
+  "follow_setup": {
+    "control": ".follow-ambulance",
+    "pressed": true,
+    "world": "afterlight",
+    "time_s": 180.5,
+    "expected_target_from_genuine_pose": [
+      -668.38,
+      1.5,
+      318.5918
+    ],
+    "actual_camera": {
+      "mode": "perspective",
+      "position": [
+        -540.9994499888894,
+        153.14351191798886,
+        452.0380904878301
+      ],
+      "quaternion": [
+        -0.3130668345109635,
+        0.35012694516255943,
+        0.12543265204621973,
+        0.8738803860947282
+      ],
+      "target": [
+        -668.38,
+        1.5,
+        318.5918
+      ],
+      "zoom": 12,
+      "roll": 0,
+      "azimuth": 0.7621465405869854,
+      "elevation": 0.6880093420302718,
+      "viewport": [
+        1552,
+        737.3333740234375
+      ]
+    }
+  },
+  "windows": {
+    "overview": {
+      "rendered_frames": 4856,
+      "observed_seconds": 30.006199999999996,
+      "rendered_fps": 161.79989468843107,
+      "render_interval_ms": {
+        "median": 6.099999999991269,
+        "p95": 6.19999999999709,
+        "maximum": 18.30000000000291
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 4.600000001490116,
+        "p95": 6.299999997019768,
+        "maximum": 13.200000002980232
+      },
+      "long_tasks": [],
+      "interpretation": "Headed Chrome render cadence and JavaScript/draw-submission callback duration. These are not completed GPU times, simulator throughput, or a cross-hardware guarantee.",
+      "lifecycle": [
+        {
+          "kind": "start",
+          "timestamp": 77870,
+          "visibility": "visible",
+          "focused": true
+        },
+        {
+          "kind": "end",
+          "timestamp": 107877.10000000149,
+          "visibility": "visible",
+          "focused": true
+        }
+      ],
+      "foreground_qualified": true,
+      "start": {
+        "counters": {
+          "calls": 75,
+          "triangles": 380744,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "orthographic",
+          "position": [
+            1069.9999999999995,
+            1273.0125000476837,
+            1084.9999999999995
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            20,
+            23.012500047683716,
+            -15
+          ],
+          "zoom": 1,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "buffer": [
+          1552,
+          737
+        ]
+      },
+      "end": {
+        "counters": {
+          "calls": 75,
+          "triangles": 376384,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "orthographic",
+          "position": [
+            1069.9999999999995,
+            1273.0125000476837,
+            1084.9999999999995
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            20,
+            23.012500047683716,
+            -15
+          ],
+          "zoom": 1,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "buffer": [
+          1552,
+          737
+        ]
+      },
+      "camera_orientation_and_zoom_stable": true,
+      "fps_arithmetic_recomputed": 161.79989468843107,
+      "lifecycle_seconds": 30.00710000000149,
+      "native_window": {
+        "native_window_before": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "native_window_after": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "operator_marker_required": true
+      }
+    },
+    "close_follow": {
+      "rendered_frames": 3835,
+      "observed_seconds": 30.012199999999982,
+      "rendered_fps": 127.74804912668856,
+      "render_interval_ms": {
+        "median": 6.100000000005821,
+        "p95": 12.10000000000582,
+        "maximum": 18.400000000023283
+      },
+      "drawing_callback_cpu_ms": {
+        "median": 4.5,
+        "p95": 5.700000002980232,
+        "maximum": 14.100000001490116
+      },
+      "long_tasks": [],
+      "interpretation": "Headed Chrome render cadence and JavaScript/draw-submission callback duration. These are not completed GPU times, simulator throughput, or a cross-hardware guarantee.",
+      "lifecycle": [
+        {
+          "kind": "start",
+          "timestamp": 182986.1000000015,
+          "visibility": "visible",
+          "focused": true
+        },
+        {
+          "kind": "end",
+          "timestamp": 213006.3999999985,
+          "visibility": "visible",
+          "focused": true
+        }
+      ],
+      "foreground_qualified": true,
+      "start": {
+        "counters": {
+          "calls": 69,
+          "triangles": 374620,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -540.9994499888895,
+            153.14351191798886,
+            451.9929991690619
+          ],
+          "quaternion": [
+            -0.3130668345109635,
+            0.35012694516255943,
+            0.12543265204621973,
+            0.8738803860947282
+          ],
+          "target": [
+            -668.3800000000001,
+            1.5,
+            318.54670868123173
+          ],
+          "zoom": 12,
+          "roll": 0,
+          "azimuth": 0.7621465405869854,
+          "elevation": 0.6880093420302718,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "buffer": [
+          1552,
+          737
+        ]
+      },
+      "end": {
+        "counters": {
+          "calls": 69,
+          "triangles": 370120,
+          "geometries": 74,
+          "textures": 2,
+          "fadedBuildings": 0,
+          "occluderBuildings": 826,
+          "logarithmicDepth": true
+        },
+        "camera": {
+          "mode": "perspective",
+          "position": [
+            -540.9994499888895,
+            153.14351191798895,
+            372.84767264130215
+          ],
+          "quaternion": [
+            -0.3130668345109637,
+            0.3501269451625598,
+            0.12543265204621998,
+            0.8738803860947278
+          ],
+          "target": [
+            -668.3800000000002,
+            1.5000000000000002,
+            239.40138215347213
+          ],
+          "zoom": 12,
+          "roll": 0,
+          "azimuth": 0.7621465405869863,
+          "elevation": 0.688009342030272,
+          "viewport": [
+            1552,
+            737.3333740234375
+          ]
+        },
+        "buffer": [
+          1552,
+          737
+        ]
+      },
+      "camera_orientation_and_zoom_stable": true,
+      "fps_arithmetic_recomputed": 127.74804912668856,
+      "lifecycle_seconds": 30.020299999997018,
+      "native_window": {
+        "native_window_before": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "native_window_after": {
+          "left": 10,
+          "top": 10,
+          "width": 1724,
+          "height": 978,
+          "windowState": "normal"
+        },
+        "operator_marker_required": true
+      }
+    }
+  },
+  "page_errors": [],
+  "method": {
+    "fps": "(rendered_frames - 1) / observed_seconds, where elapsed time spans the first and last draw-bearing requestAnimationFrame timestamps",
+    "percentiles": "Nearest rank ceil(p*n); the reported median is the nearest-rank 50th percentile.",
+    "callback_time": "JavaScript callback and draw submission duration; not completed GPU execution time.",
+    "foreground": "Lifecycle listeners record focus, blur and visibilitychange only while samples are enabled. Each accepted window contains exactly visible/focused start/end and no intermediate events.",
+    "window_activation": "Harness restores only its own CDP target window if minimized, brings its page forward, focuses the canvas and waits for visible/focused state. The operator reported visually inspecting the restored window before creating manual ready markers. Operator waiting is outside measurement.",
+    "browser_configuration": "The window-activation correction changes no renderer or throttling flags. No system-wide exclusivity claim is made.",
+    "served_inventory": "The original bound harness checked all 61 HTTP response bodies against the complete inventory before and after. This independent review reconciles those recorded checks and rehashes the immutable local 61-file snapshot; it does not run a second HTTP or browser measurement."
+  },
+  "attempt_history": [
+    {
+      "retained_directory": "final-postbrand-desktop-performance",
+      "report_sha256": "25523fdc264fa28cc4726fdd0ca8512976656d8c92733e28ea9fe79e7e615696",
+      "status": "failed",
+      "qualification": "failed_preflight_no_fps",
+      "description": "SVG natural-dimension preflight rejected the loaded mark before any FPS measurement.",
+      "started_utc": "2026-11-03T19:17:25.346479+00:00",
+      "finished_utc": "2026-11-03T19:17:31.435273+00:00",
+      "performance_samples_present": false,
+      "retained_error": "Shared native brand mark is missing or inaccessible"
+    },
+    {
+      "retained_directory": "final-postbrand-desktop-performance-02",
+      "report_sha256": "19187b640657deb91985f246ecf6883ffeb9ee35090dc098c014e5eacbca66f4",
+      "status": "passed",
+      "qualification": "functional_pass_unqualified_cadence",
+      "description": "Functional checks passed, but no visibility/focus lifecycle was recorded. Recorded slow cadence is retained and is not a foreground-qualified benchmark.",
+      "started_utc": "2026-11-03T19:18:43.127247+00:00",
+      "finished_utc": "2026-11-03T19:20:27.880519+00:00",
+      "performance_samples_present": true,
+      "unqualified_observations": {
+        "performance": {
+          "rendered_frames": 773,
+          "observed_seconds": 29.697000000000003,
+          "rendered_fps": 25.995891840926692,
+          "render_interval_ms": {
+            "median": 6.099999999999454,
+            "p95": 11.900000000000546,
+            "maximum": 1006.2000000000007
+          }
+        },
+        "performance_close_follow": {
+          "rendered_frames": 29,
+          "observed_seconds": 28.078800000000005,
+          "rendered_fps": 0.9971936122626321,
+          "render_interval_ms": {
+            "median": 1000.0999999999985,
+            "p95": 1006.1000000000058,
+            "maximum": 1006.1000000000058
+          }
+        }
+      }
+    },
+    {
+      "retained_directory": "final-postbrand-desktop-foreground",
+      "report_sha256": "2f2b6daa0d58303afd3ecd2d84c6369281f37f8b25bd8f47a6198c70c040116e",
+      "status": "failed",
+      "qualification": "operator_gate_timeout_no_fps",
+      "description": "Operator gate timed out before samples were enabled; no accepted FPS sample.",
+      "started_utc": "2026-11-03T19:24:49.947266+00:00",
+      "finished_utc": "2026-11-03T19:26:58.796279+00:00",
+      "performance_samples_present": false,
+      "retained_error": "Foreground operator gate timed out; no performance sample accepted"
+    },
+    {
+      "retained_directory": "final-postbrand-desktop-foreground-02",
+      "report_sha256": "a5651196b7b49324dc0e6e8ea9c02872e664b83d27e9a0db3d0781205e4ecdb5",
+      "status": "failed",
+      "qualification": "operator_gate_timeout_no_fps",
+      "description": "Operator gate timed out before samples were enabled; no accepted FPS sample.",
+      "started_utc": "2026-11-03T19:29:48.758613+00:00",
+      "finished_utc": "2026-11-03T19:32:02.933867+00:00",
+      "performance_samples_present": false,
+      "retained_error": "Foreground operator gate timed out; no performance sample accepted"
+    },
+    {
+      "retained_directory": "final-postbrand-desktop-foreground-03",
+      "report_sha256": "b58a01eb76629fd640fec4b65e19fa4dbafc66e0542b8cb557352a93fe3c510c",
+      "status": "passed",
+      "qualification": "qualified_foreground_measurement",
+      "description": "Both 30-second windows have visible/focused start and end, no intervening lifecycle events, normal native bounds and exact served-build checks before/after.",
+      "started_utc": "2026-11-03T19:33:20.534106+00:00",
+      "finished_utc": "2026-11-03T19:37:15.229492+00:00",
+      "performance_samples_present": true
+    }
+  ],
+  "prior_window_observation_limit": "A later native computer-use inspection observed the dedicated test Chrome minimized. Visibility was not recorded in the earlier unqualified cadence run, so its earlier window state is an inference, not an observed fact.",
+  "limitations": [
+    "Two 30-second windows on one headed Chrome/hardware profile using one genuine cached recording; no cross-hardware or all-scenario FPS guarantee.",
+    "1920x1080 is an emulated CSS viewport, not the CDP-reported native window size (1724x978). The actual measured canvas buffer is 1552x737.",
+    "Frame intervals measure browser draw-bearing RAF cadence. Callback CPU time is not completed GPU timing, simulator throughput, selector inference latency or remote hosting/load latency.",
+    "The original report retains frame-count/span and percentile summaries, not individual raw frame sample arrays. Independent review recomputes FPS arithmetic and checks the bound percentile implementation; it does not recompute percentile values from unavailable raw samples.",
+    "No long-task entries were recorded during the measured windows; this is the observer result rather than a system-wide absence guarantee.",
+    "Earlier unqualified observations and no-sample failures remain retained. Five-second smoke checks are not promoted as performance benchmarks."
+  ]
+}

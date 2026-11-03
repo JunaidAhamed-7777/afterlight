@@ -60,6 +60,41 @@ recording. Scientific 5-second traces stay private; public traffic playback
 requires actual 0.5-second captures. The public Study pack is published only
 after deterministic report and original-byte verification.
 
+## Desktop rendering evidence
+
+The final local production build was measured in two separate 30-second
+foreground windows in headed Chrome 156 on the observed ANGLE AMD Radeon(TM)
+Graphics renderer. Its 61 served files (39,870,637 bytes) matched the isolated
+build inventory before and after acceptance; the exact product source is
+`fa0d88ce76c30545d0f5d454c249e10e184d09bd`.
+
+Overview recorded 4,856 draw-bearing frames over 30.0062 seconds: **161.8 FPS**,
+with a 6.2 ms p95 frame interval. Close ambulance follow at zoom 12 recorded
+3,835 frames over 30.0122 seconds: **127.7 FPS**, with a 12.1 ms p95 interval.
+Drawing-callback CPU medians/p95s were 4.6/6.3 ms and 4.5/5.7 ms respectively.
+The genuine recording had 373 vehicles at the chosen 180.5-second start frame.
+Both windows recorded visible/focused start and end, no intervening lifecycle
+events and no long-task entries. The self-hosted Inter font and actual brand
+mark were loaded.
+
+The configured viewport was **1920 x 1080 emulated CSS pixels at DPR 1**. The
+CDP-reported native window was **1724 x 978**, and the measured canvas buffer was
+**1552 x 737**; these are distinct measurements. FPS is `(frames - 1) / elapsed`
+using first/last draw-bearing RAF timestamps. Callback duration includes
+JavaScript and draw submission, not completed GPU execution. This is one local
+browser/hardware/recording observation, not simulator throughput, remote loading
+latency or a cross-hardware guarantee. The report retains percentile summaries,
+not individual raw frame samples.
+
+Earlier attempts remain retained: a mark-size preflight and two operator-gate
+timeouts collected no FPS; a functional pass recorded 26.0/1.0 FPS without a
+visibility/focus lifecycle and is not a foreground-qualified benchmark. A later
+native inspection observed the dedicated browser minimized; its earlier state
+was not recorded and remains an inference. Only the final run qualifies.
+Five-second smoke checks are not promoted as benchmarks. The
+[complete reviewed record](validation/final-desktop-performance.json) preserves
+all attempt hashes, exact conditions, arithmetic and scope limits.
+
 ## Experiment
 
 Use a three-intersection fixed-route correctness fixture first; scale to the expanded city only after validity and runtime gates. Vary civilian arrival patterns, queue states, dispatch times and reproducible seeds. Keep full demand files and route permissions identical across policies. Replay each policy from `t=0`; do not assume save/load restores all RNG and route state.
