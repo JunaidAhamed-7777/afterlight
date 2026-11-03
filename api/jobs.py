@@ -148,7 +148,7 @@ class JobManager:
         args = SimpleNamespace(**params, output=output, dispatch=60.0, demand_end=180.0,
                                horizon=360.0 if city else 240.0,
                                drain=540.0 if city else 360.0,
-                               step=.5, sample=2.0 if city else 1.0, split="pilot")
+                               step=.5, sample=.5 if city else 1.0, split="pilot")
         try:
             safe_output = output.resolve().parent == self.output_root and not output.exists()
             if not safe_output:

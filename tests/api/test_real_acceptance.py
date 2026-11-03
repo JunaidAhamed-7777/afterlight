@@ -3,12 +3,45 @@ from copy import deepcopy
 import json
 from pathlib import Path
 import tempfile
+import subprocess
 import unittest
 from unittest.mock import patch
 from scripts import api_real_acceptance as client
 
 COMMIT='a'*40
 IDENTITY={'source':{'source_commit':COMMIT,'source_dirty':False,'source_files':{},'source_code_sha256':'b'*64}}
+
+
+class APIOnlyIdentityTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)
+        files={'sim/fixture.py':'# Synthetic identity fixture; never executed\n',
+               'assets/map/city_manifest.json':'{}\n','api/server.py':'# unit server bytes\n',
+               'api/jobs.py':'# unit job bytes\n','scripts/api_real_acceptance.py':'# unit client bytes\n',
+               'scripts/omen_acceptance.py':'# unit preview guard bytes\n','requirements-sim.txt':'# unit pins\n',
+               '.gitattributes':'* text eol=lf\n','.gitignore':'api/hidden.py\n'}
+        for name,value in files.items():
+            path=self.root/name;path.parent.mkdir(parents=True,exist_ok=True)
+            path.write_text(value,encoding='utf-8',newline='\n')
+        self.git('init','-q');self.git('add','.')
+        self.git('-c','user.name=Identity Unit','-c','user.email=unit@example.invalid','commit','-qm','unit fixture')
+
+    def git(self,*args):
+        return subprocess.check_output(['git',*args],cwd=self.root,stderr=subprocess.PIPE)
+
+    def test_api_only_identity_pins_actual_committed_bytes_without_preview(self):
+        identity=client.capture_api_identity(self.root)
+        self.assertIn('api/server.py',identity['api_files_sha256'])
+        self.assertIn('no preview or browser acceptance',identity['verification_scope'])
+        (self.root/'api/server.py').write_text('# altered API bytes\n',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'differs from HEAD'):
+            client.capture_api_identity(self.root)
+
+    def test_ignored_added_python_source_cannot_escape_http_identity(self):
+        (self.root/'api/hidden.py').write_text('# ignored synthetic extra source\n',encoding='utf-8')
+        with self.assertRaisesRegex(ValueError,'Ignored API source'):
+            client.capture_api_identity(self.root)
 
 
 class RealAcceptanceClientTests(unittest.TestCase):

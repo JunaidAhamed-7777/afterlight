@@ -28,7 +28,7 @@ One job runs at a time. Repeated submissions are rejected, not silently queued.
 Outputs go to server-generated directories under `local-runtime/jobs`; clients
 cannot choose paths or shell commands. Each job uses a bounded pilot/exploration protocol: dispatch60, demand end180,
 0.5-second integration, and a common drain endpoint. The expanded city uses
-horizon360 plus drain540 seconds (900 seconds total) with 2-second replay
+horizon360 plus drain540 seconds (900 seconds total) with 0.5-second replay
 samples; the three-junction fixture retains horizon240 plus drain360 (600 total)
 with 1-second samples. The longer city drain covers the expanded routes without
 artificially truncating them at the old endpoint. All jobs are pilot split only. This is local *generation followed by recorded playback*, not live

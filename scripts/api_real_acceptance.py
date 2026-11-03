@@ -12,6 +12,8 @@ import math
 import os
 from pathlib import Path
 import re
+import platform
+import subprocess
 import sys
 import time
 from urllib.parse import urlsplit
@@ -27,6 +29,63 @@ from api.jobs import parameters, load_job_artifact
 from scripts.omen_acceptance import _safe, _atomic, capture_identity, now
 
 PARAMETERS={'network':'city','seed':7,'regime':'sparse','policy':'fixed','lead':10,'pickup':'P001','hospital':'HOSP_EAST'}
+
+
+def capture_api_identity(root: Path) -> dict:
+    """Explicit HTTP-only identity, independent of a browser/preview build.
+
+    The historical full-preview guard remains the default. This alternative
+    pins the actual committed simulator, API, acceptance client and Python/SUMO
+    runtime; it makes no frontend build or browser-integration claim.
+    """
+    from sim.source_identity import source_snapshot, blob_id
+    from sim.run import dependency_versions
+    source=source_snapshot(root)
+    if source.get('source_dirty') is not False or source.get('source_commit')=='unavailable':
+        raise ValueError('HTTP-only acceptance requires clean committed simulation source')
+    scope=('api','scripts/api_real_acceptance.py','scripts/omen_acceptance.py','requirements-sim.txt')
+    def git(*args):
+        return subprocess.check_output(['git',*args],cwd=root,stderr=subprocess.PIPE)
+    tree={};index={}
+    for entry in git('ls-tree','-r','-z','--full-tree',source['source_commit'],'--',*scope).split(b'\0'):
+        if not entry:continue
+        metadata,name=entry.split(b'\t',1);mode,kind,oid=metadata.decode().split(' ')
+        relative=os.fsdecode(name)
+        if kind!='blob' or mode not in {'100644','100755'} or relative in tree:
+            raise ValueError('Unsupported API acceptance source tree')
+        tree[relative]=(mode,oid)
+    index_raw=git('ls-files','--stage','-z','--',*scope)
+    for entry in index_raw.split(b'\0'):
+        if not entry:continue
+        metadata,name=entry.split(b'\t',1);mode,oid,stage=metadata.decode().split(' ')
+        relative=os.fsdecode(name)
+        if stage!='0' or relative in index:raise ValueError('Unmerged API acceptance source')
+        index[relative]=(mode,oid)
+    if tree!=index or git('ls-files','--others','--exclude-standard','-z','--',*scope):
+        raise ValueError('API acceptance source contains staged or untracked changes')
+    if not {'api/server.py','api/jobs.py','scripts/api_real_acceptance.py'}<=tree.keys():
+        raise ValueError('API acceptance source inventory is incomplete')
+    algorithm=git('rev-parse','--show-object-format').decode().strip()
+    actual={}
+    for relative,(mode,oid) in tree.items():
+        path=_safe(root,relative);payload=path.read_bytes()
+        if blob_id(payload,algorithm)!=oid:
+            raise ValueError(f'API acceptance input differs from HEAD: {relative}')
+        if os.name!='nt' and bool(path.stat().st_mode&0o111)!=(mode=='100755'):
+            raise ValueError('API acceptance input mode differs from HEAD')
+        actual[relative]=hashlib.sha256(payload).hexdigest()
+    for path in (root/'api').rglob('*.py'):
+        relative=path.relative_to(root).as_posix()
+        if relative not in tree:raise ValueError('Ignored API source is not committed')
+    dependencies=dependency_versions()
+    if source_snapshot(root)!=source or git('ls-files','--stage','-z','--',*scope)!=index_raw:
+        raise ValueError('API acceptance source changed while capturing identity')
+    if any(hashlib.sha256(_safe(root,name).read_bytes()).hexdigest()!=value for name,value in actual.items()):
+        raise ValueError('API acceptance input changed while capturing identity')
+    payload=json.dumps(actual,sort_keys=True,separators=(',',':')).encode()
+    return {'source':source,'api_files_sha256':actual,'api_input_sha256':hashlib.sha256(payload).hexdigest(),
+            'python_version':platform.python_version(),'simulation_dependencies':dependencies,
+            'verification_scope':'HTTP lifecycle/idempotency/restart and raw evidence only; no preview or browser acceptance'}
 
 
 def location(output:Path)->Path:
@@ -246,11 +305,13 @@ def main():
     parser.add_argument('--output',required=True,type=Path);parser.add_argument('--base-url',default='http://127.0.0.1:8765')
     parser.add_argument('--expected-commit');parser.add_argument('--monitor-seconds',type=int,default=900)
     parser.add_argument('--confirm-no-active-runs',action='store_true');parser.add_argument('--confirm-server-restarted-after-terminal',action='store_true')
+    parser.add_argument('--api-only',action='store_true',help='explicit HTTP-only source identity; preserves historical full-preview guard by default')
     args=parser.parse_args()
-    if args.phase=='prepare':result=prepare(args.output,args.base_url,args.expected_commit or '')
-    elif args.phase=='run':result=execute(args.output,confirm_no_active_runs=args.confirm_no_active_runs,monitor_s=args.monitor_seconds)
+    identity=capture_api_identity if args.api_only else capture_identity
+    if args.phase=='prepare':result=prepare(args.output,args.base_url,args.expected_commit or '',identity_fn=identity)
+    elif args.phase=='run':result=execute(args.output,confirm_no_active_runs=args.confirm_no_active_runs,monitor_s=args.monitor_seconds,identity_fn=identity)
     elif args.phase=='status':result=status(args.output)
-    else:result=verify_recovery(args.output,confirm_server_restarted_after_terminal=args.confirm_server_restarted_after_terminal)
+    else:result=verify_recovery(args.output,confirm_server_restarted_after_terminal=args.confirm_server_restarted_after_terminal,identity_fn=identity)
     print(json.dumps(result,indent=2,allow_nan=False))
 
 

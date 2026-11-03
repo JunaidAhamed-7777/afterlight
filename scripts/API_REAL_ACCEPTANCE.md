@@ -25,7 +25,7 @@ exclusive `run-started.json` claim blocks concurrent execution and crash retry
 even if the mutable journal still says prepared. The only
 request is city, seed 7, sparse demand, fixed lead 10, P001 â†’ HOSP_EAST. The API
 uses its fixed pilot/exploration protocol: two independent worlds, dispatch 60 s,
-demand end 180 s, horizon 360 s + drain 540 s (900 s endpoint), with 2 s replay samples.
+demand end 180 s, horizon 360 s + drain 540 s (900 s endpoint), with 0.5 s replay samples.
 This revised expanded-city protocol does not relabel earlier 600 s jobs; retain
 their original recorded horizons. No train/validation/test selection,
 model fitting or dataset collection occurs.
@@ -64,3 +64,23 @@ An exclusive recovery marker blocks automatic repetition after interruption.
 The restart flag is explicitly an **operator assertion**: the current API does
 not expose an independent server-process identity. No traffic-benefit, visual
 quality or deployed-safety claim follows from this software acceptance gate.
+
+
+## Explicit HTTP-only source identity
+
+Use `--api-only` on prepare, run, and verify-recovery when testing the HTTP
+service independently of a compiled browser preview. This mode checks exact
+committed simulator, API, client and requirements bytes, including ignored extra
+API Python files, and records Python/SUMO dependency versions. It preserves the
+historical full-preview guard as the default. It makes **no browser/preview
+acceptance claim**; saved-job browser recovery is a separate gate.
+
+```powershell
+python scripts/api_real_acceptance.py prepare --api-only --base-url http://127.0.0.1:8784 --expected-commit FULL_SHA --output local-runtime/api-http-01
+python -m api.server --enable-generation --job-dir local-runtime/api-http-01/jobs --port 8784
+python scripts/api_real_acceptance.py run --api-only --output local-runtime/api-http-01 --confirm-no-active-runs --monitor-seconds 900
+# After terminal verification and a real graceful server restart:
+python scripts/api_real_acceptance.py verify-recovery --api-only --output local-runtime/api-http-01 --confirm-server-restarted-after-terminal
+```
+
+Use an unused loopback port and preserve any existing user-facing service.

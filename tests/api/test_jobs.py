@@ -20,7 +20,7 @@ def synthetic_replay():
 
 class JobTests(unittest.TestCase):
     def test_city_job_uses_expanded_network_drain_without_changing_fixture(self):
-        for network, expected in [('city', (360.0, 540.0, 2.0)), ('fixture', (240.0, 360.0, 1.0))]:
+        for network, expected in [('city', (360.0, 540.0, .5)), ('fixture', (240.0, 360.0, 1.0))]:
             calls = []
             def runner(args):
                 calls.append(args)
