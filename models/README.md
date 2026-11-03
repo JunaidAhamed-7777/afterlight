@@ -19,7 +19,41 @@ Reference: [scikit-learn DecisionTreeRegressor documentation](https://scikit-lea
 
 ## Explicit analytical baseline
 
-`models.analytical.choose_lead(observation)` is the runner adapter. Its `queue-lost-service-v1` surrogate starts from frozen ETA, subtracts possible queue discharge during lead minus yellow/all-red time, discounts service by observed downstream occupancy, and adds a triangular lost-service waiting-area surrogate per ordinary cycle. Defaults match the initial controller: 2 seconds/queued vehicle, 4 seconds yellow+all-red, 58-second ordinary cycle. This approximation ignores individual phase stage/min-green residual, actual clipped request schedules and future arrivals. It is a deliberately limited **prediction**, never measured ambulance travel or all-demand civilian delay. No claim that it is calibrated is made.
+`models.analytical.choose_lead(observation)` is the runner adapter. The versioned
+`queue-concentration-v2` surrogate corrects an algebraic limitation of v1: the
+old aggregate subtraction credited every route junction with service even when
+all observed queuing was concentrated at one junction. This is a modeling
+correction, **not evidence of empirical policy improvement**.
+
+The existing seven features are unchanged. The runner sums incoming-edge lane
+queues once per controlled route junction; `queue_sum_veh = Q`, `queue_max_veh = M`
+and `route_junction_count = n` describe that same grouping. They must satisfy
+`0 <= M <= Q <= n*M`. Frozen ETA must include at least its runner-defined `2*Q` queue
+component. This fixed ETA convention is separate from configurable service headway `h`. Inconsistent observations are rejected rather than silently repaired.
+
+For lead `L`, transition loss `tau`, occupancy fraction `o` and headway `h`:
+
+- Equal assumed service at each junction is `S = max(0, L - tau) * (1 - o)` seconds.
+- The residual delay for an unknown allocation is `sum(max(h*q_i - S, 0))`.
+- The optimistic bound is `max(h*M-S, 0) + max(h*(Q-M)-(n-1)*S, 0)`.
+- Write `Q = k*M + r`, with `k=floor(Q/M)`. The conservative bound is
+  `k*max(h*M-S, 0) + max(h*r-S, 0)`; when `Q=0`, both bounds are zero.
+
+The conservative expression concentrates queues into as few junctions as the
+observed maximum allows. Convexity of `max(h*q-S,0)` gives the worst residual
+allocation within this equal-service model. For one occupied junction, empty
+junctions cannot discharge its queue. Scores use the conservative bound plus
+free-flow time reconstructed as `ETA - 2*Q` (never `ETA - h*Q` for a custom headway); both bounds are exposed as
+prediction diagnostics, not additional learned features.
+
+The civilian penalty is `scale*n*L^2/(2*cycle)*(1+o)` **seconds**, multiplied by the
+unchanged frozen objective weight. It is a coarse uncalibrated mean-delay
+surrogate, not measured all-demand delay or queue area. Defaults remain 2 seconds
+per queued vehicle, 4 seconds yellow+all-red, and a 58-second ordinary cycle.
+Incoming-edge queues may include other turns; occupancy is route-averaged.
+The bounds apply only to the surrogate, not actual traffic guarantees. Individual
+phase/min-green constraints, actual clipped request schedules and future arrivals
+remain unmodeled. Arithmetic is checked for finite intermediate/output values.
 
 Phase elapsed is retained as an observed model feature but not interpreted as green age: the actual stage may be yellow or all-red. Downstream occupancy is a fraction, not SUMO's raw percentage. Every candidate shares the same lagged observation. Changes to these formulas/configuration require a new pre-test freeze. Fitting checks the candidate `analytical_config_sha256` against `protocol.analytical_estimator` (`{version, config}`), and learned inference requires the same hash plus objective weight and frozen protocol hash. A model trained against another analytical baseline cannot silently be reused.
 

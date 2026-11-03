@@ -23,14 +23,14 @@ def protocol_content(envelope: Mapping) -> Mapping:
 
 def validate_prediction_inputs(rows: Sequence[Mapping], frozen_protocol: Mapping) -> None:
     """Verify recorded analytical scores against the frozen observation formula."""
-    from models.analytical import AnalyticalConfig, estimate_candidates
+    from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
     from models.residual import DEFAULT_FEATURES, feature_vector
     protocol = protocol_content(frozen_protocol)
     names = [field["name"] for field in protocol["feature_schema"]]
     if names != list(DEFAULT_FEATURES):
-        raise ValueError("queue-lost-service-v1 requires its declared seven-feature order")
+        raise ValueError("analytical estimator requires its declared seven-feature order")
     estimator = protocol["analytical_estimator"]
-    if estimator["version"] != "queue-lost-service-v1":
+    if estimator["version"] != ESTIMATOR_VERSION:
         raise ValueError("unsupported analytical estimator version")
     config = AnalyticalConfig(**estimator["config"])
     if config.civilian_weight != protocol["civilian_weight"]:

@@ -15,7 +15,7 @@ from typing import Mapping
 from evaluation.metrics import finite
 from evaluation.protocol import digest, freeze_protocol, pilot_summary, validate_episode_inventory
 from evaluation.splits import assert_disjoint
-from models.analytical import AnalyticalConfig, estimate_candidates
+from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
 from models.residual import DEFAULT_FEATURES
 
 REGIMES = {"sparse", "moderate", "asymmetric", "heavy"}
@@ -377,7 +377,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
             "tie_break": "smallest_lead", "invalid_rules": ["collision", "teleport", "inventory_or_tripinfo_mismatch", "evidence_audit_failed"],
             "heldout_regimes": spec["heldout_regimes"], "heldout_route_families": spec["heldout_route_families"],
             "model_specification": spec["model_specification"],
-            "analytical_estimator": {"version": "queue-lost-service-v1", "config": spec["analytical_config"]},
+            "analytical_estimator": {"version": ESTIMATOR_VERSION, "config": spec["analytical_config"]},
             "controller_timing": asdict(Timing()), "simulation_step_s": timing["step_s"],
             "queue_scope": "all inserted active civilians with speed below 0.1 m/s; insertion backlog separately reported"}
         validate_episode_inventory(protocol, require_regimes=True)
@@ -481,7 +481,7 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
         raise ValueError("prepared budget inventory is inconsistent")
     if protocol["civilian_weight"] != spec["civilian_weight"] or protocol["model_specification"] != spec["model_specification"]:
         raise ValueError("protocol objective/model differs from declared spec")
-    if protocol["analytical_estimator"] != {"version": "queue-lost-service-v1", "config": spec["analytical_config"]}:
+    if protocol["analytical_estimator"] != {"version": ESTIMATOR_VERSION, "config": spec["analytical_config"]}:
         raise ValueError("protocol analytical estimator differs from declared spec")
     if verify_inputs:
         if read_json(root / "inputs/network/network-manifest.json") != network_manifest:

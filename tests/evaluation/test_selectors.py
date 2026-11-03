@@ -6,7 +6,7 @@ import unittest
 from evaluation.comparison import paired_decision_report
 from evaluation.protocol import digest
 from evaluation.selectors import analytical_artifact, fixed_lead_artifact, freeze_selectors, recompute_frozen_decisions
-from models.analytical import AnalyticalConfig, estimate_candidates
+from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
 from models.residual import DEFAULT_FEATURES
 
 
@@ -16,7 +16,7 @@ def fixtures():
                 "group_assignments": {"training": "train", "validation": "validation", "heldout": "test"},
                 "feature_schema": [{"name": n, "unit": "fixture", "source": "synthetic", "sensor_lag_s": 1} for n in DEFAULT_FEATURES],
                 "horizon_s": 100, "drain_end_s": 200,
-                "analytical_estimator": {"version": "queue-lost-service-v1", "config": asdict(config)},
+                "analytical_estimator": {"version": ESTIMATOR_VERSION, "config": asdict(config)},
                 "episode_inventory": [{"episode_id": group, "demand_group_id": group, "split": split,
                     "demand_sha256": group, "network_sha256": "network", "dispatch_s": 20}
                     for group, split in (("training", "train"), ("validation", "validation"), ("heldout", "test"))]}
