@@ -2,11 +2,33 @@
 
 All times **IST (UTC+05:30)**. Planning begins November 3, 2026 around 01:00. Target submission-ready November 4 at 16:00; organizer deadline November 4 at 20:00. These are bounded work allocations, not guarantees that unmeasured training/rendering will finish in a stated time. Actual pilot results determine scope cuts.
 
-## Current checkpoint — November 3, 02:30 IST
+## Original documentation checkpoint — November 3, 02:30 IST
 
 The original asset pack is published and verified: 25 primary junctions plus 32 access/bend/terminal nodes, two hospitals, 100 curb anchors, nine GLBs (1,268,584 bytes). Graph reachability passes for all 200 pickup/hospital pairs; this is not SUMO or traffic validation. Preserve city glTF root transforms and the vehicle center/front-bumper convention. No simulation, viewer, model or benchmark result exists at this checkpoint.
 
 Implementation is on the cloud development PC. **All test suites, browser QA, simulation experiments/training and performance measurements run on the owner's Omen checkout at `C:\Github\afterlight`.** Cloud compilation/development is permitted; it is not acceptance evidence. Publish focused checkpoints, relay exact commits and commands to the Omen tester, fix failures, then recheck the affected behavior there. Never label a pending local check as passed.
+
+## Updated progress — November 3, 10:25 IST
+
+The original time windows below are planning history, not completed gates. The
+owner explicitly continued the whole-day build and then switched off Omen.
+Cloud implementation continues; all acceptance and experiments wait for Omen.
+Desktop-only is now the target (`AGENTS.md`); real 3D geometry and low-poly
+instanced civilian traffic remain mandatory.
+
+Actual `7ef8ffe` evidence: desktop browser 14/14, preview 9/9, asset 8/8, frontend
+Node 57/57 and production build passed; fixture/city network conversion had no
+warnings. A previous real fixture pair was invalid due to a collision. Its
+insertion fix has not yet passed a new real run. Last Python batch outcome is
+unknown after transport loss; inspect saved records/processes before retrying.
+
+Next critical gates, in order: resolve that unknown execution; validate newer
+source and geometry; run fresh fixture plus ordinary/ordinary control; inspect
+city lane/stopline geometry and sparse city traffic; only then measure pilot
+runtime/action diversity, freeze a feasible study, and evaluate untouched data.
+No public traffic recording or learned-performance claim until genuine evidence
+passes these gates. Retain the November 4 submission buffer; reduce experimental
+breadth before correctness or the actual browser demo.
 
 ## Critical path
 
@@ -55,7 +77,7 @@ Never cut honest accounting, untouched test, input provenance, legal transitions
 
 ## Go / no-go decisions
 
-**No useful action diversity:** simplify the action design using training evidence only, or demonstrate why the validation-best fixed lead is sufficient. **No held-out ML gain:** ship the stronger non-learned policy and retain the evaluated ML experiment transparently; no AI-performance claim. **No hosting:** local executable system and recorded demo, with source/setup intact. **No verified MCP:** document capability blocker; do not install or expose services without required authorization. **No stable 3D performance:** reduce to an attractive 2.5D miniature retaining original assets and accurate traces.
+**No useful action diversity:** simplify the action design using training evidence only, or demonstrate why the validation-best fixed lead is sufficient. **No held-out ML gain:** ship the stronger non-learned policy and retain the evaluated ML experiment transparently; no AI-performance claim. **No hosting:** local executable system and recorded demo, with source/setup intact. **No verified MCP:** document capability blocker; do not install or expose services without required authorization. **No stable 3D performance:** reduce geometry detail, render resolution and optional effects while retaining actual 3D buildings, roads, vehicles and ambulance. Parallax/billboard substitution is not allowed.
 
 ## Submission acceptance record to fill with facts
 
