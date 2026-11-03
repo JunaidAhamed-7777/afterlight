@@ -55,6 +55,23 @@ when that evidence is incomplete. Metrics are fixed whole-run measurements.
 Only display poses interpolate between adjacent real samples. New/removed IDs
 and teleports retain explicit lifecycle behavior.
 
+## Study evidence
+
+Results separates **This run** from **Study**. The former describes the selected
+recording; the latter displays only an actually audited, released test report.
+Before real summary artifacts are published, Study says **Study not published**.
+Exploratory examples never become aggregate results or placeholders for a future
+study.
+
+Study loads only while open. Its bounded manifest and summary requests verify
+the exact summary byte count and SHA-256; leaving the view aborts them. Failed
+publication, checksum or schema checks offer retry. Failure ratios and all test
+episodes remain visible before deltas conditional on both choices having valid,
+complete objectives. Signed deltas, independent-group intervals or their missing
+reason, split counts and holdouts retain the report's definitions. Source and
+artifact links explain offline cached-candidate selection; the viewer does not
+independently verify the entire scientific evidence chain.
+
 ## Loading and recovery
 
 The initial loading screen reports completed resources. Dense recording fetch,

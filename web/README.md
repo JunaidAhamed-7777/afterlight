@@ -76,6 +76,23 @@ real frames; metrics remain measured whole-run values. Fresh 0.5 s captures repl
 coarse presentation that incorrectly moved three stopped cars before green.
 Original failed evidence is preserved. See the [replay contract](../docs/REPLAY_SCHEMA.md).
 
+## Study results
+
+Results has separate **This run** and **Study** views. Individual recordings are
+exploratory examples. Study displays only an actually audited, released test
+report; before its publication it shows **Study not published**, without pending
+or invented metrics. It fetches only while that view is open, verifies the exact
+summary bytes against `study/manifest.json`, and cancels requests when you leave.
+The manifest is capped at 16 KiB and the summary at 1 MiB.
+
+Study shows failures and sample counts before conditional paired deltas. Negative
+means selected choice minus comparator is lower; missing intervals retain their
+reason. The method/source disclosure explains offline cached-candidate selection
+and links published proof files. Checking the summary's checksum does not
+independently re-audit every linked artifact. The dependency-free compiled preview
+serves the same published `web/public/study/` files without copying or regenerating
+scientific outcomes.
+
 ## Camera and accessibility
 
 Explore uses genuine perspective; Full city fits an orthographic overview.
