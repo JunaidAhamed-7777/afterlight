@@ -79,7 +79,7 @@ python scripts/verify_public_study.py --base-url https://afterlight-gamma.vercel
 
 The verifier checks original bytes, full world inventories, frozen choices, failures, per-case rows and confidence intervals. [Public verification instructions](docs/STUDY_BROWSER_ACCEPTANCE.md) · [Publication record](docs/validation/study-v4/publication.json)
 
-The final source run passed **664 Python and 139 Node tests**, with five explicit Python skips. Both fixture and city network conversions passed. All 63 public files match the frozen build; browser playback, seeking and the released Study were checked on the hosted site. [Source checks and skip reasons](docs/validation/final-source-acceptance.json) · [Public deployment checks](docs/validation/production-hosting-final-acceptance.json)
+The current source run passed **664 Python and 147 Node tests**, with five explicit Python skips. Both fixture and city network conversions passed. Desktop checks cover the journey lock, exact routing evidence, keyboard navigation, loading cancellation and default street reveal. [Current source checks and skip reasons](docs/validation/journey-algorithm-source-acceptance.json) · [Desktop feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Original public deployment checks](docs/validation/production-hosting-final-acceptance.json)
 
 ## Run locally
 
