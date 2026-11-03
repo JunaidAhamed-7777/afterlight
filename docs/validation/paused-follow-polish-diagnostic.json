@@ -1,0 +1,164 @@
+{
+  "schema": "afterlight.paused-follow-polish-diagnostic.v1",
+  "scope": "Preserved failing final-polish attempts; no traffic or replay edits. Camera drift was measured against exact recorded poses; scene and full-page pixels were inspected separately.",
+  "attempts": [
+    {
+      "attempt": "final-polish-1-follow",
+      "status": "failed",
+      "error": "Paused pixels changed after camera settled",
+      "original_report_sha256": "ae72bae350ba144bd8f05f9f0d8b9464299f925a2a128dfd650dd0c43c23222f"
+    },
+    {
+      "attempt": "final-polish-1-follow-02",
+      "status": "failed",
+      "error": "Paused camera changed",
+      "original_report_sha256": "c8514db85b88e252008f6ef8ddb983e5baa6e61ec15adf8992ff38eb9ff18862"
+    },
+    {
+      "attempt": "final-polish-1-follow-diagnostic",
+      "status": "failed",
+      "error": "Paused camera changed",
+      "original_report_sha256": "bb3cfed66495966893da802b762220fa66c1bc8303da5df09ad752c0170aae7e",
+      "camera_before": {
+        "mode": "perspective",
+        "position": [
+          -600.7449062085703,
+          12.68705991984801,
+          272.3009123369277
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -641.2375952574557,
+          1.4999999999999991,
+          229.88000000000008
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "camera_after": {
+        "mode": "perspective",
+        "position": [
+          -600.7447539674799,
+          12.68705991984801,
+          272.3009123369277
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -641.2374430163653,
+          1.4999999999999991,
+          229.8800000000001
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "vehicle_clock_material_state_identical": true,
+      "scene_png_identical": false
+    },
+    {
+      "attempt": "final-polish-1-follow-fixed",
+      "status": "failed",
+      "error": "Paused scene pixels changed after camera settled",
+      "original_report_sha256": "d77f821c5f5faad97f6b287c248bdbc148bcbd05d3fe1288f48a76b4e6839562",
+      "camera_before": {
+        "mode": "perspective",
+        "position": [
+          -506.1887310310913,
+          12.687059919848013,
+          272.3009123369276
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -546.6814200799768,
+          1.5000000000000002,
+          229.88
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "camera_after": {
+        "mode": "perspective",
+        "position": [
+          -506.1887310310913,
+          12.687059919848013,
+          272.3009123369276
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -546.6814200799768,
+          1.5000000000000002,
+          229.88
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "vehicle_clock_material_state_identical": true,
+      "scene_png_identical": false
+    }
+  ],
+  "diagnoses": [
+    {
+      "finding": "Original paused follow continued residual smoothing. Diagnostic target X moved0.000152241m over900ms while vehicle/clock/material state stayed identical.",
+      "fix_commit": "9569900",
+      "verification": "New strict build24f6526 passed exact camera and vehicle-state equality; pixel check then isolated separate sky backdrop variation."
+    },
+    {
+      "finding": "After camera fix,45,199 pixels differed by at most1RGB level, confined to sky/upper silhouette region; exact camera, clock, poses and materials matched. The transparent canvas used a CSS gradient.",
+      "fix": "Replace gradient with the existing flat daylight sky token; retain exact pixel comparison with no color tolerance. Fresh production build and actual browser validation are required."
+    }
+  ],
+  "first_full_page_only_difference": {
+    "different_pixels": 42,
+    "maximum_channel_delta": 3,
+    "bbox_xyxy": [
+      367,
+      118,
+      369,
+      171
+    ],
+    "interpretation": "HTML divider outside the scene; full pages retained, scene acceptance excludes only2CSS boundary pixels."
+  }
+}
