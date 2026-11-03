@@ -1,0 +1,37 @@
+{
+  "schema": "afterlight.model-pre-test-independent-review.v1",
+  "recorded_utc": "2026-11-03T15:18:40.448170+00:00",
+  "status": "passed_before_heldout_release",
+  "selection_sha256": "1c30e8d616ce2654969f234b88b2a633f152b4ae8896ba5e368c642cf5db7f9c",
+  "selection_file_sha256": "4acc0e915ad625e8f598398e46216c27d16f9b1c22c46f7e7ca4147d49c89165",
+  "model_sha256": "df1c707613d7a1d379aa5f4a810d63a2b2f85fb1140a3fd743ab3c09323d9998",
+  "model_file_sha256": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d",
+  "analysis_amendment_sha256": "c30562eadf64ed991e18b905f685bcc325116158d32f9c560ba04d187b7909ae",
+  "original_canonical_selection_verifier": "passed",
+  "original_pinned_source_snapshot": "exact_match",
+  "training_rows": 120,
+  "training_groups": 24,
+  "finite_training_labels": 120,
+  "infeasible_training_labels": 0,
+  "model_parameters": {
+    "max_depth": 3,
+    "min_samples_leaf": 8,
+    "random_state": 0
+  },
+  "model_nodes": 11,
+  "training_candidate_logical_and_original_byte_hashes_verified": true,
+  "train_groups_disjoint_from_validation_test": true,
+  "validation_fixed_lead_s": 5,
+  "all_selector_comparison_artifact_bytes_verified": {
+    "analytical-selector.json": "4af9ae61f9dc6bf76e8bdbc99b9f300bc386d466ec71f011c39ad4c4abbd02f2",
+    "fixed-selector.json": "c4c982f6c14d608ec558044bf16d028f264cd36a3c57dccd4172cf6a9aa98c07",
+    "learned-selector.json": "4dc49dc5615a8bf851eb8b5481d6c697612ab9f6d0177a57656d72b86210cd46",
+    "learned-vs-analytical.json": "7a7bbb6d75438e65a630a72adf4e4da12957e878dac9ca9231eedfe16cb70349",
+    "learned-vs-fixed.json": "885417b372e7a34bca6f43dadd3db50799fce5b457b0430007284ff0b46230ca",
+    "model.json": "ff1ebae2e575dc410e2bfca4821c905fa481b598a5b0dcfe9b4005a18844852d",
+    "validation-candidates.json": "d3c23e1447d7a47190eb9d24edee69e8b50e851efe153259c1b18d6d09c61c88"
+  },
+  "test_release_and_attempt_absent_at_review": true,
+  "scope": "Actual model/selection/amendment/source and training provenance, using unchanged original selection verifier. No held-out outcomes opened, fitting or simulation. No performance claim.",
+  "decision": "Authorize the original pinned explicit learned-mode release and exactly one whole frozen test collection; preserve failures and stop rather than automatically retry."
+}
