@@ -15,6 +15,7 @@ from urllib.parse import urljoin, urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 from desktop_product_acceptance import ROOT, UNSAFE_DEFAULTS, source_identity, verify_served_build
+from recording_lifecycle import real_entry
 
 KEY = "afterlight.onboarding.v1"
 TITLES = [
@@ -86,11 +87,28 @@ def reopen(page):
     expect(page.get_by_role("dialog", name=TITLES[0], exact=True)).to_be_visible()
 
 
+def unavailable_guide(page, output, label):
+    page.get_by_role("button", name="Settings", exact=True).click()
+    button = page.locator("[data-tour-reopen]")
+    expect(button).to_be_disabled()
+    reason_id = button.get_attribute("aria-describedby")
+    assert reason_id, "Unavailable guide has no accessible explanation"
+    reason = page.locator("[id=" + json.dumps(reason_id) + "]")
+    expect(reason).to_contain_text("Open a city recording with the 3D view ready")
+    button.scroll_into_view_if_needed()
+    bounds = button.bounding_box()
+    page.mouse.click(bounds["x"] + bounds["width"] / 2, bounds["y"] + bounds["height"] / 2)
+    expect(page.locator(".onboarding-layer")).to_have_count(0)
+    page.screenshot(path=str(output / (label + ".png")), full_page=True)
+    return {"case":label,"guide_disabled":True,"accessible_reason":reason.inner_text(),"disabled_pointer_click_did_not_open_tour":True}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-url", default="http://127.0.0.1:5182/")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--build-manifest", type=Path)
+    parser.add_argument("--fixture", type=Path, help="Optional retained genuine fixture recording for evidence-only availability")
     args = parser.parse_args()
     url = urlsplit(args.base_url)
     if url.username or url.password or not ((url.scheme == "http" and url.hostname in {"localhost", "127.0.0.1"}) or (url.scheme == "https" and url.hostname and url.hostname.endswith(".vercel.app"))):
@@ -168,6 +186,21 @@ def main():
                                     "background_click_did_not_start_playback":True, "time_unchanged":True,
                                     "completion_and_escape_persisted":True, "reopen_from_settings":True,
                                     "focus_restored":True, "desktop_1440_bounds":bounds, "desktop_1280_bounds":smaller})
+            current_page.get_by_role("button", name="Settings", exact=True).click()
+            expect(current_page.locator("[data-tour-reopen]")).to_be_enabled()
+            supported = current_page.evaluate("""() => {const gl=document.querySelector('.three-host canvas').getContext('webgl2');
+              const extension=gl?.getExtension('WEBGL_lose_context');if(!extension)return false;extension.loseContext();return true;}""")
+            assert supported, "Native WebGL context-loss availability check was not exercised"
+            retry = current_page.get_by_role("button", name="Retry 3D city", exact=True)
+            expect(retry).to_be_visible(timeout=30000)
+            failed = unavailable_guide(current_page, output, "renderer-unavailable-guide")
+            retry.click();loaded(current_page)
+            expect(current_page.locator("[data-tour-reopen]")).to_be_enabled()
+            current_page.locator("[data-tour-reopen]").click()
+            tour_step(current_page, 0, output, "renderer-recovered-reopen")
+            current_page.keyboard.press("Escape")
+            failed["retry_reenabled_guide_and_reopen_passed"] = True
+            report["cases"].append(failed)
             if args.build_manifest: report["served_build_after"] = verify_served_build(context, args.base_url, manifest)
             context.close()
 
@@ -192,6 +225,32 @@ def main():
                     current_page.keyboard.press("Escape")
                     expect(current_page.locator(".onboarding-layer")).to_have_count(0)
                 report["cases"].append({"case":case,"opens_safely":True,"skip_exits":True,"storage_failure_does_not_block_reopen":case == "storage-blocked"})
+                context.close()
+
+            context = browser.new_context(viewport={"width":1440,"height":810}, device_scale_factor=1)
+            context.route("**/replays/catalog.json", lambda route: route.fulfill(content_type="application/json", body='{"schema":"afterlight.catalog.v1","runs":[]}'))
+            current_page = context.new_page()
+            current_page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
+            current_page.goto(args.base_url, wait_until="domcontentloaded")
+            current_page.wait_for_function("!document.querySelector('.boot-screen') && document.querySelector('.three-host canvas')?.dataset.renderInfo", timeout=90000)
+            report["cases"].append(unavailable_guide(current_page, output, "empty-library-guide"))
+            context.close()
+
+            if args.fixture:
+                raw = args.fixture.read_bytes()
+                fixture_entry, fixture = real_entry(raw, "Retained genuine fixture tour check")
+                assert fixture["scenario"]["network_kind"] == "fixture", "Supply an existing genuine fixture recording"
+                context = browser.new_context(viewport={"width":1440,"height":810}, device_scale_factor=1)
+                context.route("**/replays/catalog.json", lambda route: route.fulfill(content_type="application/json", body=json.dumps({"schema":"afterlight.catalog.v1","runs":[fixture_entry]})))
+                context.route("**/replays/retained-genuine.json", lambda route: route.fulfill(content_type="application/json", body=raw))
+                current_page = context.new_page()
+                current_page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
+                current_page.goto(args.base_url, wait_until="domcontentloaded")
+                expect(current_page.locator(".fixture-view")).to_be_visible(timeout=90000)
+                expect(current_page.locator(".boot-screen")).to_have_count(0)
+                result = unavailable_guide(current_page, output, "genuine-fixture-guide")
+                result["genuine_fixture_sha256"] = fixture_entry["sha256"]
+                report["cases"].append(result)
                 context.close()
             assert not report["page_errors"], report["page_errors"]
             browser.close()
