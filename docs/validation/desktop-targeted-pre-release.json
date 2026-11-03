@@ -1,0 +1,470 @@
+{
+  "schema": "afterlight.targeted-desktop-pre-release.v1",
+  "recorded_utc": "2026-11-03T13:20:42.665434+00:00",
+  "status": "passed_scoped_targeted_checks",
+  "scope": "Headed desktop Chrome only. Same-selected-world follow, native runtime notices, roof materials/pixels, playback rates, and Study negative/error/cancellation regression. This is not the pending final complete Study, post-identity performance, or two formal polish passes.",
+  "build": {
+    "manifest_file_sha256": "b146a18f967314f87f1b1c1c14ac9d4de299423a7452ab04620bd18d09ac3c09",
+    "source_inventory_sha256": "53eaed36878cf4dd69732abc6982fb02df9226760e0ca8f95f821c1260682675",
+    "git_head_at_freeze": "aa04d5df6f32f0990e7b55ead56e39a6a95fe468",
+    "source_files_stable_at_freeze": true,
+    "served_file_count": 30,
+    "served_bytes": 37103346,
+    "bundles": [
+      "assets/CityView-D-pw9EHU.js",
+      "assets/index-CdLo48_Q.css",
+      "assets/index-Cz8FT8Pg.js",
+      "assets/recording.worker-DdqdYQIB.js"
+    ],
+    "served_before": {
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
+    },
+    "served_after": {
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
+    }
+  },
+  "browser_version": "156.0.8078.80",
+  "viewport_css": [
+    1920,
+    1080
+  ],
+  "device_pixel_ratio": 1,
+  "genuine_recording": {
+    "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
+    "bytes": 72828179
+  },
+  "follow_artifact": "local-runtime/desktop-follow-notices-02/report.json",
+  "follow_artifact_sha256": "39be9f6ecbebd66adf895026cfcb18ba740025c2ee85c7f4ef1d09d3884c2631",
+  "follow_checks": {
+    "follow-visible-afterlight": {
+      "expected_from_genuine_pose": [
+        -650.5321200000001,
+        1.5,
+        229.88
+      ],
+      "actual_camera_target": [
+        -650.5321200000002,
+        1.5000000000000002,
+        229.88
+      ],
+      "world": "afterlight"
+    },
+    "selected-Afterlight-preserves-ambulance-follow": {
+      "world": "afterlight",
+      "follow_still_pressed": true,
+      "camera_and_clock_unchanged": true
+    },
+    "follow-visible-ordinary": {
+      "expected_from_genuine_pose": [
+        -667.4729557326067,
+        1.5,
+        234.025112947991
+      ],
+      "actual_camera_target": [
+        -667.4729557326067,
+        1.5,
+        234.02511294799098
+      ],
+      "world": "baseline"
+    },
+    "selected-Ordinary-preserves-ambulance-follow": {
+      "world": "baseline",
+      "follow_still_pressed": true,
+      "camera_and_clock_unchanged": true
+    },
+    "ghost-follow-activates-afterlight-scene": {
+      "expected_from_genuine_pose": [
+        -667.4729557326067,
+        1.5,
+        234.025112947991
+      ],
+      "actual_camera_target": [
+        -667.4729557326067,
+        1.5,
+        234.02511294799098
+      ],
+      "world": "afterlight"
+    },
+    "selected-Afterlight-preserves-ghost-follow": {
+      "world": "afterlight",
+      "follow_still_pressed": true,
+      "camera_and_clock_unchanged": true
+    },
+    "ghost-follow-restores-hidden-ghost": {
+      "expected_from_genuine_pose": [
+        -667.4729557326067,
+        1.5,
+        234.025112947991
+      ],
+      "actual_camera_target": [
+        -667.4729557326067,
+        1.5,
+        234.02511294799098
+      ],
+      "world": "afterlight"
+    },
+    "ambulance-follow-replaces-ghost-follow": {
+      "expected_from_genuine_pose": [
+        -650.5321200000001,
+        1.5,
+        229.88
+      ],
+      "actual_camera_target": [
+        -650.5321200000002,
+        1.5000000000000002,
+        229.88
+      ],
+      "world": "afterlight"
+    },
+    "10x-playback": {
+      "wall_seconds_including_clicks": 1.979,
+      "recorded_seconds_advanced": 18.841000000029993,
+      "observed_ratio": 9.520464881268314
+    },
+    "20x-playback": {
+      "wall_seconds_including_clicks": 1.961800000000745,
+      "recorded_seconds_advanced": 37.49199999999951,
+      "observed_ratio": 19.111020491377953
+    },
+    "paused-steady-blue": {
+      "actual_material": [
+        {
+          "name": "AFTERLIGHT_EMERGENCY_BEACON",
+          "color": "#2288ff",
+          "emissive": "#2288ff",
+          "emissiveIntensity": 3,
+          "toneMapped": false
+        }
+      ],
+      "same_pixels_over_900ms": true
+    },
+    "reduced-motion": {
+      "both_follow_controls_disabled": true,
+      "actual_material_samples": [
+        "#2288ff",
+        "#2288ff",
+        "#2288ff",
+        "#2288ff",
+        "#2288ff",
+        "#2288ff",
+        "#2288ff",
+        "#2288ff"
+      ],
+      "playback_remains_available": true
+    },
+    "authored-model-thumbnails": [
+      {
+        "src": "/assets/previews/ambulance_model.png",
+        "width": 320,
+        "height": 200
+      },
+      {
+        "src": "/assets/previews/ghost_model.png",
+        "width": 320,
+        "height": 200
+      }
+    ],
+    "native-runtime-notices": {
+      "url": "http://127.0.0.1:5202/THIRD_PARTY_NOTICES.txt",
+      "HTTP_status": 200,
+      "bytes": 5878,
+      "sha256": "0c6334d054cc746ab4ad6e737159ae149903eaf2b7a773c2ff0c1fb939b41dce",
+      "source_bytes_exact": true,
+      "full_native_page_text_matches": true,
+      "pinned_components": [
+        "react",
+        "react-dom",
+        "scheduler",
+        "three",
+        "vite-runtime"
+      ]
+    }
+  },
+  "runtime_notices_header": "text/plain; charset=utf-8",
+  "runtime_notices_header_scope": "Exact Vercel header declared in vercel.json, served on5202 over unchanged snapshot11 files; actual cloud header still requires deployment verification.",
+  "beacon_phases": [
+    {
+      "label": "roof-playing-red",
+      "material_before": [
+        {
+          "name": "AFTERLIGHT_EMERGENCY_BEACON",
+          "color": "#ff304d",
+          "emissive": "#ff304d",
+          "emissiveIntensity": 3,
+          "toneMapped": false
+        }
+      ],
+      "material_after": [
+        {
+          "name": "AFTERLIGHT_EMERGENCY_BEACON",
+          "color": "#ff304d",
+          "emissive": "#ff304d",
+          "emissiveIntensity": 3,
+          "toneMapped": false
+        }
+      ],
+      "png_sha256": "35a3d1cafbf47bd2c1706cf28c67cf4758e6b44cd37b997bfac73e0027fb0dac",
+      "observed_time_s": 232.68100000000172,
+      "camera": {
+        "mode": "perspective",
+        "position": [
+          -600.6848132078482,
+          12.687059919848013,
+          272.30091233692764
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -641.1775022567335,
+          1.4999999999999993,
+          229.88000000000002
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "render": {
+        "calls": 69,
+        "triangles": 361632,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      }
+    },
+    {
+      "label": "roof-playing-blue",
+      "material_before": [
+        {
+          "name": "AFTERLIGHT_EMERGENCY_BEACON",
+          "color": "#2288ff",
+          "emissive": "#2288ff",
+          "emissiveIntensity": 3,
+          "toneMapped": false
+        }
+      ],
+      "material_after": [
+        {
+          "name": "AFTERLIGHT_EMERGENCY_BEACON",
+          "color": "#2288ff",
+          "emissive": "#2288ff",
+          "emissiveIntensity": 3,
+          "toneMapped": false
+        }
+      ],
+      "png_sha256": "961f776ebfff9036dfe1ceeef802c6d238f31829e4c0f7cfe9df5ec2441097a2",
+      "observed_time_s": 233.08050000000182,
+      "camera": {
+        "mode": "perspective",
+        "position": [
+          -596.4119477318196,
+          12.687059919848013,
+          272.30091233692764
+        ],
+        "quaternion": [
+          -0.08735754784038327,
+          0.3702663831044389,
+          0.03500047815345979,
+          0.9241463254848234
+        ],
+        "target": [
+          -636.904636780705,
+          1.4999999999999993,
+          229.88000000000002
+        ],
+        "zoom": 48,
+        "roll": 0,
+        "azimuth": 0.7621465405869853,
+        "elevation": 0.18849555921538763,
+        "viewport": [
+          1552,
+          737.3333740234375
+        ]
+      },
+      "render": {
+        "calls": 69,
+        "triangles": 361632,
+        "geometries": 74,
+        "textures": 2,
+        "fadedBuildings": 0,
+        "occluderBuildings": 826,
+        "logarithmicDepth": true
+      }
+    }
+  ],
+  "pixel_review": {
+    "scoped_finding": "The original ambulance roof bar is visibly red in the playing-red capture and blue in playing-blue, paused and reduced-motion captures. Inspected road/park/roof surfaces are solid without broad stripe artifacts in these particular close views. Native notice page includes all five readable notice sections with correct copyright glyph.",
+    "images": [
+      {
+        "artifact": "local-runtime/desktop-follow-notices-02/roof-playing-red.png",
+        "sha256": "35a3d1cafbf47bd2c1706cf28c67cf4758e6b44cd37b997bfac73e0027fb0dac",
+        "actually_viewed": true
+      },
+      {
+        "artifact": "local-runtime/desktop-follow-notices-02/roof-playing-blue.png",
+        "sha256": "961f776ebfff9036dfe1ceeef802c6d238f31829e4c0f7cfe9df5ec2441097a2",
+        "actually_viewed": true
+      },
+      {
+        "artifact": "local-runtime/desktop-follow-notices-02/roof-paused-steady-blue.png",
+        "sha256": "24cd8872150ab0d3509e117f0964579c69a54baf4de12799e8cef515a90a2d6a",
+        "actually_viewed": true
+      },
+      {
+        "artifact": "local-runtime/desktop-follow-notices-02/roof-reduced-motion-steady-blue.png",
+        "sha256": "f335eb3e4b59f4458268d17c395d2ac316e19b838750974ba8a10711da8929f9",
+        "actually_viewed": true
+      },
+      {
+        "artifact": "local-runtime/desktop-follow-notices-02/runtime-notices-native-page.png",
+        "sha256": "51462ab3b003342ef7b2a76046c7550741f6097222bb8b185897eb840f5efbc9",
+        "actually_viewed": true
+      }
+    ]
+  },
+  "study_negative": {
+    "artifact": "local-runtime/study-negative-03/report.json",
+    "sha256": "f55242f79e2a85dfe78169adf26de30cdb901ef0defdae3b0ee112dba6ab667d",
+    "status": "passed_Study_negative_flows_and_actual_cancellation",
+    "case_count": 16,
+    "positive_study_evidence_loaded": false,
+    "fabricated_positive_metrics": false,
+    "page_errors": [],
+    "source_stable": true,
+    "served_before": {
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
+    },
+    "served_after": {
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
+    }
+  },
+  "retained_history": {
+    "failed_artifact": "local-runtime/desktop-follow-notices-01/report.json",
+    "failed_artifact_sha256": "ffe281d22734370f205a99b16ce7e5c9935d347ec4b4139db1e8b04107a3d354",
+    "diagnostic": "local-runtime/notices-encoding-diagnostic-01/report.json",
+    "diagnostic_sha256": "0055268d8923372c0795ee7ffc5489d7ccb12f3f0ca0e178aab591a75b3fdce6",
+    "cause": "Generic Python snapshot server5201 omitted charset; Chrome decoded original UTF-8 bytes as windows-1252 (\u00a9 became \u00c2\u00a9). Vite5182 also omitted charset when observed. Raw notice bytes were exact. Neither the original served cohort nor notice bodies were changed to hide this observation."
+  },
+  "page_errors": [],
+  "pending_release_gates": [
+    "Actual released Study public-proof verification and positive browser acceptance",
+    "Actual deployed UTF-8 notice Content-Type and exact body",
+    "Post-Canva complete desktop acceptance and fresh30s overview plus30s real-follow measurement",
+    "Two distinct final polish passes",
+    "Final actual-pixel media after hosting and Canva identity"
+  ],
+  "runtime_notices_BOM_followup": {
+    "recorded_utc": "2026-11-03T13:24:05.452182+00:00",
+    "status": "passed_native_UTF8_on_Vite_and_generic_static_without_header_overrides",
+    "container_change": "Only a three-byte UTF-8 BOM was prepended to the new combined notices container; all prior container text and five original notice bodies remain byte-exact.",
+    "notice_bytes_unchanged_after_prefix_removed": true,
+    "snapshot12": {
+      "manifest_file_sha256": "8fe32530782f7b058670dd91685237cec1c521fadde81d0eaec59de0d095d4cc",
+      "source_inventory_sha256": "53eaed36878cf4dd69732abc6982fb02df9226760e0ca8f95f821c1260682675",
+      "git_head_at_freeze": "aa04d5df6f32f0990e7b55ead56e39a6a95fe468",
+      "served_file_count": 30,
+      "served_bytes": 37103349,
+      "changed_files_from_snapshot11": [
+        "THIRD_PARTY_NOTICES.txt"
+      ],
+      "other29_files_identical": true
+    },
+    "runs": [
+      {
+        "artifact": "local-runtime/runtime-notices-vite-01/report.json",
+        "sha256": "ffd642a09e126302a01ec2733ec576d58aaa08a7d23448182ecb42011950e008",
+        "status": "passed_native_UTF8_notices_without_header_overrides",
+        "source_stable_during_run": true,
+        "notice": {
+          "url": "http://127.0.0.1:5182/THIRD_PARTY_NOTICES.txt",
+          "HTTP_status": 200,
+          "content_type_header": "text/plain",
+          "bytes": 5881,
+          "sha256": "e8fc9eb43bcd4068316f90891c7814f995be0e163fdb1a2c0b3c5c8be0491db1",
+          "container_UTF8_BOM": true,
+          "source_bytes_exact": true,
+          "full_native_text_exact": true,
+          "native": {
+            "charset": "UTF-8",
+            "contentType": "text/plain"
+          },
+          "pinned_versions": {
+            "react": "19.1.1",
+            "react-dom": "19.1.1",
+            "scheduler": "0.26.0",
+            "three": "0.180.0",
+            "vite-runtime": "7.3.7"
+          }
+        },
+        "served_before": null,
+        "served_after": null,
+        "PNG": "local-runtime/runtime-notices-vite-01/native-notices.png",
+        "PNG_sha256": "c5d808eb209689d4dadefb3c2b3f2fafdfe9467bd2724cecc44515b6fecaa224"
+      },
+      {
+        "artifact": "local-runtime/runtime-notices-default-static-01/report.json",
+        "sha256": "17884b085c6eff082e8c69f2131f372c929c253394139d34de293393696eb3db",
+        "status": "passed_native_UTF8_notices_without_header_overrides",
+        "source_stable_during_run": true,
+        "notice": {
+          "url": "http://127.0.0.1:5203/THIRD_PARTY_NOTICES.txt",
+          "HTTP_status": 200,
+          "content_type_header": "text/plain",
+          "bytes": 5881,
+          "sha256": "e8fc9eb43bcd4068316f90891c7814f995be0e163fdb1a2c0b3c5c8be0491db1",
+          "container_UTF8_BOM": true,
+          "source_bytes_exact": true,
+          "full_native_text_exact": true,
+          "native": {
+            "charset": "UTF-8",
+            "contentType": "text/plain"
+          },
+          "pinned_versions": {
+            "react": "19.1.1",
+            "react-dom": "19.1.1",
+            "scheduler": "0.26.0",
+            "three": "0.180.0",
+            "vite-runtime": "7.3.7"
+          }
+        },
+        "served_before": {
+          "files": 30,
+          "bytes": 37103349,
+          "manifest_sha256": "ac7ad7c83cf0a365af2fdc79dcb2e41f3a52e8eef16842563e54691b75ea8048"
+        },
+        "served_after": {
+          "files": 30,
+          "bytes": 37103349,
+          "manifest_sha256": "ac7ad7c83cf0a365af2fdc79dcb2e41f3a52e8eef16842563e54691b75ea8048"
+        },
+        "PNG": "local-runtime/runtime-notices-default-static-01/native-notices.png",
+        "PNG_sha256": "c5d808eb209689d4dadefb3c2b3f2fafdfe9467bd2724cecc44515b6fecaa224"
+      }
+    ],
+    "pixel_review": {
+      "actually_viewed": "local-runtime/runtime-notices-default-static-01/native-notices.png",
+      "Vite_and_static_PNGs_byte_identical": true,
+      "finding": "Full native plain-text page shows all five notices and correct \u00a9 glyph. No leading BOM character is displayed."
+    },
+    "deployment_scope": "No cloud deployment is represented by these local checks; the configured Vercel UTF-8 Content-Type and exact body remain a deployment check."
+  }
+}

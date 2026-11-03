@@ -1,33 +1,33 @@
 {
   "schema": "afterlight.study-negative-browser-acceptance.v1",
-  "recorded_utc": "2026-11-03T12:18:23.251405+00:00",
+  "recorded_utc": "2026-11-03T13:20:42.684076+00:00",
   "status": "passed_scoped_negative_flows",
   "positive_study_evidence_loaded": false,
   "fabricated_positive_metrics": false,
-  "artifact": "local-runtime/study-negative-02/report.json",
-  "artifact_sha256": "1d1e04c2df2c4fbdf538241ad1fd5d9715c8e75707608514ceac60c6173ccab0",
+  "artifact": "local-runtime/study-negative-03/report.json",
+  "artifact_sha256": "f55242f79e2a85dfe78169adf26de30cdb901ef0defdae3b0ee112dba6ab667d",
   "build": {
-    "manifest_file_sha256": "9c20993d7780b05da6b5a5acfe9bdf9f7800229feaf4577e0bccd8a2593a593c",
-    "source_inventory_sha256": "690fd59ad1fca70f76298d4f46bc65faf743fd456ba3293cab2c6c7fb9704411",
-    "git_head_at_freeze": "a36599d16e637d1ad906e88b0661539497d4d118",
+    "manifest_file_sha256": "b146a18f967314f87f1b1c1c14ac9d4de299423a7452ab04620bd18d09ac3c09",
+    "source_inventory_sha256": "53eaed36878cf4dd69732abc6982fb02df9226760e0ca8f95f821c1260682675",
+    "git_head_at_freeze": "aa04d5df6f32f0990e7b55ead56e39a6a95fe468",
     "source_files_stable_at_freeze": true,
-    "served_file_count": 29,
-    "served_bytes": 37097284,
+    "served_file_count": 30,
+    "served_bytes": 37103346,
     "bundles": [
-      "assets/CityView-ByQ4e6a1.js",
+      "assets/CityView-D-pw9EHU.js",
       "assets/index-CdLo48_Q.css",
-      "assets/index-Crq7ClJn.js",
+      "assets/index-Cz8FT8Pg.js",
       "assets/recording.worker-DdqdYQIB.js"
     ],
     "served_before": {
-      "files": 29,
-      "bytes": 37097284,
-      "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
     },
     "served_after": {
-      "files": 29,
-      "bytes": 37097284,
-      "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+      "files": 30,
+      "bytes": 37103346,
+      "manifest_sha256": "061ede3db64b949ecac834b4be9e5faa63895dc075063b49a2276f13585be5c8"
     }
   },
   "browser_version": "156.0.8078.80",
@@ -38,8 +38,26 @@
   "device_pixel_ratio": 1,
   "genuine_recording": {
     "id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5",
+    "title": "Cross-city response",
+    "url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.json.gz",
+    "seed": 7,
+    "pickup_id": "P001",
+    "hospital_id": "HOSP_EAST",
+    "policy": "fixed",
+    "lead_s": 20,
+    "policy_label": "fixed \u00b7 20 s lead",
+    "duration_s": 900.0,
     "sha256": "47b13feab0a0f9b022673f942b8a8d585402b5b06e3a05da65fa29faf0ee0441",
-    "bytes": 72828179
+    "bytes": 72828179,
+    "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+    "world_status": {
+      "baseline": "completed",
+      "afterlight": "completed"
+    },
+    "evidence_url": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5.evidence.json",
+    "encoding": "gzip",
+    "transfer_bytes": 6585636,
+    "transfer_sha256": "82c9cd00f16c8b0d27e7140fc747a9bca33fff79d73afff96b832c0133c08bef"
   },
   "preserved_recording_state": {
     "title": "Cross-city response",
@@ -92,7 +110,7 @@
     {
       "case": "schema-invalid-manifest",
       "deliberate_invalid_GET_response_only": true,
-      "visible_error": "The study evidence has an invalid manifest fields.",
+      "visible_error": "The study evidence could not be verified (manifest fields). Retry the study.",
       "readable_study_specific_copy": true,
       "no_placeholder_metrics": true,
       "genuine_recording_preserved": true,
@@ -157,7 +175,7 @@
     {
       "case": "schema-invalid-summary",
       "deliberate_invalid_GET_response_only": true,
-      "visible_error": "The study evidence has an invalid summary fields.",
+      "visible_error": "The study evidence could not be verified (summary fields). Retry the study.",
       "readable_study_specific_copy": true,
       "no_placeholder_metrics": true,
       "genuine_recording_preserved": true,
@@ -223,7 +241,7 @@
     }
   ],
   "native_unpublished_response": {
-    "url": "http://127.0.0.1:5200/study/manifest.json",
+    "url": "http://127.0.0.1:5202/study/manifest.json",
     "status": 404,
     "accept": "application/json"
   },
@@ -246,5 +264,34 @@
       "Readable study-specific parser and size failure copy"
     ]
   },
-  "scope": "Initial404 is the actual served unpublished manifest with Accept application/json. Later fault injection replaces only isolated GETs with missing or invalid publication bytes, never a valid study summary. Real paused recording, clock, world, follow target and camera remain unchanged. Positive actual-report validation and final whole-product polish are separate pending gates."
+  "scope": "Initial404 is the actual served unpublished manifest with Accept application/json. Later fault injection replaces only isolated GETs with missing or invalid publication bytes, never a valid study summary. Real paused recording, clock, world, follow target and camera remain unchanged. Positive actual-report validation and final whole-product polish are separate pending gates.",
+  "previous_scoped_cohort": {
+    "artifact": "local-runtime/study-negative-02/report.json",
+    "artifact_sha256": "1d1e04c2df2c4fbdf538241ad1fd5d9715c8e75707608514ceac60c6173ccab0",
+    "build": {
+      "manifest_file_sha256": "9c20993d7780b05da6b5a5acfe9bdf9f7800229feaf4577e0bccd8a2593a593c",
+      "source_inventory_sha256": "690fd59ad1fca70f76298d4f46bc65faf743fd456ba3293cab2c6c7fb9704411",
+      "git_head_at_freeze": "a36599d16e637d1ad906e88b0661539497d4d118",
+      "source_files_stable_at_freeze": true,
+      "served_file_count": 29,
+      "served_bytes": 37097284,
+      "bundles": [
+        "assets/CityView-ByQ4e6a1.js",
+        "assets/index-CdLo48_Q.css",
+        "assets/index-Crq7ClJn.js",
+        "assets/recording.worker-DdqdYQIB.js"
+      ],
+      "served_before": {
+        "files": 29,
+        "bytes": 37097284,
+        "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+      },
+      "served_after": {
+        "files": 29,
+        "bytes": 37097284,
+        "manifest_sha256": "117b8d72c2bfb3c990e49faa281e68967ce044e209876dc6be3647673a360405"
+      }
+    }
+  },
+  "scope_note": "Latest targeted snapshot11 recheck includes revised readable checksum grammar. Previous snapshot10 result remains bound separately. Both are negative-only checks; no positive Study data is fabricated or accessed."
 }
