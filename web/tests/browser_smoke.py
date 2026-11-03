@@ -22,6 +22,7 @@ def main() -> None:
     parser.add_argument("--base-url", default="http://127.0.0.1:5173")
     parser.add_argument("--output", type=Path, default=Path("local-runtime/browser-smoke"))
     parser.add_argument("--catalog-path", choices=("/replays/catalog.json", "/api/catalog"), default="/replays/catalog.json")
+    parser.add_argument("--include-mobile", action="store_true", help="Optional legacy responsive checks; desktop is the acceptance target")
     parser.add_argument("--headless", action="store_true", help="Supplementary headless capture; headed GPU QA is the default")
     parser.add_argument("--channel", choices=("chrome", "msedge"), default="chrome")
     args = parser.parse_args()
@@ -107,16 +108,26 @@ def main() -> None:
                 timeline.press("Home")
                 timeline.press("ArrowRight")
                 expect(page.locator(".timeline-label output")).to_contain_text("0.1")
-                page.get_by_role("button", name="Baseline", exact=True).click()
-                expect(page.locator(".legend")).to_contain_text("Solid: ordinary baseline world")
+                city_recording = page.locator(".fixture-view").count() == 0
+                baseline_button = page.get_by_role("button", name="Baseline", exact=True)
+                baseline_button.click()
+                expect(baseline_button).to_have_attribute("aria-pressed", "true")
+                if city_recording:
+                    expect(page.locator(".legend")).to_contain_text("Solid: ordinary baseline world")
+                else:
+                    expect(page.locator(".fixture-view")).to_be_visible()
+                    expect(page.locator(".legend")).to_have_count(0)
                 page.get_by_role("button", name="Afterlight", exact=True).click()
-                expect(page.locator(".legend")).to_contain_text("Ghost: baseline, separate traffic world")
+                if city_recording:
+                    expect(page.locator(".legend")).to_contain_text("Ghost: baseline, separate traffic world")
                 page.screenshot(path=str(args.output / "recording.png"), full_page=True)
                 passed("real_catalogued_recording_shared_seek_and_world_labels")
                 # Return to asset inspection for the renderer context-loss check.
                 page.get_by_label("Recorded experiment", exact=True).select_option("")
             else:
-                expect(page.get_by_role("button", name="Play recording", exact=True)).to_be_disabled()
+                expect(page.get_by_role("button", name="Play recording", exact=True)).to_have_count(0)
+                expect(page.get_by_role("heading", name="Explore the city", exact=True)).to_be_visible()
+                expect(page.locator(".legend")).to_have_count(0)
                 expect(page.get_by_role("heading", name="No outcome claims yet")).to_be_visible()
                 passed("empty_library_has_no_fake_playback_or_outcomes")
 
@@ -154,16 +165,20 @@ def main() -> None:
             passed("animation_frame_exception_preserves_evidence_and_retries")
 
 
-            page.set_viewport_size({"width": 390, "height": 844})
+            if args.include_mobile:
+                page.set_viewport_size({"width": 390, "height": 844})
             page.emulate_media(reduced_motion="reduce")
             expect(page.get_by_label("Reduced motion", exact=True)).to_be_checked()
-            expect(page.get_by_label("Follow AFTERLIGHT ambulance", exact=True)).to_be_disabled()
+            expect(page.get_by_label("Follow AFTERLIGHT ambulance", exact=True)).to_have_count(0)
             page.evaluate("scrollTo(0,0)")
-            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Mobile horizontal overflow"
-            assert page.locator(".stage").bounding_box()["y"] < 200, "Mobile city is buried below settings"
-            passed("mobile_original_city_fits", assert_overview_fits(page))
-            page.screenshot(path=str(args.output / "mobile.png"), full_page=True)
-            passed("mobile_city_first_no_overflow_reduced_motion")
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Horizontal overflow"
+            if args.include_mobile:
+                assert page.locator(".stage").bounding_box()["y"] < 240, "Mobile city is buried below settings"
+                passed("optional_mobile_original_city_fits", assert_overview_fits(page))
+                page.screenshot(path=str(args.output / "mobile.png"), full_page=True)
+                passed("optional_mobile_city_first_no_overflow_reduced_motion")
+            else:
+                passed("desktop_reduced_motion_no_overflow")
             page.keyboard.press("Tab")
             focused = page.evaluate("document.activeElement.tagName")
             # The map is intentionally focusable for non-pointer camera access.

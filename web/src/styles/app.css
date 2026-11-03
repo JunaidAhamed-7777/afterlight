@@ -1248,3 +1248,30 @@ footer {
 @media (max-width: 760px) {
   .camera-console { left: 10px; bottom: 10px; width: min(320px, calc(100% - 20px)); }
 }
+
+/* Journey status owns a row, never the same canvas corner as camera controls. */
+.map-location {
+  position: static;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  pointer-events: auto;
+}
+.map-location small { max-width: none; font-size: 12px; }
+.first-run-guide { margin-bottom: 20px; }
+.first-run-guide h2 { margin: 0 0 8px; }
+.first-run-guide p, .advanced-experiment p, .experiment-summary {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.open-recording-button { width: 100%; margin-top: 12px; background: var(--clearance); color: var(--canvas); }
+.advanced-experiment { border-top: 1px solid var(--line); padding-top: 12px; margin: 12px 0; }
+.advanced-experiment summary { cursor: pointer; padding: 8px 0; }
+.advanced-experiment label { display: block; margin-top: 12px; }
+.experiment-summary { margin: 12px 0; }
+@media (max-width: 760px) { .map-location { padding: 12px 20px; } }
+
+.map-location { top: auto; right: auto; bottom: auto; left: auto; }
+.map-compass { top: 20px; right: 20px; bottom: auto; }
+@media (max-width: 760px) { .map-compass { top: 14px; right: 14px; } }

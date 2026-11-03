@@ -47,10 +47,19 @@ export function LocalGeneration(props: Props) {
     recoveringNow = useRef(true);
   const pending = useRef(false),
     seedInput = useRef<HTMLInputElement>(null),
+    advancedSettings = useRef<HTMLDetailsElement>(null),
     postAbort = useRef<AbortController | null>(null);
   const sessionKey = `afterlight.local-job:${props.apiBase}`;
   const active =
     requesting || job?.status === "queued" || job?.status === "running";
+  const savedSettings = active || recovering || uncertain
+    ? requestRecord?.parameters ?? job?.parameters
+    : undefined;
+  const summarySettings = savedSettings ?? {
+    pickup: props.pickup, hospital: props.hospital, policy, lead, seed,
+  };
+  const destinationName = summarySettings.hospital === "HOSP_WEST" ? "Westhaven"
+    : summarySettings.hospital === "HOSP_EAST" ? "Eastbank" : summarySettings.hospital;
   useEffect(() => () => postAbort.current?.abort(), []);
   useEffect(() => {
     const c = new AbortController(),
@@ -198,6 +207,7 @@ export function LocalGeneration(props: Props) {
       );
     } catch (e) {
       setError((e as Error).message);
+      if (advancedSettings.current) advancedSettings.current.open = true;
       seedInput.current?.focus();
       return;
     }
@@ -318,16 +328,6 @@ export function LocalGeneration(props: Props) {
       <form onSubmit={submit} noValidate>
         <fieldset disabled={Boolean(active || recovering || uncertain)}>
           <legend className="sr-only">New paired simulation settings</legend>
-          <label htmlFor="generation-seed">Random seed</label>
-          <input
-            ref={seedInput}
-            id="generation-seed"
-            inputMode="numeric"
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
-            aria-describedby={error ? "generation-error" : undefined}
-            aria-invalid={Boolean(error)}
-          />
           <label htmlFor="generation-regime">Traffic demand</label>
           <select
             id="generation-regime"
@@ -339,6 +339,19 @@ export function LocalGeneration(props: Props) {
             <option value="asymmetric">Asymmetric</option>
             <option value="heavy">Heavy</option>
           </select>
+          <details className="advanced-experiment" ref={advancedSettings}>
+            <summary>Advanced experiment settings</summary>
+            <p>Keep these defaults for a first run. The same seed and demand setting repeat traffic demand; the policy changes how signals clear the route.</p>
+          <label htmlFor="generation-seed">Random seed</label>
+          <input
+            ref={seedInput}
+            id="generation-seed"
+            inputMode="numeric"
+            value={seed}
+            onChange={(e) => setSeed(e.target.value)}
+            aria-describedby={error ? "generation-error" : undefined}
+            aria-invalid={Boolean(error)}
+          />
           <label htmlFor="generation-policy">AFTERLIGHT policy</label>
           <select
             id="generation-policy"
@@ -369,6 +382,12 @@ export function LocalGeneration(props: Props) {
               </span>
             </>
           )}
+          </details>
+          <p className="experiment-summary">
+            <strong>{savedSettings ? "Saved request" : "Next run"}</strong>
+            <br />{summarySettings.pickup} → {destinationName}
+            <br />{summarySettings.policy === "fixed" ? `Fixed clearance · ${summarySettings.lead} s lead` : summarySettings.policy} · seed {summarySettings.seed}
+          </p>
           <button
             className="generate-button"
             type="submit"
@@ -419,6 +438,8 @@ export function LocalGeneration(props: Props) {
             {job.parameters.pickup} → {job.parameters.hospital} · seed{" "}
             {job.parameters.seed}
           </p>
+          <p>{job.parameters.regime} traffic · {job.parameters.policy}
+            {job.parameters.policy === "fixed" ? ` · ${job.parameters.lead} s lead` : ""}</p>
           <p>{job.status === "failed" ? job.error : job.message}</p>
           {active && (
             <small>

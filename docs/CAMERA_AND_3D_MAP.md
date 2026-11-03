@@ -65,7 +65,21 @@ This revision has cloud build/export evidence only until its pinned Omen tests
 are recorded. It is not evidence of loaded-traffic frame rate or SUMO accuracy.
 The previous browser acceptance belongs to its older source/build checkpoint.
 Run asset structure tests, frontend unit tests, exact preview verification and
-headed browser checks on Omen. Capture overview, perspective, mobile and a real
+headed browser checks on Omen. Capture desktop overview, perspective, resized desktop windows and a real
 foreground-occlusion witness; record actual renderer draw calls and frame times
 rather than inferring speed from file size. No fabricated traffic recording or
 benchmark is bundled to make the map appear busy.
+
+## Desktop-first, state-aware controls
+
+Desktop is the sole optimization/acceptance target; see root `AGENTS.md`. Existing
+responsive behavior remains, but mobile-specific browser checks are opt-in and
+are not part of the default acceptance run. Keyboard access and reduced-motion
+settings remain essential desktop behaviors.
+
+The selected journey/status has its own row outside the canvas, so the camera
+controls cannot cover it. With no recording, the interface offers city exploration
+and (in local mode) generation rather than inactive playback and ghost controls.
+Comparison controls appear only when a real recording is loaded. Experimental
+seed/policy/lead settings live under a native Advanced disclosure; saved-job
+recovery keeps the exact submitted request identity and parameters.

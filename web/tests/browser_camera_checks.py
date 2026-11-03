@@ -40,6 +40,12 @@ def assert_camera_exploration(page):
     details = page.locator('.camera-console details')
     if details.get_attribute('open') is None:
         details.locator('summary').click()
+    journey = page.locator('.map-location').bounding_box()
+    console = page.locator('.camera-console').bounding_box()
+    assert journey and console
+    overlap = (journey['x'] < console['x'] + console['width'] and console['x'] < journey['x'] + journey['width'] and
+               journey['y'] < console['y'] + console['height'] and console['y'] < journey['y'] + journey['height'])
+    assert not overlap, 'Camera controls obscure the journey/status text'
     changed = {}
     for label, attribute in [('Tilt', 'data-camera-elevation'), ('Turn', 'data-camera-azimuth'), ('Roll', 'data-camera-roll')]:
         before = float(canvas.get_attribute(attribute))

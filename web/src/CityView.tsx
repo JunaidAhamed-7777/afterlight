@@ -579,8 +579,8 @@ export function CityView(props: Props) {
   return (
     <div className="city-view">
       <div className="three-host" ref={host} />
-      <CameraControls exploring={exploring} pan={pan} cutaway={cutaway} occluderCount={occluderCount} disabled={failed || Boolean(status)}
-        onAction={action => cameraAction.current(action)} onPan={setPan} onCutaway={setCutaway} />
+      {!status && !failed && <CameraControls exploring={exploring} pan={pan} cutaway={cutaway} occluderCount={occluderCount} disabled={failed || Boolean(status)}
+        onAction={action => cameraAction.current(action)} onPan={setPan} onCutaway={setCutaway} />}
       {failed && (
         <img
           className="city-fallback"
@@ -598,7 +598,7 @@ export function CityView(props: Props) {
           )}
         </div>
       )}
-      <div
+      {!status && !failed && <div
         className="map-compass"
         ref={compass}
         aria-hidden="true"
@@ -610,7 +610,7 @@ export function CityView(props: Props) {
             N
           </text>
         </svg>
-      </div>
+      </div>}
     </div>
   );
 }

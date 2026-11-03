@@ -110,6 +110,7 @@ export default function App() {
     [reset, setReset] = useState(0),
     [motionOff, setMotionOff] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
   const generatedReplays = useRef(new Map<string, Replay>());
   const playbackClock = useRef(0);
   const seekTime = (t: number) => {
@@ -139,12 +140,14 @@ export default function App() {
   useEffect(() => {
     const c = new AbortController();
     setCatalogError(false);
+    setCatalogLoaded(false);
     setCatalogStatus("Loading available recordings…");
     json(source, c.signal)
       .then((d) => {
         if (c.signal.aborted) return;
         const runs = validateCatalog(d, catalogBase);
         setCatalog(runs);
+        setCatalogLoaded(true);
         setCatalogStatus(
           runs.length ? "" : "No recorded experiments published yet.",
         );
@@ -380,6 +383,23 @@ export default function App() {
               </div>
             </div>
             <div className="recording-control">
+              {!replay && !loading && catalogLoaded && !catalogError && (
+                <div className="first-run-guide">
+                  <h2>{catalog.length ? "Watch a paired run" : "Explore the city"}</h2>
+                  <p>{catalog.length
+                    ? "Open a recording to compare the same journey in two independent traffic worlds."
+                    : apiBase
+                      ? "No recordings yet. Explore the city, then generate a paired run below."
+                      : "No recordings yet. You can turn, zoom and inspect the city. Traffic playback becomes available when a verified run is added."}</p>
+                  {catalog.length > 0 && <button className="open-recording-button" onClick={() => {
+                    const next = available[0] ?? catalog[0];
+                    setPickup(next.pickup_id);
+                    setHospital(next.hospital_id);
+                    selectRecording(next.id);
+                  }}>Open available recording</button>}
+                </div>
+              )}
+              {catalog.length > 0 && <>
               <label htmlFor="recording">Recorded experiment</label>
               <select
                 id="recording"
@@ -398,6 +418,7 @@ export default function App() {
                   </option>
                 ))}
               </select>
+              </>}
               {catalogStatus && (
                 <p className="field-note" role="status">
                   {catalogStatus}
@@ -408,7 +429,7 @@ export default function App() {
                   Retry catalog
                 </button>
               )}
-              {!selection && (
+              {!selection && catalog.length > 0 && (
                 <p className="recording-help">
                   Explore the original map now. Traffic and results appear only
                   when a genuine paired SUMO recording is available.
@@ -476,6 +497,7 @@ export default function App() {
             )}
             <div className="view-options">
               <h2>View settings</h2>
+              {cityReplay && <>
               <label className="check-label">
                 <input
                   type="checkbox"
@@ -507,6 +529,7 @@ export default function App() {
                 />{" "}
                 Follow AFTERLIGHT ambulance
               </label>
+              </>}
               <label className="check-label">
                 <input
                   type="checkbox"
@@ -551,6 +574,7 @@ export default function App() {
                 </span>
               </div>
               <div className="stage-actions">
+                {replay && (
                 <div className="segmented" aria-label="Inspect traffic world">
                   <button
                     aria-pressed={world === "afterlight"}
@@ -567,6 +591,7 @@ export default function App() {
                     Baseline
                   </button>
                 </div>
+                )}
                 <button
                   className="icon-button"
                   aria-label="Reset camera to city overview"
@@ -580,6 +605,16 @@ export default function App() {
                 </button>
               </div>
             </div>
+            <div className="map-location">
+                <span>
+                  {pickup} → {activeHospital?.name ?? hospital}
+                </span>
+                <small>
+                  {replay
+                    ? "Both worlds share the same absolute simulation clock."
+                    : "Map inspection only · no traffic is being simulated"}
+                </small>
+              </div>
             <div className="stage">
               {replay && !cityReplay ? (
                 <div className="fixture-view">
@@ -637,16 +672,6 @@ export default function App() {
                   </Suspense>
                 </CanvasBoundary>
               )}
-              <div className="map-location">
-                <span>
-                  {pickup} → {activeHospital?.name ?? hospital}
-                </span>
-                <small>
-                  {replay
-                    ? "Both worlds share the same absolute simulation clock."
-                    : "Map inspection only · no traffic is being simulated"}
-                </small>
-              </div>
               {loading && (
                 <div className="stage-notice" role="status">
                   <strong>Loading paired recording</strong>
@@ -669,6 +694,7 @@ export default function App() {
                 </div>
               )}
             </div>
+            {cityReplay && (
             <div className="legend">
               <span>
                 <i className="legend-solid" />
@@ -696,6 +722,8 @@ export default function App() {
                 </p>
               </details>
             </div>
+            )}
+            {replay && (
             <div className="transport">
               <button
                 className="play-button"
@@ -760,6 +788,7 @@ export default function App() {
                 </select>
               </label>
             </div>
+            )}
           </div>
         </section>
         <section className="evidence" aria-labelledby="evidence-title">
