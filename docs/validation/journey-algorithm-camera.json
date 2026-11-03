@@ -1,0 +1,183 @@
+{
+  "schema": "afterlight.camera-acceptance.v1",
+  "status": "passed_reviewed_screenshots",
+  "source_commit": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+  "candidate_manifest_sha256": "d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81",
+  "capture_report": {
+    "file": "report.json",
+    "bytes": 37857,
+    "sha256": "b78e6ff0aa40e0b54474265533d031a38c422e0ac62a98179062f38bcd30971c",
+    "original_status": "passed_paused_camera_stability_pending_pixel_review",
+    "source_stable": true
+  },
+  "scope": "Personal inspection of all 20 unique PNGs: each desktop profile default/reload reveal, seven explicitly opaque depth angles, and workspace. Repeated PNG pairs were verified byte-identical by the headed harness, not displayed twice.",
+  "profiles": [
+    {
+      "css_viewport": [
+        1920,
+        1080
+      ],
+      "dpr": 1
+    },
+    {
+      "css_viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1.5
+    }
+  ],
+  "observations": {
+    "default_and_reload_checked": true,
+    "default_and_reload_faded_buildings_per_profile": 3,
+    "addressable_buildings": 826,
+    "opaque_sweep_faded_buildings": 0,
+    "canvas_pairs_identical": 18,
+    "unexpected_road_or_park_stripes_seen": false,
+    "depth_fighting_seen": false,
+    "inconsistent_model_materials_seen": false,
+    "clipping_defect_seen": false,
+    "workspace_or_dock_overflow_seen": false,
+    "expected_foreground_effect": "Three center-foreground buildings show intentional screen-door fading in the default perspective. Full-city overview remains opaque.",
+    "full_city_opaque_while_reveal_enabled_verified_by_harness": true
+  },
+  "issues": [],
+  "limits": [
+    "Static sampled views on one installed Chrome/device configuration; not every possible camera orbit or GPU.",
+    "No new performance measurement, simulation, training, scientific evidence changes, or source changes were part of this review.",
+    "The original capture report remains untouched; this separate record supplies the pixel-review conclusion."
+  ],
+  "reviewed_pngs": [
+    {
+      "file": "1920x1080-dpr1-default-reveal.png",
+      "bytes": 1087803,
+      "sha256": "f4662cc133e0f99e2d7b8a2260f7b7f9f9a5abac6180e53c8332863bb3357d06"
+    },
+    {
+      "file": "1920x1080-dpr1-explore.png",
+      "bytes": 1086473,
+      "sha256": "509bdb6039cf27ea3ec5b054049c9e9533f2a758b01e5d5f9df1f32bfba40419"
+    },
+    {
+      "file": "1920x1080-dpr1-near.png",
+      "bytes": 357172,
+      "sha256": "7376476122a25371dd52bfdda360192a9c85a432185f622bcd32fc85dac14b91"
+    },
+    {
+      "file": "1920x1080-dpr1-overview.png",
+      "bytes": 458444,
+      "sha256": "e8b75e21cee9604a9a72e30534affb6905a1a2bac503be43a26e1ade64679af0"
+    },
+    {
+      "file": "1920x1080-dpr1-reload-default-reveal.png",
+      "bytes": 1087803,
+      "sha256": "f4662cc133e0f99e2d7b8a2260f7b7f9f9a5abac6180e53c8332863bb3357d06"
+    },
+    {
+      "file": "1920x1080-dpr1-reverse-yaw.png",
+      "bytes": 210525,
+      "sha256": "e795cf1ffa8660532a4fe1373304b18284bca1af56c6c82f33cb1f9a7270c49c"
+    },
+    {
+      "file": "1920x1080-dpr1-tilt-down.png",
+      "bytes": 264501,
+      "sha256": "20be12793a2a1e3952c57ccb3e8f31b9122b9b5a3c4534d596eb2f52ddcd64bd"
+    },
+    {
+      "file": "1920x1080-dpr1-tilt-up.png",
+      "bytes": 197963,
+      "sha256": "4bf804823655e2c51ec4303a8d762f46fe673304334cadc8eff4611d8d9b0507"
+    },
+    {
+      "file": "1920x1080-dpr1-workspace.png",
+      "bytes": 310279,
+      "sha256": "237ac82998e0d1d98d878e16012c084b93a917cc0ab3ff731c834e07cc3a0c7e"
+    },
+    {
+      "file": "1920x1080-dpr1-yaw.png",
+      "bytes": 254233,
+      "sha256": "46f4104b77f340ae8e83378dad6bf13f58af2de3877a99830e2cac62d7b7111d"
+    },
+    {
+      "file": "2560x1440-dpr1.5-default-reveal.png",
+      "bytes": 4070106,
+      "sha256": "bd277caeab77cc1fd570f4bec073e159835bfe0d329fe9f8fa0e53a8a55b72fc"
+    },
+    {
+      "file": "2560x1440-dpr1.5-explore.png",
+      "bytes": 4064952,
+      "sha256": "9d326df7929a5a9169773c8d33092d36bcd586bd3fc252634cb57fe3877d7305"
+    },
+    {
+      "file": "2560x1440-dpr1.5-near.png",
+      "bytes": 1442541,
+      "sha256": "388a79e8c4a34d03f5376659e8622eb65ee56513e8a2adc78b98378ce2cd3574"
+    },
+    {
+      "file": "2560x1440-dpr1.5-overview.png",
+      "bytes": 2044139,
+      "sha256": "017578cd5f5ae9ba8c270b6122de264b40100f4352133c9a4d66eb191d8a5151"
+    },
+    {
+      "file": "2560x1440-dpr1.5-reload-default-reveal.png",
+      "bytes": 4070106,
+      "sha256": "bd277caeab77cc1fd570f4bec073e159835bfe0d329fe9f8fa0e53a8a55b72fc"
+    },
+    {
+      "file": "2560x1440-dpr1.5-reverse-yaw.png",
+      "bytes": 744777,
+      "sha256": "28b57786cb0e8f1285f38c7ba3c3aac3fe0ddde4bf1d6f9c0685ad72e2429eb2"
+    },
+    {
+      "file": "2560x1440-dpr1.5-tilt-down.png",
+      "bytes": 1022008,
+      "sha256": "8c70d667fa1d1ec98549cc427f75310a82593abe147e691068e06cd8358263e2"
+    },
+    {
+      "file": "2560x1440-dpr1.5-tilt-up.png",
+      "bytes": 691489,
+      "sha256": "53d4c53ffc0ff58a07e2d967ce3a94c61eecf42c0f8ca885d3f38925d59c3680"
+    },
+    {
+      "file": "2560x1440-dpr1.5-workspace.png",
+      "bytes": 920983,
+      "sha256": "86e5f3797fed914826492a88a50bd3bd2601cfb00b4994fcb691c3a7d2bfebb8"
+    },
+    {
+      "file": "2560x1440-dpr1.5-yaw.png",
+      "bytes": 995132,
+      "sha256": "2360c907593c62c2a3be01b37c26123f313766d9b2fcd5d150b0e80f5fe8d67d"
+    }
+  ],
+  "candidate": {
+    "source_commit": "4126b4fed79a9eaeb7a5302fa7f071296e23ab5b",
+    "manifest_sha256": "d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81",
+    "files": 63,
+    "total_bytes": 46973555
+  },
+  "reveal_checks": [
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "initial_checked": true,
+      "opt_out_not_persisted_after_reload": true,
+      "overview_stays_opaque_with_reveal_enabled": true
+    },
+    {
+      "viewport": [
+        2560,
+        1440
+      ],
+      "initial_checked": true,
+      "opt_out_not_persisted_after_reload": true,
+      "overview_stays_opaque_with_reveal_enabled": true
+    }
+  ],
+  "page_errors": [],
+  "browser_events": {
+    "expected_browser_disconnections_at_profile_close": 2,
+    "unexpected_events": 0
+  }
+}

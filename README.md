@@ -2,7 +2,7 @@
 
 A desktop traffic signal lab. Follow an ambulance through a miniature city, inspect the ordinary-signal response, and measure the traffic cost of giving it priority.
 
-[Open the lab](https://afterlight-gamma.vercel.app/) · [Watch the 81-second walkthrough](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
+[Open the lab](https://afterlight-gamma.vercel.app/) · [81-second walkthrough of the original release](https://afterlight-gamma.vercel.app/media/afterlight-desktop-demo.mp4) · [Experiment and measurements](docs/BENCHMARK_PROTOCOL.md)
 
 ![AFTERLIGHT running in the browser: colorful original city, two recorded journeys, visible follow controls and shared playback](docs/images/workspace.png)
 
@@ -12,9 +12,13 @@ A desktop traffic signal lab. Follow an ambulance through a miniature city, insp
 2. Select **Follow Ambulance**, beside Zoom. Orbit or zoom closer while it tracks the vehicle.
 3. Switch to **Ordinary** to inspect that world's traffic and signals. **Follow Ghost** puts its translucent ambulance over the Afterlight scene on the same clock.
 4. Pause, scrub, or use **10× / 20×** to explore the journey. Speed changes playback for both worlds together.
-5. Open **Results → This run** for the recording's outcomes, or **Study** for the separate held-out experiment.
+5. Open **Results → This run** for outcomes, **Algorithm** for the exact route and display process, or **Study** for the separate held-out experiment.
 
 A five-step first-visit guide introduces these controls. Reopen it from Settings. The left pane scrolls; the map and playback stay on screen. Desktop, keyboard and mouse are the intended experience.
+
+To choose another pickup or hospital, open **Explore another journey**. The fixed recording's controls stay blurred until **Leave recording & explore** unlocks them and focuses pickup search.
+
+![The journey card with its visible Leave recording action above the blurred, disabled controls](docs/images/journey-controls.png)
 
 ![First-visit guide highlighting Follow Ambulance and Follow Ghost](docs/images/onboarding.png)
 
@@ -28,7 +32,11 @@ The roof lights alternate red and blue during playback. Reduced motion keeps the
 
 ![Close desktop view of the ambulance, mixed traffic and ordinary-world ghost](docs/images/ambulance-follow.png)
 
-Logarithmic depth and separated road/plaza surfaces correct the camera-dependent striping. Fourteen paused camera-repeat pairs at two desktop resolutions matched exactly; independent screenshot review found no visible depth conflicts. [Camera and post-identity acceptance](docs/validation/postbrand-desktop-acceptance.json)
+Logarithmic depth and separated road/plaza surfaces correct camera-dependent striping. **Reveal streets behind foreground buildings** starts enabled on every visit; Camera options can disable it for the current session. Eighteen paused camera-repeat pairs matched exactly across two desktop profiles, including default reveal, reload and explicitly opaque views. [Current camera acceptance](docs/validation/journey-algorithm-camera.json)
+
+Results → Algorithm explains distance-based Dijkstra, the original ordered road edges shared by both ambulances, each world's signal policy, coordinate conversion and recorded-pose interpolation. Source links and hashes identify the reviewed implementation. The saved SUMO lane reference is labeled separately from the path-search cost.
+
+![Algorithm view explaining the selected recording's shared route, separate journeys and source-backed process](docs/images/algorithm.png)
 
 ## What the recordings show
 
@@ -53,11 +61,11 @@ The objective adds ambulance journey time to mean civilian excess travel time ov
 
 ## Measured on the desktop
 
-The measured identity build recorded **161.8 FPS overview / 127.7 FPS close follow** in separate 30-second foreground windows. The profile used a Ryzen 9 5900HX, integrated AMD Radeon graphics, Chrome 156, a 1920×1080 CSS viewport at DPR 1 and 373 vehicles at the chosen start frame. The native window was 1724×978; the canvas buffer was 1552×737. These measurements describe browser rendering cadence on this machine. [Measurements, method and retained earlier attempts](docs/validation/final-desktop-performance.json)
+The current build, with street reveal enabled, recorded **152.5 FPS overview / 129.7 FPS close follow** in separate 30-second foreground windows. The profile used a Ryzen 9 5900HX, integrated AMD Radeon graphics, Chrome 156, a 1920×1080 CSS viewport at DPR 1 and 373 vehicles at the chosen start frame. The native window was 1724×978; the canvas buffer was 1552×737. These measurements describe browser rendering cadence on this machine. [Current measurements and scope](docs/validation/journey-algorithm-desktop-performance.json) · [Earlier release measurements](docs/validation/final-desktop-performance.json)
 
 Complete warm Python selection across five candidates measured **0.2241 ms median / 0.2512 ms p95** for the learned method, versus **0.0429 / 0.0549 ms** analytical. That is 2,400 repeated decisions per method across 12 validation observations, excluding I/O, startup, simulation, browser and network. [Original timing samples](docs/validation/study-v4/selector-timing.json)
 
-The complete 63-file release is **46.96 MB**, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer. [Exact release inventory](docs/validation/final-production-release.json)
+The complete 63-file release is **46.97 MB**, including original models, lossless recordings, proof, font and the 6.67 MB walkthrough. The city GLB is 14.38 MB; the two compressed recordings total 13.30 MB. Loading progress, cancellation, graphics recovery and recording retries are part of the viewer. [Current feature acceptance](docs/validation/journey-algorithm-acceptance.json) · [Original release inventory](docs/validation/final-production-release.json)
 
 ## Verify the experiment
 

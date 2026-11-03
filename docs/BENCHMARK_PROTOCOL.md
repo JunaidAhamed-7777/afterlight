@@ -62,38 +62,41 @@ after deterministic report and original-byte verification.
 
 ## Desktop rendering evidence
 
-The final local production build was measured in two separate 30-second
-foreground windows in headed Chrome 156 on the observed ANGLE AMD Radeon(TM)
-Graphics renderer. Its 61 served files (39,870,637 bytes) matched the isolated
-build inventory before and after acceptance; the exact product source is
-`fa0d88ce76c30545d0f5d454c249e10e184d09bd`.
+The current journey/Algorithm production build was measured in two separate
+30-second foreground windows in headed Chrome 156 with the observed ANGLE AMD
+Radeon(TM) Graphics renderer. All 63 served files (46,973,555 bytes) matched the
+isolated inventory before and after acceptance. The exact product source is
+`4126b4fed79a9eaeb7a5302fa7f071296e23ab5b`; the strict manifest is
+`d14c3ea31de1a8a12a9dc0eb08be0a4cdfb1edf520af6189b8e11da02bad2d81`.
 
-Overview recorded 4,856 draw-bearing frames over 30.0062 seconds: **161.8 FPS**,
-with a 6.2 ms p95 frame interval. Close ambulance follow at zoom 12 recorded
-3,835 frames over 30.0122 seconds: **127.7 FPS**, with a 12.1 ms p95 interval.
-Drawing-callback CPU medians/p95s were 4.6/6.3 ms and 4.5/5.7 ms respectively.
-The genuine recording had 373 vehicles at the chosen 180.5-second start frame.
-Both windows recorded visible/focused start and end, no intervening lifecycle
-events and no long-task entries. The self-hosted Inter font and actual brand
-mark were loaded.
+Overview recorded 4,579 draw-bearing frames over 30.0122 s: **152.5 FPS**.
+Close ambulance follow recorded 3,893 frames over 30.0121 s: **129.7 FPS**.
+Both windows were visible and focused at start/end, with no intervening
+lifecycle events or long-task entries. The actual recording had 373 vehicles
+at the chosen 180.5 s start frame. Full product checks also passed fixed desktop
+layout, keyboard/map controls, actual instance matrices, world playback,
+contrast checks and graphics/catalog recovery.
 
-The configured viewport was **1920 x 1080 emulated CSS pixels at DPR 1**. The
-CDP-reported native window was **1724 x 978**, and the measured canvas buffer was
-**1552 x 737**; these are distinct measurements. FPS is `(frames - 1) / elapsed`
-using first/last draw-bearing RAF timestamps. Callback duration includes
-JavaScript and draw submission, not completed GPU execution. This is one local
-browser/hardware/recording observation, not simulator throughput, remote loading
-latency or a cross-hardware guarantee. The report retains percentile summaries,
-not individual raw frame samples.
+Street reveal remained enabled. The initial perspective view reported three
+faded buildings; both timed windows reported zero at their start and end.
+This is a view-dependent cutaway, so enabled does not imply geometry is faded
+in every view. The separate [camera record](validation/journey-algorithm-camera.json)
+checks actual default/reload reveal and eighteen identical paused repeat pairs
+at two desktop profiles, plus explicitly opaque seven-angle sweeps.
 
-Earlier attempts remain retained: a mark-size preflight and two operator-gate
-timeouts collected no FPS; a functional pass recorded 26.0/1.0 FPS without a
-visibility/focus lifecycle and is not a foreground-qualified benchmark. A later
-native inspection observed the dedicated browser minimized; its earlier state
-was not recorded and remains an inference. Only the final run qualifies.
-Five-second smoke checks are not promoted as benchmarks. The
-[complete reviewed record](validation/final-desktop-performance.json) preserves
-all attempt hashes, exact conditions, arithmetic and scope limits.
+The configured viewport was **1920 x 1080 emulated CSS pixels at DPR 1**; the
+native window was **1724 x 978** and measured canvas buffer **1552 x 737**.
+FPS is `(frames - 1) / elapsed` over first/last draw-bearing RAF timestamps.
+Callback duration includes JavaScript and draw submission, not completed GPU
+execution. This is one hardware/browser/recording observation, not simulator
+throughput or a cross-hardware guarantee. Raw frame sample arrays are not
+retained; the report provides count/span and percentile summaries.
+
+[The current reviewed record](validation/journey-algorithm-desktop-performance.json)
+retains exact conditions and scope. The [earlier identity-build record](validation/final-desktop-performance.json)
+measured 161.8/127.7 FPS with reveal default OFF and retains its original failed,
+no-sample and unqualified attempts. Those numbers remain historical. No new
+scientific rollout, fitting or held-out-policy outcome belongs to this UI check.
 
 ## Experiment
 
