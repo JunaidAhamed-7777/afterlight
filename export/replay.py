@@ -1,5 +1,6 @@
 """Strict paired-evidence packaging; the baseline is a distinct world, not a ghost vehicle."""
 from __future__ import annotations
+import json
 import re
 from pathlib import PurePosixPath
 from pathlib import Path
