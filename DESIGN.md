@@ -43,7 +43,7 @@ System sans for controls and concise interpretation; system monospace with tabul
 
 ## Layout
 
-Desktop: shared top control rail, one primary city canvas with a baseline ghost; optional paired inspection, a shared timeline and compact evidence strip. The city occupies roughly two-thirds of the initial viewport; results remain reachable without hiding controls. Small laptop views reduce ornament before shrinking text. Mobile uses a world toggle with the common clock and persistent mode label. Use a four-pixel spacing unit, 16–24px section gaps and no wall of interchangeable cards.
+Desktop: shared top control rail, one primary city canvas with a baseline ghost; optional paired inspection, a shared timeline and compact evidence strip. The city occupies roughly two-thirds of the initial viewport; results remain reachable without hiding controls. Small laptop views reduce ornament before shrinking text. Desktop is the only optimization and acceptance target. Preserve existing responsive behavior, but do not spend work on mobile-specific optimization or testing; see `AGENTS.md`. Use a four-pixel spacing unit, 16–24px section gaps and no wall of interchangeable cards.
 
 ## Elevation & Depth
 

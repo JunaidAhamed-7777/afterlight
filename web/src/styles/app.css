@@ -1275,3 +1275,24 @@ footer {
 .map-location { top: auto; right: auto; bottom: auto; left: auto; }
 .map-compass { top: 20px; right: 20px; bottom: auto; }
 @media (max-width: 760px) { .map-compass { top: 14px; right: 14px; } }
+
+.map-selection-actions { display: grid; gap: 8px; margin-top: 14px; }
+.map-selection-actions button { min-height: 42px; text-align: left; }
+.map-selection-actions button[aria-pressed="true"] { color: var(--clearance); background: var(--surface); }
+.map-selection-actions .field-note { margin: 2px 0; }
+.map-pick-instructions {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  max-width: min(370px, calc(100% - 80px));
+  z-index: 4;
+  padding: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 13px;
+}
+.map-pick-instructions p { margin: 8px 0; color: var(--muted); line-height: 1.5; }
+.map-pick-instructions small { display: block; margin-top: 8px; color: var(--muted); }
+.map-pick-hover { display: block; min-height: 24px; margin-bottom: 8px; }
+.map-pick-instructions button { min-height: 40px; }

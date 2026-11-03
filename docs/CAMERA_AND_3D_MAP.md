@@ -83,3 +83,25 @@ and (in local mode) generation rather than inactive playback and ghost controls.
 Comparison controls appear only when a real recording is loaded. Experimental
 seed/policy/lead settings live under a native Advanced disclosure; saved-job
 recovery keeps the exact submitted request identity and parameters.
+
+## Choosing a journey directly on the map
+
+Choose **pickup on map** or **hospital on map** beside the journey dropdowns.
+Only the existing canonical curb or driveway anchors appear; no freehand road
+coordinates, synthetic route nodes or vehicle picking are introduced. Markers
+use one small instanced geometry layer. Their position is converted from the
+same canonical coordinates as the city, and picking uses the actual rendered
+perspective/orthographic camera, including roll.
+
+A click commits the named location; dragging still moves the camera and never
+changes the journey. Escape or Cancel leaves the journey unchanged and restores
+focus to its initiating button. Search and native dropdowns remain the keyboard
+alternative. Markers disappear outside selection mode; hover names are not
+repeated live announcements.
+
+Selection waits for a successful first map render. It is unavailable while a
+recording is loading/playing or a generation request is active, recovering or
+uncertain. Leave the recording explicitly to choose a new journey. Saved job
+parameters remain immutable even if the next-journey dropdowns change. The map
+selection protocol harness uses intercepted, explicitly synthetic API responses;
+it is not a genuine traffic run or public recording.

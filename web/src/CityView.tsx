@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
 import type { City, Frame, SignalGeometry } from "./types.ts";
+import { MapSelectionLayer, type MapPickMode } from "./MapSelectionLayer.ts";
 import { GeometryLayer } from "./GeometryLayer.ts";
 import { BuildingCutaway } from "./BuildingCutaway.ts";
 import { CameraControls, type CameraAction } from "./CameraControls.tsx";
@@ -16,6 +17,10 @@ interface Props {
   baselineFrames: Frame[];
   followFrames: Frame[];
   onManualCamera: () => void;
+  onMapReady: (ready: boolean) => void;
+  pickMode: MapPickMode;
+  onMapPick: (mode: Exclude<MapPickMode, null>, id: string) => void;
+  onCancelPick: () => void;
   clock: { current: number };
   routeEdges: string[];
   networkGeometry: SignalGeometry[];
@@ -42,6 +47,7 @@ export function CityView(props: Props) {
   const [pan, setPan] = useState(false);
   const [cutaway, setCutaway] = useState(true);
   const [occluderCount, setOccluderCount] = useState(0);
+  const [hoverAnchor, setHoverAnchor] = useState("");
   const cameraAction = useRef<(action: CameraAction) => void>(() => {});
   const preferences = useRef({ pan, cutaway });
   preferences.current = { pan, cutaway };
@@ -51,10 +57,15 @@ export function CityView(props: Props) {
       halted = false,
       raf = 0,
       dirty = true,
-      modelsRevision = 0;
+      modelsRevision = 0,
+      assetsLoaded = false,
+      mapReady = false;
+    current.current.onMapReady(false);
     const haltRuntime = (message: string) => {
       if (disposed || halted) return;
       halted = true;
+      mapReady = false;
+      current.current.onMapReady(false);
       cancelAnimationFrame(raf);
       setFailed(true);
       setStatus(message);
@@ -92,6 +103,51 @@ export function CityView(props: Props) {
     );
     container.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
+    const selectionLayer = new MapSelectionLayer();
+    scene.add(selectionLayer.mesh);
+    let pickingCamera: THREE.Camera | null = null;
+    let pickingMode: MapPickMode = null;
+    let pickingCity: City | null = null;
+    let pointerStart: { id: number; x: number; y: number; dragged: boolean } | null = null;
+    let hoverLabel = "";
+    const showHover = (label: string) => {
+      if (label === hoverLabel) return;
+      hoverLabel = label;
+      setHoverAnchor(label);
+    };
+    const pickAt = (event: PointerEvent) => {
+      const p = current.current;
+      if (!p.pickMode || p.pickMode !== pickingMode || p.city !== pickingCity || !pickingCamera || halted) return null;
+      const rect = renderer.domElement.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return null;
+      return selectionLayer.pick((event.clientX - rect.left) / rect.width * 2 - 1,
+        1 - (event.clientY - rect.top) / rect.height * 2, pickingCamera);
+    };
+    const pointerDown = (event: PointerEvent) => {
+      pointerStart = event.button === 0 && event.isPrimary && current.current.pickMode
+        ? { id: event.pointerId, x: event.clientX, y: event.clientY, dragged: false } : null;
+    };
+    const pointerMove = (event: PointerEvent) => {
+      if (pointerStart && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 5)
+        pointerStart.dragged = true;
+      showHover(pickAt(event)?.label ?? "");
+    };
+    const pointerUp = (event: PointerEvent) => {
+      const start = pointerStart;
+      pointerStart = null;
+      if (!start || start.id !== event.pointerId || start.dragged ||
+          Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
+      const picked = pickAt(event);
+      const mode = current.current.pickMode;
+      if (picked && mode) { showHover(""); current.current.onMapPick(mode, picked.id); }
+    };
+    const cancelPointer = () => { pointerStart = null; showHover(""); };
+    renderer.domElement.addEventListener("pointerdown", pointerDown);
+    renderer.domElement.addEventListener("pointermove", pointerMove);
+    renderer.domElement.addEventListener("pointerup", pointerUp);
+    renderer.domElement.addEventListener("pointercancel", cancelPointer);
+    renderer.domElement.addEventListener("pointerleave", cancelPointer);
+    renderer.domElement.addEventListener("wheel", cancelPointer, { passive: true });
     const projectedOrigin = new THREE.Vector3(),
       projectedNorth = new THREE.Vector3(),
       northDirection = new THREE.Vector3(0, 0, -100);
@@ -201,6 +257,9 @@ export function CityView(props: Props) {
       dirty = true;
     };
     const cameraKeys = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && current.current.pickMode) {
+        event.preventDefault(); cancelPointer(); current.current.onCancelPick(); return;
+      }
       if (["x", "y", "z"].includes(event.key.toLowerCase())) {
         event.preventDefault();
         cameraAction.current(`${event.key.toLowerCase()}${event.shiftKey ? "-" : "+"}` as CameraAction);
@@ -322,7 +381,11 @@ export function CityView(props: Props) {
             dirty = true;
           }),
         );
-        if (!disposed && !halted) setStatus("");
+        if (!disposed && !halted) {
+          assetsLoaded = true;
+          setStatus("");
+          dirty = true;
+        }
       } catch (error) {
         haltRuntime(
           `City assets could not load. ${error instanceof Error ? error.message : "Check the connection and retry."}`,
@@ -499,7 +562,19 @@ export function CityView(props: Props) {
           const fadedBuildings = buildingCutaway.update(preferences.current.cutaway && perspectiveMode && camera.zoom > 1.3 && hasGroundFocus, focus, renderCamera);
           renderer.domElement.dataset.fadedBuildings = String(fadedBuildings);
           renderer.domElement.dataset.occluderBuildings = String(buildingCutaway.count);
+          selectionLayer.setAnchors(p.city, p.pickMode);
+          selectionLayer.update(renderCamera, viewportHeight);
+          pickingCamera = p.pickMode ? renderCamera.clone() : null;
+          pickingMode = p.pickMode;
+          pickingCity = p.city;
+          if (!p.pickMode) showHover("");
+          renderer.domElement.dataset.mapPickMode = p.pickMode ?? "none";
+          renderer.domElement.dataset.mapAnchors = JSON.stringify(p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : []);
           renderer.render(scene, renderCamera);
+          if (assetsLoaded && !mapReady) {
+            mapReady = true;
+            current.current.onMapReady(true);
+          }
           renderer.domElement.dataset.cameraZoom = String(camera.zoom);
           // Inspectable actual asset bounds, for viewport-fit QA, never simulated evidence.
           if (assetBounds) {
@@ -560,10 +635,18 @@ export function CityView(props: Props) {
     loop();
     return () => {
       disposed = true;
+      current.current.onMapReady(false);
       cancelAnimationFrame(raf);
       observer.disconnect();
       cameraAction.current = () => {};
       controls.dispose();
+      renderer.domElement.removeEventListener("pointerdown", pointerDown);
+      renderer.domElement.removeEventListener("pointermove", pointerMove);
+      renderer.domElement.removeEventListener("pointerup", pointerUp);
+      renderer.domElement.removeEventListener("pointercancel", cancelPointer);
+      renderer.domElement.removeEventListener("pointerleave", cancelPointer);
+      renderer.domElement.removeEventListener("wheel", cancelPointer);
+      selectionLayer.dispose();
       renderer.domElement.removeEventListener("keydown", cameraKeys);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
       geometryLayer.dispose();
@@ -581,6 +664,13 @@ export function CityView(props: Props) {
       <div className="three-host" ref={host} />
       {!status && !failed && <CameraControls exploring={exploring} pan={pan} cutaway={cutaway} occluderCount={occluderCount} disabled={failed || Boolean(status)}
         onAction={action => cameraAction.current(action)} onPan={setPan} onCutaway={setCutaway} />}
+      {props.pickMode && !status && !failed && <div className="map-pick-instructions">
+        <strong>Choose a {props.pickMode === "pickup" ? "pickup marker" : "hospital marker"}</strong>
+        <p>Click a highlighted marker. Dragging still moves the camera. Your route changes only after a click.</p>
+        <span className="map-pick-hover" aria-hidden="true">{hoverAnchor || "Hover a marker to see its name"}</span>
+        <button onClick={props.onCancelPick}>Cancel map selection</button>
+        <small>Escape cancels. You can also use the journey dropdowns.</small>
+      </div>}
       {failed && (
         <img
           className="city-fallback"

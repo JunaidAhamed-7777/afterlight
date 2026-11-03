@@ -19,6 +19,7 @@ interface Props {
   mapReady: boolean;
   onStarted: () => void;
   onBusy: (busy: boolean) => void;
+  onSelectionLocked: (locked: boolean) => void;
   onOpen: (replay: Replay, url: string) => void;
 }
 export function LocalGeneration(props: Props) {
@@ -142,6 +143,9 @@ export function LocalGeneration(props: Props) {
   useEffect(() => {
     callbacks.current.onBusy(Boolean(active));
   }, [active]);
+  useEffect(() => {
+    callbacks.current.onSelectionLocked(Boolean(active || recovering || uncertain));
+  }, [active, recovering, uncertain]);
   useEffect(() => {
     if (!job?.id) return;
     const c = new AbortController(), token = recoveryToken.current;

@@ -10,6 +10,7 @@ import { DecisionInspector } from "./DecisionInspector.tsx";
 import { QueueChart } from "./QueueChart.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt, seconds, validateReplay } from "./replay.ts";
+import type { MapPickMode } from "./MapSelectionLayer.ts";
 import type { CatalogEntry, City, Replay } from "./types.ts";
 const base = import.meta.env.BASE_URL;
 const apiBase = (import.meta.env.VITE_API_BASE as string | undefined)?.replace(
@@ -110,6 +111,33 @@ export default function App() {
     [reset, setReset] = useState(0),
     [motionOff, setMotionOff] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [selectionLocked, setSelectionLocked] = useState(Boolean(apiBase));
+  const [mapReady, setMapReady] = useState(false);
+  const [mapPickMode, setMapPickMode] = useState<MapPickMode>(null);
+  const [mapSelectionNotice, setMapSelectionNotice] = useState("");
+  const mapPickTrigger = useRef<HTMLButtonElement | null>(null);
+  const cancelMapPick = () => {
+    setMapPickMode(null);
+    setMapSelectionNotice("Map selection canceled. Journey unchanged.");
+    mapPickTrigger.current?.focus();
+  };
+  const mapPickingBlocked = Boolean(!city || !mapReady || replay || loading || selectionLocked);
+  useEffect(() => {
+    if (mapPickingBlocked) { setMapPickMode(null); setMapSelectionNotice(""); }
+  }, [mapPickingBlocked]);
+  useEffect(() => {
+    if (!mapPickMode) return;
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMapPickMode(null);
+        setMapSelectionNotice("Map selection canceled. Journey unchanged.");
+        mapPickTrigger.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", escape);
+    return () => document.removeEventListener("keydown", escape);
+  }, [mapPickMode]);
   const [catalogLoaded, setCatalogLoaded] = useState(false);
   const generatedReplays = useRef(new Map<string, Replay>());
   const playbackClock = useRef(0);
@@ -245,6 +273,7 @@ export default function App() {
     [city, search],
   );
   const changeRoute = (p: string, h: string) => {
+    setMapPickMode(null);
     setPickup(p);
     setHospital(h);
     setSelection("");
@@ -253,6 +282,7 @@ export default function App() {
     seekTime(0);
   };
   const selectRecording = (id: string) => {
+    setMapPickMode(null);
     setSelection(id);
     setReplay(null);
     setPlaying(false);
@@ -367,6 +397,25 @@ export default function App() {
                   </option>
                 ))}
               </select>
+              <div className="map-selection-actions">
+                {([['pickup', 'Choose pickup on map'], ['hospital', 'Choose hospital on map']] as const).map(([mode, label]) =>
+                  <button key={mode} type="button" disabled={mapPickingBlocked}
+                    aria-pressed={mapPickMode === mode} aria-describedby="map-selection-help"
+                    onClick={event => {
+                      mapPickTrigger.current = event.currentTarget;
+                      setMapPickMode(mode);
+                      setMapSelectionNotice(`Map ${mode} selection on. Click a highlighted marker or use the journey dropdowns.`);
+                    }}>{label}</button>)}
+                <p id="map-selection-help" className="field-note">
+                  {replay ? "Leave this recording before choosing a new map journey."
+                    : loading ? "Wait for the recording to load or cancel loading."
+                    : !mapReady ? "The 3D map is loading or unavailable. Use the journey dropdowns."
+                    : selectionLocked ? "Map selection is paused while the local request is running or being recovered."
+                    : "Map selection is optional. Search and dropdowns select the same canonical locations."}
+                </p>
+                {replay && <button type="button" onClick={() => selectRecording("")}>Choose a new journey</button>}
+                <span className="sr-only" role="status">{mapSelectionNotice}</span>
+              </div>
               <div className="journey-line">
                 <span className="route-origin" />
                 <span>{pickup}</span>
@@ -466,7 +515,9 @@ export default function App() {
                 hospital={hospital}
                 mapReady={Boolean(city)}
                 onBusy={setGenerating}
+                onSelectionLocked={setSelectionLocked}
                 onStarted={() => {
+                  setMapPickMode(null);
                   setSelection("");
                   setReplay(null);
                   setPlaying(false);
@@ -656,6 +707,20 @@ export default function App() {
                         cityReplay ? replay!.worlds.afterlight.frames : []
                       }
                       onManualCamera={() => setFollow(false)}
+                      onMapReady={setMapReady}
+                      pickMode={mapPickingBlocked ? null : mapPickMode}
+                      onCancelPick={cancelMapPick}
+                      onMapPick={(mode, id) => {
+                        if (mapPickingBlocked || mode !== mapPickMode || !city) return;
+                        if (mode === "pickup" && city.pickups.some(point => point.id === id)) {
+                          changeRoute(id, hospital);
+                          setMapSelectionNotice(`Pickup ${id} selected.`);
+                        } else if (mode === "hospital" && city.hospitals.some(point => point.id === id)) {
+                          changeRoute(pickup, id);
+                          setMapSelectionNotice(`${city.hospitals.find(point => point.id === id)?.name ?? id} selected.`);
+                        } else return;
+                        mapPickTrigger.current?.focus();
+                      }}
                       clock={playbackClock}
                       routeEdges={replay?.scenario.route_edges ?? []}
                       networkGeometry={replay?.network_geometry?.signals ?? []}

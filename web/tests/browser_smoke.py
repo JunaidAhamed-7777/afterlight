@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright, expect
 from browser_camera_checks import assert_overview_fits, assert_favicon_served, assert_camera_exploration
+from browser_map_selection_checks import assert_map_selection, assert_replay_map_lock
 
 
 def main() -> None:
@@ -59,6 +60,7 @@ def main() -> None:
             passed("desktop_original_city_fits", assert_overview_fits(page))
             passed("original_favicon_served", assert_favicon_served(page))
             passed("perspective_camera_xyz_and_keyboard", assert_camera_exploration(page))
+            passed("canonical_map_pick_click_drag_cancel", assert_map_selection(page))
             canvas = page.locator(".three-host canvas")
             canvas.focus()
             original_zoom = float(canvas.get_attribute("data-camera-zoom"))
@@ -99,6 +101,8 @@ def main() -> None:
                 page.get_by_text("All available recordings", exact=False).click()
                 all_recordings.first.click()
                 expect(page.locator(".mode-label")).to_contain_text("Recorded simulation", timeout=30000)
+                assert_replay_map_lock(page)
+                passed("recording_blocks_map_route_changes")
                 expect(page.get_by_label("Absolute simulation time", exact=True)).to_be_enabled()
                 timeline = page.get_by_label("Absolute simulation time", exact=True)
                 timeline.focus()
