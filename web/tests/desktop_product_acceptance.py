@@ -448,6 +448,21 @@ def main():
             context.add_init_script(INSTRUMENT)
             page = context.new_page(); page.on("pageerror", lambda e: report["page_errors"].append(str(e)))
             page.goto(args.base_url, wait_until="domcontentloaded"); ready(page)
+            if build_manifest and "fonts/InterVariable.woff2" in build_manifest["files"]:
+                report["identity"] = page.evaluate("""async () => {
+                  await document.fonts.ready;
+                  const mark=document.querySelector('.wordmark .brand-mark');
+                  return {title:document.title, canonical:document.querySelector('link[rel=canonical]')?.href,
+                    body_font:getComputedStyle(document.body).fontFamily,
+                    fonts:[...document.fonts].map(f=>({family:f.family,status:f.status,weight:f.weight})),
+                    mark:mark?{src:new URL(mark.src).pathname,complete:mark.complete,width:mark.naturalWidth,height:mark.naturalHeight,alt:mark.alt}:null};
+                }""")
+                identity = report["identity"]
+                assert any(face["family"].strip('"') == "Inter" and face["status"] == "loaded" for face in identity["fonts"]), "Actual self-hosted Inter font did not load"
+                assert identity["body_font"].startswith('Inter'), "Identity font is not applied to the interface"
+                assert identity["mark"] == {"src":"/brand/mark.svg","complete":True,"width":64,"height":64,"alt":""}, "Shared native brand mark is missing or inaccessible"
+                assert identity["title"] == "AFTERLIGHT — Traffic signal lab"
+                assert identity["canonical"] == "https://afterlight-gamma.vercel.app/"
             page.evaluate("document.title='AFTERLIGHT performance check — leave this window untouched'")
             report["load"] = page.evaluate("""() => ({map_ready_ms:window.__desktopQA.readyMs,
               navigation:performance.getEntriesByType('navigation')[0]?.toJSON(),
