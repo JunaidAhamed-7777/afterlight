@@ -44,6 +44,31 @@ def _names(value, name: str) -> list[str]:
     return value
 
 
+def seed_assignments(cases: list) -> dict:
+    """Conservatively keep each latent RNG stream in one split AND regime."""
+    assignments = {}
+    for case in cases:
+        seed = _integer(case["seed"], "seed", 0, 2**31 - 1)
+        owner = {"split": case["split"], "regime": case["regime"]}
+        key = str(seed)
+        if key in assignments and assignments[key] != owner:
+            raise ValueError("one demand RNG seed must belong to exactly one split and regime; only dispatch/route variants may share it")
+        assignments[key] = owner
+    return dict(sorted(assignments.items()))
+
+
+def validate_pilot_seed_exclusion(evidence: Mapping, cases: list) -> None:
+    seeds = evidence.get("seeds")
+    if evidence.get("schema") != "afterlight.pilot-evidence.v2" or not isinstance(seeds, list) or not seeds:
+        raise ValueError("pilot evidence requires explicit v2 seed inventory; legacy evidence cannot guess untouched seeds")
+    for seed in seeds:
+        _integer(seed, "pilot seed", 0, 2**31 - 1)
+    if seeds != sorted(set(seeds)):
+        raise ValueError("pilot seed inventory must be sorted and unique")
+    if set(seeds).intersection(case["seed"] for case in cases):
+        raise ValueError("study reuses an exploratory pilot RNG seed, even if regime or demand hash differs")
+
+
 def validate_spec(spec: Mapping) -> dict:
     required = {"schema", "study_id", "network_kind", "cases", "timing", "budget", "civilian_weight",
                 "analytical_config", "model_specification", "heldout_regimes", "heldout_route_families"}
@@ -102,6 +127,7 @@ def validate_spec(spec: Mapping) -> dict:
             represented_routes.add(case["route_family"])
     if seen_splits != SPLITS or not set(heldout) <= represented_regimes or not set(heldout_routes) <= represented_routes:
         raise ValueError("all splits and all declared holdouts must be represented")
+    seed_assignments(cases)
     budget = spec["budget"]
     if not isinstance(budget, Mapping) or set(budget) != {"max_episodes", "max_rollouts", "max_wall_time_s", "rationale"}:
         raise ValueError("explicit bounded pilot-based budget required")
@@ -229,11 +255,16 @@ def validate_pilot_evidence(directory: Path, spec: Mapping, source: Mapping) -> 
             raise ValueError("pilot case lacks exactly ordinary, immediate and all five leads")
         demand_dir = directory / case["id"] / "demand"
         demand = read_json(demand_dir / "demand.json")
+        for field in ("seed", "regime", "dispatch_s", "demand_end_s"):
+            if demand.get(field) != case[field]:
+                raise ValueError(f"saved pilot demand differs from declared case: {field}")
         realization = [v for v in demand["vehicles"] if v["id"] != "ambulance"]
         demand_hash, group_hash = file_hash(demand_dir / "demand.rou.xml"), digest(realization)
         for name in ("demand.json", "demand.rou.xml"):
             evidence_files[f"{case['id']}/demand/{name}"] = file_hash(demand_dir / name)
         for row in case_rows:
+            if row.get("seed") != case["seed"] or row.get("regime") != case["regime"]:
+                raise ValueError("pilot scalar seed/regime differs from declared demand stream")
             if row.get("split") != "pilot" or row.get("audit_status") != "passed" or row.get("priority_deadline_audit") != "passed" or row.get("runner_invoked") is not True:
                 raise ValueError("only actually audited pilot executions can justify a study budget")
             if row.get("source_code_sha256") != execution["source_code_sha256"] or row.get("source_commit") != execution["source_commit"]:
@@ -263,7 +294,8 @@ def validate_pilot_evidence(directory: Path, spec: Mapping, source: Mapping) -> 
     estimate = finite(total_s / expected * len(spec["cases"]) * 7, "estimated study wall time")
     if estimate > spec["budget"]["max_wall_time_s"]:
         raise ValueError("explicit study wall-time budget is below measured pilot extrapolation; reduce cases or justify a new bounded budget")
-    return {"schema": "afterlight.pilot-evidence.v1", "files": evidence_files,
+    return {"schema": "afterlight.pilot-evidence.v2", "files": evidence_files,
+            "seeds": sorted({case["seed"] for case in plan["cases"]}),
             "plan_sha256": plan_envelope["sha256"], "source_code_sha256": execution["source_code_sha256"],
             "dependencies": execution["dependencies"], "sumo_version": execution["sumo_version"],
             "network_sha256": semantic_network, "demand_group_ids": sorted({row["demand_group_id"] for row in rows}),
@@ -339,6 +371,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
         raise ValueError("prepare requires clean committed source")
     dependencies = dependency_versions()
     evidence = validate_pilot_evidence(pilot_directory.resolve(), spec, source)
+    validate_pilot_seed_exclusion(evidence, spec["cases"])
     if evidence["dependencies"] != dependencies:
         raise ValueError("pilot dependencies differ from current study runtime")
     output.mkdir(parents=True, exist_ok=False)
@@ -370,7 +403,8 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
                              "demand_directory": relative, "ambulance_route": next(v["route"] for v in demand["vehicles"] if v["id"] == "ambulance")})
         protocol = {"schema": "afterlight.protocol.v1", "source_commit": source["source_commit"],
             "source_code_sha256": source["source_code_sha256"], "group_assignments": assignments,
-            "episode_inventory": [{k: row[k] for k in ("episode_id", "demand_group_id", "split", "regime", "demand_sha256", "network_sha256", "dispatch_s", "route_family", "pickup_id", "hospital_id")} for row in episodes],
+            "seed_assignments": seed_assignments(spec["cases"]),
+            "episode_inventory": [{k: row[k] for k in ("episode_id", "demand_group_id", "split", "regime", "seed", "demand_sha256", "network_sha256", "dispatch_s", "route_family", "pickup_id", "hospital_id")} for row in episodes],
             "feature_schema": _feature_schema(timing["sensor_lag_s"]), "candidate_leads_s": [0, 5, 10, 20, 30],
             "civilian_weight": spec["civilian_weight"], "horizon_s": timing["horizon_s"],
             "drain_end_s": timing["horizon_s"] + timing["drain_s"], "recovery_window_s": timing["recovery_window_s"],
@@ -403,7 +437,9 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
     from sim.identity import episode_identity
     spec, protocol = study["spec"], study["protocol"]
     timing = spec["timing"]
+    validate_pilot_seed_exclusion(study["pilot_evidence"], spec["cases"])
     expected_contract = {
+        "seed_assignments": seed_assignments(spec["cases"]),
         "source_commit": study["source"]["source_commit"], "source_code_sha256": study["source"]["source_code_sha256"],
         "horizon_s": timing["horizon_s"], "drain_end_s": timing["horizon_s"] + timing["drain_s"],
         "recovery_window_s": timing["recovery_window_s"], "simulation_step_s": timing["step_s"],

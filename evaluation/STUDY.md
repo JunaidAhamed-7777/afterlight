@@ -48,7 +48,17 @@ Save JSON containing these required fields; there is no automatic large budget:
   Other family labels remain user-defined strata, not geometric novelty claims.
 
 All three splits must exist. Every civilian realization and all its dispatch/route
-variants stay in one split; pilot groups cannot be reused. Preparation saves demand
+variants stay in one split; pilot groups cannot be reused. In addition, each RNG
+seed belongs to exactly one `(split, regime)` pair. Dispatch/route variants may
+share that pair, but changing the regime does not make the underlying random
+stream independent. This prevents same-seed correlated regime variants from
+crossing splits or being counted as independent test groups. The frozen protocol
+records exact seed assignments and every candidate must retain its episode seed.
+
+Pilot evidence v2 carries an explicit sorted seed inventory. Every pilot seed is
+excluded from all study regimes, even when a changed regime produces different
+actual demand bytes. Legacy evidence lacking seeds is rejected, never guessed or
+relabeled. These stream guards supplement—not replace—civilian-content hashes. Preparation saves demand
 and network inputs for all splits, **not outcomes**. Test traffic is not run or read
 by preparation or training selection.
 

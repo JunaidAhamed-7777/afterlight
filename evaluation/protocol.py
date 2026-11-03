@@ -55,6 +55,18 @@ def validate_episode_inventory(protocol: Mapping, *, require_regimes: bool = Fal
         by_id[item["episode_id"]] = item
     if set(heldout) != represented_heldout:
         raise ValueError("every declared held-out regime must be represented in the test inventory")
+    if "seed_assignments" in protocol or any("seed" in item for item in inventory):
+        seeds = {}
+        for item in inventory:
+            seed = item.get("seed")
+            if isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed < 2**31 or not item.get("regime"):
+                raise ValueError("seed-bound inventory needs an explicit valid seed and regime for every episode")
+            owner = {"split": item["split"], "regime": item["regime"]}
+            if str(seed) in seeds and seeds[str(seed)] != owner:
+                raise ValueError("one RNG seed crosses split or regime in frozen inventory")
+            seeds[str(seed)] = owner
+        if protocol.get("seed_assignments") != seeds:
+            raise ValueError("frozen seed assignments differ from complete episode inventory")
     assert_disjoint(inventory, protocol["group_assignments"])
     if {item["demand_group_id"] for item in inventory} != set(protocol["group_assignments"]):
         raise ValueError("episode inventory must cover exactly all declared demand groups")
@@ -71,6 +83,8 @@ def assert_episode_coverage(rows: Sequence[Mapping], protocol: Mapping, split: s
         for key in ("demand_group_id", "split", "demand_sha256", "network_sha256"):
             if row.get(key) != item[key]:
                 raise ValueError(f"episode differs from frozen inventory: {key}")
+        if "seed" in item and row.get("seed") != item["seed"]:
+            raise ValueError("episode RNG seed differs from frozen inventory")
         if "regime" in item and row.get("regime") != item["regime"]:
             raise ValueError("episode regime differs from frozen inventory")
         dispatch = row.get("dispatch_s", row.get("observation", {}).get("dispatch_s"))

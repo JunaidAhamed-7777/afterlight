@@ -54,7 +54,7 @@ class StudyTests(unittest.TestCase):
                 {'id':'civilian-'+str(kwargs['seed']),'type':'car','depart_s':1,'depart_pos_m':0,'route':['edge']},
                 {'id':'ambulance','type':'ambulance','depart_s':kwargs['dispatch_s'],'depart_pos_m':0,'route':['edge']}]}
         stack.enter_context(patch('sim.demand.make_demand',side_effect=demand))
-        evidence={'dependencies':{'traci':'unit','sumolib':'unit'},'network_sha256':hashlib.sha256(b'<net></net>').hexdigest(),
+        evidence={'schema':'afterlight.pilot-evidence.v2','seeds':[1001,1002],'dependencies':{'traci':'unit','sumolib':'unit'},'network_sha256':hashlib.sha256(b'<net></net>').hexdigest(),
                   'demand_group_ids':['pilot-group'],'estimated_study_wall_time_s':1,'sumo_version':'synthetic'}
         self.pilot=stack.enter_context(patch('evaluation.study_manifest.validate_pilot_evidence',return_value=evidence))
 
@@ -167,3 +167,13 @@ class StudyTests(unittest.TestCase):
         except OSError:self.skipTest('symlink creation unavailable on this test machine')
         with self.assertRaisesRegex(ValueError,'real directory'):self.prepared()
         self.assertFalse((outside/'study').exists())
+
+    def test_prepare_excludes_reused_pilot_seed_before_output(self):
+        self.pilot.return_value['seeds']=[self.spec['cases'][0]['seed']]
+        with self.assertRaisesRegex(ValueError,'pilot RNG seed'):self.prepared()
+        self.assertFalse(self.output.exists())
+
+    def test_prepare_refuses_legacy_pilot_evidence_without_seed_inventory(self):
+        self.pilot.return_value.pop('seeds')
+        with self.assertRaisesRegex(ValueError,'seed inventory'):self.prepared()
+        self.assertFalse(self.output.exists())
