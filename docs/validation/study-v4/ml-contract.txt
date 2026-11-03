@@ -1,0 +1,6 @@
+test_json_tree_matches_sklearn_predictions (tests.evaluation.test_ml_optional.OptionalMLContractTests.test_json_tree_matches_sklearn_predictions) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 5.513s
+
+OK

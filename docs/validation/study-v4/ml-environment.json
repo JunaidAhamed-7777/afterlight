@@ -1,0 +1,73 @@
+{
+  "schema": "afterlight.ml-environment-contract.v1",
+  "scope": "Explicitly synthetic optional-library/model contract check; not traffic simulation, real study training or benchmark evidence.",
+  "created_utc": "2026-11-03T12:05:40.014276+00:00",
+  "source": {
+    "source_commit": "fa39f8a49c3ac2fcffe25ebf8c86e19dd6040fa3",
+    "source_dirty": false,
+    "source_code_sha256": "0d63fcec4c3663d8f8e36fbc4ab27d3881a891307ed5ad2a3688a9434dee23dc",
+    "source_files": {
+      "assets/map/city_manifest.json": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+      "evaluation/__init__.py": "533319bdb8d647837ca459637dc0f55f5f9e023742b519d1c1394c90a5d6d4cc",
+      "evaluation/__main__.py": "36a2c785086805e12d524a6bb0e877ce1e1aa2985e417c1f663e7dd5510aab18",
+      "evaluation/collector.py": "0c1efbecf28e284e393a665a5b48d516160c41ad81aedd6a83fd072dd06239d5",
+      "evaluation/comparison.py": "3e9271647e122e7147f1de4654f4776adc8e5eeb91db0d42f31130dab99e291e",
+      "evaluation/metrics.py": "ab1adbcdf08b6d3d4de9baf658d1761b4da8e2f96d413ef1a0c5fadf8e675a15",
+      "evaluation/pilot.py": "c219b122b29f68b0f0fbb24e5dcba615b371c27a8337a4b6ee89369f46b12b78",
+      "evaluation/protocol.py": "1e431da6b25dae03d0bdafdef4671977b84293b0becc62eb71733b18f42514cc",
+      "evaluation/selectors.py": "c5da9000edc488b40529b894df68461fa80e20b23865cd0e9571e59615d60a7d",
+      "evaluation/splits.py": "d11deb55604a4d645705f99e8580eb0f19fadcd680ba5de5b07243ae12aaaa3e",
+      "evaluation/study.py": "1239e565f8a4cb81c7062544de70ffb6b1ece94f9ddc537b84591d20b6145f0d",
+      "evaluation/study_manifest.py": "3d4c31607e372fa6e98ebc2eda259269452b773be2ee02f2fc59e778bdce6d5b",
+      "evaluation/study_release.py": "850ebd25c38ddd0d8887eb05119ab0b46ad6813bdb1a2ee0e0cf77409f12c32c",
+      "evaluation/study_reporting.py": "73d575f1eca18513990a6f2ef936d8bd29c8bfd06896d1d3409a5f7e02fbba06",
+      "export/__init__.py": "b7172d6fdd8069f299897a3de05038b1ec231c0c9652c00ed4323e46c9573213",
+      "export/catalog.py": "396489ab7170fc569048a5975326e856138a4730c5fb87e95b30584309a69907",
+      "export/replay.py": "36eed3f8753ad2bb2b1f0c7fadcc4dbae8b71d6f94c96537f488ef118961e0bd",
+      "export/selected_replay.py": "7bb0fe53f3b4b10f47bb38836b5e25f41e4457fddd4fa25473a0c1c0ea5a29f5",
+      "export/validation_base.py": "1dee340d64f2b55ed26b8d7f2e585747c349fe0c85ad5b2087742179a236c6f0",
+      "models/__init__.py": "9b42a06ee6463c92b415fe0ed3a1b6b78767fdf80685d075ca6f3f05b4f2cbf4",
+      "models/__main__.py": "eb3a26e0d5f240616f924ff05eceadddca502cd3c42277d594a51e4beb41d3da",
+      "models/analytical.py": "6c7587d13e2b2613d141cd0f047b21efa2f9146910fd705179b6b5cbb249b122",
+      "models/residual.py": "09d86e2206cb0f3c28915353d592e3b031da325cbbfcd5bb502f27c90d018640",
+      "policies/__init__.py": "bf289f6fd8406c3940d3f2c67a8dc39726444e56e5d047e3d04971b43de4c2d0",
+      "policies/scheduler.py": "b2cf67099ecc839c83daf50410df9cd773f7e9f3ae28418793404f28c2c39fba",
+      "policies/timing.py": "70e6d162932c1d9dfd19db4fb0d1dbbdd72974fddba050cdc88e5184b43df5e2",
+      "sim/__init__.py": "f29935d76b2bd9c6d0e3afb5d59594ab2c130d935e72029b7b296563dca4cd13",
+      "sim/accounting.py": "43c340658bfc2a26a77e0d1962fcf8567f8f5d09f0580448e576ed09cf15d7b3",
+      "sim/audit.py": "604ee6783819be600584885eff4163a3836ba65062f9eade8ebf1f0329fcda88",
+      "sim/demand.py": "b9cb1c63db28b2ab4df243d4a07563147cd412d072a911be4f0921b5783bd925",
+      "sim/environment.py": "f93de9b0fa267d931016f386c2d9894112239ffcbb1845bb88205ec7ddbc32a0",
+      "sim/geometry_audit.py": "0bbb0f1b55238c68b584ef11329472b8c2e2fd5f1f8b01a8577833c65d168879",
+      "sim/identity.py": "2e7ce63763d49465c25fda8b12df129cbb22a6f98458ea22a64266b2eca24978",
+      "sim/network.py": "9fc5578664b00ef4e5a307998133c605786378a2f794fbee4b5421a15e33b779",
+      "sim/run.py": "eccde802007afabd76106d8fc6b0466f8b697fbff233282af99601fd59ce6b45",
+      "sim/source_identity.py": "d743d65fde7c67e9906b0f56d8350f0262527bd55111610d7f2c2d755a212738",
+      "sim/traci_cache.py": "fc90f5e838483764eda0b073b65d3fc219211a10b8a2fb0dd568dd260625ecef"
+    }
+  },
+  "python": "3.12.15",
+  "packages": {
+    "scikit-learn": "1.7.2",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3",
+    "joblib": "1.5.2",
+    "threadpoolctl": "3.6.0"
+  },
+  "requirements_ml_sha256": "0aebcb1979d614645606b9e9148a761333efc88cfbd5bce64c4e6596a03b3333",
+  "wheel_install_report_sha256": "5376e10af358d8afebbfaeb289cd32882c89555f8627e7c91fdedf0721c4cea5",
+  "command": [
+    "C:\\Github\\afterlight\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "tests.evaluation.test_ml_optional",
+    "-v"
+  ],
+  "explicit_opt_in": {
+    "AFTERLIGHT_RUN_ML_TESTS": "1"
+  },
+  "return_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "ae26567f7881aa6a8b00cc23995cadd08fbe40b441c330da919b78a2a79921d6",
+  "contract_test_source_sha256": "5ab8511fff8ce63eaabd552954b6a0e4496638333ba7da3e663ce3971a8d92d1"
+}
