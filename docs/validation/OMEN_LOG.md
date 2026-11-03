@@ -221,3 +221,17 @@ Subsequent source changes are not covered by this acceptance.
 
 The next source cohort must rerun the affected gate; build success does not turn
 the failed unit checkpoint into a pass.
+
+## 2026-11-03, `2c03d5a` recovery fixture accepted; next gate (reported 06:39 UTC)
+
+- Focused recovery audit checks **19/19 passed**.
+- Simulation checks **199 passed, 2 Windows-specific skips**.
+- Evaluation checks **183 passed, 3 errors, 2 skips**. All three errors came
+  from the shared synthetic `test_pilot_runtime_guards.py` priority fixture:
+  it released at 55 s but supplied no recovery sequence through its 100 s end.
+  The stricter audit correctly rejected this incomplete fixture. The fixture
+  correction supplies legal recovery/ordinary transitions and explicit
+  endpoint mutations; the audit itself remains unchanged. Omen rerun is pending.
+- Later acceptance gates stayed held. This result does not establish API,
+  frontend, current geometry, browser, network or traffic acceptance for this
+  checkpoint. No new real pair, pilot, model or held-out result is claimed.

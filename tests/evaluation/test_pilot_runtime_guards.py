@@ -92,7 +92,14 @@ class WorldSignalAuditTests(unittest.TestCase):
             {'t':12,'kind':'request_planned','junction':'J','phase':1,'request_at_s':20},
             {'t':20,'kind':'request','junction':'J','phase':1},
             {'t':20,'kind':'priority_green','junction':'J','phase':1},
-            {'t':55,'kind':'release','junction':'J','reason':'max_hold'}]
+            {'t':55,'kind':'release','junction':'J','reason':'max_hold'},
+            {'t':55,'kind':'recovery_requested','junction':'J','phase':0},
+            {'t':55,'kind':'yellow','junction':'J','phase':1,'target':0},
+            {'t':58,'kind':'all_red','junction':'J'},
+            {'t':59,'kind':'green','junction':'J','phase':0},
+            {'t':84,'kind':'yellow','junction':'J','phase':0,'target':1},
+            {'t':87,'kind':'all_red','junction':'J'},
+            {'t':88,'kind':'green','junction':'J','phase':1}]
         return world
 
     def test_duplicate_plans_are_not_hidden_by_dictionary_collapse(self):
@@ -103,16 +110,20 @@ class WorldSignalAuditTests(unittest.TestCase):
     def test_priority_hold_is_audited_with_actual_integration_step(self):
         world=self.priority_world()
         self.assertEqual(audit_world_signals(world,NETWORK,12)['priority_deadline_audit'],'passed')
-        world['events'][-1]['t']=55.5
+        # Shift the release and its recovery together: remain chronological so
+        # the intended maximum-hold deadline, not event ordering, rejects it.
+        for event in world['events']:
+            if event['t']>=55:event['t']+=.5
         with self.assertRaisesRegex(ValueError,'maximum hold'):
             audit_world_signals(world,NETWORK,12)
-        world=self.priority_world();world['events'].pop()
+        world=self.priority_world()
+        world['events']=[event for event in world['events'] if event['t']<55]
         with self.assertRaisesRegex(ValueError,'maximum hold'):
             audit_world_signals(world,NETWORK,12)
 
     def test_request_timeout_is_independent_of_visual_sample_cadence(self):
         world=self.priority_world()
-        world['events']=[event for event in world['events'] if event['kind'] not in ('priority_green','release')]
+        world['events']=[event for event in world['events'] if event['t']<55 and event['kind']!='priority_green']
         world['frames'][-1]['t']=111
         with self.assertRaisesRegex(ValueError,'release timeout'):
             audit_world_signals(world,NETWORK,12)
@@ -145,16 +156,23 @@ class WorldSignalAuditTests(unittest.TestCase):
         world['events'].append({'t':100,'kind':'request','junction':'J','phase':1})
         audit_world_signals(world,NETWORK,12)
         world=self.priority_world();world['frames'][-1]['t']=55
+        world['frames'][-1]['signals'][0]['state']='ry'
+        world['events']=[event for event in world['events'] if event['t']<=55]
         audit_world_signals(world,NETWORK,12)
-        world['events'].pop()
+        world['events']=[event for event in world['events'] if event['t']<55]
+        world['frames'][-1]['signals'][0]['state']='rG'
         with self.assertRaisesRegex(ValueError,'maximum hold'):
             audit_world_signals(world,NETWORK,12)
         world=self.priority_world()
-        world['events']=[e for e in world['events'] if e['kind'] not in ('priority_green','release')]
+        world['events']=[e for e in world['events'] if e['t']<55 and e['kind']!='priority_green']
         world['frames'][-1]['t']=110
         with self.assertRaisesRegex(ValueError,'release timeout'):
             audit_world_signals(world,NETWORK,12)
-        world['events'].append({'t':110,'kind':'release','junction':'J','reason':'request_timeout'})
+        world['events'] += [
+            {'t':110,'kind':'release','junction':'J','reason':'request_timeout'},
+            {'t':110,'kind':'recovery_requested','junction':'J','phase':0},
+            {'t':110,'kind':'yellow','junction':'J','phase':1,'target':0}]
+        world['frames'][-1]['signals'][0]['state']='ry'
         audit_world_signals(world,NETWORK,12)
 
 
