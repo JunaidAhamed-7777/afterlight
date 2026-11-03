@@ -170,6 +170,8 @@ class StudyTests(unittest.TestCase):
              'analytical_config_sha256':digest({'version':'synthetic','config':{}})}
         with patch('evaluation.study_manifest.estimate_candidates',return_value=estimates):
             validate_pilot_world_binding(row,raw,{'civilian_weight':1})
+            with self.assertRaisesRegex(ValueError,'controller timing'):
+                validate_pilot_world_binding(row,raw,{'civilian_weight':1,'network':'city'})
             for key in ('queue_samples','observation','request_plan','simulator_runtime_s','analytical_cost_s','lead_s'):
                 changed=deepcopy(row);changed[key]='changed'
                 with self.subTest(key=key),self.assertRaises(ValueError):validate_pilot_world_binding(changed,raw,{'civilian_weight':1})

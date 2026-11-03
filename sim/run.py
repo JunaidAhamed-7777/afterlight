@@ -16,7 +16,7 @@ import subprocess
 import time
 import traceback
 
-from policies.scheduler import Scheduler, Timing
+from policies.scheduler import Scheduler, Timing, timing_for_network
 from policies.timing import request_plan, distinct_schedules
 from sim.network import ROOT, binary, build_network, read_network, write_json, sha256
 from sim.demand import make_demand, save_demand, validate_saved_demand
@@ -204,7 +204,15 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     parameters = (horizon_s, drain_s, step_s, sample_s, sensor_lag_s)
     if any(not math.isfinite(v) for v in parameters) or step_s <= 0 or sample_s <= 0 or drain_s < 0 or sensor_lag_s < 0:
         raise ValueError('Timing values must be finite; step/sample positive, drain/lag nonnegative')
-    validate_timing_grid(step_s)
+    network_kind = demand.get('network_kind')
+    network_manifest_path = network_dir/'network-manifest.json'
+    if network_manifest_path.is_file():
+        imported_kind = json.loads(network_manifest_path.read_text(encoding='utf-8'))['kind']
+        if network_kind is not None and network_kind != imported_kind:
+            raise ValueError('Demand network kind differs from imported network')
+        network_kind = imported_kind
+    timing = timing_for_network(network_kind or 'fixture')
+    validate_timing_grid(step_s, timing)
     if demand['dispatch_s'] < sensor_lag_s:
         raise ValueError('Dispatch must allow the declared sensor lag')
     end_s = horizon_s + drain_s
@@ -229,7 +237,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     ledger = Accounting({v['id']: v for v in demand['vehicles']})
     frames, queue_samples, events, reasons = [], [], [], []
     controls = route_controls(next(v['route'] for v in demand['vehicles'] if v['id'] == 'ambulance'), network)
-    schedulers = {j: Scheduler(j, tuple(s['greens'])) for j, s in network['signals'].items()}
+    schedulers = {j: Scheduler(j, tuple(s['greens']), timing=timing) for j, s in network['signals'].items()}
     observations = deque()
     decision = None
     observed_passages: set[str] = set()
@@ -371,6 +379,7 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         fully_drained = counts['completed'] == counts['scheduled'] and 'ambulance' in ledger.completed
         status = 'invalid' if reasons else ('completed' if fully_drained else 'censored')
         metrics = {'status': status, 'validity_reasons': sorted(set(reasons)),
+                   'controller_timing': dict(vars(timing)),
                    'ambulance_journey_s': ledger.completed.get('ambulance', 0)-demand['dispatch_s'] if 'ambulance' in ledger.completed else None,
                    'civilian_mean_excess_s': ledger.completed_civilian_mean_excess() if status == 'completed' else None,
                    **ledger.civilian_excess_tail(status),
@@ -490,16 +499,19 @@ def main():
     parser.add_argument('--lead', type=int, choices=(0,5,10,20,30), default=10)
     parser.add_argument('--dispatch', type=float, default=60)
     parser.add_argument('--demand-end', type=float, default=180)
-    parser.add_argument('--horizon', type=float, default=240)
-    parser.add_argument('--drain', type=float, default=360)
+    parser.add_argument('--horizon', type=float, help='default: city 360 s, fixture 240 s')
+    parser.add_argument('--drain', type=float, help='default: city 540 s, fixture 360 s; studies freeze their own common endpoint')
     parser.add_argument('--step', type=float, default=.5)
-    parser.add_argument('--sample', type=float, default=1)
+    parser.add_argument('--sample', type=float, help='default: city 0.5 s, fixture 1 s')
     parser.add_argument('--verify-observations', action='store_true',
                         help='compare subscribed samples against independent direct SUMO reads')
     parser.add_argument('--pickup')
     parser.add_argument('--hospital')
     parser.add_argument('--split', choices=('pilot','train','validation','test'), default='pilot')
     args = parser.parse_args()
+    if args.horizon is None: args.horizon = 360 if args.network == 'city' else 240
+    if args.drain is None: args.drain = 540 if args.network == 'city' else 360
+    if args.sample is None: args.sample = .5 if args.network == 'city' else 1
     try:
         result = run_pair(args)
     except OutputPathError as exc:

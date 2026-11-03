@@ -156,6 +156,7 @@ def make_demand(graph: dict, network: dict, *, seed: int, regime: str = 'moderat
     validate_insertion_positions({'vehicles':vehicles},network)
     vehicles.sort(key=lambda v: (v['depart_s'], v['id']))
     return {'schema': 'afterlight.demand.v1', 'seed': seed, 'regime': regime,
+            'network_kind': 'city' if city else 'fixture',
             'dispatch_s': dispatch_s, 'demand_end_s': demand_end_s,
             'arrival_process': {'distribution': 'exponential_interarrival', 'rate_vehicles_per_s': arrival_rate,
                                 'city_area_scale': CITY_DEMAND_SCALE if city else 1.0,

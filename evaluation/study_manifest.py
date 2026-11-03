@@ -333,6 +333,10 @@ def validate_pilot_evidence(directory: Path, spec: Mapping, source: Mapping) -> 
 
 def validate_pilot_world_binding(row: Mapping, raw: Mapping, plan: Mapping) -> None:
     """Bind aggregate pilot measurements to the saved simulator outcome."""
+    from policies.scheduler import Timing, timing_for_network
+    expected_timing=asdict(timing_for_network(plan.get('network','fixture')))
+    if raw['metrics'].get('controller_timing',asdict(Timing()))!=expected_timing:
+        raise ValueError('pilot raw controller timing differs from declared network profile')
     for key in ("policy", "lead_s", "status", "sumo_version"):
         if row.get(key) != raw.get(key):
             raise ValueError(f"pilot scalar/raw outcome mismatch: {key}")
@@ -384,7 +388,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
     from sim.demand import make_demand, save_demand
     from sim.identity import episode_identity
     from sim.run import dependency_versions, source_snapshot
-    from policies.scheduler import Timing
+    from policies.scheduler import timing_for_network
     spec = validate_spec(spec)
     output = output.resolve()
     runtime_path = ROOT / "local-runtime"
@@ -442,7 +446,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
             "heldout_regimes": spec["heldout_regimes"], "heldout_route_families": spec["heldout_route_families"],
             "model_specification": spec["model_specification"],
             "analytical_estimator": {"version": ESTIMATOR_VERSION, "config": spec["analytical_config"]},
-            "controller_timing": asdict(Timing()), "simulation_step_s": timing["step_s"],
+            "controller_timing": asdict(timing_for_network(spec['network_kind'])), "simulation_step_s": timing["step_s"],
             "queue_scope": "all inserted active civilians with speed below 0.1 m/s; insertion backlog separately reported"}
         validate_episode_inventory(protocol, require_regimes=True)
         study = {"schema": "afterlight.study.v1", "study_id": spec["study_id"], "source": source,
@@ -463,7 +467,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
 
 def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> None:
     """Bind collector paths and episode identities to the same frozen input set."""
-    from policies.scheduler import Timing
+    from policies.scheduler import timing_for_network
     from sim.identity import episode_identity
     spec, protocol = validate_spec(study["spec"]), study["protocol"]
     timing = spec["timing"]
@@ -477,7 +481,7 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
         "source_commit": study["source"]["source_commit"], "source_code_sha256": study["source"]["source_code_sha256"],
         "horizon_s": timing["horizon_s"], "drain_end_s": timing["horizon_s"] + timing["drain_s"],
         "recovery_window_s": timing["recovery_window_s"], "simulation_step_s": timing["step_s"],
-        "feature_schema": _feature_schema(timing["sensor_lag_s"]), "controller_timing": asdict(Timing()),
+        "feature_schema": _feature_schema(timing["sensor_lag_s"]), "controller_timing": asdict(timing_for_network(spec['network_kind'])),
         "heldout_regimes": spec["heldout_regimes"], "heldout_route_families": spec["heldout_route_families"],
         "candidate_leads_s": [0, 5, 10, 20, 30], "tie_break": "smallest_lead"}
     for key, value in expected_contract.items():

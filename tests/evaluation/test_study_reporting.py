@@ -26,7 +26,7 @@ class ReportingTests(unittest.TestCase):
             'demand_sha256':'demand','network_sha256':'network','demand_directory':'inputs/demand/case'}
         self.study={'source':self.source,'dependencies':{},'pilot_evidence':{'sumo_version':'unit'},'episodes':[episode],
             'network':{'directory':'inputs/network'},'budget':{'split_start_budgets_s':{'train':100}},
-            'spec':{'civilian_weight':1,'timing':{'step_s':.5},'model_specification':{'max_depth':3,'min_samples_leaf':5}},
+            'spec':{'network_kind':'fixture','civilian_weight':1,'timing':{'step_s':.5},'model_specification':{'max_depth':3,'min_samples_leaf':5}},
             'protocol':{'schema':'afterlight.protocol.v1','group_assignments':{'group':'train'},'horizon_s':10,'drain_end_s':20,
                 'recovery_window_s':[2,20],'queue_scope':'unit','feature_schema':[],
                 'analytical_estimator':self.estimator}}

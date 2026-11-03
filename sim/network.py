@@ -209,6 +209,8 @@ def lane_connections(graph: dict) -> list[dict]:
 
 
 def build_network(kind: str, output: Path) -> dict:
+    from policies.scheduler import timing_for_network
+    timing = timing_for_network(kind)
     if kind == 'city':
         map_bytes=(ROOT/'assets/map/city_manifest.json').read_bytes()
         graph=json.loads(map_bytes)
@@ -237,7 +239,7 @@ def build_network(kind: str, output: Path) -> dict:
                '--edge-files', str(output/'edges.edg.xml'), '--connection-files', str(output/'connections.con.xml'),
                '--output-file', str(output/'network.net.xml'), '--offset.disable-normalization', 'true',
                '--no-turnarounds', 'true', '--tls.default-type', 'static', '--tls.green.time', '25',
-               '--tls.yellow.time', '3', '--tls.allred.time', '1']
+               '--tls.yellow.time', str(timing.yellow_s), '--tls.allred.time', str(timing.all_red_s)]
     completed = subprocess.run(command, capture_output=True, text=True, check=False)
     (output/'netconvert.stdout.txt').write_text(completed.stdout, encoding='utf-8')
     (output/'netconvert.stderr.txt').write_text(completed.stderr, encoding='utf-8')

@@ -34,12 +34,29 @@ class Timing:
 
     def __post_init__(self):
         values = vars(self)
-        if any(not math.isfinite(v) or v <= 0 for v in values.values()):
+        try:
+            valid=all(not isinstance(v,bool) and isinstance(v,(int,float)) and math.isfinite(v) and v>0 for v in values.values())
+        except OverflowError:
+            valid=False
+        if not valid:
             raise ValueError("All timing parameters must be finite and positive")
         if self.ordinary_green_s < self.min_green_s or self.recovery_green_s < self.min_green_s:
             raise ValueError("Ordinary and recovery greens must meet minimum green")
         if self.max_hold_s < self.min_green_s:
             raise ValueError("Maximum hold must meet minimum green")
+
+
+def timing_for_network(network_kind: str) -> Timing:
+    """Versioned common controller profile, shared by every compared policy.
+
+    The larger city needs additional intersection clearance for long vehicles.
+    The original small fixture retains its established one-second all-red.
+    """
+    if network_kind == 'city':
+        return Timing(all_red_s=3.0)
+    if network_kind == 'fixture':
+        return Timing()
+    raise ValueError('Controller timing requires city or fixture network kind')
 
 
 @dataclass

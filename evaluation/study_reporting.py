@@ -126,7 +126,8 @@ def _verify_collection_evidence(study_directory: Path, collection_directory: Pat
                 raise ValueError(f'Raw collection evidence changed: {directory}/{name}')
             files[directory+'/'+name] = actual
         raw = read_json(world_dir/'outcome.json')
-        validate_pilot_world_binding(row,raw,{'civilian_weight':study['spec']['civilian_weight']})
+        validate_pilot_world_binding(row,raw,{'civilian_weight':study['spec']['civilian_weight'],
+                                             'network':study['spec']['network_kind']})
         signal = read_json(world_dir/'signal-audit-input.json')
         if row.get('signal_audit_input_sha256') != hashes['signal-audit-input.json'] or any(
                 signal.get(name) != raw.get(name) for name in ('policy','status','decision','metrics','events')):

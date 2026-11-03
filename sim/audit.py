@@ -188,7 +188,13 @@ def audit_paired_dispatch(replay: dict) -> dict:
 def audit_world_signals(world: dict, network: dict, dispatch_s: float, *, simulation_step_s: float | None = None) -> dict:
     """Pure per-world legal-transition, frozen-plan and sampled-state audit."""
     name=world.get('world_id',world['policy'])
-    timing=Timing()
+    recorded_timing=world.get('metrics',{}).get('controller_timing')
+    if recorded_timing is None:
+        timing=Timing()  # Historical recordings used the original common profile.
+    else:
+        if not isinstance(recorded_timing,dict) or set(recorded_timing)!=set(vars(Timing())):
+            raise ValueError(f'{name}: invalid controller timing metadata')
+        timing=Timing(**recorded_timing)
     tolerance=1e-8  # Absolute numerical tolerance, never a whole simulation tick.
     recorded_step=world.get('metrics',{}).get('simulation_step_s')
     for candidate in (simulation_step_s,recorded_step):

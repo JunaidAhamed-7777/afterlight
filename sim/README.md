@@ -21,7 +21,7 @@ Use `eclipse-sumo==1.28.0`, its required `sumo-data==1.28.0` companion, `traci==
 
 - Three-crossroad fixture and full canonical graph â†’ netconvert XML, explicit permitted connections, no coordinate normalization. Netconvert's generated signal greens are reused; the controller does not invent conflicting phase combinations.
 - Deterministic, pre-generated explicit civilian demand and exactly one ambulance in each independent world. Same full route-file hash in both worlds. All vehicles use normal passenger permissions, including the ambulance; no bluelight device, red-light privilege or emergency speed mode override.
-- Ordinary fixed cycle and immediate/fixed-lead/analytical preemption share minimum green (8 s), yellow (3 s), all-red (1 s). Ordinary greens 25 s; priority hold capped at 35 s; request timeout 90 s; one debt/queue-selected recovery service of 25 s then ordinary cycling. Recovery is not learned and does not claim bounded waits under infeasible demand.
+- Ordinary fixed cycle and immediate/fixed-lead/analytical preemption share minimum green (8 s), yellow (3 s), and network-specific all-red clearance (city 3 s; fixture 1 s). Ordinary greens 25 s; priority hold capped at 35 s; request timeout 90 s; one debt/queue-selected recovery service of 25 s then ordinary cycling. Recovery is not learned and does not claim bounded waits under infeasible demand.
 - Frozen absolute ETA at dispatch: external-lane free-flow time plus 2 s per observed route queue vehicle, using a snapshot at least 1 s old. Zero lead requests at ETA, immediate requests at dispatch. Actual passage cancels stale future requests. Request timing is quantized to the declared simulation step and logged.
 - Ambulance dispatch is projected onto the actual clipped outer lane polyline adjacent to the curb marker; it is not placed at the pedestrian marker. Front-bumper poses and actual vehicle length are exported. Source XY maps to render `[x,z,-y]`; SUMO heading is clockwise from north.
 - Full scheduled/inserted/completed/running/not-inserted civilian accounting, per-vehicle lifecycle, raw SUMO tripinfo, collisions/teleports retained, common 240 s horizon plus 360 s drain. No completion-only mean on censored or invalid runs. Ambulance journey includes insertion delay from scheduled dispatch. Final trip timestamps are reconciled from flushed SUMO tripinfo; TraCI list notifications retain their separate discovery timestamps rather than introducing a one-step measurement bias.
@@ -148,3 +148,22 @@ The exact behavior is visible in the official
 and its unfinished-output path. The general
 [tripinfo documentation](https://sumo.dlr.de/docs/Simulation/Output/TripInfo.html#output-for-vehicles-that-have-not-arrived-at-simulation-end)
 describes the `--tripinfo-output.write-unfinished` option.
+
+
+### City clearance profile
+
+Heavy exploratory traffic exposed bike/truck overlap at permissive left turns
+with the original one-second all-red clearance. Disabling minor-link dawdling
+and increasing driver gap/advance conservatism did not remove the known case;
+those failed diagnostics are retained and are not the shipped model. Extending
+city all-red clearance to **three seconds**, with default drivers unchanged,
+removed the demonstrated collisions on all three inspected heavy ordinary
+worlds. This is an engineering qualification result, not a road-safety claim.
+
+`timing_for_network` applies the same city profile to ordinary, immediate,
+fixed, and analytical worlds. Native SUMO programs and the external scheduler
+share it. Each new world's metrics record the complete timing dictionary;
+signal audits use those recorded durations, and pilot/study verification binds
+them to the declared network profile. Historical one-second recordings remain
+auditable with their original source. Fresh pilot/study evidence is required
+after this revision; old results are never relabeled.
