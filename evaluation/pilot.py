@@ -67,6 +67,10 @@ def validate_plan(envelope: dict) -> dict:
             raise ValueError("pilot timing contract invalid")
         if not 0 <= finite(case["recovery_start_s"], "recovery_start_s") < finite(case["recovery_end_s"], "recovery_end_s") <= horizon + drain:
             raise ValueError("pilot common recovery window invalid")
+        endpoints = {key for key in ('pickup_id', 'hospital_id') if key in case}
+        if endpoints and (endpoints != {'pickup_id', 'hospital_id'} or
+                          any(not isinstance(case[key], str) or not case[key] for key in endpoints)):
+            raise ValueError('pilot route variants require both nonempty pickup_id and hospital_id')
     return plan
 
 
@@ -128,7 +132,8 @@ def execute_plan(envelope: dict, output: Path) -> dict:
         for case in plan["cases"]:
             case_dir = output / case["id"]
             demand = make_demand(graph, network, seed=case["seed"], regime=case["regime"],
-                                 dispatch_s=case["dispatch_s"], demand_end_s=case["demand_end_s"])
+                                 dispatch_s=case["dispatch_s"], demand_end_s=case["demand_end_s"],
+                                 **{key: case[key] for key in ('pickup_id', 'hospital_id') if key in case})
             hashes = save_demand(demand, case_dir / "demand")
             scheduled = sum(v["id"] != "ambulance" for v in demand["vehicles"])
             case_rows = []

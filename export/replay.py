@@ -60,6 +60,11 @@ def validate_selection_evidence(replay: dict) -> None:
 
 def save_replay(path: Path, replay: dict) -> dict:
     validate_replay(replay)
-    write_json(path, replay)
+    # Preserve every measured value while avoiding megabytes of repeated
+    # indentation in dense city recordings. Raw tripinfo/lifecycle are retained
+    # independently; compact JSON is still directly inspectable and hash-bound.
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(replay, separators=(',', ':'), allow_nan=False)+'\n',
+                    encoding='utf-8', newline='\n')
     return {'sha256': sha256(path), 'bytes': path.stat().st_size, 'schema': SCHEMA,
             'duration_s': replay['duration_s'], 'step_s': replay['step_s']}
