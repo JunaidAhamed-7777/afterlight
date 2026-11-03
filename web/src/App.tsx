@@ -368,6 +368,11 @@ export default function App() {
     }
     if (!active) setLocate(value => value + 1);
   };
+  const inspectWorld = (next: typeof world) => {
+    if (next === world) return;
+    setWorld(next);
+    setFollow(false);
+  };
   return (
     <div className="app-shell">
       <a className="skip-link" href="#experiment-controls">
@@ -907,13 +912,13 @@ export default function App() {
                   <div className="segmented" aria-label="Inspect traffic world">
                     <button
                       aria-pressed={world === "afterlight"}
-                      onClick={() => { setWorld("afterlight"); setFollow(false); }}
+                      onClick={() => inspectWorld("afterlight")}
                     >
                       Afterlight
                     </button>
                     <button
                       aria-pressed={world === "baseline"}
-                      onClick={() => { setWorld("baseline"); setFollow(false); }}
+                      onClick={() => inspectWorld("baseline")}
                     >
                       Ordinary
                     </button>
