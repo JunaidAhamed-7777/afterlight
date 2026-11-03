@@ -1,0 +1,333 @@
+{
+  "schema": "afterlight.desktop-walkthrough-review.v1",
+  "status": "accepted_media_with_retained_packaging_guard_failure",
+  "reviewed_utc": "2026-11-03T20:17:10.832942+00:00",
+  "scope": "Independent read-only media review of actual public walkthrough02. Both complete videos were software-decoded; all9milestone PNGs and22encoded frames were personally inspected. Media acceptance does not relabel the failed original harness as passed.",
+  "original_capture": {
+    "retained_directory": "local-runtime/final-public-walkthrough-02",
+    "report": {
+      "bytes": 45919,
+      "sha256": "698bdf17a416d534aea6d6c0250c318a40371b9d51a0b87a6ea6700bb0821cd9"
+    },
+    "original_status": "failed",
+    "original_terminal_error": "Combined build and video exceed50MB",
+    "original_report_rewritten": false,
+    "started_utc": "2026-11-03T20:10:05.452200+00:00",
+    "finished_utc": "2026-11-03T20:12:29.998898+00:00"
+  },
+  "capture_binding": {
+    "base_url": "https://afterlight-gamma.vercel.app/",
+    "capture_source_head": "b2efc68e3ea258ab8f219cb63a08fd9418f42f03",
+    "product_source_sha256": "6be0b3f82cdf61d4b6180bef58b8f993289c6ec90e0f9efb072d0fcf3891970c",
+    "source_before_after_equal": true,
+    "source_stable": true,
+    "strict_build_manifest_sha256": "831ddf3f88b9b1ba3eed911955d31a6e1e3dcf9493e7a11c300ee89fd8559c02",
+    "frozen_product_source_commit": "2691f8bd9fef7a5faf14deec66083632726d962f",
+    "served_build_before": {
+      "files": 63,
+      "bytes": 46956618,
+      "manifest_sha256": "aaf48b40357f22abebbe0cd1968e705ae01fffaa819692e0ad6a6e6060b45a01"
+    },
+    "served_build_after": {
+      "files": 63,
+      "bytes": 46956618,
+      "manifest_sha256": "aaf48b40357f22abebbe0cd1968e705ae01fffaa819692e0ad6a6e6060b45a01"
+    },
+    "served_inventory_before_after_equal": true,
+    "study_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+    "study_summary_sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5"
+  },
+  "capture_environment": {
+    "browser_version": "156.0.8078.80",
+    "css_viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "device_pixel_ratio": 1,
+    "native_window_before": {
+      "left": 10,
+      "top": 10,
+      "width": 1296,
+      "height": 808,
+      "windowState": "normal"
+    },
+    "native_window_after": {
+      "left": 10,
+      "top": 10,
+      "width": 1296,
+      "height": 808,
+      "windowState": "normal"
+    },
+    "captured_wall_seconds": 80.03333430000202,
+    "foreground_qualified": true,
+    "lifecycle": [
+      {
+        "event": "start",
+        "visibility": "visible",
+        "focused": true
+      },
+      {
+        "event": "end",
+        "visibility": "visible",
+        "focused": true
+      }
+    ],
+    "page_errors": [],
+    "recorded_results_layout": {
+      "overflow": false,
+      "statusCells": [
+        {
+          "text": "completed",
+          "lines": 1,
+          "overflow": false
+        },
+        {
+          "text": "completed",
+          "lines": 1,
+          "overflow": false
+        }
+      ]
+    }
+  },
+  "encoded_video": {
+    "file": "afterlight-desktop-demo.mp4",
+    "bytes": 6672451,
+    "sha256": "4d2442ce93d718ed19d1321daf346ec369960c3f74399aa0501cb593ac3ba244",
+    "codec": "h264",
+    "profile": "High",
+    "pixel_format": "yuv420p",
+    "width": 1280,
+    "height": 720,
+    "fps": 25,
+    "frames": 2032,
+    "duration_s": 81.28,
+    "audio_streams": 0
+  },
+  "native_video": {
+    "bytes": 19268713,
+    "sha256": "3ffc9ccb8404e911c6a08c21d358b219c833a3d4e679fef7393eb5fcf3faf326",
+    "codec": "vp9",
+    "width": 1280,
+    "height": 720,
+    "fps": 25,
+    "frames": 2046,
+    "duration_s": 81.84,
+    "audio_streams": 0
+  },
+  "full_decode": {
+    "status": "passed",
+    "ffmpeg_version": "ffmpeg version 9.0.2-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "method": [
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-xerror",
+      "-err_detect",
+      "explode",
+      "-threads",
+      "2",
+      "-i",
+      "<retained-input>",
+      "-map",
+      "0:v:0",
+      "-an",
+      "-progress",
+      "pipe:1",
+      "-f",
+      "null",
+      "-"
+    ],
+    "native": {
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "decoded_frames": 2046,
+      "progress_end": true
+    },
+    "encoded": {
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "decoded_frames": 2032,
+      "progress_end": true
+    }
+  },
+  "prefix_check": {
+    "removed_frames": 14,
+    "removed_seconds": 0.56,
+    "native_frames_checked": 15,
+    "first14_min_max_rgb": [
+      255,
+      255
+    ],
+    "frame14_min_max_rgb": [
+      0,
+      255
+    ],
+    "count_and_duration_difference_match": true,
+    "scope": "Automated native pixels confirm14 initial uniform-white frames before application pixels. The retained capture report identifies that prefix as empty about:blank; actual product loading is retained."
+  },
+  "visual_review": {
+    "status": "passed",
+    "milestone_pngs": [
+      {
+        "file": "00-workspace-explore.png",
+        "bytes": 571298,
+        "sha256": "9452288204088dd2a68e15d89b3db0e4e8be90988b785e49ed8485d5edf36504"
+      },
+      {
+        "file": "01-city-overview.png",
+        "bytes": 259766,
+        "sha256": "6d217e1ea989e83a4d3c41d226b6639178e895a652f49ba083971896946a695b"
+      },
+      {
+        "file": "02-priority-follow.png",
+        "bytes": 323022,
+        "sha256": "39fad20414255d3776b34902ade53a5707ae0bd57f77793be9494eeb2fd4d96d"
+      },
+      {
+        "file": "03-ordinary-world.png",
+        "bytes": 322623,
+        "sha256": "bf0b617f7cf6b77f30646ab7e5c7914a5b7a8e11f0c255b9e948c0e4b2460045"
+      },
+      {
+        "file": "04-ghost-comparison.png",
+        "bytes": 335189,
+        "sha256": "e8c57192587825b537c138b3d0a6f1a4f2d9ef9de13c506bbd9639d2afe16db6"
+      },
+      {
+        "file": "05-westhaven-response.png",
+        "bytes": 423531,
+        "sha256": "8638c85698cf673f34fc0cb875674d4cc0741c60cc6114432c088fa46bf2792d"
+      },
+      {
+        "file": "06-recorded-results.png",
+        "bytes": 419145,
+        "sha256": "cf169600ee631ab991daa97c9d9aa9fd31a3e0ea6eeaf4ee5f8de6a3a706f619"
+      },
+      {
+        "file": "07-traffic-accounting.png",
+        "bytes": 417121,
+        "sha256": "1803a7f3c8fffd0462d035b7116dac72b833e0ae77876a82474de1022ef6261e"
+      },
+      {
+        "file": "08-released-study.png",
+        "bytes": 432364,
+        "sha256": "9142eb477e456201201fde091f26de59c0d43651e05bfde99a33897dbda1f4cf"
+      }
+    ],
+    "encoded_sample_count": 22,
+    "encoded_sample_frame_indices": [
+      0,
+      25,
+      50,
+      75,
+      100,
+      125,
+      250,
+      375,
+      500,
+      625,
+      750,
+      875,
+      1000,
+      1125,
+      1250,
+      1375,
+      1500,
+      1625,
+      1750,
+      1875,
+      2000,
+      2031
+    ],
+    "encoded_sample_seconds": [
+      0.0,
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      10.0,
+      15.0,
+      20.0,
+      25.0,
+      30.0,
+      35.0,
+      40.0,
+      45.0,
+      50.0,
+      55.0,
+      60.0,
+      65.0,
+      70.0,
+      75.0,
+      80.0,
+      81.24
+    ],
+    "retained_sample_index_sha256": "68175c6c6ef85fd55cd7fb0675fa02d9b36d7a3649acbadd1d130915aaa3dc0e",
+    "continuous_frame_by_frame_visual_review": false,
+    "completed_wrap_regression": "Both completed cells are visibly single-line in06/07milestones and the75s encoded sample, without table overflow. This corrects the historical01finding.",
+    "observations": [
+      "Branding, real loading, full-city view, ambulance/ordinary/ghost controls, Westhaven, recorded results, accounting and released Study are readable in the inspected images.",
+      "No critical corruption, broad road/park striping, depth conflict, missing model, clipped dock or horizontal overflow was seen.",
+      "The actual Study image retains20test episodes,20demand groups,140worlds and1/20 versus0/20failures. Scientific arithmetic is covered by its separate proof acceptance.",
+      "The last encoded frame remains on the genuine released Study panel. No generated or substituted ending is present in reviewed samples."
+    ],
+    "new_visual_findings": []
+  },
+  "retained_packaging_failure": {
+    "original_status": "failed",
+    "original_error": "Combined build and video exceed50MB",
+    "original_harness_pass_claimed": false,
+    "frozen_site_bytes_including_old_video": 46956618,
+    "video_path_in_frozen_site": "media/afterlight-desktop-demo.mp4",
+    "existing_video": {
+      "bytes": 6670560,
+      "sha256": "fb5e6106b380746024269891b08d4b6e7f5c8beec693e91b5c0e715bf8933d32"
+    },
+    "replacement_video": {
+      "bytes": 6672451,
+      "sha256": "4d2442ce93d718ed19d1321daf346ec369960c3f74399aa0501cb593ac3ba244"
+    },
+    "erroneous_additive_total_bytes": 53629069,
+    "correct_replacement_formula": "46956618 - 6670560 + 6672451",
+    "projected_replacement_total_bytes": 46958509,
+    "limit_bytes": 50000000,
+    "projected_below_limit": true,
+    "independent_final_site_inventory_status": "Not performed by this media review; a separate complete final freeze/deployment inventory must establish the actual shipped bytes.",
+    "interpretation": "The frozen63-file build already includes the old video. Adding the new video size counts two versions. This reconciled replacement arithmetic explains the retained terminal budget failure; it does not convert that failed run into a harness pass."
+  },
+  "proposed_public_screenshots": {
+    "docs/images/workspace.png": {
+      "original": "01-city-overview.png",
+      "bytes": 259766,
+      "sha256": "6d217e1ea989e83a4d3c41d226b6639178e895a652f49ba083971896946a695b"
+    },
+    "docs/images/ambulance-follow.png": {
+      "original": "02-priority-follow.png",
+      "bytes": 323022,
+      "sha256": "39fad20414255d3776b34902ade53a5707ae0bd57f77793be9494eeb2fd4d96d"
+    },
+    "docs/images/study.png": {
+      "original": "08-released-study.png",
+      "bytes": 432364,
+      "sha256": "9142eb477e456201201fde091f26de59c0d43651e05bfde99a33897dbda1f4cf"
+    }
+  },
+  "original_evidence_preservation": {
+    "files_before": 15,
+    "files_after": 15,
+    "all_original_file_sets_bytes_and_hashes_equal": true,
+    "before_inventory_sha256": "8525c26fe2025fe1a6e51d2dd402bf8b4aed6eaf4e71a4165c0f7826b617fedd",
+    "after_inventory_sha256": "8525c26fe2025fe1a6e51d2dd402bf8b4aed6eaf4e71a4165c0f7826b617fedd",
+    "original_report_native_encoded_pngs_encoding_logs_untouched": true,
+    "historical_candidate01_review_separate_and_untouched": true
+  },
+  "limitations": [
+    "All video frames were decoded for integrity, but only9milestones and22encoded frames were personally viewed. This is not continuous pixel or animation-smoothness certification.",
+    "The review performed no browser, new capture, re-encode, remux, retiming, source/Git edit, simulation or fitting.25fps is a video property, not a renderer-performance benchmark.",
+    "The retained original02report remains failed. Its successful recorded UI/source/foreground/inventory facts and the independent media checks have narrower accepted scopes.",
+    "Only the leading14white native frames are omitted in the supplied encoded file, as independently corroborated by pixel/count checks. Recorded2x simulation playback and a comparison seek are product actions, not video retiming by this review.",
+    "The final full-site freeze, actual shipped-size inventory, final hosted byte/proof verification and documentation publication are separate release gates; projected replacement arithmetic alone does not establish them."
+  ]
+}

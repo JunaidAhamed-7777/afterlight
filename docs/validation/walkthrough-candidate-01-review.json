@@ -1,0 +1,295 @@
+{
+  "schema": "afterlight.desktop-walkthrough-review.v1",
+  "status": "retained_historical_candidate_visual_issue_requires_replacement",
+  "reviewed_utc": "2026-11-03T20:02:12.752285+00:00",
+  "scope": "Independent read-only QA of the first actual hosted walkthrough candidate, retained as historical after a1280x720 status-word-wrap finding. Both videos were fully software-decoded; nine milestone PNGs and22 sparse encoded frames were personally inspected. No new browser, capture, source change, remux, retiming or media edit.",
+  "capture_report": {
+    "retained_directory": "local-runtime/final-public-walkthrough-01",
+    "report": {
+      "bytes": 45626,
+      "sha256": "0f462592fdd8d9450d14bd29ba54ff28b1f62a3526cd1a39086edaaf1e52e965"
+    },
+    "original_status": "captured_final_walkthrough_pending_pixel_review",
+    "started_utc": "2026-11-03T19:52:28.332058+00:00",
+    "finished_utc": "2026-11-03T19:54:57.715216+00:00"
+  },
+  "publication": {
+    "base_url": "https://afterlight-gamma.vercel.app/",
+    "deployment_id": "dpl_Fg238DsG3ByVPPMGbP8yPqHWYHmY",
+    "capture_source_head": "af2477b61be7571a3ff48a03c3fa14a9c1a85ce8",
+    "product_source_sha256": "b08dadf00cf14e0264ceb40aed4bc0498e18720a965129fc41724c814a9d931f",
+    "source_before_after_equal": true,
+    "reported_source_stable": true,
+    "served_build_before": {
+      "files": 61,
+      "bytes": 39870637,
+      "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+    },
+    "served_build_after": {
+      "files": 61,
+      "bytes": 39870637,
+      "manifest_sha256": "3538dc6f8697a13c35bd1c940f835eeae3d443a11a5ed51488ede7839458fb70"
+    },
+    "served_inventory_before_after_equal": true,
+    "strict_build_manifest_sha256": "f9028c53a284914cd1a5a2ba1714b857ec8c80ca0e8c99363d4ff6246c05d3bc",
+    "strict_build_identity_reference": "docs/validation/final-desktop-performance.json",
+    "study_manifest_sha256": "f5b3b10f59c4daf3b77aaa9aaec971d7b7f7ac85c95027021bbfaa305ae1aea9",
+    "study_summary_sha256": "ab2dba91d2901ec62260016fcd0fde09c8bcec6c9422f2a8b41378face20f8f5",
+    "final_media_redeployment_verified_by_this_review": false
+  },
+  "capture_environment": {
+    "browser_version": "156.0.8078.80",
+    "css_viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "device_pixel_ratio": 1,
+    "native_window_before": {
+      "left": 10,
+      "top": 10,
+      "width": 1296,
+      "height": 808,
+      "windowState": "normal"
+    },
+    "native_window_after": {
+      "left": 10,
+      "top": 10,
+      "width": 1296,
+      "height": 808,
+      "windowState": "normal"
+    },
+    "reported_capture_wall_seconds": 82.46340539999801,
+    "foreground_qualified": true,
+    "lifecycle": [
+      {
+        "event": "start",
+        "visibility": "visible",
+        "focused": true
+      },
+      {
+        "event": "end",
+        "visibility": "visible",
+        "focused": true
+      }
+    ],
+    "page_errors": []
+  },
+  "encoded_video": {
+    "file": "afterlight-desktop-demo.mp4",
+    "bytes": 6670560,
+    "sha256": "fb5e6106b380746024269891b08d4b6e7f5c8beec693e91b5c0e715bf8933d32",
+    "codec": "h264",
+    "profile": "High",
+    "pixel_format": "yuv420p",
+    "width": 1280,
+    "height": 720,
+    "fps": 25,
+    "frames": 2093,
+    "duration_s": 83.72,
+    "audio_streams": 0
+  },
+  "native_video": {
+    "bytes": 18576512,
+    "sha256": "f53be928e809bbc577b0272bdff565880f16c0d542d158158b71346af1d9986e",
+    "codec": "vp9",
+    "width": 1280,
+    "height": 720,
+    "fps": 25,
+    "frames": 2110,
+    "duration_s": 84.4,
+    "audio_streams": 0
+  },
+  "full_decode": {
+    "status": "passed",
+    "ffmpeg_version": "ffmpeg version 9.0.2-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe_version": "ffprobe version 9.0.2-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+    "method": [
+      "-nostdin",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-xerror",
+      "-err_detect",
+      "explode",
+      "-threads",
+      "2",
+      "-i",
+      "<retained-input>",
+      "-map",
+      "0:v:0",
+      "-an",
+      "-progress",
+      "pipe:1",
+      "-f",
+      "null",
+      "-"
+    ],
+    "native": {
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "decoded_frames": 2110,
+      "progress_end": true
+    },
+    "encoded": {
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "decoded_frames": 2093,
+      "progress_end": true
+    }
+  },
+  "prefix_check": {
+    "removed_frames": 17,
+    "removed_seconds": 0.68,
+    "independently_checked_native_frame_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    "first_17_frames_all_rgb_min_max": [
+      255,
+      255
+    ],
+    "next_frame_rgb_min_max": [
+      9,
+      67
+    ],
+    "frame_count_and_duration_difference_match": true,
+    "scope": "Automated native pixel check confirms exactly17 initial uniform-white frames before application pixels. The original capture report identifies that leading prefix as empty about:blank. Actual application startup and loading remain in the encoded video."
+  },
+  "visual_review": {
+    "milestone_png_count": 9,
+    "milestone_pngs": [
+      "00-workspace-explore.png",
+      "01-city-overview.png",
+      "02-priority-follow.png",
+      "03-ordinary-world.png",
+      "04-ghost-comparison.png",
+      "05-westhaven-response.png",
+      "06-recorded-results.png",
+      "07-traffic-accounting.png",
+      "08-released-study.png"
+    ],
+    "encoded_sample_count": 22,
+    "encoded_sample_frame_indices": [
+      0,
+      25,
+      50,
+      75,
+      100,
+      125,
+      250,
+      375,
+      500,
+      625,
+      750,
+      875,
+      1000,
+      1125,
+      1250,
+      1375,
+      1500,
+      1625,
+      1750,
+      1875,
+      2000,
+      2092
+    ],
+    "encoded_sample_seconds": [
+      0.0,
+      1,
+      2,
+      3,
+      4,
+      5.0,
+      10.0,
+      15.0,
+      20.0,
+      25.0,
+      30.0,
+      35.0,
+      40.0,
+      45.0,
+      50.0,
+      55.0,
+      60.0,
+      65.0,
+      70.0,
+      75.0,
+      80.0,
+      83.68
+    ],
+    "continuous_frame_by_frame_visual_review": false,
+    "observations": [
+      "The first encoded sample is the application navy background; the branded loading screen is visible at1s. Real city and recording loading are retained.",
+      "The reviewed full-city/follow/ordinary/ghost/Westhaven views keep controls within the desktop viewport; no broad striping, depth conflict, missing model or critical corruption was seen.",
+      "The measured recording results are visible as one exploratory example; the Study panel shows20episodes,20demandgroups,140worlds and selected1/20 versus fixed0/20failures.",
+      "The final encoded frame remains on the actual released Study panel; it is not a substituted or generated closing scene."
+    ],
+    "minor_findings": [
+      {
+        "severity": "minor",
+        "location": [
+          "06-recorded-results.png",
+          "07-traffic-accounting.png",
+          "encoded75s"
+        ],
+        "description": "At1280x720, the results table wraps completed as complete / d in both narrow status columns. The status remains readable and the values and controls are not clipped.",
+        "media_corruption_blocker": false
+      }
+    ],
+    "retained_sample_index_sha256": "9d7076a1fb051108882fdc35cf38dc2e326da2c4d93849eb077483a5bccf089a",
+    "retained_detailed_review_sha256": "6d8313eaa4319200221b9a4d248acfbab6c42af6f574e57ad8aace6ae9afdced"
+  },
+  "original_evidence_preservation": {
+    "files_before": 15,
+    "files_after": 15,
+    "all_original_file_sets_bytes_and_hashes_equal": true,
+    "before_inventory_sha256": "9f08b2a072afb2ddec262b3d1b9ad1c98a91f8a155492b5445126207c35ac38f",
+    "after_inventory_sha256": "9f08b2a072afb2ddec262b3d1b9ad1c98a91f8a155492b5445126207c35ac38f",
+    "native_encoded_report_pngs_encoding_logs_untouched": true
+  },
+  "limitations": [
+    "Sparse visual review does not certify every intervening frame, continuous animation smoothness or signal obedience. Every video frame was decoded for integrity, not personally inspected.",
+    "Capture lifecycle, hosted inventory and source-stability checks are reconciled from the original bound report; this media review makes no new HTTP, browser or scientific run.",
+    "Constant25fps native capture and83.72s encoded duration are video properties, not application rendering or simulator-performance benchmarks.",
+    "Recorded2x simulation playback and an explicit comparison seek are visible product actions. This review performed no video retiming, interpolation, remux or edit.",
+    "This review does not independently recompute Study arithmetic or prove test nonaccess; separate public-proof and Study-acceptance records cover their bounded checks.",
+    "Final README/media installation, shipped-size measurement and final redeployment acceptance remain the release owner's subsequent gates.",
+    "The reported source stability covers the original capture interval only. The release owner began a subsequent CSS correction after review; no later build inherits candidate01 acceptance."
+  ],
+  "replacement_capture_required": true,
+  "release_disposition": "Release owner is correcting the narrow results-table wrap, then building, deploying and recapturing. Candidate01 is retained unchanged and is not approved as the final public walkthrough.",
+  "private_candidate_screenshot_copies": {
+    "docs/images/workspace.png": {
+      "original": "01-city-overview.png",
+      "bytes": 259763,
+      "sha256": "10295f621f6f0d5bb7bb917fd92679cf9a6861286def23083b9e3b25878d2c78"
+    },
+    "docs/images/ambulance-follow.png": {
+      "original": "02-priority-follow.png",
+      "bytes": 322769,
+      "sha256": "90eb676ccccd2d7d8683b5dbe51cb3db552e915ded0a474ca856a3166841c6a7"
+    },
+    "docs/images/study.png": {
+      "original": "08-released-study.png",
+      "bytes": 436210,
+      "sha256": "dc72af8d34fc33f20914a061a869b1936bf852f9185b488486a6b135ad4c9713"
+    }
+  },
+  "screenshot_disposition": "Private byte-identical candidate copies only. No tracked media was installed. Use replacement-capture evidence for the final README."
+}
