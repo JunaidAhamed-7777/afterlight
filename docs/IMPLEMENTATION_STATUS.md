@@ -67,6 +67,17 @@ public recording catalog remains empty; no performance benefit is claimed.
 The [compiled preview](../preview/README.md) permits separate browser acceptance
 without npm installation, but does not waive the source-build or simulator gates.
 
+## First genuine city viewer follow-up
+
+At `5293ae0`, 64 Python and 89 Node checks plus the local production build
+passed. Separate normal-UI checks of the real city recording at 205, 207 and
+220 seconds confirmed solid/ghost matrices and world-switch isolation without
+browser errors. The new automated harness failed at its journey-filtered
+selection step; `5dad4cb` corrects that entry flow, with rerun pending.
+Approximately 5 cm tyre penetration was observed across 48 contacts. Corrected
+road contact, fractional interpolation and precise stop-line/vertical visual
+acceptance remain unverified. See the log for evidence-preservation limitations.
+
 ## First imported-city geometry audit
 
 After a genuine city network conversion on Omen, inspect its actual stop lines

@@ -314,3 +314,28 @@ qualification-run duration, not a benchmark or rendering performance measure.
 - Actual rendered city replay/ghost alignment and a real local-generation API job
   remain pending. No pilot, model training or held-out evaluation ran, and the
   public recording catalog remains empty. Preserve all earlier invalid evidence.
+
+## 2026-11-03, `5293ae0` real city viewing checkpoint (reported 08:02 UTC)
+
+- 64 Python checks, 89 Node checks and the local production build passed.
+  This is a scoped follow-up, not a replacement for the full `11be524` journal.
+- The new real-replay harness stopped before playback: its direct recording
+  selection was disabled because the default journey went to Westhaven while
+  the genuine recording went to Eastgate. The product's normal **Open available
+  recording** action selected the correct route. Harness-only fix `5dad4cb`
+  uses that action and still asserts the exact recorded identity; rerun pending.
+- A separate normal-UI inspection of the retained `11be524` city pair at absolute
+  times 205, 207 and 220 seconds passed solid/ghost matrix and world-switching
+  isolation checks. No browser errors or external requests were observed.
+  Road placement and turn direction looked correct in those views. Fractional
+  interpolation was not exercised; this is not the full automated visual gate.
+- Geometry inspection found approximately 5 cm of tyre penetration across
+  48 contacts. Precise vertical placement and stop-line alignment remain open.
+  A geometry-grounding correction and numerical contact regressions are being
+  prepared; no corrected result has been measured yet.
+- The evidence copy matched all 109 original files (29,283,211 bytes), including
+  hashes, sizes and modification times, when copied. The final original-file
+  comparison did not execute because the approval review could not complete;
+  do not silently promote the earlier comparison into an end-of-test guarantee.
+- No demo promotion, simulator rerun, pilot, training or held-out evaluation
+  occurred in this checkpoint. Original failed harness evidence is retained.

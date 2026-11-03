@@ -23,6 +23,8 @@ from api.artifacts import read_bytes, parse_json_object
 from sim.audit import audit
 
 TOLERANCE_M=1e-4
+# Authored flat road slab: generate_city.py center .12 m + half thickness .06 m.
+AUTHORED_ROAD_SURFACE_Y_M=0.18
 UNSAFE_DEFAULTS=[
     '--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage',
     '--enable-unsafe-swiftshader','--unsafely-disable-devtools-self-xss-warnings',
@@ -108,6 +110,7 @@ def check_layer(snapshot:dict,vehicles:list,label:str)->dict:
                   'rear':[vehicle['x']-math.sin(angle)*length,-vehicle['y']+math.cos(angle)*length]}
         for key,xz in expected.items():
             close_number(rendered[key][0],xz[0],label+'/'+key+'/x');close_number(rendered[key][2],xz[1],label+'/'+key+'/z')
+        close_number(rendered['bounds']['min'][1],vehicle['z']+AUTHORED_ROAD_SURFACE_Y_M,label+'/lowest-geometry/road-contact-y')
         close_number(rendered['length'],length,label+'/length')
         if 'width_m' in vehicle:close_number(rendered['width'],vehicle['width_m'],label+'/width')
         if not rendered['primitiveMatrices'] or any(len(matrix)!=16 or any(not math.isfinite(value) for value in matrix) for matrix in rendered['primitiveMatrices']):raise AssertionError('Missing/nonfinite actual instance matrices')
@@ -177,7 +180,7 @@ def main()->None:
     report={'schema':'afterlight.real-replay-visual.v1','status':'running','scope':'Exploratory real-city recorded instance-matrix checks; not traffic gain, frame-rate benchmark or pixel-level stopline certification',
         'run':str(run),'base_url':args.base_url,'platform':platform.platform(),'checks':[],
         'page_errors':[],'console_errors':[],'blocked_external_requests':[],
-        'manual_visual_review':'Road/stopline/lane alignment and screenshot aesthetics remain separate human visual review; Y is authored geometry midpoint plus renderer lift, not compared to SUMO ground z'}
+        'manual_visual_review':'Road/stopline/lane pixel alignment and screenshot aesthetics remain separate human visual review. Lowest rendered ambulance geometry is checked against SUMO z plus the authored flat road surface, not an invented center-height assumption.'}
     page=None;browser=None;context=None;playwright=None
     try:
         # Require the successful exploratory qualification gate BEFORE opening

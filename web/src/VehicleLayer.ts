@@ -1,12 +1,16 @@
 import * as THREE from "three";
 import type { Vehicle } from "./types.ts";
 import { vehiclePose } from "./replay.ts";
+// assets/src/generate_city.py: road box center Z=.12 m, thickness=.12 m.
+// Blender +Z maps to render +Y; keep canonical road/vehicle XY and GLBs untouched.
+export const AUTHORED_ROAD_SURFACE_Y = 0.18;
 interface Batch {
   capacity: number;
   meshes: THREE.InstancedMesh[];
   geometry: THREE.BufferGeometry[];
   length: number;
   width: number;
+  minY: number;
 }
 /** Original model primitives, baked once with their authored glTF transforms, instanced by type. */
 export class VehicleLayer {
@@ -47,7 +51,7 @@ export class VehicleLayer {
       }
       for (let i = 0; i < rows.length; i++) {
         const [x, y, z, angle] = vehiclePose(rows[i]);
-        this.transform.position.set(x, y + 0.12, z);
+        this.transform.position.set(x, y + AUTHORED_ROAD_SURFACE_Y - batch.minY, z);
         this.transform.rotation.set(0, angle, 0);
         this.transform.scale.set(
           rows[i].width_m ? rows[i].width_m! / batch.width : 1,
@@ -135,6 +139,7 @@ export class VehicleLayer {
       geometry: [],
       length: size.z,
       width: size.x,
+      minY: Infinity,
     };
     template.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
@@ -142,6 +147,8 @@ export class VehicleLayer {
         .clone()
         .applyMatrix4(child.matrixWorld)
         .translate(-center.x, 0, -center.z);
+      geometry.computeBoundingBox();
+      batch.minY = Math.min(batch.minY, geometry.boundingBox!.min.y);
       const material = this.ghost
         ? new THREE.MeshBasicMaterial({
             color: 0x87d7ff,
@@ -159,6 +166,10 @@ export class VehicleLayer {
       batch.meshes.push(mesh);
       batch.geometry.push(geometry);
     });
+    if (!Number.isFinite(batch.minY)) {
+      this.remove(batch);
+      throw new Error("Vehicle asset has no measurable ground contact.");
+    }
     return batch;
   }
   private remove(batch: Batch) {

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "three";
-import { VehicleLayer } from "../src/VehicleLayer.ts";
+import { AUTHORED_ROAD_SURFACE_Y, VehicleLayer } from "../src/VehicleLayer.ts";
 function close(actual: number, expected: number) {
   assert.ok(Math.abs(actual - expected) < 1e-5, `${actual} != ${expected}`);
 }
@@ -100,7 +100,7 @@ test("opt-in inspection reads actual baked geometry and instance buffers at card
     close(ambulance.center![2], -200 + 4 * Math.cos(angle * Math.PI / 180));
     close(ambulance.length!, 8);
     close(ambulance.width!, 3);
-    close(ambulance.center![1], 1.12);
+    close(ambulance.center![1], 1.18);
     assert.equal(ambulance.primitiveMatrices.length, 1);
   }
   // A changed render buffer must be observed without another input-pose update.
@@ -161,4 +161,38 @@ test("inspection reports incompatible primitive matrices instead of inventing a 
   assert.equal(snapshot.primitiveMatrices.length, 2);
   assert.ok(snapshot.bounds.max[0] > 15);
   layer.dispose(); first.geometry.dispose(); second.geometry.dispose(); material.dispose();
+});
+
+
+test("every vehicle type and ghost contacts authored road top without changing geometry or XZ nose", () => {
+  for (const type of ["ambulance", "car", "truck", "bike"]) {
+    for (const ghost of type === "ambulance" ? [false, true] : [false]) {
+      const template = new THREE.Group();
+      template.position.set(12, 3.25, -8);
+      const geometry = new THREE.BoxGeometry(2, 2, 4);
+      const material = new THREE.MeshBasicMaterial();
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(2, -0.61, 1);
+      template.add(mesh);
+      const originalVertices = Array.from(geometry.attributes.position.array);
+      const layer = new VehicleLayer(ghost);
+      for (const elevation of [0, 3.75]) {
+        layer.update([{ id: type === "ambulance" ? "ambulance" : "civilian", type,
+          x: 100, y: 200, z: elevation, angle_deg: 90, speed_mps: 0, length_m: 8, width_m: 3 }],
+          new Map([[type, template]]));
+        const instance = layer.group.children[0] as THREE.InstancedMesh;
+        const matrix = new THREE.Matrix4(); instance.getMatrixAt(0, matrix);
+        const rendered = instance.geometry.boundingBox!.clone().applyMatrix4(matrix);
+        close(rendered.min.y, elevation + AUTHORED_ROAD_SURFACE_Y);
+        close(rendered.max.y - rendered.min.y, 2);
+        close(rendered.max.x, 100);
+        close(rendered.min.x, 92);
+        close((rendered.min.z + rendered.max.z) / 2, -200);
+      }
+      assert.deepEqual(template.position.toArray(), [12, 3.25, -8]);
+      assert.deepEqual(mesh.position.toArray(), [2, -0.61, 1]);
+      assert.deepEqual(Array.from(geometry.attributes.position.array), originalVertices);
+      layer.dispose(); geometry.dispose(); material.dispose();
+    }
+  }
 });

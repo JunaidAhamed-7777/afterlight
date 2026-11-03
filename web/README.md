@@ -163,3 +163,15 @@ job identity to the original accepted seed-7 pilot. It submits no POST, launches
 no SUMO process, and does not consume held-out data. This is seeded saved-job
 recovery coverage, **not proof the UI originally submitted the job**. It requires
 Omen execution; authoring or cloud compilation is not a pass.
+
+Vehicle ground contact uses the authored road surface at render Y = 0.18 m:
+`assets/src/generate_city.py` places a 0.12 m thick road box at Blender Z =
+0.12 m. Each vehicle template caches the actual lowest baked geometry point;
+its instance is placed at SUMO elevation + road surface minus that point.
+This applies equally to the ordinary render-only ghost and solid vehicles,
+without editing GLBs, canonical XY, recorded trajectories, or vehicle height.
+The contact correction and its authored CPU regressions require Omen acceptance.
+The genuine replay harness also checks the rendered ambulance's lowest world
+bound against its recorded SUMO elevation + 0.18 m. This numerical contact check
+is separate from screenshot review of road alignment, stop lines and occlusion;
+the correction is not considered passed until it is measured on Omen.
