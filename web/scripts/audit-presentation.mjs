@@ -4,6 +4,9 @@ import path from "node:path";
 import crypto from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { buildSignalTimeline } from "../src/signalTimeline.ts";
+import { validateCatalog } from "../src/catalog.ts";
+import { validateReplay } from "../src/replay.ts";
+import { bindRecording } from "../src/recordingCore.ts";
 const args = process.argv.slice(2);
 function argument(name, fallback) {
   const index = args.indexOf(name);
@@ -27,6 +30,7 @@ const catalogPath = path.resolve(
 const outputPath = argument("--output", null);
 const dir = path.dirname(catalogPath);
 const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
+validateCatalog(catalog, "http://127.0.0.1/catalog.json");
 if (
   catalog.schema !== "afterlight.catalog.v1" ||
   !Array.isArray(catalog.runs) ||
@@ -36,6 +40,17 @@ if (
 const sha256 = (bytes) =>
   crypto.createHash("sha256").update(bytes).digest("hex");
 const helperPath = new URL("../src/signalTimeline.ts", import.meta.url);
+const moduleDirectory = new URL("../src/", import.meta.url);
+const moduleSourceSha256 = Object.fromEntries(
+  fs
+    .readdirSync(moduleDirectory)
+    .filter((name) => name.endsWith(".ts"))
+    .sort()
+    .map((name) => [
+      name,
+      sha256(fs.readFileSync(new URL(name, moduleDirectory))),
+    ]),
+);
 const clean = (v) => Math.round(v * 1e5) / 1e5;
 function dot(p, a, d) {
   return (p.x - a[0]) * d[0] + (p.y - a[1]) * d[1];
@@ -123,9 +138,21 @@ for (const item of catalog.runs) {
     hash !== item.sha256
   )
     throw Error("Decoded public recording length/checksum differs: " + file);
-  const replay = JSON.parse(bytes);
-  if (replay.mode !== "recorded" || replay.schema !== "afterlight.replay.v1")
-    throw Error("Expected a real recorded replay");
+  const replay = bindRecording(validateReplay(JSON.parse(bytes)), item);
+  if (
+    replay.scenario.network_kind !== "city" ||
+    replay.provenance.source_dirty !== false ||
+    !replay.network_geometry?.signals.length ||
+    replay.network_geometry.signals.some((signal) => !signal.links.length)
+  )
+    throw Error(
+      "Expected a clean-source city recording with controlled-link geometry",
+    );
+  if (
+    item.source_commit !== undefined &&
+    item.source_commit !== replay.provenance.source_commit
+  )
+    throw Error("Catalog source commit differs from recorded provenance");
   if (replay.step_s !== 0.5)
     throw Error(
       "Presentation review requires the declared 0.5-second capture cadence",
@@ -235,7 +262,9 @@ for (const item of catalog.runs) {
             continue;
           }
           const values = lane.indices.map((i) => state[i]);
-          if (values.some((value) => !value || !/^[rRyYgGoOuUs]$/.test(value))) {
+          if (
+            values.some((value) => !value || !/^[rRyYgGoOuUs]$/.test(value))
+          ) {
             stats.unclassifiedWithoutTimeline++;
             continue;
           }
@@ -348,6 +377,7 @@ for (const item of catalog.runs) {
 const failed = results.some((result) =>
   Object.values(result.worlds).some(
     (world) =>
+      !world.stats.crossings ||
       world.stats.exactTimelineSignals !== world.stats.totalSignals ||
       world.stats.allRedJunction ||
       world.stats.allLaneMovementsRed ||
@@ -362,6 +392,7 @@ const report = {
     "Incoming lane stop-line crossing of the production linear interpolated SUMO front-bumper pose, within1.5m lateral lane center and incoming heading alignment>.90. Exact lamp timelines use production buildSignalTimeline and reproduce all saved frames. Mixed movement classification is separately labeled inferred when a unique future outgoing-lane pose+heading matches; unresolved movement is never guessed. These are presentation checks, not raw physics/safety certification. Teleport-like, same-position, missing-neighbor and differently typed pose pairs are ineligible. Yellow crossings are counted separately from red and are not a braking-acceptance certificate.",
   auditSourceSha256: sha256(fs.readFileSync(new URL(import.meta.url))),
   signalTimelineSourceSha256: sha256(fs.readFileSync(helperPath)),
+  moduleSourceSha256,
   catalogSha256: sha256(fs.readFileSync(catalogPath)),
   nodeVersion: process.version,
   status: failed ? "failed" : "passed",

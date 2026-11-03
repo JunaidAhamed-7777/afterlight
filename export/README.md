@@ -75,7 +75,10 @@ node --experimental-strip-types web/scripts/audit-presentation.mjs --output loca
 
 It exits unsuccessfully for red crossings, unresolved controlled movements,
 missing exact timelines, corrupt files or an existing report destination.
-The report binds the catalog, audit source and production timeline helper hashes.
+The report binds the catalog, audit source, production timeline helper and viewer
+TypeScript module hashes, including the production validators and catalog binding.
+Malformed recordings, mismatched catalog metadata and empty crossing coverage
+cannot produce a passing review.
 Mixed movements use the declared ambulance route or a uniquely matching future
 outgoing-lane pose and heading; unresolved cases remain failures. This checks the
 replay presentation, while the separate raw SUMO tripinfo/lifecycle audit checks
