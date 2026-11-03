@@ -177,3 +177,16 @@ class StudyTests(unittest.TestCase):
         self.pilot.return_value.pop('seeds')
         with self.assertRaisesRegex(ValueError,'seed inventory'):self.prepared()
         self.assertFalse(self.output.exists())
+
+    def test_spec_rejects_qualification_seed_for_all_study_splits(self):
+        for index in range(3):
+            spec=deepcopy(self.spec);spec['cases'][index]['seed']=7
+            with self.subTest(split=spec['cases'][index]['split']),self.assertRaisesRegex(ValueError,'qualification'):
+                validate_spec(spec)
+
+    def test_reserved_seed_metadata_is_frozen(self):
+        study=self.prepared()['study']
+        self.assertEqual(study['protocol']['reserved_qualification_seeds'],[7])
+        changed=deepcopy(study);changed['protocol']['reserved_qualification_seeds']=[]
+        with self.assertRaisesRegex(ValueError,'reserved_qualification_seeds'):
+            validate_study_links(self.output,changed,verify_inputs=False)

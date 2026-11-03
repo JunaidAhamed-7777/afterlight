@@ -55,6 +55,13 @@ stream independent. This prevents same-seed correlated regime variants from
 crossing splits or being counted as independent test groups. The frozen protocol
 records exact seed assignments and every candidate must retain its episode seed.
 
+Seed **7** is additionally reserved for software qualification: its fixture stream
+has already been inspected, and qualification profiles reuse it. It is rejected
+for train, validation and test regardless of which seeds a later pilot uses.
+The protocol freezes `reserved_qualification_seeds: [7]`; this is separate from
+the scientific pilot exclusion and cannot be removed to make explored data
+"untouched." This reservation is not a claim that all qualification gates passed.
+
 Pilot evidence v2 carries an explicit sorted seed inventory. Every pilot seed is
 excluded from all study regimes, even when a changed regime produces different
 actual demand bytes. Legacy evidence lacking seeds is rejected, never guessed or

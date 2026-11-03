@@ -8,6 +8,10 @@ from typing import Mapping, Sequence
 from .metrics import finite, objective
 from .splits import assert_disjoint
 
+# Seed 7 is used by software qualification and has already been inspected.
+# It can never support an untouched scientific train/validation/test study.
+RESERVED_QUALIFICATION_SEEDS = (7,)
+
 
 def canonical_bytes(value: object) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
@@ -61,6 +65,8 @@ def validate_episode_inventory(protocol: Mapping, *, require_regimes: bool = Fal
             seed = item.get("seed")
             if isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed < 2**31 or not item.get("regime"):
                 raise ValueError("seed-bound inventory needs an explicit valid seed and regime for every episode")
+            if seed in RESERVED_QUALIFICATION_SEEDS:
+                raise ValueError("software-qualification RNG seed is reserved, not untouched study data")
             owner = {"split": item["split"], "regime": item["regime"]}
             if str(seed) in seeds and seeds[str(seed)] != owner:
                 raise ValueError("one RNG seed crosses split or regime in frozen inventory")

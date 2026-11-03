@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 from typing import Mapping
 
 from evaluation.metrics import finite
-from evaluation.protocol import digest, freeze_protocol, pilot_summary, validate_episode_inventory
+from evaluation.protocol import digest, freeze_protocol, pilot_summary, validate_episode_inventory, RESERVED_QUALIFICATION_SEEDS
 from evaluation.splits import assert_disjoint
 from models.analytical import AnalyticalConfig, ESTIMATOR_VERSION, estimate_candidates
 from models.residual import DEFAULT_FEATURES
@@ -49,6 +49,8 @@ def seed_assignments(cases: list) -> dict:
     assignments = {}
     for case in cases:
         seed = _integer(case["seed"], "seed", 0, 2**31 - 1)
+        if seed in RESERVED_QUALIFICATION_SEEDS:
+            raise ValueError("software-qualification RNG seed 7 is reserved; choose untouched study seeds")
         owner = {"split": case["split"], "regime": case["regime"]}
         key = str(seed)
         if key in assignments and assignments[key] != owner:
@@ -404,6 +406,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
         protocol = {"schema": "afterlight.protocol.v1", "source_commit": source["source_commit"],
             "source_code_sha256": source["source_code_sha256"], "group_assignments": assignments,
             "seed_assignments": seed_assignments(spec["cases"]),
+            "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
             "episode_inventory": [{k: row[k] for k in ("episode_id", "demand_group_id", "split", "regime", "seed", "demand_sha256", "network_sha256", "dispatch_s", "route_family", "pickup_id", "hospital_id")} for row in episodes],
             "feature_schema": _feature_schema(timing["sensor_lag_s"]), "candidate_leads_s": [0, 5, 10, 20, 30],
             "civilian_weight": spec["civilian_weight"], "horizon_s": timing["horizon_s"],
@@ -440,6 +443,7 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
     validate_pilot_seed_exclusion(study["pilot_evidence"], spec["cases"])
     expected_contract = {
         "seed_assignments": seed_assignments(spec["cases"]),
+        "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
         "source_commit": study["source"]["source_commit"], "source_code_sha256": study["source"]["source_code_sha256"],
         "horizon_s": timing["horizon_s"], "drain_end_s": timing["horizon_s"] + timing["drain_s"],
         "recovery_window_s": timing["recovery_window_s"], "simulation_step_s": timing["step_s"],

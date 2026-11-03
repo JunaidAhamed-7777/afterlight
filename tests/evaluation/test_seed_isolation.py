@@ -16,18 +16,18 @@ def protocol_fixture():
 class SeedIsolationTests(unittest.TestCase):
     def test_same_seed_cross_split_rejected_even_with_different_regime(self):
         for regime in ('moderate','heavy'):
-            cases=[{'seed':7,'split':'train','regime':'moderate'},{'seed':7,'split':'test','regime':regime}]
+            cases=[{'seed':17,'split':'train','regime':'moderate'},{'seed':17,'split':'test','regime':regime}]
             with self.subTest(regime=regime),self.assertRaisesRegex(ValueError,'one split and regime'):
                 seed_assignments(cases)
 
     def test_same_seed_cross_regime_within_test_is_not_independent_group(self):
         with self.assertRaises(ValueError):seed_assignments([
-            {'seed':7,'split':'test','regime':'sparse'},{'seed':7,'split':'test','regime':'heavy'}])
+            {'seed':17,'split':'test','regime':'sparse'},{'seed':17,'split':'test','regime':'heavy'}])
 
     def test_same_pair_dispatch_route_variants_share_stream(self):
-        cases=[{'seed':7,'split':'train','regime':'moderate','dispatch_s':20,'route':'a'},
-               {'seed':7,'split':'train','regime':'moderate','dispatch_s':40,'route':'b'}]
-        self.assertEqual(seed_assignments(cases),{'7':{'split':'train','regime':'moderate'}})
+        cases=[{'seed':17,'split':'train','regime':'moderate','dispatch_s':20,'route':'a'},
+               {'seed':17,'split':'train','regime':'moderate','dispatch_s':40,'route':'b'}]
+        self.assertEqual(seed_assignments(cases),{'17':{'split':'train','regime':'moderate'}})
 
     def test_pilot_seed_exclusion_ignores_changed_regime_and_content_hash(self):
         evidence={'schema':'afterlight.pilot-evidence.v2','seeds':[7,8]}
@@ -64,3 +64,15 @@ class SeedIsolationTests(unittest.TestCase):
     def test_candidate_seed_must_match_frozen_inventory(self):
         protocol=protocol_fixture();row=deepcopy(protocol['episode_inventory'][2]);row['seed']=999
         with self.assertRaisesRegex(ValueError,'RNG seed differs'):assert_episode_coverage([row],protocol,'test')
+
+    def test_software_qualification_seed_is_reserved_for_every_split(self):
+        for split in ('train','validation','test'):
+            with self.subTest(split=split),self.assertRaisesRegex(ValueError,'qualification'):
+                seed_assignments([{'seed':7,'split':split,'regime':'moderate'}])
+
+    def test_protocol_cannot_relabel_qualification_seed_untouched(self):
+        protocol=protocol_fixture()
+        protocol['episode_inventory'][0]['seed']=7
+        protocol['seed_assignments'].pop('2001')
+        protocol['seed_assignments']['7']={'split':'train','regime':'moderate'}
+        with self.assertRaisesRegex(ValueError,'qualification'):validate_episode_inventory(protocol)
