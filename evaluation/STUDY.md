@@ -42,6 +42,8 @@ Save JSON containing these required fields; there is no automatic large budget:
   "transition_loss_s":4,"ordinary_cycle_s":58,"civilian_weight":1,
   "civilian_cost_scale":1}`. No custom configuration is silently substituted.
 - `model_specification`: one declared `max_depth` (1–8) and `min_samples_leaf`.
+- `illustrative_capture`: explicit `{case_ids: [], max_world_bytes: 0, max_total_bytes: 0}`
+  for no presentation capture, or the bounded predeclared test-case contract below.
 - `heldout_regimes` and `heldout_route_families`: explicit lists (possibly empty).
   Every declared holdout must be represented in test only. For held-out route
   families, the actual ordered edge route cannot also appear outside test.
@@ -100,7 +102,7 @@ Later stages must fit only train, select fixed/tree configuration only validatio
 freeze selector artifacts separately (avoiding a protocol/model hash cycle), then
 explicitly release test once. Cached demo traces must come from the exact declared
 study episode/policy/source—not an unrelated earlier replay with a model label.
-Rich trace retention remains a subsequent checkpoint; the explicit test-release workflow is below.
+Bounded predeclared rich trace retention and the explicit test-release workflow are described below.
 
 Hashes and metadata guards detect drift and inconsistent artifacts. They cannot
 prove a human never inspected test information or that reported files are truthful
@@ -183,3 +185,37 @@ the interval is null with an explicit reason. Finite comparisons remain
 conditional on both policies completing validly; no multiplicity-adjusted
 significance, automatic performance badge, deployed safety or lives-saved claim
 is produced. Read failures and cohort sizes alongside any interval.
+
+
+## Predeclared representative traces (optional presentation evidence)
+
+Before freezing the study, set `illustrative_capture` to zero–three unique **test**
+case IDs already in the declared case inventory. An empty list requires both byte
+limits to be zero. Otherwise explicitly choose positive `max_world_bytes` (at most
+8 MiB) and `max_total_bytes` (at most 256 MiB, at least the per-world limit).
+No examples are selected by favorable outcomes. The collector uses the existing
+case and policy order, not a ranking by results.
+
+Only ordinary and all five fixed-lead worlds of those cases retain compact
+`rich-world.json`: exact recorded vehicles, signals, times, metrics and original
+world policy/decision, before in-memory poses are released. Immediate remains
+scalar/context evidence. `traces.json` binds the full six-world inventory, source,
+study/protocol/input hashes, original identities and exact per-file SHA-256.
+Collection metadata binds the exact trace-manifest file hash; outcome rows retain
+their corresponding capture entries. No virtual poses are reconstructed later.
+
+Limits are checked against the complete compact JSON byte length before writing.
+Intended bytes are charged before each attempted write, so a failed partial write
+cannot silently recycle its budget. Budget, serialization, file-write or optional
+manifest failure is explicit, with partial evidence retained where safe. Such
+presentation failures **do not** turn a valid scalar outcome into an infrastructure
+failure, discard it, stop the planned scientific collection, select another case
+or authorize a rerun. Scalar evidence may still support an honest report; an
+exporter must refuse an incomplete six-world representative capture.
+
+The local capture allowance is not a public-file allowance. Public paired replay
+JSON remains below the existing **20 MiB** limit; the separate 25 MB map allowance
+does not apply to traces. A model-selected presentation must independently verify
+all six retained worlds and choose solely from the frozen lagged observation,
+retaining physical policy `fixed` and an explicit cached-selector provenance
+record. It must not relabel an unrelated recording as a learned simulation.

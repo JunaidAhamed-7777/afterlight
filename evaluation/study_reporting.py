@@ -409,37 +409,33 @@ def _context_policy(rows: list, policy: str, civilian_weight: float) -> dict:
         'records':records,'interpretation':'Descriptive contextual policy, not a replacement for either frozen strong comparator. Finite objective means are conditional on validity and complete drain.'}
 
 
-def report_study(study_directory: Path, collection_directory: Path, output: Path) -> dict:
-    """Write a reproducible descriptive report from the single released test run.
+def _load_report_comparators(context: Mapping) -> dict:
+    artifacts={}
+    for name,expected_hash in context['release']['release']['comparison_artifacts_sha256'].items():
+        path=_contained(context['selection_directory'],name)
+        if file_hash(path)!=expected_hash:raise ValueError('Frozen comparator artifact changed')
+        artifacts[name]=read_json(path)
+    return artifacts
 
-    No fitting, model selection, simulator execution or automatic benefit label.
+
+def _derive_report(study_envelope: Mapping, verified: Mapping, comparison_artifacts: Mapping,
+                   *, created_utc: str) -> dict:
+    """Pure deterministic report arithmetic, shared by creation and verification.
+
+    Operates on already-released, already-audited cached outcomes. It performs
+    no I/O, fitting, simulator rollout, policy selection on outcomes or test unlock.
     """
     from collections import Counter
     from statistics import mean
-    from sim.network import ROOT
     from .comparison import paired_decision_report, grouped_bootstrap_interval
     from .selectors import recompute_frozen_decisions
-    root = study_directory.resolve()
-    study_envelope = load_study(root,require_frozen=True)
     study=study_envelope['study']
-    assert_study_runtime(study)
-    verified=verify_released_test_collection(root,collection_directory)
     context=verified['release_context'];release=context['release']['release']
-    selection_directory=context['selection_directory']
-    output=output.resolve();runtime_path=ROOT/'local-runtime';runtime=runtime_path.resolve()
-    if runtime_path.is_symlink() or not runtime.is_relative_to(ROOT.resolve()) or output==runtime or not output.is_relative_to(runtime):
-        raise ValueError('Report output must stay inside real ignored checkout local-runtime')
-    for protected in (root,collection_directory.resolve(),selection_directory):
-        if output==protected or output.is_relative_to(protected) or protected.is_relative_to(output):
-            raise ValueError('Report output cannot overlap frozen study, collection or selection')
     protocol={'sha256':digest(study['protocol']),'protocol':study['protocol']}
     comparisons={}
     rows=verified['candidate_rows']
     lookup={(row['episode_id'],row['lead_s']):row for row in rows}
-    for name,expected_hash in release['comparison_artifacts_sha256'].items():
-        path=_contained(selection_directory,name)
-        if file_hash(path)!=expected_hash:raise ValueError('Frozen comparator artifact changed')
-        selectors=read_json(path)
+    for name,selectors in comparison_artifacts.items():
         selected,comparator=recompute_frozen_decisions(rows,protocol,selectors)
         report=paired_decision_report(rows,selected,comparator,civilian_weight=study['spec']['civilian_weight'],
             frozen_protocol=protocol,frozen_selectors=selectors)
@@ -469,12 +465,65 @@ def report_study(study_directory: Path, collection_directory: Path, output: Path
         'comparisons':comparisons,'context_policies':{policy:_context_policy(verified['rows'],policy,study['spec']['civilian_weight']) for policy in ('ordinary','immediate')},
         'uncertainty_specification':{'seed':0,'resamples':2000,'minimum_independent_groups':10,
             'method':'whole-demand-group percentile bootstrap, finite paired cohort only; no multiplicity-adjusted significance claim'},
-        'created_utc':datetime.now(timezone.utc).isoformat(),
+        'created_utc':created_utc,
         'interpretation':'Failures and censoring cover every declared episode. Finite paired differences and intervals are conditional on both policies completing validly. Negative objective deltas favor the selected policy on this simulated cohort, not evidence of deployed safety or lives saved. No automatic improvement badge; metadata guards do not prove human test nonaccess.'}
+    return result
+
+
+def report_study(study_directory: Path, collection_directory: Path, output: Path) -> dict:
+    """Write a reproducible descriptive report from the single released test run.
+
+    No fitting, model selection, simulator execution or automatic benefit label.
+    """
+    from sim.network import ROOT
+    root = study_directory.resolve()
+    study_envelope = load_study(root,require_frozen=True)
+    study=study_envelope['study']
+    assert_study_runtime(study)
+    verified=verify_released_test_collection(root,collection_directory)
+    context=verified['release_context'];release=context['release']['release']
+    selection_directory=context['selection_directory']
+    output=output.resolve();runtime_path=ROOT/'local-runtime';runtime=runtime_path.resolve()
+    if runtime_path.is_symlink() or not runtime.is_relative_to(ROOT.resolve()) or output==runtime or not output.is_relative_to(runtime):
+        raise ValueError('Report output must stay inside real ignored checkout local-runtime')
+    for protected in (root,collection_directory.resolve(),selection_directory):
+        if output==protected or output.is_relative_to(protected) or protected.is_relative_to(output):
+            raise ValueError('Report output cannot overlap frozen study, collection or selection')
+    result=_derive_report(study_envelope,verified,_load_report_comparators(context),
+                          created_utc=datetime.now(timezone.utc).isoformat())
     assert_study_runtime(study)
     if _released_test_context(root,collection_directory)!=context or any(file_hash(_contained(collection_directory,name))!=value for name,value in verified['files_sha256'].items()):
         raise ValueError('Frozen report inputs changed during analysis')
     envelope={'sha256':digest(result),'report':result}
     output.mkdir(parents=True,exist_ok=False)
     _write(output/'report.json',envelope)
+    return envelope
+
+
+def verify_report_artifacts(study_directory: Path, collection_directory: Path, report_directory: Path) -> dict:
+    """Recompute all report metrics and intervals from the single released run.
+
+    Read-only verification uses the same deterministic arithmetic and fixed
+    2,000-resample grouped bootstrap as report creation. It is not a new traffic
+    experiment, refit, test release or tuning pass. Execute on Omen only.
+    """
+    study_envelope=load_study(study_directory,require_frozen=True)
+    study=study_envelope['study'];assert_study_runtime(study)
+    verified=verify_released_test_collection(study_directory,collection_directory)
+    context=verified['release_context']
+    envelope=read_json(_contained(report_directory.resolve(),'report.json'))
+    report=envelope['report']
+    if envelope.get('sha256')!=digest(report) or report.get('schema')!='afterlight.study-report.v1':
+        raise ValueError('Report envelope hash/schema mismatch')
+    if not isinstance(report.get('created_utc'),str) or not report['created_utc']:
+        raise ValueError('Report creation timestamp missing')
+    expected=_derive_report(study_envelope,verified,_load_report_comparators(context),created_utc='not-compared')
+    actual_content={key:value for key,value in report.items() if key!='created_utc'}
+    expected_content={key:value for key,value in expected.items() if key!='created_utc'}
+    if actual_content!=expected_content:
+        raise ValueError('Report derived content differs from deterministic released-data recomputation')
+    assert_study_runtime(study)
+    if _released_test_context(study_directory,collection_directory)!=context or any(
+            file_hash(_contained(collection_directory,name))!=value for name,value in verified['files_sha256'].items()):
+        raise ValueError('Report source evidence changed during verification')
     return envelope

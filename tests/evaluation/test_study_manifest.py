@@ -25,7 +25,8 @@ def spec_fixture():
                   'sensor_lag_s':1,'recovery_window_s':[60,600]},
         'budget':{'max_episodes':3,'max_rollouts':21,'max_wall_time_s':3600,'rationale':'Synthetic unit fixture, not measured evidence'},
         'civilian_weight':1,'analytical_config':asdict(AnalyticalConfig()),
-        'model_specification':{'max_depth':3,'min_samples_leaf':5},'heldout_regimes':['heavy'],'heldout_route_families':[]}
+        'model_specification':{'max_depth':3,'min_samples_leaf':5},
+        'illustrative_capture':{'case_ids':[],'max_world_bytes':0,'max_total_bytes':0},'heldout_regimes':['heavy'],'heldout_route_families':[]}
 
 
 class StudyTests(unittest.TestCase):
@@ -190,3 +191,13 @@ class StudyTests(unittest.TestCase):
         changed=deepcopy(study);changed['protocol']['reserved_qualification_seeds']=[]
         with self.assertRaisesRegex(ValueError,'reserved_qualification_seeds'):
             validate_study_links(self.output,changed,verify_inputs=False)
+
+    def test_illustrative_capture_contract_frozen_before_outcomes(self):
+        self.spec['illustrative_capture']={'case_ids':['test'],'max_world_bytes':1000,'max_total_bytes':6000}
+        study=self.prepared()['study']
+        self.assertEqual(study['protocol']['illustrative_capture'],self.spec['illustrative_capture'])
+        # JSON roundtrip creates independent metadata, as loaded on Omen.
+        independent=json.loads(json.dumps(study))
+        independent['protocol']['illustrative_capture']={'case_ids':[],'max_world_bytes':0,'max_total_bytes':0}
+        with self.assertRaisesRegex(ValueError,'illustrative_capture'):
+            validate_study_links(self.output,independent,verify_inputs=False)

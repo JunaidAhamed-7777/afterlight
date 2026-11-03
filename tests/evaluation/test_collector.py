@@ -31,7 +31,7 @@ class CollectorTests(unittest.TestCase):
             'episodes':[episode],'network':{'directory':'inputs/network'},'pilot_evidence':{'sumo_version':'unit'},
             'budget':{'max_rollouts':7,'max_wall_time_s':1000,'split_start_budgets_s':{'train':1000}},
             'protocol':{'analytical_estimator':self.estimator,'queue_scope':'synthetic fixture'},
-            'spec':{'timing':{'horizon_s':10,'drain_s':10,'step_s':.5,'sample_s':1,'sensor_lag_s':1,'recovery_window_s':[2,20]},
+            'spec':{'illustrative_capture':{'case_ids':[],'max_world_bytes':0,'max_total_bytes':0},'timing':{'horizon_s':10,'drain_s':10,'step_s':.5,'sample_s':1,'sensor_lag_s':1,'recovery_window_s':[2,20]},
                     'analytical_config':asdict(AnalyticalConfig())}}
 
     def mocks(self, *, version='unit', audit_error=None, runtime_changes=None):
@@ -49,7 +49,7 @@ class CollectorTests(unittest.TestCase):
             (kwargs['output']/'outcome.json').write_text('{"synthetic_unit_fixture":true}')
             for filename in ('lifecycle.json','tripinfo.xml','command.json'):
                 (kwargs['output']/filename).write_text('synthetic_unit_fixture')
-            return {'sumo_version':version,'status':'completed','policy':kwargs['policy'],'events':[], 'frames':[{'t':0,'signals':[]},{'t':20,'signals':[]}], 'metrics':{'status':'completed','validity_reasons':[],
+            return {'world_id':kwargs['world_id'],'lead_s':kwargs['lead_s'] if kwargs['policy']=='fixed' else None,'sumo_version':version,'status':'completed','policy':kwargs['policy'],'events':[], 'frames':[{'t':0,'signals':[]},{'t':20,'signals':[]}], 'metrics':{'status':'completed','validity_reasons':[],
                 'accounting':{'scheduled':1,'inserted':1,'completed':1,'running':0,'not_inserted':0},
                 'ambulance_journey_s':3,'civilian_mean_excess_s':1,'runtime_s':.1,'horizon_s':10,'drain_end_s':20,
                 'queue_samples':[{'t':0,'queue_count':0},{'t':20,'queue_count':0}]},
@@ -206,6 +206,16 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(result['release_sha256'],release['sha256'])
         self.assertEqual(result['release_mode'],'baseline_only')
         self.assertEqual(result['test_attempt_sha256'],json.loads((self.study_dir/'test-attempt.json').read_text())['sha256'])
+
+    def test_optional_trace_budget_failure_preserves_all_scientific_outcomes(self):
+        runner,_,_=self.mocks();release,_=self.released_test()
+        self.study['spec']['illustrative_capture']={'case_ids':['case'],'max_world_bytes':1,'max_total_bytes':6}
+        result=collect_split(self.study_dir,'test',self.output,expected_release_sha256=release['sha256'])
+        rows,manifest=self.records()
+        self.assertEqual(result['status'],'completed');self.assertEqual(runner.call_count,7)
+        self.assertTrue(all(row['status']=='completed' and row['ambulance_journey_s']==3 for row in rows))
+        self.assertEqual(manifest['illustrative_capture']['status'],'incomplete')
+        self.assertEqual(sum(row['illustrative_trace']['state']=='budget_exceeded' for row in rows),6)
 
     def test_wrong_release_digest_never_claims_or_creates_output(self):
         runner,_,_=self.mocks();_,claimed=self.released_test()

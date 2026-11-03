@@ -71,9 +71,26 @@ def validate_pilot_seed_exclusion(evidence: Mapping, cases: list) -> None:
         raise ValueError("study reuses an exploratory pilot RNG seed, even if regime or demand hash differs")
 
 
+def validate_illustrative_capture(contract: Mapping, cases: list) -> dict:
+    required = {"case_ids", "max_world_bytes", "max_total_bytes"}
+    if not isinstance(contract, Mapping) or set(contract) != required:
+        raise ValueError("explicit illustrative capture case IDs and per-world/total byte budgets required")
+    ids = _names(contract["case_ids"], "illustrative case_ids")
+    if len(ids) > 3:
+        raise ValueError("at most three predeclared illustrative cases may be captured")
+    world = _integer(contract["max_world_bytes"], "max_world_bytes", 0, 8*1024*1024)
+    total = _integer(contract["max_total_bytes"], "max_total_bytes", 0, 256*1024*1024)
+    if (not ids and (world or total)) or (ids and not 0 < world <= total):
+        raise ValueError("empty capture requires zero budgets; requested capture needs positive bounded budgets")
+    test_ids = {case["case_id"] for case in cases if case["split"] == "test"}
+    if not set(ids) <= test_ids:
+        raise ValueError("illustrative capture IDs must name predeclared test cases only")
+    return dict(contract)
+
+
 def validate_spec(spec: Mapping) -> dict:
     required = {"schema", "study_id", "network_kind", "cases", "timing", "budget", "civilian_weight",
-                "analytical_config", "model_specification", "heldout_regimes", "heldout_route_families"}
+                "analytical_config", "model_specification", "heldout_regimes", "heldout_route_families", "illustrative_capture"}
     if not isinstance(spec, Mapping) or not required <= spec.keys() or spec["schema"] != "afterlight.study-spec.v1":
         raise ValueError("incomplete or unsupported explicit study spec")
     if not isinstance(spec["study_id"], str) or not SAFE_ID.fullmatch(spec["study_id"]):
@@ -130,6 +147,7 @@ def validate_spec(spec: Mapping) -> dict:
     if seen_splits != SPLITS or not set(heldout) <= represented_regimes or not set(heldout_routes) <= represented_routes:
         raise ValueError("all splits and all declared holdouts must be represented")
     seed_assignments(cases)
+    validate_illustrative_capture(spec["illustrative_capture"], cases)
     budget = spec["budget"]
     if not isinstance(budget, Mapping) or set(budget) != {"max_episodes", "max_rollouts", "max_wall_time_s", "rationale"}:
         raise ValueError("explicit bounded pilot-based budget required")
@@ -406,6 +424,7 @@ def prepare_study(spec: Mapping, pilot_directory: Path, output: Path) -> dict:
         protocol = {"schema": "afterlight.protocol.v1", "source_commit": source["source_commit"],
             "source_code_sha256": source["source_code_sha256"], "group_assignments": assignments,
             "seed_assignments": seed_assignments(spec["cases"]),
+            "illustrative_capture": spec["illustrative_capture"],
             "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
             "episode_inventory": [{k: row[k] for k in ("episode_id", "demand_group_id", "split", "regime", "seed", "demand_sha256", "network_sha256", "dispatch_s", "route_family", "pickup_id", "hospital_id")} for row in episodes],
             "feature_schema": _feature_schema(timing["sensor_lag_s"]), "candidate_leads_s": [0, 5, 10, 20, 30],
@@ -441,8 +460,10 @@ def validate_study_links(root: Path, study: Mapping, *, verify_inputs: bool) -> 
     spec, protocol = study["spec"], study["protocol"]
     timing = spec["timing"]
     validate_pilot_seed_exclusion(study["pilot_evidence"], spec["cases"])
+    validate_illustrative_capture(spec["illustrative_capture"], spec["cases"])
     expected_contract = {
         "seed_assignments": seed_assignments(spec["cases"]),
+        "illustrative_capture": spec["illustrative_capture"],
         "reserved_qualification_seeds": list(RESERVED_QUALIFICATION_SEEDS),
         "source_commit": study["source"]["source_commit"], "source_code_sha256": study["source"]["source_code_sha256"],
         "horizon_s": timing["horizon_s"], "drain_end_s": timing["horizon_s"] + timing["drain_s"],

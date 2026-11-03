@@ -39,6 +39,77 @@ def _input_directory(root: Path, relative: str) -> Path:
     return resolved
 
 
+class IllustrativeCapture:
+    """Optional pose evidence: failures never replace valid scientific rows.
+
+    Charge serialized bytes before an attempted write; failed partial writes do
+    not recycle budget. Public replay packaging has a separate 20 MiB cap.
+    """
+    def __init__(self, output: Path, study_envelope: dict, split: str, episodes: list, planned: list):
+        study = study_envelope['study']
+        self.output = output
+        self.contract = study['spec']['illustrative_capture']
+        selected = set(self.contract['case_ids'])
+        by_id = {episode['episode_id']:episode for episode in episodes}
+        entries=[]
+        for item in planned:
+            if item['case_id'] not in selected or item['policy']=='immediate':continue
+            episode=by_id[item['episode_id']]
+            entries.append({key:item[key] for key in ('episode_id','case_id','policy','lead_s')} | {
+                'demand_sha256':episode['demand_sha256'],'network_sha256':episode['network_sha256'],
+                'state':'unattempted','file':None,'sha256':None,'bytes':None,'reason':None})
+        self.traces={'schema':'afterlight.illustrative-traces.v1','study_sha256':study_envelope['sha256'],
+            'protocol_sha256':digest(study['protocol']),'source':study['source'],'split':split,
+            'contract':self.contract,'charged_bytes':0,'retained_bytes':0,'status':'incomplete','entries':entries}
+        self.by_key={(item['episode_id'],item['policy'],item['lead_s']):item for item in entries}
+
+    def capture(self, item: dict, world: dict | None, *, audited: bool) -> dict:
+        entry=self.by_key.get((item['episode_id'],item['policy'],item['lead_s']))
+        if entry is None:return {'state':'not_requested'}
+        if not audited or world is None:
+            entry.update(state='capture_failed',reason='scientific world unavailable or audit failed; no replacement run')
+            return dict(entry)
+        try:
+            if world.get('world_id')!=Path(item['directory']).name or world.get('policy')!=item['policy'] or world.get('lead_s')!=item['lead_s']:
+                raise ValueError('rich world identity/policy differs from planned underlying candidate')
+            payload=(json.dumps(world,sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode('utf-8')
+            size=len(payload);entry['bytes']=size
+            if size>self.contract['max_world_bytes'] or self.traces['charged_bytes']+size>self.contract['max_total_bytes']:
+                entry.update(state='budget_exceeded',reason='predeclared per-world or total capture byte budget exceeded; scalar outcome retained')
+                return dict(entry)
+            self.traces['charged_bytes']+=size
+            relative=item['directory']+'/rich-world.json'
+            target=self.output/relative
+            # The world directory already exists and belongs to this exclusive
+            # collection attempt. Never replace a previous/partial trace.
+            entry['file']=relative
+            with target.open('xb') as stream:
+                stream.write(payload);stream.flush();os.fsync(stream.fileno())
+            expected=hashlib.sha256(payload).hexdigest()
+            if hashlib.sha256(target.read_bytes()).hexdigest()!=expected:
+                raise ValueError('rich trace bytes changed while writing')
+            entry.update(state='retained',sha256=expected,reason=None)
+            self.traces['retained_bytes']+=size
+        except Exception as error:
+            # Keep any partial file for diagnosis, not eligible presentation.
+            entry.update(state='capture_failed',sha256=None,reason=str(error))
+        return dict(entry)
+
+    def checkpoint(self) -> dict:
+        common={'contract':self.contract,'charged_bytes':self.traces['charged_bytes'],
+                'retained_bytes':self.traces['retained_bytes'],'manifest_file':None,'manifest_sha256':None,'reason':None}
+        if not self.traces['entries']:
+            return {**common,'status':'not_requested'}
+        self.traces['status']='complete' if all(entry['state']=='retained' for entry in self.traces['entries']) else 'incomplete'
+        try:
+            envelope={'sha256':digest(self.traces),'traces':self.traces}
+            _checkpoint(self.output/'traces.json',envelope)
+            return {**common,'status':self.traces['status'],'manifest_file':'traces.json',
+                    'manifest_sha256':hashlib.sha256((self.output/'traces.json').read_bytes()).hexdigest()}
+        except Exception as error:
+            return {**common,'status':'manifest_write_failed','reason':str(error)}
+
+
 def collect_split(study_directory: Path, split: str, output: Path, *, expected_release_sha256: str | None = None) -> dict:
     if split not in {'train', 'validation', 'test'}:
         raise ValueError('Unknown collection split')
@@ -114,6 +185,7 @@ def collect_split(study_directory: Path, split: str, output: Path, *, expected_r
         manifest.update(release_sha256=release['sha256'],test_attempt_sha256=claim['sha256'],release_mode=release['release']['mode'],
                         retry_policy='Test attempt already claimed; no automatic retry or crash recovery')
     rows = []
+    capture = IllustrativeCapture(output,envelope,split,episodes,planned)
 
     def assert_test_access() -> None:
         if release is not None:
@@ -125,6 +197,7 @@ def collect_split(study_directory: Path, split: str, output: Path, *, expected_r
                 raise ValueError('Test release/claim changed during collection')
 
     def save() -> None:
+        manifest['illustrative_capture']=capture.checkpoint()
         _checkpoint(output / 'outcomes.json', rows)
         _checkpoint(output / 'candidate-outcomes.json', [row for row in rows if row['policy'] == 'fixed'])
         manifest.update(recorded_worlds=len(rows), runner_invocations=sum(item.get('runner_invoked', False) for item in planned),
@@ -216,6 +289,7 @@ def collect_split(study_directory: Path, split: str, output: Path, *, expected_r
                         'request_plan': None, 'observation': None, 'analytical_cost_s': None,
                         'runtime_s': time.perf_counter()-before, 'raw_world_directory': item['directory'], 'signal_audit_input_sha256': signal_hash, 'raw_files_sha256': raw_hashes}
                     item['state'] = 'audit_failed' if audit_failed else 'infrastructure_failed'
+                row['illustrative_trace']=capture.capture(item,world,audited=item['state']=='audited')
                 world = None
                 rows.append(row)
                 episode_rows.append(row)

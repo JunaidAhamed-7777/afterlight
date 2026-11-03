@@ -132,3 +132,44 @@ class ReportTests(unittest.TestCase):
         (self.selection/'analytical-vs-fixed.json').write_text('{}')
         with self.assertRaisesRegex(ValueError,'comparator artifact changed'):self.report()
         self.assertFalse(self.output.exists())
+
+    def test_readonly_report_binding_recomputes_intervals_without_execution(self):
+        from evaluation.study_reporting import verify_report_artifacts
+        result=self.report()
+        from evaluation.comparison import grouped_bootstrap_interval
+        with patch('evaluation.comparison.grouped_bootstrap_interval',wraps=grouped_bootstrap_interval) as bootstrap:
+            self.assertEqual(verify_report_artifacts(self.study_dir,self.collection,self.output),result)
+        self.assertEqual(bootstrap.call_count,2)
+        self.fit.assert_not_called();self.runner.assert_not_called()
+
+    def test_rehashed_report_cannot_substitute_selected_action(self):
+        from evaluation.study_reporting import verify_report_artifacts
+        result=self.report()
+        result['report']['comparisons']['analytical-vs-fixed']['records'][0]['selected_lead_s']=30
+        result['sha256']=digest(result['report'])
+        (self.output/'report.json').write_text(json.dumps(result))
+        with self.assertRaisesRegex(ValueError,'derived content'):
+            verify_report_artifacts(self.study_dir,self.collection,self.output)
+
+    def test_rehashed_report_cannot_change_source_binding(self):
+        from evaluation.study_reporting import verify_report_artifacts
+        result=self.report();result['report']['source']={'source_commit':'different'}
+        result['sha256']=digest(result['report'])
+        (self.output/'report.json').write_text(json.dumps(result))
+        with self.assertRaisesRegex(ValueError,'derived content'):
+            verify_report_artifacts(self.study_dir,self.collection,self.output)
+
+    def test_rehashed_interval_and_recovery_tampering_rejected(self):
+        from evaluation.study_reporting import verify_report_artifacts
+        original=self.report()
+        for field in ('uncertainty','recovery_uncertainty','conditional_mean_delta_recovery_vehicle_s','ambulance_record','recovery_record'):
+            changed=deepcopy(original)
+            comparison=changed['report']['comparisons']['analytical-vs-fixed']
+            if field in ('uncertainty','recovery_uncertainty'):comparison[field]['interval']=[-99,-88]
+            elif field=='ambulance_record':comparison['records'][0]['conditional_delta_ambulance_s']=-99
+            elif field=='recovery_record':comparison['records'][0]['conditional_delta_recovery_vehicle_s']=-99
+            else:comparison[field]=-99
+            changed['sha256']=digest(changed['report'])
+            (self.output/'report.json').write_text(json.dumps(changed))
+            with self.subTest(field=field),self.assertRaisesRegex(ValueError,'derived content'):
+                verify_report_artifacts(self.study_dir,self.collection,self.output)
