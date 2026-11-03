@@ -1,0 +1,300 @@
+{
+  "scope": "Exact installed bundled ignore4.0.6 plus exact getVercelIgnore2/clearRelative/defaults; synthetic pathname matrix, not an actual upload inventory. No CLI/client import, upload, project action, build or asset/data file read.",
+  "deploy_mode": "Source deployment (prebuilt=false), repository-root cwd",
+  "CLI_version": "65.8.0",
+  "node_version": "v26.8.1",
+  "platform": "win32",
+  "parser_source": "dist/chunks/chunk-QZEZCUUZ.js",
+  "runtime_source": "dist/chunks/chunk-BZENIQ7N.js",
+  "parser_section_bytes": 3837,
+  "parser_section_sha256": "ff0d83e168f84ad2d33af224da9a6620a2a3951966c944c6a37cb97d79d21bd2",
+  "getVercelIgnore_section_sha256": "ef72239eac641558dd98bda842d6cc13f13b917e39626f469ef27180fe4ada6d",
+  "original_ignore_sha256": "45732e0ad155c2f0ce87bff09ebfff8bc6dc662bb7ff08813d1c97d7dd748751",
+  "proposed_ignore_sha256": "81961c1a525a8cb265e48e0242182c67c71986838afd6846e8612a5823186c6d",
+  "nowignore_exists": false,
+  "cargo_exists": false,
+  "changed_patterns": [
+    {
+      "before": "local-runtime/",
+      "after": "/local-runtime/"
+    },
+    {
+      "before": "preview/",
+      "after": "/preview/"
+    },
+    {
+      "before": "docs/",
+      "after": "/docs/"
+    },
+    {
+      "before": "evaluation/",
+      "after": "/evaluation/"
+    },
+    {
+      "before": "models/",
+      "after": "/models/"
+    },
+    {
+      "before": "policies/",
+      "after": "/policies/"
+    },
+    {
+      "before": "sim/",
+      "after": "/sim/"
+    },
+    {
+      "before": "tests/",
+      "after": "/tests/"
+    },
+    {
+      "before": "scripts/",
+      "after": "/scripts/"
+    },
+    {
+      "before": "api/",
+      "after": "/api/"
+    },
+    {
+      "before": "export/",
+      "after": "/export/"
+    }
+  ],
+  "rows": [
+    {
+      "path": "web/scripts/prepare-assets.mjs",
+      "current": "EXCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/src/styles/app.css",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/package.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/package-lock.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/tsconfig.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/tsconfig.app.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/tsconfig.node.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/vite.config.ts",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/index.html",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "vercel.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/exports/city.glb",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/map/city_manifest.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/previews/city_overview.png",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/previews/city_expanded.png",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/previews/ambulance_model.png",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/previews/ghost_model.png",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "assets/previews/ambulance_side.png",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/public/replays/catalog.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/replays/synthetic.json.gz",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/study/manifest.json",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/study/train-candidates.json.xz",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/THIRD_PARTY_NOTICES.txt",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/brand/logo.svg",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": "web/public/media/demo.mp4",
+      "current": "INCLUDED",
+      "root_anchored": "INCLUDED"
+    },
+    {
+      "path": ".venv/Lib/site-packages/private.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "venv/private.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "local-runtime/private-outcome.json",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "preview/site/index.html",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "docs/validation/private.json",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "evaluation/study_reporting.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "models/residual.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "policies/scheduler.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "sim/run.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "tests/preview/test_production_freezer.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "scripts/verify_public_study.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "api/app.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "export/replay.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "assets/src/city.blend",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "assets/qa/report.json",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/node_modules/vite/index.js",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/dist/index.html",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/public/assets/exports/city.glb",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/tests/example.py",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": ".env",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": ".env.production",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    },
+    {
+      "path": "web/.env.local",
+      "current": "EXCLUDED",
+      "root_anchored": "EXCLUDED"
+    }
+  ],
+  "result": "PASS: required web asset preparation source included; all46 other sampled decisions preserved."
+}
