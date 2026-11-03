@@ -1,1 +1,51 @@
-{"schema":"afterlight.catalog.v1","runs":[]}
+{
+  "schema": "afterlight.catalog.v1",
+  "runs": [
+    {
+      "id": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5",
+      "title": "Cross-city response",
+      "url": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.json.gz",
+      "seed": 7,
+      "pickup_id": "P001",
+      "hospital_id": "HOSP_EAST",
+      "policy": "fixed",
+      "lead_s": 20,
+      "policy_label": "fixed \u00b7 20 s lead",
+      "duration_s": 900.0,
+      "sha256": "60598c709d0e31a21fb112a07b740e25905e2608e58866c553781ab1212c6e41",
+      "bytes": 70357627,
+      "source_commit": "911b295e1f7abbea25ca964f1b74d51b21ac7b0a",
+      "world_status": {
+        "baseline": "completed",
+        "afterlight": "completed"
+      },
+      "evidence_url": "city-moderate-7-44b1224ec1731f19-fixed-20-6f3899683c3f-dt0p5.evidence.json",
+      "encoding": "gzip",
+      "transfer_bytes": 6410430,
+      "transfer_sha256": "9da0f708693251f3613678b750b5d30a51e11eb12c29fa6928b6dfacbf7b1f10"
+    },
+    {
+      "id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5",
+      "title": "Westhaven response",
+      "url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.json.gz",
+      "seed": 8,
+      "pickup_id": "P080",
+      "hospital_id": "HOSP_WEST",
+      "policy": "analytical",
+      "lead_s": 0,
+      "policy_label": "analytical \u00b7 0 s lead",
+      "duration_s": 900.0,
+      "sha256": "3d7f6452e4a034b5eb4fd04249239a54493c93fd80b8c1efeeba7b5a1ce72393",
+      "bytes": 71063795,
+      "source_commit": "911b295e1f7abbea25ca964f1b74d51b21ac7b0a",
+      "world_status": {
+        "baseline": "completed",
+        "afterlight": "completed"
+      },
+      "evidence_url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-6f3899683c3f-dt0p5.evidence.json",
+      "encoding": "gzip",
+      "transfer_bytes": 6457295,
+      "transfer_sha256": "68cef7a32427ccda22e33080eb68c6106612925bffad78eedacbb2e7e68f188e"
+    }
+  ]
+}

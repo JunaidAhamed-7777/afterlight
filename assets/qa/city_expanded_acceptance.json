@@ -1,0 +1,35 @@
+{
+  "schema": "afterlight.city-geometry-acceptance.v1",
+  "measured_at_utc": "2026-11-03T09:56:45.720362+00:00",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.14.7",
+  "blender": "5.2.2 LTS",
+  "asset_sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+  "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+  "unit_command": "python -m unittest tests.assets.test_interactive_city -v",
+  "unit_tests": 9,
+  "unit_seconds": 5.191,
+  "unit_result": "passed",
+  "deterministic_rebuild": {
+    "same_generator_reexecuted_through_mcp": true,
+    "before_sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+    "after_sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+    "byte_identical": true
+  },
+  "geometry": {
+    "building_count": 826,
+    "triangles": 235604,
+    "material_count": 33,
+    "asset_bytes": 14380920,
+    "trees": 411,
+    "streetlights": 288,
+    "benches": 32
+  },
+  "depth_fix": {
+    "visual_hospital_plaza_top_m": 0.14,
+    "canonical_driveway_top_m": 0.18,
+    "canonical_map_changed": false,
+    "binary_regression": "Hospital plaza corner vertices at .14m, none at .18m; every canonical road has physical .18m top geometry."
+  },
+  "scope": "Binary geometry/source binding, Blender still inspection and Khronos spec conformance. Browser logarithmic depth and default cutaway behavior are verified in separate camera-sweep acceptance records."
+}

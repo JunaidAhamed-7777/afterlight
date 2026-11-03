@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { Replay } from "./types.ts";
 import { recordingUrl } from "./catalog.ts";
-import { validateReplay } from "./replay.ts";
+import { loadRecording } from "./recording.ts";
 import {
   generationParameters,
   bindJob,
@@ -170,7 +170,7 @@ export function LocalGeneration(props: Props) {
           if (!next.replay_url)
             throw new Error("The completed job has no replay link.");
           const url = recordingUrl(next.replay_url, `${props.apiBase}/`);
-          const replay = validateReplay(await localRequest(url, c.signal));
+          const replay = await loadRecording(null, url, c.signal);
           if (!current()) return;
           if (replay.scenario.network_kind !== next.parameters.network ||
               replay.scenario.seed !== next.parameters.seed ||

@@ -1,6 +1,45 @@
 # AFTERLIGHT viewer
 
-React / Three.js instrument for the original city and paired recorded SUMO worlds. No fake moving traffic or benchmark numbers are included. Until real replays are published, the viewer is explicitly **City exploration**.
+## Current desktop product acceptance
+
+The current workspace has Simulation, Results and Settings in an independently
+scrolling left pane, with the city, camera and playback fixed on the right.
+Use the current product harness for this UI; older browser scripts below retain
+selectors for their source-specific historical checkpoints.
+
+```powershell
+# From the repository root. Chrome must already be installed.
+.\.venv\Scripts\python.exe -m pip install -r requirements-browser.txt
+npm --prefix web run build
+npm --prefix web run preview -- --port 5185 --strictPort
+# In another terminal, using a new output directory on every attempt:
+.\.venv\Scripts\python.exe -B web/tests/desktop_product_acceptance.py --base-url http://127.0.0.1:5185/ --output local-runtime/desktop-product-NEW --require-recording --measure-seconds 30
+```
+
+This headed Chrome check uses the actual public recording catalog. It verifies
+four desktop window sizes, independent scrolling, keyboard camera controls,
+camera options, map picking, search clearing, solid-background text contrast,
+catalog and graphics recovery, reduced motion, exact recorded instance matrices,
+world isolation and the render-only ghost. Its inspection page is separate from
+its performance pages. Measurements report actual rendered-frame cadence and
+JavaScript/draw-submission time; they do not claim completed GPU execution time.
+Screenshots, renderer identity, asset/recording hashes and results are retained
+in the chosen output directory. No synthetic traffic is substituted and no SUMO
+job is started by the harness. `--headless` is supplementary capture only.
+
+`--build-manifest` can additionally bind every served byte to an isolated
+production-build inventory. The public viewer displays recorded experiments;
+the optional local runner is a separate capability.
+
+For a retained completed local job, `current_job_recovery.py` verifies the current
+UI through actual GET requests and same-tab reload, preserving the original
+journal and raw artifacts. It records the new frontend and historical simulator
+identities separately. It does not replace the strict historical preview gate
+or prove that the UI originally submitted the job.
+
+React / Three.js instrument for the original city and paired recorded SUMO worlds.
+The public library contains audited recordings. An empty or unavailable library
+falls back to city exploration; it never substitutes invented moving traffic.
 
 ## Local commands
 

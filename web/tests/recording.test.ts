@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { gzipSync } from "node:zlib";
 import { bindRecording } from "../src/recording.ts";
 import type { CatalogEntry, Replay } from "../src/types.ts";
 // Minimal metadata fixtures only: never traffic evidence or production recordings.
@@ -119,14 +120,16 @@ test("checksum-verified structural fixture remains bound to selected metadata", 
     (b) => b.toString(16).padStart(2, "0"),
   ).join("");
   const original = globalThis.fetch;
-  globalThis.fetch = async () => new Response(bytes, { status: 200 });
   try {
-    const loaded = await loadRecording(
-      { ...entry, bytes: bytes.byteLength, sha256: hash },
-      "http://127.0.0.1/fixture",
-      new AbortController().signal,
-    );
-    assert.equal(loaded.scenario.id, entry.id);
+    for (const body of [bytes, new Uint8Array(gzipSync(bytes))]) {
+      globalThis.fetch = async () => new Response(body, { status: 200 });
+      const loaded = await loadRecording(
+        { ...entry, bytes: bytes.byteLength, sha256: hash },
+        "http://127.0.0.1/fixture",
+        new AbortController().signal,
+      );
+      assert.equal(loaded.scenario.id, entry.id);
+    }
   } finally {
     globalThis.fetch = original;
   }
@@ -135,6 +138,16 @@ test("checksum-verified structural fixture remains bound to selected metadata", 
 test("canonical policy binds separately from its human label and optional lead", () => {
   const r = matching();
   r.worlds.afterlight.lead_s = 10;
-  assert.equal(bindRecording(r, {...entry, lead_s:10, policy_label:"fixed · 10 s lead"}), r);
-  assert.throws(() => bindRecording(r, {...entry, lead_s:20}), /does not match/);
+  assert.equal(
+    bindRecording(r, {
+      ...entry,
+      lead_s: 10,
+      policy_label: "fixed · 10 s lead",
+    }),
+    r,
+  );
+  assert.throws(
+    () => bindRecording(r, { ...entry, lead_s: 20 }),
+    /does not match/,
+  );
 });

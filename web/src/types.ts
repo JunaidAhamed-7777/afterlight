@@ -95,6 +95,7 @@ export interface SignalGeometry {
 }
 export interface City {
   schema: "afterlight.city.v1";
+  primary_intersection_count?: number;
   edges: Array<{ id: string; centerline: number[][] }>;
   nodes: Array<{ id: string; position: number[]; signalized: boolean }>;
   roads: Array<{ id: string; centerline: number[][]; width_m: number }>;
@@ -130,8 +131,13 @@ export interface SelectionEvidence {
   case_id: string;
   episode_id: string;
   selected_lead_s: number;
-  source_world_aliases: Record<"baseline" | "afterlight", {
-    original_world_id: string; trace_sha256: string; trace_file: string;
-  }>;
+  source_world_aliases: Record<
+    "baseline" | "afterlight",
+    {
+      original_world_id: string;
+      trace_sha256: string;
+      trace_file: string;
+    }
+  >;
   interpretation: string;
 }

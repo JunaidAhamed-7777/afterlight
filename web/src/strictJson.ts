@@ -1,5 +1,5 @@
 /** Shared transport boundary. Schema-specific validation remains the caller's job. */
-export const MAX_JSON_BYTES = 64 * 1024 * 1024;
+export const MAX_JSON_BYTES = 128 * 1024 * 1024;
 export const MAX_JSON_DEPTH = 64;
 
 export function parseJsonBytes(bytes: Uint8Array): unknown {

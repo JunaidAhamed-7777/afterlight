@@ -1,4 +1,57 @@
-# Afterlight — original low-poly asset pack
+# AFTERLIGHT city assets
+
+The current viewer uses **`exports/city_enhanced.glb`**, the expanded original
+architectural miniature. It follows the canonical 2,040 Ã— 2,010 m map: 81 primary
+junctions, 826 addressable buildings, eight landscaped parks and two hospitals
+in diagonal quadrants. Westhaven has an emerald roof pavilion; Eastbank has a
+taller coral service wing. Both retain the actual canonical ambulance access.
+
+The city contains **235,604 triangles**, 411 trees, 288 streetlights and 32 park
+benches. Buildings have actual volumes, windows, roofs, entrances and setbacks;
+none are billboard replacements. All materials are shared, opaque and texture
+free. Vehicle geometry stays at its physical scale and is instanced by the viewer.
+Traffic motion and signal colors come from SUMO recordings, never baked scenery.
+Civilian body paint uses eight deterministic colors keyed by vehicle identity
+in `web/src/VehicleLayer.ts`. Paint stays stable when seeking, changing worlds or
+growing an instance pool. It adds no draw calls and leaves wheels, glazing,
+lights, the ambulance and the baseline ghost unchanged. The original GLB bytes
+remain intact.
+
+![Expanded original city, rendered from the Blender source](previews/city_expanded.png)
+
+The editable source is `afterlight_city_expanded.blend`. The deterministic
+generator is `src/generate_city_v4.py`. Blender **5.2.2 LTS** generated and exported
+the city through an actual local MCP for Blender 1.8 command roundtrip on
+November 3, 2026. [The export manifest](exports/city_enhanced_manifest.json)
+binds exact asset, generator and canonical-map bytes. [Khronos validation](qa/city_expanded_gltf_audit.json)
+records the current GLB result. Nine binary geometry checks verify every building
+footprint, every road surface at 0.18 m, source hashes, unique ownership, finite
+embedded geometry, the diagonal hospitals and retained original vehicles.
+These are geometry checks; browser performance is measured separately.
+
+To reproduce in a fresh dedicated Blender GUI process, use the existing pinned
+addon with `src/bootstrap_mcp.py`, then run:
+
+```powershell
+python assets/src/blender_mcp.py --script assets/src/generate_city_v4.py
+python -m unittest tests.assets.test_interactive_city -v
+node assets/src/validate_city_glb.cjs C:/path/to/node_modules/gltf-validator
+```
+
+The bridge binds only to `127.0.0.1`. It does not enable external model providers.
+The bootstrap verifies the existing addon SHA-256; it does not install the addon.
+The generator clears only its dedicated authoring scene, so use a fresh process.
+It overwrites the generated V4 exports and source scene. Retained V1/V3 source
+scenes and original vehicle exports remain separate.
+
+![Westhaven Medical, actual authored geometry](previews/hosp_west_detail.png)
+
+## Original prototype archive
+
+The sections below document the preserved original nine-GLB delivery. Its
+`city_static.glb`, `city_instances.json` and original previews describe the smaller
+25-junction prototype; the current viewer uses the enhanced export and canonical
+map above. Original validation results apply to those original bytes.
 
 Authored in Blender 4.3.2 through the already-installed pinned Blender MCP socket bridge in the cloud desktop. No imported art, textures, commercial assets, external generation services, or prior car-film assets are used.
 
@@ -47,7 +100,7 @@ City geometry has a nonzero GLB root translation inherited from static batching.
 
 ## Supplemental asset overview
 
-![Actual exported Afterlight asset kit — presentation panels not to scale](previews/asset_overview.png)
+![Actual exported Afterlight asset kit â€” presentation panels not to scale](previews/asset_overview.png)
 
 This supplemental Blender contact sheet displays the actual exported city, ambulance, civilian fleet, building palette and landmark geometry. Panels are deliberately **not to scale**; the cyan ghost panel is an opaque presentation treatment, not proof of browser transparency or simulation. Regenerate it with `src/render_asset_overview.py` in Blender, using the same `__file__` convention above. It imports existing GLBs and does not modify their files.
 

@@ -1,16 +1,25 @@
 /* Normative values mapped from root DESIGN.md. Shared CSS is the runtime adapter. */
 :root {
-  --canvas: #101c2b;
-  --surface: #1c2c40;
-  --text: #f4f1e8;
-  --muted: #b4c1ce;
-  --ambulance: #ffb85c;
-  --clearance: #78d9cb;
-  --ghost: #87d7ff;
+  --canvas: #172d48;
+  --surface: #213e5b;
+  --surface-hover: #2c5070;
+  --control-active: #355f80;
+  --text: #f2f7fc;
+  --muted: #b0c7d9;
+  --ambulance: #ffc067;
+  --ambulance-hover: #ffd495;
+  --clearance: #72ead2;
+  --ghost: #85d7ff;
+  --city-sky: #a9d0e6;
+  --city-horizon: #d2e7e8;
+  --scroll-thumb: #557a98;
+  --scroll-track: #172d48;
+  --scroll-hover: #89b2cf;
   --line: color-mix(in srgb, var(--muted) 21%, transparent);
   --radius: 6px;
   --space: 4px;
-  --sans: system-ui, sans-serif;
+  --sans: "Segoe UI", system-ui, sans-serif;
+  --display: "Bahnschrift", "Segoe UI", system-ui, sans-serif;
   --mono: ui-monospace, monospace;
   color-scheme: dark;
   font-family: var(--sans);

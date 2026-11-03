@@ -1,0 +1,146 @@
+{
+  "schema": "afterlight.expanded-city-qualification.v1",
+  "scope": "One predeclared seed-7 exploratory software qualification pair; not held-out policy performance or trained ML evidence.",
+  "source_commit": "b5b4115076f85d1df6f3868870f62f983b493f04",
+  "source_code_sha256": "dcbaa42fb6393e6b00d7b0b2a30f7122b12875dd9cd1d2e7ce6fb006e81a0f19",
+  "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+  "replay_sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
+  "replay_bytes": 18466506,
+  "sumo_version": "SUMO 1.28.0",
+  "simulation_step_s": 0.5,
+  "replay_sample_s": 2,
+  "duration_s": 900.0,
+  "scenario": {
+    "id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
+    "episode_id": "city-moderate-7-44b1224ec1731f19",
+    "network_kind": "city",
+    "seed": 7,
+    "pickup_id": "P001",
+    "hospital_id": "HOSP_EAST",
+    "dispatch_s": 60,
+    "regime": "moderate",
+    "split": "pilot",
+    "route_edges": [
+      "H00_1_R",
+      "H00_0_R",
+      "V00_0_F",
+      "H10_0_F",
+      "H10_1_F",
+      "V11_0_F",
+      "V12_0_F",
+      "H31_0_F",
+      "H31_1_F",
+      "H31_2_F",
+      "H32_0_F",
+      "H33_0_F",
+      "H33_1_F",
+      "H33_2_F",
+      "H34_0_F",
+      "V53_0_F",
+      "V54_0_F",
+      "H55_0_F",
+      "H55_1_F",
+      "H55_2_F",
+      "H56_0_F",
+      "V75_0_F",
+      "H67_0_F",
+      "HOSP_EAST_DRIVEWAY_0_F"
+    ]
+  },
+  "civilian_type_counts": {
+    "car": 257,
+    "bike": 96,
+    "truck": 45
+  },
+  "worlds": {
+    "baseline": {
+      "status": "completed",
+      "ambulance_journey_s": 561.0,
+      "civilian_mean_excess_s": 99.5878483327308,
+      "civilian_excess_p95_s": 185.22023291320485,
+      "accounting": {
+        "scheduled": 398,
+        "inserted": 398,
+        "completed": 398,
+        "running": 0,
+        "not_inserted": 0
+      },
+      "runtime_s": 28.676206100000854,
+      "common_horizon_burden_vehicle_s": 17426.0,
+      "drain_burden_vehicle_s": 4095.5,
+      "peak_visible_vehicles": 368,
+      "peak_frame_s": 180.0,
+      "collisions": 0,
+      "teleports": 0
+    },
+    "afterlight": {
+      "status": "completed",
+      "ambulance_journey_s": 455.0,
+      "civilian_mean_excess_s": 101.71724531765543,
+      "civilian_excess_p95_s": 193.8921076761855,
+      "accounting": {
+        "scheduled": 398,
+        "inserted": 398,
+        "completed": 398,
+        "running": 0,
+        "not_inserted": 0
+      },
+      "runtime_s": 31.702338499999314,
+      "common_horizon_burden_vehicle_s": 17682.5,
+      "drain_burden_vehicle_s": 4519.5,
+      "peak_visible_vehicles": 370,
+      "peak_frame_s": 182.0,
+      "collisions": 0,
+      "teleports": 0
+    }
+  },
+  "ambulance_difference_s": -106.0,
+  "civilian_mean_excess_difference_s": 2.1293969849246253,
+  "audit": {
+    "schema": "afterlight.audit.v1",
+    "run_id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
+    "replay_sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
+    "checks": [
+      {
+        "world": "baseline",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      },
+      {
+        "world": "afterlight",
+        "priority_deadline_audit": "passed",
+        "release_recovery_audit": "passed",
+        "simulation_step_s": 0.5,
+        "signal_transition_and_frame_alignment": "passed",
+        "demand_reconciliation": "passed",
+        "raw_tripinfo_metric_agreement": "passed",
+        "status": "completed"
+      }
+    ],
+    "scalar_table_agreement": "passed",
+    "paired_dispatch_causality": {
+      "shared_pre_dispatch_history": "passed",
+      "shared_causal_observation_and_etas": "passed",
+      "pre_dispatch_frames": 30,
+      "pre_dispatch_events": 539,
+      "frozen_request_timing": {
+        "baseline": "passed",
+        "afterlight": "passed"
+      }
+    },
+    "ordinary_negative_control": "not_this_policy",
+    "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
+  },
+  "raw_evidence_directory": "C:\\Github\\afterlight-engine-v4\\local-runtime\\city-dense-qualified-7",
+  "observation_transport_check": {
+    "exact_metrics_events_and_decision_equal_to_direct_reads": true,
+    "direct_read_baseline_runtime_s": 95.68041749999975,
+    "subscription_baseline_runtime_s": 28.676206100000854,
+    "interpretation": "One measured before/after execution observation on the same machine and demand; timing is not a controlled repeated performance benchmark."
+  }
+}

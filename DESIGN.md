@@ -1,17 +1,17 @@
 ---
-version: alpha
+version: desktop-v4
 colors:
-  canvas: '#101C2B'
-  surface: '#1C2C40'
-  text: '#F4F1E8'
-  muted: '#B4C1CE'
-  ambulance: '#FFB85C'
-  clearance: '#78D9CB'
-  ghost: '#87D7FF'
+  canvas: '#172D48'
+  surface: '#213E5B'
+  text: '#F2F7FC'
+  muted: '#B0C7D9'
+  ambulance: '#FFC067'
+  clearance: '#72EAD2'
+  ghost: '#85D7FF'
   trafficRed: '#ED8B82'
 typography:
   sans:
-    fontFamily: 'system-ui, sans-serif'
+    fontFamily: 'Segoe UI, system-ui, sans-serif'
     lineHeight: '1.5'
   mono:
     fontFamily: 'ui-monospace, monospace'
@@ -29,17 +29,17 @@ components:
 
 ## Overview
 
-An **architectural miniature at twilight**, used as a scientific instrument. Warm building windows and a luminous ambulance make a compact 20–25-junction city feel distinctive and legible; navy roads and restrained geometry keep queues readable. The memorable signature is **two synchronized futures followed by the aftermath reveal**. Not a neon cyberpunk dashboard, not an unrelated cinematic city, not an ornamental AI landing page.
+A **colorful daylight architectural miniature**, used as a scientific instrument. Cobalt, coral, ochre and teal buildings, green parks and two ivory hospital landmarks give the expanded city character. Dark roads and a warm ambulance keep traffic legible. The memorable signature is **two synchronized futures followed by the aftermath reveal**. Not a neon cyberpunk dashboard, not an unrelated cinematic city, not an ornamental AI landing page.
 
 This is a product surface with one expressive 3D canvas. Evidence controls must remain familiar and quiet. The physical miniature supplies drama; the data supplies credibility. The token owner is `web/src/styles/tokens.css`. Keep semantic values aligned with this document rather than creating competing palette systems. `trafficRed` is reserved for actual controlled-link states, never a universal whole-junction status.
 
 ## Colors
 
-Canvas `#101C2B` and surface `#1C2C40` establish twilight depth. Text `#F4F1E8` is warm and readable; muted text `#B4C1CE` remains intentionally light. Ambulance amber `#FFB85C` is the narrative focal point; clearance mint `#78D9CB` marks the selected corridor. Signal lenses can use traffic-specific colors, but always retain position/labels and accessible text state. Do not encode policy winners only by hue. Measure text/control contrast in the actual rendered UI before claiming WCAG compliance.
+Canvas `#172D48` and surface `#213E5B` establish a crisp blue instrument shell. Text `#F2F7FC` is warm and readable; muted text `#B0C7D9` remains intentionally light. Ambulance amber `#FFC067` is the narrative focal point; clearance mint `#72EAD2` marks the selected corridor. Signal lenses can use traffic-specific colors, but always retain position/labels and accessible text state. Do not encode policy winners only by hue. Measure text/control contrast in the actual rendered UI before claiming WCAG compliance.
 
 ## Typography
 
-System sans for controls and concise interpretation; system monospace with tabular numbers for time, seed and metrics. No remote font dependency for MVP. Title 28–36px, body 16px, labels 12–14px; avoid illegible cinematic microtype. English is the initial UI language; fallbacks must not corrupt names or symbols.
+Segoe UI for controls, Bahnschrift for the restrained wordmark, and system monospace with tabular numbers for time, seed and metrics. No remote font dependency for MVP. Title 28–36px, body 16px, labels 12–14px; avoid illegible cinematic microtype. English is the initial UI language; fallbacks must not corrupt names or symbols.
 
 ## Layout
 
@@ -76,9 +76,9 @@ Validation status: scoped Omen checks through `3060716` accepted the corrected V
 
 Low-poly is the art direction and performance strategy, not a temporary excuse. Use cuboid multicolored building archetypes, flat/beveled silhouettes and very few shared materials. Cars, trucks and bikes remain simple readable shapes; spend detail on the stylized ambulance hero, not every vehicle. Two hospitals are distinct landmarks. Roughly 100 pickup anchors appear only when selection is active or nearby, avoiding label clutter.
 
-Ghost cyan `#87D7FF` is exclusive to the baseline ambulance. Use transparency/emissive material with a subtle outline or low-cost halo rather than mandatory full-screen bloom. It does not cast meaningful shadows or alter road lighting/signals. The primary scene always remains AFTERLIGHT truth; an alternate inspection view is explicitly baseline. Render-only overlaps are explained, never animated away.
+Ghost cyan `#85D7FF` is exclusive to the baseline ambulance. Use transparency/emissive material with a subtle outline or low-cost halo rather than mandatory full-screen bloom. It does not cast meaningful shadows or alter road lighting/signals. The primary scene always remains AFTERLIGHT truth; an alternate inspection view is explicitly baseline. Render-only overlaps are explained, never animated away.
 
-The three-junction corridor is a correctness fixture inside a larger map target, not the visual limit. Zoom-level detail and landmark hierarchy keep the 25-node overview readable. Keep stable overview, deliberate follow mode and reset; no mandatory orbit. Product controls, errors, provenance and route availability are core design, not a demo-only overlay.
+The three-junction corridor is a correctness fixture inside a larger map target, not the visual limit. Zoom-level detail and landmark hierarchy keep the 81-node overview readable. Keep stable overview, deliberate follow mode and reset; no mandatory orbit. Product controls, errors, provenance and route availability are core design, not a demo-only overlay.
 
 ## Interactive camera and enhanced geometry
 
@@ -88,7 +88,7 @@ retains the stable fitted overview. X tilt, Y heading and Z view-roll have nativ
 HTML controls and focused-canvas keyboard equivalents. No automatic orbit or
 parallax substitute is permitted. Original low-poly traffic assets remain
 unchanged and instanced. Enhanced building detail must stay subordinate to
-legible traffic and measured browser performance; the 25 MB map allowance is a
+legible traffic and measured browser performance; the 50 MB map allowance is a
 ceiling rather than a filesize target. Foreground transparency is limited to
 identified buildings, never a shared-color whole-city fade. See
 [3D map and camera contract](docs/CAMERA_AND_3D_MAP.md) for geometry, coordinate
@@ -119,3 +119,24 @@ remain bounded. Preserve native keyboard focus, complete accessible settings,
 visible scrollbars and independent horizontal scrolling for dense evidence.
 This is an explicit user-requested layout evolution, not a palette or typography
 redesign. New layout acceptance requires the pinned desktop Omen cohort.
+
+
+## November 3 desktop product revision
+
+The owner explicitly requested a complete UI overhaul and brighter, livelier colors and models. This supersedes the older twilight treatment. The city is sunlit and colorful; the interface is a crisp blue frame. The 3D viewport remains the expressive element. Simulation, Results and Settings are three simple sidebar sections rather than one long undifferentiated form. The recording library is first; route selection and raw provenance are secondary disclosures. The public viewer opens a genuine recording when available, without manufacturing traffic.
+
+At 16:9 desktop sizes, a 324–368 px sidebar owns vertical scrolling. The right side owns fixed rows for title/world selection, journey, a flexible 3D view, compact camera dock, comparison legend and playback. A camera-options popover overlays the city instead of resizing the viewport. The boot screen reports actual ready resources, including city geometry and all four vehicle models. A failure offers retry or entry to the accessible workspace.
+
+Token ownership remains Model B: web/src/styles/tokens.css is canonical; this document mirrors accepted values. Canvas/surface/text/muted/ambulance/clearance/ghost map directly to identically named CSS variables. Hover and pressed surfaces are #2C5070 and #355F80; ambulance hover #FFD495. City sky/horizon are #A9D0E6/#D2E7E8. The global scrollbar baseline uses thumb #557A98, track #172D48 and hover #89B2CF. Components consume these semantic variables.
+
+## Canonical UI Map
+
+| Capability | Canonical owner | Source of truth | Allowed variants | Verification |
+| --- | --- | --- | --- | --- |
+| Select/Listbox | Native HTML select in App and LocalGeneration | docs/VIEWER_AND_DEMO.md | Native; operating-system popup appearance and geometry accepted | Desktop product acceptance, keyboard and popup inspection |
+| Scrollbar | Global web/src/styles/app.css baseline | DESIGN.md | Stable left gutter; horizontal overflow for dense evidence | Desktop product acceptance and computed styles |
+| Loading | App boot screen, CityView resource callbacks, recording loader | docs/VIEWER_AND_DEMO.md | Initial resources; recording; inline recovery | Real network loading/failure browser tests |
+| Forms | LocalGeneration and generation.ts | API job/idempotency contract | Immutable submitted job vs next request | API and generation tests |
+| Feedback | Inline status/error regions owned by the active operation | docs/VIEWER_AND_DEMO.md | Informational/status/error | Failure/recovery browser tests |
+
+Local pickup filtering is immediate and transient. The clear button resets the query and returns focus to search. Long-lived request state remains owned by LocalGeneration; changing sidebar sections preserves it. Native controls preserve keyboard interaction and actual source outcomes remain inspectable without WebGL.

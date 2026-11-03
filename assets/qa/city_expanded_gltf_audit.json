@@ -1,0 +1,42 @@
+{
+  "schema": "afterlight.city-gltf-audit.v1",
+  "validator": "Khronos glTF Validator",
+  "version": "2.0.0-dev.3.10",
+  "asset_sha256": "455db4bda71e58148f4f3d50293363c18ab000fe1496e93fcb743b13e11813ac",
+  "asset_bytes": 14380920,
+  "uri": "city_enhanced.glb",
+  "mimeType": "model/gltf-binary",
+  "validatorVersion": "2.0.0-dev.3.10",
+  "issues": {
+    "numErrors": 0,
+    "numWarnings": 0,
+    "numInfos": 0,
+    "numHints": 0,
+    "messages": [],
+    "truncated": false
+  },
+  "info": {
+    "version": "2.0",
+    "generator": "Khronos glTF Blender I/O v5.2.40",
+    "resources": [
+      {
+        "pointer": "/buffers/0",
+        "mimeType": "application/gltf-buffer",
+        "storage": "glb",
+        "byteLength": 11686308
+      }
+    ],
+    "animationCount": 0,
+    "materialCount": 33,
+    "hasMorphTargets": false,
+    "hasSkins": false,
+    "hasTextures": false,
+    "hasDefaultScene": true,
+    "drawCallCount": 5677,
+    "totalVertexCount": 463134,
+    "totalTriangleCount": 235604,
+    "maxUVs": 0,
+    "maxInfluences": 0,
+    "maxAttributes": 2
+  }
+}

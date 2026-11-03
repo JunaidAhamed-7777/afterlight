@@ -15,12 +15,12 @@ export const QueueChart = memo(function QueueChart({
       ),
     1,
   );
-  const width = 680,
-    height = 150,
-    left = 38,
-    right = 12,
-    top = 15,
-    bottom = 26;
+  const width = 320,
+    height = 170,
+    left = 30,
+    right = 10,
+    top = 12,
+    bottom = 28;
   const x = (t: number) =>
     left + (t / replay.duration_s) * (width - left - right);
   const y = (q: number) =>

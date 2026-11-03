@@ -4,13 +4,43 @@ import { vehiclePose } from "./replay.ts";
 // assets/src/generate_city.py: road box center Z=.12 m, thickness=.12 m.
 // Blender +Z maps to render +Y; keep canonical road/vehicle XY and GLBs untouched.
 export const AUTHORED_ROAD_SURFACE_Y = 0.18;
+// Stable vehicle identity owns paint, so scrubbing, world switches and instance
+// pool growth never recolor a vehicle. THREE.Color converts these sRGB swatches.
+const CIVILIAN_PAINT = [
+  0xf2efe3, 0x337ab0, 0xd26450, 0x4f9a80, 0xd9b04f, 0x4b5d6a, 0x8a78a3,
+  0x2e6d83,
+].map((hex) => new THREE.Color(hex));
+const PAINT_MATERIAL_NAMES: Record<string, readonly string[]> = {
+  car: ["bluegrey"],
+  truck: ["cream", "porcelain"],
+  bike: ["terracotta"],
+};
+function civilianPaint(id: string): THREE.Color {
+  let hash = 0x811c9dc5;
+  for (let i = 0; i < id.length; i++)
+    hash = Math.imul(hash ^ id.charCodeAt(i), 0x01000193);
+  return CIVILIAN_PAINT[(hash >>> 0) % CIVILIAN_PAINT.length];
+}
 interface Batch {
   capacity: number;
   meshes: THREE.InstancedMesh[];
   geometry: THREE.BufferGeometry[];
+  paintedMeshes: THREE.InstancedMesh[];
+  ownedMaterials: THREE.Material[];
   length: number;
   width: number;
   minY: number;
+}
+interface InspectedInstance {
+  instance: number;
+  consistentMatrices: boolean;
+  center: number[] | null;
+  nose: number[] | null;
+  rear: number[] | null;
+  length: number | null;
+  width: number | null;
+  bounds: { min: number[]; max: number[] };
+  primitiveMatrices: number[][];
 }
 /** Original model primitives, baked once with their authored glTF transforms, instanced by type. */
 export class VehicleLayer {
@@ -19,15 +49,20 @@ export class VehicleLayer {
   private transform = new THREE.Object3D();
   private ghost: boolean;
   private readonly inspectionEnabled: boolean;
-  constructor(ghost = false, inspectionEnabled = false) {
+  private readonly inspectionIds: Set<string> | null;
+  private readonly inspectionSelection: Map<string, { type: string; instance: number }> | null;
+  constructor(ghost = false, inspectionEnabled = false, inspectionIds: readonly string[] = []) {
     this.ghost = ghost;
     this.inspectionEnabled = inspectionEnabled;
+    this.inspectionIds = inspectionEnabled && inspectionIds.length ? new Set(inspectionIds.slice(0, 16)) : null;
+    this.inspectionSelection = this.inspectionIds ? new Map() : null;
   }
   update(
     vehicles: Vehicle[],
     templates: Map<string, THREE.Group>,
     opacity = 0.38,
   ) {
+    this.inspectionSelection?.clear();
     for (const batch of this.batches.values())
       for (const mesh of batch.meshes) mesh.count = 0;
     const types = new Map<string, Vehicle[]>();
@@ -46,12 +81,22 @@ export class VehicleLayer {
         batch = this.create(
           template,
           2 ** Math.ceil(Math.log2(Math.max(1, rows.length))),
+          type,
         );
         this.batches.set(type, batch);
       }
+      if (this.inspectionSelection && this.inspectionIds)
+        for (const id of this.inspectionIds) {
+          const instance = rows.findIndex(row => row.id === id);
+          if (instance >= 0) this.inspectionSelection.set(id, { type, instance });
+        }
       for (let i = 0; i < rows.length; i++) {
         const [x, y, z, angle] = vehiclePose(rows[i]);
-        this.transform.position.set(x, y + AUTHORED_ROAD_SURFACE_Y - batch.minY, z);
+        this.transform.position.set(
+          x,
+          y + AUTHORED_ROAD_SURFACE_Y - batch.minY,
+          z,
+        );
         this.transform.rotation.set(0, angle, 0);
         this.transform.scale.set(
           rows[i].width_m ? rows[i].width_m! / batch.width : 1,
@@ -61,34 +106,47 @@ export class VehicleLayer {
         this.transform.updateMatrix();
         for (const mesh of batch.meshes)
           mesh.setMatrixAt(i, this.transform.matrix);
+        if (batch.paintedMeshes.length) {
+          const color = civilianPaint(rows[i].id);
+          for (const mesh of batch.paintedMeshes) mesh.setColorAt(i, color);
+        }
       }
       for (const mesh of batch.meshes) {
         mesh.count = rows.length;
         mesh.instanceMatrix.needsUpdate = true;
         if (this.ghost) (mesh.material as THREE.Material).opacity = opacity;
       }
+      for (const mesh of batch.paintedMeshes)
+        mesh.instanceColor!.needsUpdate = true;
     }
   }
   /** Opt-in QA snapshot of render buffers, never input poses or simulation state. */
   inspect() {
     if (!this.inspectionEnabled) return null;
     this.group.updateWorldMatrix(true, true);
-    const types: Record<string, { count: number; primitiveCounts: number[] }> = {};
-    const ambulances: Array<{
-      instance: number; consistentMatrices: boolean; center: number[] | null; nose: number[] | null; rear: number[] | null;
-      length: number | null; width: number | null; bounds: { min: number[]; max: number[] };
-      primitiveMatrices: number[][];
-    }> = [];
+    const types: Record<string, { count: number; primitiveCounts: number[] }> =
+      {};
+    const ambulances: InspectedInstance[] = [];
+    const selectedVehicles: Array<InspectedInstance & { id: string; type: string }> = [];
     let layerVisible = true;
     for (let node: THREE.Object3D | null = this.group; node; node = node.parent)
       if (!node.visible) layerVisible = false;
     for (const [type, batch] of this.batches) {
-      const visible = batch.meshes.filter(mesh => layerVisible && mesh.visible);
-      const primitiveCounts = batch.meshes.map(mesh => layerVisible && mesh.visible ? mesh.count : 0);
+      const visible = batch.meshes.filter(
+        (mesh) => layerVisible && mesh.visible,
+      );
+      const primitiveCounts = batch.meshes.map((mesh) =>
+        layerVisible && mesh.visible ? mesh.count : 0,
+      );
       const count = Math.max(0, ...primitiveCounts);
       types[type] = { count, primitiveCounts };
-      if (type !== "ambulance") continue;
-      for (let i = 0; i < count; i++) {
+      const selected = new Map<number, string>();
+      if (this.inspectionSelection)
+        for (const [id, row] of this.inspectionSelection)
+          if (row.type === type && row.instance < count) selected.set(row.instance, id);
+      if (type !== "ambulance" && !selected.size) continue;
+      const instances = type === "ambulance" ? Array.from({ length: count }, (_, i) => i) : selected.keys();
+      for (const i of instances) {
         const localBounds = new THREE.Box3();
         const worldBounds = new THREE.Box3();
         const primitiveMatrices: number[][] = [];
@@ -101,7 +159,8 @@ export class VehicleLayer {
           const matrix = new THREE.Matrix4();
           mesh.getMatrixAt(i, matrix);
           matrix.premultiply(mesh.matrixWorld);
-          if (referenceMatrix && !referenceMatrix.equals(matrix)) consistentMatrices = false;
+          if (referenceMatrix && !referenceMatrix.equals(matrix))
+            consistentMatrices = false;
           referenceMatrix ??= matrix;
           primitiveMatrices.push(matrix.toArray());
           localBounds.union(baked);
@@ -109,24 +168,72 @@ export class VehicleLayer {
         }
         if (!referenceMatrix || localBounds.isEmpty()) continue;
         if (!consistentMatrices) {
-          ambulances.push({ instance: i, consistentMatrices: false, center: null, nose: null, rear: null,
-            length: null, width: null, bounds: { min: worldBounds.min.toArray(), max: worldBounds.max.toArray() }, primitiveMatrices });
+          const inspected: InspectedInstance = {
+            instance: i,
+            consistentMatrices: false,
+            center: null,
+            nose: null,
+            rear: null,
+            length: null,
+            width: null,
+            bounds: {
+              min: worldBounds.min.toArray(),
+              max: worldBounds.max.toArray(),
+            },
+            primitiveMatrices,
+          };
+          if (type === "ambulance") ambulances.push(inspected);
+          if (selected.has(i)) selectedVehicles.push({ ...inspected, id: selected.get(i)!, type });
           continue;
         }
         const localCenter = localBounds.getCenter(new THREE.Vector3());
         const center = localCenter.clone().applyMatrix4(referenceMatrix);
-        const nose = new THREE.Vector3(localCenter.x, localCenter.y, localBounds.min.z).applyMatrix4(referenceMatrix);
-        const rear = new THREE.Vector3(localCenter.x, localCenter.y, localBounds.max.z).applyMatrix4(referenceMatrix);
-        const left = new THREE.Vector3(localBounds.min.x, localCenter.y, localCenter.z).applyMatrix4(referenceMatrix);
-        const right = new THREE.Vector3(localBounds.max.x, localCenter.y, localCenter.z).applyMatrix4(referenceMatrix);
-        ambulances.push({ instance: i, consistentMatrices: true, center: center.toArray(), nose: nose.toArray(), rear: rear.toArray(),
-          length: nose.distanceTo(rear), width: left.distanceTo(right),
-          bounds: { min: worldBounds.min.toArray(), max: worldBounds.max.toArray() }, primitiveMatrices });
+        const nose = new THREE.Vector3(
+          localCenter.x,
+          localCenter.y,
+          localBounds.min.z,
+        ).applyMatrix4(referenceMatrix);
+        const rear = new THREE.Vector3(
+          localCenter.x,
+          localCenter.y,
+          localBounds.max.z,
+        ).applyMatrix4(referenceMatrix);
+        const left = new THREE.Vector3(
+          localBounds.min.x,
+          localCenter.y,
+          localCenter.z,
+        ).applyMatrix4(referenceMatrix);
+        const right = new THREE.Vector3(
+          localBounds.max.x,
+          localCenter.y,
+          localCenter.z,
+        ).applyMatrix4(referenceMatrix);
+        const inspected: InspectedInstance = {
+          instance: i,
+          consistentMatrices: true,
+          center: center.toArray(),
+          nose: nose.toArray(),
+          rear: rear.toArray(),
+          length: nose.distanceTo(rear),
+          width: left.distanceTo(right),
+          bounds: {
+            min: worldBounds.min.toArray(),
+            max: worldBounds.max.toArray(),
+          },
+          primitiveMatrices,
+        };
+        if (type === "ambulance") ambulances.push(inspected);
+        if (selected.has(i)) selectedVehicles.push({ ...inspected, id: selected.get(i)!, type });
       }
     }
-    return { source: "InstancedMesh matrices and baked geometry bounds", types, ambulances };
+    return {
+      source: "InstancedMesh matrices and baked geometry bounds",
+      types,
+      ambulances,
+      selectedVehicles,
+    };
   }
-  private create(template: THREE.Group, capacity: number): Batch {
+  private create(template: THREE.Group, capacity: number, type: string): Batch {
     template.updateMatrixWorld(true);
     const bounds = new THREE.Box3().setFromObject(template);
     const center = bounds.getCenter(new THREE.Vector3());
@@ -137,6 +244,8 @@ export class VehicleLayer {
       capacity,
       meshes: [],
       geometry: [],
+      paintedMeshes: [],
+      ownedMaterials: [],
       length: size.z,
       width: size.x,
       minY: Infinity,
@@ -149,7 +258,7 @@ export class VehicleLayer {
         .translate(-center.x, 0, -center.z);
       geometry.computeBoundingBox();
       batch.minY = Math.min(batch.minY, geometry.boundingBox!.min.y);
-      const material = this.ghost
+      let material = this.ghost
         ? new THREE.MeshBasicMaterial({
             color: 0x87d7ff,
             transparent: true,
@@ -157,11 +266,36 @@ export class VehicleLayer {
             depthWrite: false,
           })
         : child.material;
+      let paint = false;
+      if (this.ghost) batch.ownedMaterials.push(material as THREE.Material);
+      else if (
+        !Array.isArray(material) &&
+        PAINT_MATERIAL_NAMES[type]?.includes(material.name) &&
+        (material instanceof THREE.MeshStandardMaterial ||
+          material instanceof THREE.MeshBasicMaterial)
+      ) {
+        material = material.clone();
+        (
+          material as THREE.MeshStandardMaterial | THREE.MeshBasicMaterial
+        ).color.setHex(0xffffff);
+        material.name = `AFTERLIGHT_CIVILIAN_PAINT_${type}_${child.material instanceof THREE.Material ? child.material.name : "body"}`;
+        batch.ownedMaterials.push(material);
+        paint = true;
+      }
       const mesh = new THREE.InstancedMesh(geometry, material, capacity);
       mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
       mesh.frustumCulled = false;
+      mesh.receiveShadow = !this.ghost;
       mesh.count = 0;
       mesh.renderOrder = this.ghost ? 3 : 0;
+      if (paint) {
+        mesh.instanceColor = new THREE.InstancedBufferAttribute(
+          new Float32Array(capacity * 3).fill(1),
+          3,
+        );
+        mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
+        batch.paintedMeshes.push(mesh);
+      }
       this.group.add(mesh);
       batch.meshes.push(mesh);
       batch.geometry.push(geometry);
@@ -176,8 +310,8 @@ export class VehicleLayer {
     for (const mesh of batch.meshes) {
       this.group.remove(mesh);
       mesh.dispose();
-      if (this.ghost) (mesh.material as THREE.Material).dispose();
     }
+    for (const material of batch.ownedMaterials) material.dispose();
     for (const g of batch.geometry) g.dispose();
   }
   dispose() {

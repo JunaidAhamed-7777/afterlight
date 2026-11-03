@@ -1,0 +1,417 @@
+{
+  "schema": "afterlight.public-recordings-evidence.v1",
+  "scope": "Two exploratory software/visual demo pairs. These are not train/validation/test study episodes or an aggregate policy-performance claim.",
+  "simulation_step_s": 0.5,
+  "recordings": [
+    {
+      "catalog": {
+        "id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
+        "title": "Cross-city response",
+        "url": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639.json.gz",
+        "seed": 7,
+        "pickup_id": "P001",
+        "hospital_id": "HOSP_EAST",
+        "policy": "fixed",
+        "lead_s": 20,
+        "policy_label": "fixed \u00b7 20 s lead",
+        "duration_s": 900.0,
+        "sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
+        "bytes": 18466506,
+        "source_commit": "b5b4115076f85d1df6f3868870f62f983b493f04",
+        "world_status": {
+          "baseline": "completed",
+          "afterlight": "completed"
+        },
+        "evidence_url": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639.evidence.json",
+        "encoding": "gzip",
+        "transfer_bytes": 1716388,
+        "transfer_sha256": "5e16f784f77031ec4de09add0a1f06361c8e05d672e061aaebc8070ed8004b4b"
+      },
+      "scenario": {
+        "id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
+        "episode_id": "city-moderate-7-44b1224ec1731f19",
+        "network_kind": "city",
+        "seed": 7,
+        "pickup_id": "P001",
+        "hospital_id": "HOSP_EAST",
+        "dispatch_s": 60,
+        "regime": "moderate",
+        "split": "pilot",
+        "route_edges": [
+          "H00_1_R",
+          "H00_0_R",
+          "V00_0_F",
+          "H10_0_F",
+          "H10_1_F",
+          "V11_0_F",
+          "V12_0_F",
+          "H31_0_F",
+          "H31_1_F",
+          "H31_2_F",
+          "H32_0_F",
+          "H33_0_F",
+          "H33_1_F",
+          "H33_2_F",
+          "H34_0_F",
+          "V53_0_F",
+          "V54_0_F",
+          "H55_0_F",
+          "H55_1_F",
+          "H55_2_F",
+          "H56_0_F",
+          "V75_0_F",
+          "H67_0_F",
+          "HOSP_EAST_DRIVEWAY_0_F"
+        ]
+      },
+      "source": {
+        "source_commit": "b5b4115076f85d1df6f3868870f62f983b493f04",
+        "source_dirty": false,
+        "source_code_sha256": "dcbaa42fb6393e6b00d7b0b2a30f7122b12875dd9cd1d2e7ce6fb006e81a0f19",
+        "source_files": {
+          "assets/map/city_manifest.json": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+          "evaluation/__init__.py": "533319bdb8d647837ca459637dc0f55f5f9e023742b519d1c1394c90a5d6d4cc",
+          "evaluation/__main__.py": "36a2c785086805e12d524a6bb0e877ce1e1aa2985e417c1f663e7dd5510aab18",
+          "evaluation/collector.py": "0c1efbecf28e284e393a665a5b48d516160c41ad81aedd6a83fd072dd06239d5",
+          "evaluation/comparison.py": "3e9271647e122e7147f1de4654f4776adc8e5eeb91db0d42f31130dab99e291e",
+          "evaluation/metrics.py": "ab1adbcdf08b6d3d4de9baf658d1761b4da8e2f96d413ef1a0c5fadf8e675a15",
+          "evaluation/pilot.py": "c219b122b29f68b0f0fbb24e5dcba615b371c27a8337a4b6ee89369f46b12b78",
+          "evaluation/protocol.py": "1e431da6b25dae03d0bdafdef4671977b84293b0becc62eb71733b18f42514cc",
+          "evaluation/selectors.py": "c5da9000edc488b40529b894df68461fa80e20b23865cd0e9571e59615d60a7d",
+          "evaluation/splits.py": "d11deb55604a4d645705f99e8580eb0f19fadcd680ba5de5b07243ae12aaaa3e",
+          "evaluation/study.py": "1239e565f8a4cb81c7062544de70ffb6b1ece94f9ddc537b84591d20b6145f0d",
+          "evaluation/study_manifest.py": "482bd58df02b9a538e96cfc7ca804d948b93db3f0d4d1da508f8c6f5ee971544",
+          "evaluation/study_release.py": "850ebd25c38ddd0d8887eb05119ab0b46ad6813bdb1a2ee0e0cf77409f12c32c",
+          "evaluation/study_reporting.py": "21858b4689b251eab05c9d0433aa9480fc1151bf30dca31a485dd994df26149c",
+          "export/__init__.py": "b7172d6fdd8069f299897a3de05038b1ec231c0c9652c00ed4323e46c9573213",
+          "export/catalog.py": "21748d0c8c3e1204f91bf7ff679b2c319acf900ba69acdd1bdbcf7744b3d0dc7",
+          "export/replay.py": "36eed3f8753ad2bb2b1f0c7fadcc4dbae8b71d6f94c96537f488ef118961e0bd",
+          "export/selected_replay.py": "7bb0fe53f3b4b10f47bb38836b5e25f41e4457fddd4fa25473a0c1c0ea5a29f5",
+          "export/validation_base.py": "1dee340d64f2b55ed26b8d7f2e585747c349fe0c85ad5b2087742179a236c6f0",
+          "models/__init__.py": "9b42a06ee6463c92b415fe0ed3a1b6b78767fdf80685d075ca6f3f05b4f2cbf4",
+          "models/__main__.py": "eb3a26e0d5f240616f924ff05eceadddca502cd3c42277d594a51e4beb41d3da",
+          "models/analytical.py": "6c7587d13e2b2613d141cd0f047b21efa2f9146910fd705179b6b5cbb249b122",
+          "models/residual.py": "09d86e2206cb0f3c28915353d592e3b031da325cbbfcd5bb502f27c90d018640",
+          "policies/__init__.py": "bf289f6fd8406c3940d3f2c67a8dc39726444e56e5d047e3d04971b43de4c2d0",
+          "policies/scheduler.py": "147de65ccf945292cb1185bb3ff2ce52f5392d7db9b2b7f4a19a31dca513ebb2",
+          "policies/timing.py": "70e6d162932c1d9dfd19db4fb0d1dbbdd72974fddba050cdc88e5184b43df5e2",
+          "sim/__init__.py": "f29935d76b2bd9c6d0e3afb5d59594ab2c130d935e72029b7b296563dca4cd13",
+          "sim/accounting.py": "b77935e182da5218803f622c8e67ac349c9078f667d3818c56a0fe1e48eeda63",
+          "sim/audit.py": "bbc980ef5b1b5d4bdddc4f1dae96cb08a73771ed2a82bf1286790fec3e7eb1ac",
+          "sim/demand.py": "ac1a53592c5b02b9f12e18ec5e6b7ad9a4a8a5242f503fa20549453d9707e635",
+          "sim/environment.py": "f93de9b0fa267d931016f386c2d9894112239ffcbb1845bb88205ec7ddbc32a0",
+          "sim/geometry_audit.py": "0bbb0f1b55238c68b584ef11329472b8c2e2fd5f1f8b01a8577833c65d168879",
+          "sim/identity.py": "2e7ce63763d49465c25fda8b12df129cbb22a6f98458ea22a64266b2eca24978",
+          "sim/network.py": "34290be794285b686fac7756d190db32ad6d93ff7271e5f40908f06c2c44bfb0",
+          "sim/run.py": "9e17bff6a4c71347e6886e5936f83410326d069a56872ad10db76e348f9db335",
+          "sim/source_identity.py": "d743d65fde7c67e9906b0f56d8350f0262527bd55111610d7f2c2d755a212738",
+          "sim/traci_cache.py": "fc90f5e838483764eda0b073b65d3fc219211a10b8a2fb0dd568dd260625ecef"
+        },
+        "network_sha256": "1801cbab60e1ad79ad5c527efb9758885750c126236ea1ae8eaca34a028c75d2",
+        "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+        "network_file_sha256": "abb66b73b1485fe5bacac4d3848353d80ef27d663550f36ff591823ab05c096e",
+        "network_hash_definition": "canonical XML excluding generator timestamp/path comments and insignificant whitespace",
+        "demand_sha256": "29d830e40eaf2a65f622ba72285efc8a0de24892d9ca78c956da8e1fd59a8898",
+        "demand_manifest_sha256": "41b75208cde5b37c928374d825d8132eaf694c93fbce17a72d41e4fa2e617991",
+        "demand_group_id": "4792e48e18b3dfbac80ec16fbecf409492441d3188049bb1de6e345b922237ae",
+        "sumo_version": "SUMO 1.28.0",
+        "dependencies": {
+          "traci": "1.28.0",
+          "sumolib": "1.28.0",
+          "eclipse-sumo": "1.28.0",
+          "sumo-data": "1.28.0"
+        },
+        "sumo_distribution_metadata": "eclipse-sumo-wheel-installed",
+        "model_sha256": null,
+        "verification": "real SUMO execution; benchmark interpretation requires evaluation gates"
+      },
+      "worlds": {
+        "baseline": {
+          "status": "completed",
+          "ambulance_journey_s": 561.0,
+          "civilian_mean_excess_s": 99.5878483327308,
+          "civilian_excess_p95_s": 185.22023291320485,
+          "accounting": {
+            "scheduled": 398,
+            "inserted": 398,
+            "completed": 398,
+            "running": 0,
+            "not_inserted": 0
+          },
+          "runtime_s": 28.676206100000854,
+          "peak_vehicles": 368,
+          "peak_frame_s": 180.0,
+          "collisions": 0,
+          "teleports": 0
+        },
+        "afterlight": {
+          "status": "completed",
+          "ambulance_journey_s": 455.0,
+          "civilian_mean_excess_s": 101.71724531765543,
+          "civilian_excess_p95_s": 193.8921076761855,
+          "accounting": {
+            "scheduled": 398,
+            "inserted": 398,
+            "completed": 398,
+            "running": 0,
+            "not_inserted": 0
+          },
+          "runtime_s": 31.702338499999314,
+          "peak_vehicles": 370,
+          "peak_frame_s": 182.0,
+          "collisions": 0,
+          "teleports": 0
+        }
+      },
+      "civilian_type_counts": {
+        "car": 257,
+        "bike": 96,
+        "truck": 45
+      },
+      "audit": {
+        "schema": "afterlight.audit.v1",
+        "run_id": "city-moderate-7-44b1224ec1731f19-fixed-20-dcbaa42fb639",
+        "replay_sha256": "47cabb5dd789b0a1b717aa9480928e022cf218998c5b91d36610d4fc7b1dc2f0",
+        "checks": [
+          {
+            "world": "baseline",
+            "priority_deadline_audit": "passed",
+            "release_recovery_audit": "passed",
+            "simulation_step_s": 0.5,
+            "signal_transition_and_frame_alignment": "passed",
+            "demand_reconciliation": "passed",
+            "raw_tripinfo_metric_agreement": "passed",
+            "status": "completed"
+          },
+          {
+            "world": "afterlight",
+            "priority_deadline_audit": "passed",
+            "release_recovery_audit": "passed",
+            "simulation_step_s": 0.5,
+            "signal_transition_and_frame_alignment": "passed",
+            "demand_reconciliation": "passed",
+            "raw_tripinfo_metric_agreement": "passed",
+            "status": "completed"
+          }
+        ],
+        "scalar_table_agreement": "passed",
+        "paired_dispatch_causality": {
+          "shared_pre_dispatch_history": "passed",
+          "shared_causal_observation_and_etas": "passed",
+          "pre_dispatch_frames": 30,
+          "pre_dispatch_events": 539,
+          "frozen_request_timing": {
+            "baseline": "passed",
+            "afterlight": "passed"
+          }
+        },
+        "ordinary_negative_control": "not_this_policy",
+        "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
+      },
+      "raw_directory": "C:\\Github\\afterlight-engine-v4\\local-runtime\\city-dense-qualified-7"
+    },
+    {
+      "catalog": {
+        "id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-1b68722e5297",
+        "title": "Westhaven response",
+        "url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-1b68722e5297.json.gz",
+        "seed": 8,
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_WEST",
+        "policy": "analytical",
+        "lead_s": 0,
+        "policy_label": "analytical \u00b7 0 s lead",
+        "duration_s": 900.0,
+        "sha256": "147c0068af2c5a54dfcd2f0d5d4015c2f9cfb7d9f9bf40fc8dc8a85f0da1064b",
+        "bytes": 36114865,
+        "source_commit": "2dfb894f4263ada225f6a8bd7e53aa4d9c7ab5b4",
+        "world_status": {
+          "baseline": "completed",
+          "afterlight": "completed"
+        },
+        "evidence_url": "city-moderate-8-5e76a71f2b6c4656-analytical-0-1b68722e5297.evidence.json",
+        "encoding": "gzip",
+        "transfer_bytes": 3313932,
+        "transfer_sha256": "d57f28f0eec621344b4564dcdb7c45221b3d5f23fe9181399008e12dc010dd54"
+      },
+      "scenario": {
+        "id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-1b68722e5297",
+        "episode_id": "city-moderate-8-5e76a71f2b6c4656",
+        "network_kind": "city",
+        "seed": 8,
+        "pickup_id": "P080",
+        "hospital_id": "HOSP_WEST",
+        "dispatch_s": 60,
+        "regime": "moderate",
+        "split": "pilot",
+        "route_edges": [
+          "V82_0_R",
+          "H27_0_R",
+          "H26_2_R",
+          "H26_1_R",
+          "H26_0_R",
+          "H25_0_R",
+          "H24_2_R",
+          "H24_1_R",
+          "H24_0_R",
+          "H23_0_R",
+          "H22_2_R",
+          "H22_1_R",
+          "H22_0_R",
+          "V21_0_R",
+          "H11_2_R",
+          "H11_1_R",
+          "H11_0_R",
+          "H10_1_R",
+          "HOSP_WEST_DRIVEWAY_0_F"
+        ]
+      },
+      "source": {
+        "source_commit": "2dfb894f4263ada225f6a8bd7e53aa4d9c7ab5b4",
+        "source_dirty": false,
+        "source_code_sha256": "1b68722e5297d1e4b3d4740a8eb3b9dd41348563fcef34e19c783cd25c745aa5",
+        "source_files": {
+          "assets/map/city_manifest.json": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+          "evaluation/__init__.py": "533319bdb8d647837ca459637dc0f55f5f9e023742b519d1c1394c90a5d6d4cc",
+          "evaluation/__main__.py": "36a2c785086805e12d524a6bb0e877ce1e1aa2985e417c1f663e7dd5510aab18",
+          "evaluation/collector.py": "0c1efbecf28e284e393a665a5b48d516160c41ad81aedd6a83fd072dd06239d5",
+          "evaluation/comparison.py": "3e9271647e122e7147f1de4654f4776adc8e5eeb91db0d42f31130dab99e291e",
+          "evaluation/metrics.py": "ab1adbcdf08b6d3d4de9baf658d1761b4da8e2f96d413ef1a0c5fadf8e675a15",
+          "evaluation/pilot.py": "c219b122b29f68b0f0fbb24e5dcba615b371c27a8337a4b6ee89369f46b12b78",
+          "evaluation/protocol.py": "1e431da6b25dae03d0bdafdef4671977b84293b0becc62eb71733b18f42514cc",
+          "evaluation/selectors.py": "c5da9000edc488b40529b894df68461fa80e20b23865cd0e9571e59615d60a7d",
+          "evaluation/splits.py": "d11deb55604a4d645705f99e8580eb0f19fadcd680ba5de5b07243ae12aaaa3e",
+          "evaluation/study.py": "1239e565f8a4cb81c7062544de70ffb6b1ece94f9ddc537b84591d20b6145f0d",
+          "evaluation/study_manifest.py": "19d6e0a94b55d05d1bff5d98bd241cd1f167ae5ecb51ac56cfe61effa6a4a4d4",
+          "evaluation/study_release.py": "850ebd25c38ddd0d8887eb05119ab0b46ad6813bdb1a2ee0e0cf77409f12c32c",
+          "evaluation/study_reporting.py": "21858b4689b251eab05c9d0433aa9480fc1151bf30dca31a485dd994df26149c",
+          "export/__init__.py": "b7172d6fdd8069f299897a3de05038b1ec231c0c9652c00ed4323e46c9573213",
+          "export/catalog.py": "21748d0c8c3e1204f91bf7ff679b2c319acf900ba69acdd1bdbcf7744b3d0dc7",
+          "export/replay.py": "36eed3f8753ad2bb2b1f0c7fadcc4dbae8b71d6f94c96537f488ef118961e0bd",
+          "export/selected_replay.py": "7bb0fe53f3b4b10f47bb38836b5e25f41e4457fddd4fa25473a0c1c0ea5a29f5",
+          "export/validation_base.py": "1dee340d64f2b55ed26b8d7f2e585747c349fe0c85ad5b2087742179a236c6f0",
+          "models/__init__.py": "9b42a06ee6463c92b415fe0ed3a1b6b78767fdf80685d075ca6f3f05b4f2cbf4",
+          "models/__main__.py": "eb3a26e0d5f240616f924ff05eceadddca502cd3c42277d594a51e4beb41d3da",
+          "models/analytical.py": "6c7587d13e2b2613d141cd0f047b21efa2f9146910fd705179b6b5cbb249b122",
+          "models/residual.py": "09d86e2206cb0f3c28915353d592e3b031da325cbbfcd5bb502f27c90d018640",
+          "policies/__init__.py": "bf289f6fd8406c3940d3f2c67a8dc39726444e56e5d047e3d04971b43de4c2d0",
+          "policies/scheduler.py": "147de65ccf945292cb1185bb3ff2ce52f5392d7db9b2b7f4a19a31dca513ebb2",
+          "policies/timing.py": "70e6d162932c1d9dfd19db4fb0d1dbbdd72974fddba050cdc88e5184b43df5e2",
+          "sim/__init__.py": "f29935d76b2bd9c6d0e3afb5d59594ab2c130d935e72029b7b296563dca4cd13",
+          "sim/accounting.py": "b77935e182da5218803f622c8e67ac349c9078f667d3818c56a0fe1e48eeda63",
+          "sim/audit.py": "bbc980ef5b1b5d4bdddc4f1dae96cb08a73771ed2a82bf1286790fec3e7eb1ac",
+          "sim/demand.py": "ac1a53592c5b02b9f12e18ec5e6b7ad9a4a8a5242f503fa20549453d9707e635",
+          "sim/environment.py": "f93de9b0fa267d931016f386c2d9894112239ffcbb1845bb88205ec7ddbc32a0",
+          "sim/geometry_audit.py": "0bbb0f1b55238c68b584ef11329472b8c2e2fd5f1f8b01a8577833c65d168879",
+          "sim/identity.py": "2e7ce63763d49465c25fda8b12df129cbb22a6f98458ea22a64266b2eca24978",
+          "sim/network.py": "34290be794285b686fac7756d190db32ad6d93ff7271e5f40908f06c2c44bfb0",
+          "sim/run.py": "9e17bff6a4c71347e6886e5936f83410326d069a56872ad10db76e348f9db335",
+          "sim/source_identity.py": "d743d65fde7c67e9906b0f56d8350f0262527bd55111610d7f2c2d755a212738",
+          "sim/traci_cache.py": "fc90f5e838483764eda0b073b65d3fc219211a10b8a2fb0dd568dd260625ecef"
+        },
+        "network_sha256": "1801cbab60e1ad79ad5c527efb9758885750c126236ea1ae8eaca34a028c75d2",
+        "canonical_map_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b",
+        "network_file_sha256": "fda853c13d0685eb39889b9ff6fa291f0cb6a09fe0d2e8adb3836395097b199d",
+        "network_hash_definition": "canonical XML excluding generator timestamp/path comments and insignificant whitespace",
+        "demand_sha256": "05f683477c4cd859f2d8724dff3fd9a6b4c7d7a7f865165bac2e98f7a66c3b86",
+        "demand_manifest_sha256": "cb252ddc8db93154e8ab4e3101ecadedeeffa6c7924cd1968111ac88ce044373",
+        "demand_group_id": "8923d0729e59d835f1b0d0e7026365fe1829d041587acfded6038645f3389e4e",
+        "sumo_version": "SUMO 1.28.0",
+        "dependencies": {
+          "traci": "1.28.0",
+          "sumolib": "1.28.0",
+          "eclipse-sumo": "1.28.0",
+          "sumo-data": "1.28.0"
+        },
+        "sumo_distribution_metadata": "eclipse-sumo-wheel-installed",
+        "model_sha256": null,
+        "verification": "real SUMO execution; benchmark interpretation requires evaluation gates"
+      },
+      "worlds": {
+        "baseline": {
+          "status": "completed",
+          "ambulance_journey_s": 398.5,
+          "civilian_mean_excess_s": 93.91590951674847,
+          "civilian_excess_p95_s": 206.83115872977433,
+          "accounting": {
+            "scheduled": 426,
+            "inserted": 426,
+            "completed": 426,
+            "running": 0,
+            "not_inserted": 0
+          },
+          "runtime_s": 39.3641176000001,
+          "peak_vehicles": 382,
+          "peak_frame_s": 181.0,
+          "collisions": 0,
+          "teleports": 0
+        },
+        "afterlight": {
+          "status": "completed",
+          "ambulance_journey_s": 314.0,
+          "civilian_mean_excess_s": 93.7116841646358,
+          "civilian_excess_p95_s": 190.2557072243248,
+          "accounting": {
+            "scheduled": 426,
+            "inserted": 426,
+            "completed": 426,
+            "running": 0,
+            "not_inserted": 0
+          },
+          "runtime_s": 31.295689000000493,
+          "peak_vehicles": 382,
+          "peak_frame_s": 181.0,
+          "collisions": 0,
+          "teleports": 0
+        }
+      },
+      "civilian_type_counts": {
+        "car": 291,
+        "bike": 72,
+        "truck": 63
+      },
+      "audit": {
+        "schema": "afterlight.audit.v1",
+        "run_id": "city-moderate-8-5e76a71f2b6c4656-analytical-0-1b68722e5297",
+        "replay_sha256": "147c0068af2c5a54dfcd2f0d5d4015c2f9cfb7d9f9bf40fc8dc8a85f0da1064b",
+        "checks": [
+          {
+            "world": "baseline",
+            "priority_deadline_audit": "passed",
+            "release_recovery_audit": "passed",
+            "simulation_step_s": 0.5,
+            "signal_transition_and_frame_alignment": "passed",
+            "demand_reconciliation": "passed",
+            "raw_tripinfo_metric_agreement": "passed",
+            "status": "completed"
+          },
+          {
+            "world": "afterlight",
+            "priority_deadline_audit": "passed",
+            "release_recovery_audit": "passed",
+            "simulation_step_s": 0.5,
+            "signal_transition_and_frame_alignment": "passed",
+            "demand_reconciliation": "passed",
+            "raw_tripinfo_metric_agreement": "passed",
+            "status": "completed"
+          }
+        ],
+        "scalar_table_agreement": "passed",
+        "paired_dispatch_causality": {
+          "shared_pre_dispatch_history": "passed",
+          "shared_causal_observation_and_etas": "passed",
+          "pre_dispatch_frames": 60,
+          "pre_dispatch_events": 539,
+          "frozen_request_timing": {
+            "baseline": "passed",
+            "afterlight": "passed"
+          }
+        },
+        "ordinary_negative_control": "not_this_policy",
+        "scope": "Artifact consistency and legal schedule timings; not visual QA or traffic-performance superiority"
+      },
+      "raw_directory": "C:\\Github\\afterlight-engine-v4\\local-runtime\\city-westhaven-demo-8"
+    }
+  ],
+  "shipped_recording_bytes": 5589070
+}

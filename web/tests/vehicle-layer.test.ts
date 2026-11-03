@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import * as THREE from "three";
+import { readFileSync } from "node:fs";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { AUTHORED_ROAD_SURFACE_Y, VehicleLayer } from "../src/VehicleLayer.ts";
 function close(actual: number, expected: number) {
   assert.ok(Math.abs(actual - expected) < 1e-5, `${actual} != ${expected}`);
@@ -138,6 +140,49 @@ test("inspection is disabled by default and does not traverse or allocate geomet
   layer.dispose();
 });
 
+test("selected civilian inspection follows actual buffers through reorder, pool growth and departure", () => {
+  const template = new THREE.Group();
+  const geometry = new THREE.BoxGeometry(2, 2, 4);
+  const material = new THREE.MeshBasicMaterial();
+  template.add(new THREE.Mesh(geometry, material));
+  const layer = new VehicleLayer(false, true, ["chosen"]);
+  const templates = new Map([["car", template]]);
+  const row = (id: string, x: number) => ({ id, type: "car", x, y: 20, z: 0,
+    angle_deg: 90, speed_mps: 0, length_m: 4.4, width_m: 1.8 });
+  layer.update([row("other", 10), row("chosen", 100)], templates);
+  let selected = layer.inspect()!.selectedVehicles;
+  assert.deepEqual(selected.map(v => v.id), ["chosen"]);
+  assert.equal(selected[0].instance, 1);
+  close(selected[0].nose![0], 100);
+  const instance = layer.group.children[0] as THREE.InstancedMesh;
+  const matrix = new THREE.Matrix4(); instance.getMatrixAt(1, matrix);
+  matrix.elements[12] += 9; instance.setMatrixAt(1, matrix);
+  close(layer.inspect()!.selectedVehicles[0].nose![0], 109);
+  layer.update([row("chosen", 50), ...Array.from({ length: 10 }, (_, i) => row(`new-${i}`, i))], templates);
+  selected = layer.inspect()!.selectedVehicles;
+  assert.equal(selected[0].instance, 0);
+  close(selected[0].nose![0], 50);
+  close(selected[0].bounds.min[1], AUTHORED_ROAD_SURFACE_Y);
+  assert.deepEqual(layer.inspect()!.ambulances, []);
+  layer.update([row("other", 10)], templates);
+  assert.deepEqual(layer.inspect()!.selectedVehicles, []);
+  layer.dispose(); geometry.dispose(); material.dispose();
+});
+
+test("disabled selected inspection performs no vehicle-ID lookup or scene traversal", () => {
+  const template = new THREE.Group();
+  const geometry = new THREE.BoxGeometry(2, 2, 4);
+  const material = new THREE.MeshBasicMaterial();
+  template.add(new THREE.Mesh(geometry, material));
+  const layer = new VehicleLayer(false, false, ["chosen"]);
+  const vehicle = { get id(): string { throw new Error("Disabled inspector read an ID"); },
+    type: "car", x: 10, y: 20, z: 0, angle_deg: 90, speed_mps: 0, length_m: 4.4 };
+  layer.update([vehicle], new Map([["car", template]]));
+  layer.group.updateWorldMatrix = () => { throw new Error("Disabled inspector traversed scene"); };
+  assert.equal(layer.inspect(), null);
+  layer.dispose(); geometry.dispose(); material.dispose();
+});
+
 
 test("inspection reports incompatible primitive matrices instead of inventing a whole-body pose", () => {
   const template = new THREE.Group();
@@ -195,4 +240,98 @@ test("every vehicle type and ghost contacts authored road top without changing g
       layer.dispose(); geometry.dispose(); material.dispose();
     }
   }
+});
+
+async function actualTemplate(type: string): Promise<THREE.Group> {
+  const bytes = readFileSync(new URL(`../../assets/exports/${type}.glb`, import.meta.url));
+  return (await new GLTFLoader().parseAsync(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), "")).scene;
+}
+function civilian(id: string, type = "car") {
+  return { id, type, x: 12, y: 30, z: 0, angle_deg: 90, speed_mps: 4, length_m: type === "truck" ? 6 : type === "bike" ? 1.8 : 4.5 };
+}
+function painted(layer: VehicleLayer) {
+  return (layer.group.children as THREE.InstancedMesh[]).filter((mesh) => mesh.instanceColor !== null);
+}
+function instanceColor(mesh: THREE.InstancedMesh, index: number) {
+  const color = new THREE.Color();mesh.getColorAt(index,color);return color.toArray();
+}
+
+test("actual civilian GLBs vary only their paint without adding batches or altering source materials", async () => {
+  const expectedPaint = { car: ["bluegrey"], truck: ["cream", "porcelain"], bike: ["terracotta"] };
+  for (const type of ["car", "truck", "bike"] as const) {
+    const template = await actualTemplate(type);
+    const originals: THREE.Material[] = [];
+    const colors: number[][] = [];
+    template.traverse((node) => {
+      if (node instanceof THREE.Mesh) {
+        const material = node.material as THREE.MeshStandardMaterial;
+        originals.push(material);colors.push(material.color.toArray());
+      }
+    });
+    const layer = new VehicleLayer();
+    layer.update(Array.from({ length: 24 }, (_,i) => civilian(`civilian-${i}`,type)),new Map([[type,template]]));
+    assert.equal(layer.group.children.length,originals.length,"Paint must retain one batch per original primitive");
+    assert.equal(painted(layer).length,expectedPaint[type].length);
+    for (const [index,child] of layer.group.children.entries()) {
+      const instance = child as THREE.InstancedMesh;
+      const original = originals[index] as THREE.MeshStandardMaterial;
+      assert.deepEqual(original.color.toArray(),colors[index],"Shared GLB material was modified");
+      if ((expectedPaint[type] as readonly string[]).includes(original.name)) {
+        assert.notEqual(instance.material,original);
+        assert.deepEqual((instance.material as THREE.MeshStandardMaterial).color.toArray(),[1,1,1]);
+        const choices = new Set(Array.from({length:24},(_,i) => instanceColor(instance,i).map(n => n.toFixed(5)).join(",")));
+        assert.equal(choices.size,8,"A real traffic population should use the complete stable palette");
+      } else {
+        assert.equal(instance.material,original,"Glass, tyres, lamps and metal must retain original materials");
+        assert.equal(instance.instanceColor,null);
+      }
+    }
+    layer.dispose();
+  }
+});
+
+test("paint follows vehicle ID through reordered frames, pool growth, despawn and independent worlds", async () => {
+  const template=await actualTemplate("car");
+  const templates=new Map([["car",template]]);
+  const active=new VehicleLayer();const baseline=new VehicleLayer();
+  const first=[civilian("civilian-7"),civilian("civilian-9")];
+  active.update(first,templates);
+  const original=new Map(first.map((v,i) => [v.id,instanceColor(painted(active)[0],i)]));
+  const second=[first[1],...Array.from({length:12},(_,i) => civilian(`new-${i}`)),first[0]];
+  active.update(second,templates);baseline.update([...second].reverse(),templates);
+  for (const [i,v] of second.entries()) {
+    const actual=instanceColor(painted(active)[0],i);
+    const other=instanceColor(painted(baseline)[0],second.length-1-i);
+    actual.forEach((n,j) => close(n,other[j]));
+    original.get(v.id)?.forEach((n,j) => close(actual[j],n));
+  }
+  active.update([],templates);active.update([first[0]],templates);
+  instanceColor(painted(active)[0],0).forEach((n,j) => close(n,original.get(first[0].id)![j]));
+  active.dispose();baseline.dispose();
+});
+
+test("ambulance and ghost never receive civilian paint and owned paint materials are released", async () => {
+  const ambulance=await actualTemplate("ambulance");const car=await actualTemplate("car");
+  const templates=new Map([["ambulance",ambulance],["car",car]]);
+  const active=new VehicleLayer();const ghost=new VehicleLayer(true);
+  active.update([civilian("ambulance","ambulance")],templates);
+  assert.equal(painted(active).length,0);
+  ghost.update([civilian("ambulance","ambulance"),civilian("ignored")],templates,.27);
+  assert.equal(painted(ghost).length,0);
+  for (const child of ghost.group.children as THREE.InstancedMesh[]) {
+    const material=child.material as THREE.MeshBasicMaterial;
+    assert.equal(material.color.getHex(),0x87d7ff);
+    assert.equal(material.opacity,.27);
+    assert.equal(material.depthWrite,false);
+  }
+  active.update([civilian("civilian-1")],templates);
+  const paintMaterial=painted(active)[0].material as THREE.Material;
+  let released=0;paintMaterial.addEventListener("dispose",() => released++);
+  let originalReleased=0;
+  car.traverse(node => { if(node instanceof THREE.Mesh)(node.material as THREE.Material).addEventListener("dispose",() => originalReleased++); });
+  active.update(Array.from({length:5},(_,i) => civilian(`civilian-${i}`)),templates);
+  assert.equal(released,1,"Growing the pool must dispose its previous paint material");
+  active.dispose();ghost.dispose();
+  assert.equal(released,1);
+  assert.equal(originalReleased,0,"Disposing instance pools must preserve shared GLB materials");
 });

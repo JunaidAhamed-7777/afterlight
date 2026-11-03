@@ -1,13 +1,18 @@
-# AFTERLIGHT roadmap — owner handoff
+# AFTERLIGHT roadmap
 
-> **Paused at owner request, November 3, 14:17 IST.** Cloud development and delegated work are halted. Existing written changes are preserved for the owner to continue locally. Read [HANDOFF.md](../HANDOFF.md): the final desktop redesign is unbuilt/untested, while `3060716` remains the last accepted corrected viewer. No further cloud builds, tests or experiments are scheduled.
+> **Resumed locally on November 3, 2026.** The owner authorized a full desktop product pass, a four-times-larger city, mixed traffic, real training/evaluation, two final polish passes and Vercel publication. This supersedes the earlier halt. Historical checkpoints below remain evidence of their exact source, not acceptance of new work.
 
-All times **IST (UTC+05:30)**. Target submission-ready November 4 at 16:00;
-recorded organizer deadline November 4 at 20:00, subject to the final rules check.
-The morning checkpoint was not completion. The owner has now stopped cloud work
-and will continue on their device. The remaining plan below is a handoff checklist,
-not an instruction to resume autonomous work. Scope depends on actual acceptance
-and measured pilot runtime.
+## Current release path
+
+1. **City and traffic:** 81 primary intersections over exactly 4× the original area; diagonal hospitals; original colorful Blender geometry; cars, trucks and bikes controlled by actual SUMO signals. Canonical route reachability and an expanded-city qualification pair have passed.
+2. **Desktop workspace:** fixed right-side city, camera and playback; independently scrolling Simulation/Results/Settings on the left; actual loading progress, comparison controls and accessible evidence. Production browser acceptance is in progress.
+3. **Engine and experiments:** batched verified TraCI observations, complete accounting and legal transitions. A twelve-episode/eighty-four-world pilot is running in an isolated pinned checkout before study freeze. No trained or held-out result is claimed while this remains pending.
+4. **Release quality:** independent source review, a complete genuine local API lifecycle check, two separate final polish passes, production performance and desktop interaction evidence. Mobile remains outside scope.
+5. **Publication:** deploy the verified product on Vercel, then use Canva for the visual identity, update the frontend and redeploy. Finish the human-readable README with actual screenshots, measured benchmarks and reproducible commands.
+
+The public recording is a genuine paired run, not simulated in the browser. See [expanded-city qualification](validation/expanded-city-qualification.json) and [current handoff](../HANDOFF.md). Keep all original journals and raw outputs intact. The 50 MB shipped-asset budget is a ceiling; lossless compression can reduce transfer without thinning source evidence.
+
+## Historical roadmap and acceptance checkpoints
 
 ## Original documentation checkpoint — November 3, 02:30 IST
 

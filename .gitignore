@@ -10,6 +10,7 @@ venv/
 node_modules/
 .next/
 dist/
+.vercel/
 coverage/
 # Blender backups and local runtime
 *.blend1

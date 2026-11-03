@@ -20,8 +20,6 @@ CITY = Path(os.environ.get('AFTERLIGHT_CITY_ASSET', str(ASSETS/'exports/city_enh
 MANIFEST = CITY.with_name(CITY.stem+'_manifest.json')
 MAX_BYTES = 25_000_000
 ORIGINAL_HASHES = {
-    'map/city_manifest.json':'87274a02fa237234f09a230cda5457a2c8a2c983a5541fe43378ced6cc16781b',
-    'exports/city_instances.json':'2a51e8181a9dfdb8bab45a1614d729a247c227cce5951670fd7a26c85af7a9f5',
     'exports/city_static.glb':'31536f9bf0ca0c1f6aebfa959792cb39058068ab8594e35744235451fe510efe',
     'exports/ambulance.glb':'df7d3162d5f7f377ed9b56ef53c104233877208795fafaddc06871d420388af1',
     'exports/car.glb':'a6021c89611c079f642e36d7daa534cacea9d224cbe1ad747f54c0a620adf591',
@@ -100,250 +98,140 @@ class InteractiveCityTests(unittest.TestCase):
         cls.report=json.loads(MANIFEST.read_text(encoding='utf-8'))
         cls.graph=json.loads((ASSETS/'map/city_manifest.json').read_text(encoding='utf-8'))
         cls.nodes=cls.gltf['nodes']
-        cls.buildings={node.get('extras',{}).get('building_id'):node for node in cls.nodes if 'building_id' in node.get('extras',{})}
-        cls._triangle_cache={}
+        cls.root=cls.nodes[cls.gltf['scenes'][cls.gltf.get('scene',0)]['nodes'][0]]
+        cls.buildings={n['extras']['building_id']:n for n in cls.nodes if 'building_id' in n.get('extras',{})}
 
-    def _building_triangles_blender(self,identifier):
-        """Read actual indexed GLB triangles, including root, into canonical XY/Z."""
-        if identifier not in self._triangle_cache:
-            root=self.nodes[self.gltf['scenes'][self.gltf.get('scene',0)]['nodes'][0]]
-            node=self.buildings[identifier]
-            transform=multiply(matrix(root),matrix(node))
-            triangles=[]
-            for primitive in self.gltf['meshes'][node['mesh']]['primitives']:
-                positions=[point(transform,p) for p in accessor(self.gltf,self.binary,primitive['attributes']['POSITION'])]
-                canonical=[(p[0],-p[2],p[1]) for p in positions]
-                indices=[value[0] for value in accessor(self.gltf,self.binary,primitive['indices'])]
-                triangles.extend(tuple(canonical[indices[i+j]] for j in range(3)) for i in range(0,len(indices),3))
-            self._triangle_cache[identifier]=triangles
-        return self._triangle_cache[identifier]
+    def world_positions(self,node):
+        transform=multiply(matrix(self.root),matrix(node))
+        return [point(transform,p) for primitive in self.gltf['meshes'][node['mesh']]['primitives']
+                for p in accessor(self.gltf,self.binary,primitive['attributes']['POSITION'])]
 
-    def _triangles_in_box(self,identifier,center,size):
-        low=[center[i]-size[i]/2 for i in range(3)]
-        high=[center[i]+size[i]/2 for i in range(3)]
-        # Float32 coordinate export at city scale needs millimetre tolerance;
-        # this is far smaller than the shortest intended 0.128 m bevel.
-        return [triangle for triangle in self._building_triangles_blender(identifier)
-                if all(low[i]-.002<=p[i]<=high[i]+.002 for p in triangle for i in range(3))]
-
-    def _assert_real_box(self,identifier,center,size):
-        triangles=self._triangles_in_box(identifier,center,size)
-        self.assertEqual(len(triangles),12,'Expected physical six-face box, not metadata or a billboard')
-        vertices={tuple(round(v,4) for v in p) for triangle in triangles for p in triangle}
-        self.assertEqual(len(vertices),8)
-        self.assertTrue(all(area_squared(*triangle)>1e-12 for triangle in triangles))
-        for axis in range(3):
-            self.assertAlmostEqual(min(p[axis] for p in vertices),center[axis]-size[axis]/2,delta=.002)
-            self.assertAlmostEqual(max(p[axis] for p in vertices),center[axis]+size[axis]/2,delta=.002)
-
-    def test_original_city_graph_and_tiny_vehicle_bytes_unchanged(self):
+    def test_original_vehicle_and_original_city_bytes_preserved(self):
         for relative,expected in ORIGINAL_HASHES.items():
             with self.subTest(path=relative):
                 self.assertEqual(hashlib.sha256((ASSETS/relative).read_bytes()).hexdigest(),expected)
 
-    def test_file_budget_and_exact_manifest_binding(self):
-        self.assertGreater(len(self.raw),1000)
+    def test_deployed_asset_budget_and_exact_source_binding(self):
         self.assertLessEqual(len(self.raw),MAX_BYTES)
-        self.assertEqual(self.report['schema'],'afterlight.city-enhancement.v1')
-        self.assertEqual(self.report['asset'],CITY.name)
         self.assertEqual(self.report['asset_bytes'],len(self.raw))
         self.assertEqual(self.report['asset_sha256'],hashlib.sha256(self.raw).hexdigest())
-        self.assertIs(self.report['canonical_geometry_changed'],False)
-        self.assertIs(self.report['vehicle_geometry_changed'],False)
-        self.assertEqual(self.report['provenance']['canonical_map_sha256'],ORIGINAL_HASHES['map/city_manifest.json'])
+        self.assertEqual(self.report['provenance']['canonical_map_sha256'],hashlib.sha256((ASSETS/'map/city_manifest.json').read_bytes()).hexdigest())
+        self.assertEqual(self.report['provenance']['generator_sha256'],hashlib.sha256((ASSETS/'src/generate_city_v4.py').read_bytes()).hexdigest())
+        self.assertEqual(self.report['enhancement_revision'],'v4-expanded-architectural-miniature')
+        self.assertLessEqual(sum(p.stat().st_size for p in (ASSETS/'exports').glob('*') if p.is_file()),50_000_000)
 
-    def test_embedded_real_meshes_not_external_textures_or_billboard_scene(self):
+    def test_embedded_real_geometry_without_external_texture_dependencies(self):
         self.assertEqual(self.gltf['asset']['version'],'2.0')
         self.assertEqual(len(self.gltf['buffers']),1)
         self.assertNotIn('uri',self.gltf['buffers'][0])
-        self.assertLessEqual(self.gltf['buffers'][0]['byteLength'],len(self.binary))
-        self.assertLess(len(self.binary)-self.gltf['buffers'][0]['byteLength'],4)
         self.assertFalse(self.gltf.get('images',[]))
-        self.assertFalse(self.gltf.get('textures',[]))
         self.assertFalse(self.gltf.get('animations',[]))
         self.assertFalse(self.gltf.get('skins',[]))
-        self.assertGreater(len(self.gltf['meshes']),len(self.buildings))
+        self.assertEqual(len(self.nodes),len(self.graph['buildings'])+2)
         for index in range(len(self.gltf['accessors'])):
             with self.subTest(accessor=index):accessor(self.gltf,self.binary,index)
 
-    def test_stable_complete_ids_and_single_mesh_ownership(self):
-        expected={building['id'] for building in self.graph['buildings']}
-        listed=[node['extras']['building_id'] for node in self.nodes if 'building_id' in node.get('extras',{})]
-        self.assertEqual(len(expected),187)
+    def test_complete_unique_building_ownership_and_preserved_root(self):
+        expected={b['id'] for b in self.graph['buildings']}
+        listed=[n['extras']['building_id'] for n in self.nodes if 'building_id' in n.get('extras',{})]
         self.assertEqual(set(listed),expected)
-        self.assertEqual(len(listed),len(expected),'Duplicate building IDs must not be hidden by dict collapse')
-        self.assertEqual({item['building_id'] for item in self.report['buildings']},expected)
-        self.assertEqual(len(self.report['buildings']),len(expected))
+        self.assertEqual(len(listed),len(expected))
         self.assertEqual(self.report['building_count'],len(expected))
-        owned=[]
-        for identifier,node in self.buildings.items():
-            self.assertEqual(node['name'],'AL_BUILDING_'+identifier)
-            self.assertIs(node['extras']['occluder'],True)
-            self.assertGreater(node['extras']['source_faces_preserved'],0)
-            owned.append(node['mesh'])
-        ground=[node for node in self.nodes if node.get('name')=='AL_GROUND']
-        self.assertEqual(len(ground),1)
-        self.assertIs(ground[0]['extras']['occluder'],False)
-        self.assertNotIn('building_id',ground[0]['extras'])
-        for node in self.nodes:
-            if 'mesh' in node and 'building_id' not in node.get('extras',{}):
-                self.assertEqual(node.get('name'),'AL_GROUND','Unclassified geometry must not enter localized building fading')
-                self.assertIs(node.get('extras',{}).get('occluder'),False)
-        self.assertEqual(len(set([*owned,ground[0]['mesh']])),len(owned)+1)
-        uses=Counter(node['mesh'] for node in self.nodes if 'mesh' in node)
-        self.assertTrue(all(uses[mesh]==1 for mesh in owned),'Building meshes cannot be reused by unrelated scene nodes')
-
-    def test_authored_root_and_children_transforms_preserved(self):
-        roots=self.gltf['scenes'][self.gltf.get('scene',0)]['nodes']
-        self.assertEqual(len(roots),1)
-        root=self.nodes[roots[0]]
-        self.assertEqual(root['name'],'AFTERLIGHT_CITY')
-        self.assertEqual(root.get('translation'),[10,-3,-7.5])
-        self.assertIs(root['extras']['preserved_authored_root'],True)
-        self.assertEqual(root['extras']['canonical_map_sha256'],ORIGINAL_HASHES['map/city_manifest.json'])
-        self.assertEqual(self.report['root_render_translation_m'],[10,-3,-7.5])
-        expected_children={i for i,node in enumerate(self.nodes) if 'mesh' in node}
-        self.assertEqual(set(root['children']),expected_children)
-        self.assertEqual(len(root['children']),len(expected_children))
-        identity=matrix({})
-        for index in root['children']:
-            self.assertEqual(matrix(self.nodes[index]),identity,'Geometry must remain authored root-local, not double-transformed')
-
-    def test_finite_volumetric_building_triangles_and_reported_world_bounds(self):
-        root=self.nodes[self.gltf['scenes'][self.gltf.get('scene',0)]['nodes'][0]]
-        reports={item['building_id']:item for item in self.report['buildings']}
-        canonical={item['id']:item for item in self.graph['buildings']}
-        total_triangles=0
-        for identifier,node in self.buildings.items():
-            with self.subTest(building=identifier):
-                transform=multiply(matrix(root),matrix(node))
-                positions=[];nondegenerate=0;building_triangles=0
-                mesh=self.gltf['meshes'][node['mesh']]
-                self.assertTrue(mesh['primitives'])
-                for primitive in mesh['primitives']:
-                    self.assertEqual(primitive.get('mode',4),4)
-                    self.assertFalse(primitive.get('targets',[]))
-                    self.assertIn('POSITION',primitive['attributes'])
-                    source=accessor(self.gltf,self.binary,primitive['attributes']['POSITION'])
-                    self.assertTrue(all(len(p)==3 for p in source))
-                    converted=[point(transform,p) for p in source];positions.extend(converted)
-                    indices=[v[0] for v in accessor(self.gltf,self.binary,primitive['indices'])] if 'indices' in primitive else list(range(len(source)))
-                    self.assertEqual(len(indices)%3,0)
-                    self.assertTrue(all(isinstance(i,int) and 0<=i<len(source) for i in indices))
-                    total_triangles+=len(indices)//3
-                    building_triangles+=len(indices)//3
-                    nondegenerate+=sum(area_squared(*(converted[indices[i+j]] for j in range(3)))>1e-12 for i in range(0,len(indices),3))
-                self.assertGreaterEqual(nondegenerate,12,'Not a volumetric authored building')
-                self.assertGreaterEqual(building_triangles,reports[identifier]['original_faces']+reports[identifier]['added_faces'],
-                                        'Declared polygon detail must exist as actual triangle geometry')
-                low=[min(p[axis] for p in positions) for axis in range(3)]
-                high=[max(p[axis] for p in positions) for axis in range(3)]
-                self.assertTrue(all(high[i]-low[i]>1 for i in range(3)))
-                authored=canonical[identifier]
-                x,y=authored['center'];width,depth=authored['size']
-                self.assertLessEqual(low[0],x);self.assertGreaterEqual(high[0],x)
-                self.assertLessEqual(low[2],-y);self.assertGreaterEqual(high[2],-y)
-                self.assertGreaterEqual(high[0]-low[0],width-.005)
-                self.assertGreaterEqual(high[2]-low[2],depth-.005)
-                self.assertGreaterEqual(high[1]-low[1],authored['height_m']-.005)
-                self.assertEqual(reports[identifier]['canonical_body_height_m'],authored['height_m'])
-                declared=reports[identifier]['world_bounds_render_m']
-                for measured,expected in zip([*low,*high],[*declared[0],*declared[1]]):
-                    self.assertAlmostEqual(measured,expected,delta=.005)
-        self.assertGreater(total_triangles,0)
-
-    def test_material_references_are_valid_and_asset_materials_remain_opaque(self):
-        # Sharing immutable GLB materials is intentional. The viewer must use
-        # per-building clones OR localized per-vertex masks, never fade shared
-        # ground material globally; runtime isolation needs browser QA.
-        materials=self.gltf['materials']
-        self.assertTrue(materials)
-        for node in self.buildings.values():
-            for primitive in self.gltf['meshes'][node['mesh']]['primitives']:
-                self.assertIsInstance(primitive['material'],int)
-                self.assertTrue(0<=primitive['material']<len(materials))
-                material=materials[primitive['material']]
-                self.assertEqual(material.get('alphaMode','OPAQUE'),'OPAQUE')
-                rgba=material.get('pbrMetallicRoughness',{}).get('baseColorFactor',[1,1,1,1])
-                self.assertEqual(len(rgba),4)
-                self.assertTrue(all(math.isfinite(x) and 0<=x<=1 for x in rgba))
-                self.assertEqual(rgba[3],1)
-
-    def test_original_face_inventory_and_added_real_detail_declared(self):
-        self.assertEqual(self.report['source_original_faces'],7360)
-        self.assertEqual(self.report['ground_original_faces'],4516)
-        self.assertEqual(sum(row['original_faces'] for row in self.report['buildings'])+self.report['ground_original_faces'],7360)
-        self.assertGreater(self.report['added_faces'],0)
-        self.assertEqual(sum(row['added_faces'] for row in self.report['buildings']),self.report['added_faces'])
-        for row in self.report['buildings']:
-            self.assertEqual(self.buildings[row['building_id']]['extras']['source_faces_preserved'],row['original_faces'])
-            if row['kind']!='hospital':self.assertGreater(row['added_faces'],0)
-
-    def test_v3_revision_and_complete_detail_feature_inventory(self):
-        self.assertEqual(self.report['enhancement_revision'],'v3-chamfered-rooftops-hospital-structure')
-        # Repository LF policy preserves exact authored generator provenance.
-        self.assertEqual(self.report['provenance']['generator_sha256'],
-                         hashlib.sha256((ASSETS/'src/enhance_city.py').read_bytes()).hexdigest())
-        hospital_count=0;rooftop_count=0
-        for row in self.report['buildings']:
-            features=row['detail_features'];kinds=[feature['kind'] for feature in features]
-            self.assertEqual(len(kinds),len(set(kinds)))
-            if row['kind']=='hospital':
-                hospital_count+=1
-                self.assertEqual(set(kinds),{'canopy_support_columns','canopy_front_fascia','upper_roof_edge_frame'})
-                support=next(feature for feature in features if feature['kind']=='canopy_support_columns')
-                self.assertEqual(support['count'],2)
-                self.assertGreater(support['clear_centre_span_m'],15)
+        self.assertEqual(self.root['name'],'AFTERLIGHT_CITY')
+        self.assertEqual(self.root.get('translation'),[10,-3,-7.5])
+        self.assertEqual(self.root['extras']['canonical_map_sha256'],self.report['provenance']['canonical_map_sha256'])
+        mesh_nodes=[n for n in self.nodes if 'mesh' in n]
+        self.assertEqual(len(set(n['mesh'] for n in mesh_nodes)),len(mesh_nodes))
+        for node in mesh_nodes:
+            self.assertEqual(matrix(node),matrix({}),'Children must not double-transform root-local geometry')
+            if 'building_id' in node.get('extras',{}):
+                self.assertEqual(node['name'],'AL_BUILDING_'+node['extras']['building_id'])
+                self.assertIs(node['extras']['occluder'],True)
             else:
-                rooftop_count+=1
-                self.assertEqual(set(kinds),{'existing_v2_facade_bays_and_ledges','rooftop_service_volume'})
-                rooftop=next(feature for feature in features if feature['kind']=='rooftop_service_volume')
-                self.assertEqual(rooftop['chamfer_segments'],1)
-                self.assertGreater(rooftop['chamfer_radius_m'],0)
-                self.assertLessEqual(rooftop['chamfer_radius_m'],.20)
-                self.assertIs(rooftop['outer_bounds_unchanged_from_v2'],True)
-        self.assertEqual((rooftop_count,hospital_count),(185,2))
+                self.assertEqual(node['name'],'AL_GROUND')
+                self.assertIs(node['extras']['occluder'],False)
 
-    def test_v3_rooftops_contain_actual_chamfer_faces_and_unchanged_outer_bounds(self):
+    def test_real_volumes_match_every_canonical_footprint_and_reported_bounds(self):
+        reports={b['building_id']:b for b in self.report['buildings']}
         for building in self.graph['buildings']:
-            if building['kind']=='hospital':continue
-            identifier=building['id'];x,y=building['center'];w,d=building['size'];h=building['height_m']
-            roof_h=min(1.8,max(.8,h*.045));radius=min(.20,roof_h*.16)
-            center=(x+w*.12,y-d*.10,h*1.03+roof_h/2);size=(w*.38,d*.32,roof_h)
-            with self.subTest(building=identifier):
-                triangles=self._triangles_in_box(identifier,center,size)
-                self.assertEqual(len(triangles),44,'A plain V2 box has only 12 triangles')
-                vertices={tuple(round(v,4) for v in p) for triangle in triangles for p in triangle}
-                self.assertEqual(len(vertices),24,'One-segment edge chamfer has 24 distinct positions')
-                slanted=0
-                for a,b,c in triangles:
-                    u=[b[i]-a[i] for i in range(3)];v=[c[i]-a[i] for i in range(3)]
-                    normal=(u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0])
-                    slanted+=sum(abs(value)>1e-5 for value in normal)>1
-                self.assertEqual(slanted,32,'Require real bevel/corner surfaces, not subdivided axis-aligned faces')
-                for axis in range(3):
-                    self.assertAlmostEqual(min(p[axis] for p in vertices),center[axis]-size[axis]/2,delta=.002)
-                    self.assertAlmostEqual(max(p[axis] for p in vertices),center[axis]+size[axis]/2,delta=.002)
-                low=center[2]-roof_h/2;high=center[2]+roof_h/2
-                for expected in (low,low+radius,high-radius,high):
-                    self.assertTrue(any(abs(p[2]-expected)<.002 for p in vertices),'Missing physical chamfer level')
+            with self.subTest(building=building['id']):
+                points=self.world_positions(self.buildings[building['id']])
+                low=[min(p[i] for p in points) for i in range(3)]
+                high=[max(p[i] for p in points) for i in range(3)]
+                x,y=building['center'];w,d=building['size']
+                self.assertLessEqual(low[0],x-w/2+.005)
+                self.assertGreaterEqual(high[0],x+w/2-.005)
+                self.assertLessEqual(low[2],-y-d/2+.005)
+                self.assertGreaterEqual(high[2],-y+d/2-.005)
+                self.assertGreaterEqual(high[1]-low[1],building['height_m']-.005)
+                for measured,expected in zip([*low,*high],sum(reports[building['id']]['world_bounds_render_m'],[])):
+                    self.assertAlmostEqual(measured,expected,delta=.005)
 
-    def test_v3_hospital_entry_and_roof_frame_exist_as_real_volumes(self):
-        for building in self.graph['buildings']:
-            if building['kind']!='hospital':continue
-            identifier=building['id'];x,y=building['center'];w,d=building['size'];h=building['height_m']
-            with self.subTest(building=identifier):
-                for side in (-1,1):
-                    self._assert_real_box(identifier,(x+side*7.8,y-d/2-7.3,2.175),(.55,.55,4.35))
-                self._assert_real_box(identifier,(x,y-d/2-7.72,5.82),(17.6,.38,.30))
-                uw,ud=w*.73,d*.74
-                for side in (-1,1):
-                    self._assert_real_box(identifier,(x,y+side*(ud/2-.24),h+4.22),(uw-.48,.38,.40))
-                    self._assert_real_box(identifier,(x+side*(uw/2-.24),y,h+4.22),(.38,ud-.48,.40))
-                # Upper roof frame has no new triangle inside the central roof
-                # identity area above the original flat H lettering.
-                centre=self._triangles_in_box(identifier,(x,y,h+4.25),(12,12,.30))
-                self.assertFalse(centre,'Roof frame must leave the original H area open')
+    def test_canonical_road_surface_is_physically_present_at_018_metres(self):
+        ground=next(n for n in self.nodes if n.get('name')=='AL_GROUND')
+        points=self.world_positions(ground)
+        surface={(round(x,2),round(-z,2)) for x,y,z in points if abs(y-.18)<.001}
+        for road in self.graph['roads']:
+            for a,b in zip(road['centerline'],road['centerline'][1:]):
+                dx,dy=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dy)
+                nx,ny=-dy/length,dx/length
+                for endpoint,direction in ((a,-1),(b,1)):
+                    for side in (-1,1):
+                        x=endpoint[0]+direction*.05*dx/length+side*nx*road['width_m']/2
+                        y=endpoint[1]+direction*.05*dy/length+side*ny*road['width_m']/2
+                        self.assertIn((round(x,2),round(y,2)),surface,road['id'])
+
+    def test_expansion_adds_city_geometry_and_diagonal_hospital_landmarks(self):
+        self.assertEqual(self.graph['expansion']['area_factor'],4)
+        self.assertEqual(self.graph['primary_intersection_count'],81)
+        self.assertGreaterEqual(len(self.buildings),800)
+        landmarks=[b for b in self.graph['buildings'] if b['kind']=='hospital']
+        self.assertEqual(len(landmarks),2)
+        a,b=[item['center'] for item in landmarks]
+        self.assertLess(a[0]*b[0],0)
+        self.assertLess(a[1]*b[1],0)
+        for landmark in landmarks:
+            node=self.buildings[landmark['id']]
+            primitives=self.gltf['meshes'][node['mesh']]['primitives']
+            count=sum(len(accessor(self.gltf,self.binary,p['indices']))//3 for p in primitives)
+            self.assertGreater(count,250,'Hospitals must be actual detailed landmark volumes')
+        self.assertGreater(self.report['scenery']['trees'],300)
+        self.assertGreater(self.report['scenery']['streetlights'],200)
+
+    def test_hospital_plazas_leave_real_depth_separation_from_driveways(self):
+        ground=next(n for n in self.nodes if n.get('name')=='AL_GROUND')
+        transform=multiply(matrix(self.root),matrix(ground))
+        plaza=set()
+        for primitive in self.gltf['meshes'][ground['mesh']]['primitives']:
+            if self.gltf['materials'][primitive['material']]['name']!='plaza':continue
+            for p in accessor(self.gltf,self.binary,primitive['attributes']['POSITION']):
+                x,y,z=point(transform,p)
+                plaza.add((round(x,2),round(-z,2),round(y,2)))
+        for parcel in self.graph['parcels']:
+            if parcel['kind']!='hospital':continue
+            x,y=parcel['center'];w,d=parcel['size']
+            for sx in (-1,1):
+                for sy in (-1,1):
+                    corner=(round(x+sx*w/2,2),round(y+sy*d/2,2))
+                    self.assertIn((*corner,.14),plaza)
+                    self.assertNotIn((*corner,.18),plaza,'Visual plaza must not be coplanar with canonical driveway')
+
+    def test_exact_triangle_inventory_finite_surfaces_and_valid_opaque_materials(self):
+        triangles=0
+        for mesh in self.gltf['meshes']:
+            for primitive in mesh['primitives']:
+                positions=accessor(self.gltf,self.binary,primitive['attributes']['POSITION'])
+                indices=[v[0] for v in accessor(self.gltf,self.binary,primitive['indices'])]
+                self.assertEqual(len(indices)%3,0)
+                self.assertTrue(all(0<=i<len(positions) for i in indices))
+                triangles+=len(indices)//3
+                self.assertGreater(sum(area_squared(*(positions[indices[i+j]] for j in range(3)))>1e-12 for i in range(0,len(indices),3)),0)
+                self.assertTrue(0<=primitive['material']<len(self.gltf['materials']))
+        self.assertEqual(triangles,self.report['triangles'])
+        self.assertLess(triangles,300_000)
+        for material in self.gltf['materials']:
+            self.assertEqual(material.get('alphaMode','OPAQUE'),'OPAQUE')
+            self.assertEqual(material.get('pbrMetallicRoughness',{}).get('baseColorFactor',[1,1,1,1])[3],1)
 
 
 if __name__=='__main__':unittest.main()

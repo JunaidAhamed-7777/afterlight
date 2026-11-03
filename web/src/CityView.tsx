@@ -2,12 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
-import type { City, Frame, SignalGeometry } from "./types.ts";
+import type { City, Frame, SignalGeometry, World } from "./types.ts";
+import { recordedSignalsAt } from "./signalTimeline.ts";
+import { boundedBytes } from "./response.ts";
 import { MapSelectionLayer, type MapPickMode } from "./MapSelectionLayer.ts";
 import { GeometryLayer } from "./GeometryLayer.ts";
 import { BuildingCutaway } from "./BuildingCutaway.ts";
 import { CameraControls, type CameraAction } from "./CameraControls.tsx";
-import { AmbulanceCameraTrack, cameraSeek, followBlend, MAX_CAMERA_ZOOM } from "./cameraFollow.ts";
+import {
+  AmbulanceCameraTrack,
+  cameraSeek,
+  followBlend,
+  MAX_CAMERA_ZOOM,
+} from "./cameraFollow.ts";
 import { fitOrthographic } from "./cameraFit.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
 import { interpolatedFrame } from "./replay.ts";
@@ -19,12 +26,19 @@ interface Props {
   followFrames: Frame[];
   onManualCamera: () => void;
   onMapReady: (ready: boolean) => void;
+  onLoadState: (state: {
+    completed: number;
+    total: number;
+    phase: string;
+    error: boolean;
+  }) => void;
   pickMode: MapPickMode;
   onMapPick: (mode: Exclude<MapPickMode, null>, id: string) => void;
   onCancelPick: () => void;
   clock: { current: number };
   routeEdges: string[];
   networkGeometry: SignalGeometry[];
+  signalWorld: World | null;
   ghost: boolean;
   ghostOpacity: number;
   pickup: string;
@@ -33,6 +47,7 @@ interface Props {
   follow: boolean;
   reducedMotion: boolean;
   reset: number;
+  locate: number;
   world: string;
 }
 const base = import.meta.env.BASE_URL;
@@ -46,7 +61,7 @@ export function CityView(props: Props) {
   const [retry, setRetry] = useState(0);
   const [exploring, setExploring] = useState(true);
   const [pan, setPan] = useState(false);
-  const [cutaway, setCutaway] = useState(true);
+  const [cutaway, setCutaway] = useState(false);
   const [occluderCount, setOccluderCount] = useState(0);
   const [hoverAnchor, setHoverAnchor] = useState("");
   const cameraAction = useRef<(action: CameraAction) => void>(() => {});
@@ -54,6 +69,7 @@ export function CityView(props: Props) {
   preferences.current = { pan, cutaway };
   useEffect(() => {
     const container = host.current!;
+    const assetRequests = new AbortController();
     let disposed = false,
       halted = false,
       raf = 0,
@@ -62,6 +78,13 @@ export function CityView(props: Props) {
       assetsLoaded = false,
       mapReady = false;
     current.current.onMapReady(false);
+    let completedAssets = 0;
+    current.current.onLoadState({
+      completed: 0,
+      total: 5,
+      phase: "Loading city geometry",
+      error: false,
+    });
     const haltRuntime = (message: string) => {
       if (disposed || halted) return;
       halted = true;
@@ -70,6 +93,12 @@ export function CityView(props: Props) {
       cancelAnimationFrame(raf);
       setFailed(true);
       setStatus(message);
+      current.current.onLoadState({
+        completed: completedAssets,
+        total: 5,
+        phase: message,
+        error: true,
+      });
     };
     let renderer: THREE.WebGLRenderer;
     setFailed(false);
@@ -79,19 +108,32 @@ export function CityView(props: Props) {
         antialias: true,
         alpha: true,
         powerPreference: "high-performance",
+        // Millimetre road layers must remain stable across a two-kilometre city
+        // while retaining the close inspection near plane.
+        logarithmicDepthBuffer: true,
       });
     } catch {
       setFailed(true);
       setStatus(
         "3D rendering is unavailable. The original city preview and evidence remain available.",
       );
+      current.current.onLoadState({
+        completed: 0,
+        total: 5,
+        phase: "3D rendering is unavailable",
+        error: true,
+      });
       return;
     }
     renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     renderer.setClearColor(0x101c2b, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // The city casts static shadows once; vehicle playback never redraws this map.
+    renderer.shadowMap.autoUpdate = false;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.35;
+    renderer.toneMappingExposure = 1.0;
     renderer.domElement.setAttribute(
       "aria-label",
       "Interactive original AFTERLIGHT city. Drag to orbit; use arrow keys or Pan mode to pan. Scroll or plus and minus zoom. X, Y, Z turn the camera; Shift reverses. Zero restores Full city. Tab leaves the map.",
@@ -109,7 +151,12 @@ export function CityView(props: Props) {
     let pickingCamera: THREE.Camera | null = null;
     let pickingMode: MapPickMode = null;
     let pickingCity: City | null = null;
-    let pointerStart: { id: number; x: number; y: number; dragged: boolean } | null = null;
+    let pointerStart: {
+      id: number;
+      x: number;
+      y: number;
+      dragged: boolean;
+    } | null = null;
     let hoverLabel = "";
     const showHover = (label: string) => {
       if (label === hoverLabel) return;
@@ -118,37 +165,73 @@ export function CityView(props: Props) {
     };
     const pickAt = (event: PointerEvent) => {
       const p = current.current;
-      if (!p.pickMode || p.pickMode !== pickingMode || p.city !== pickingCity || !pickingCamera || halted) return null;
+      if (
+        !p.pickMode ||
+        p.pickMode !== pickingMode ||
+        p.city !== pickingCity ||
+        !pickingCamera ||
+        halted
+      )
+        return null;
       const rect = renderer.domElement.getBoundingClientRect();
       if (rect.width <= 0 || rect.height <= 0) return null;
-      return selectionLayer.pick((event.clientX - rect.left) / rect.width * 2 - 1,
-        1 - (event.clientY - rect.top) / rect.height * 2, pickingCamera);
+      return selectionLayer.pick(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        1 - ((event.clientY - rect.top) / rect.height) * 2,
+        pickingCamera,
+      );
     };
     const pointerDown = (event: PointerEvent) => {
-      pointerStart = event.button === 0 && event.isPrimary && current.current.pickMode
-        ? { id: event.pointerId, x: event.clientX, y: event.clientY, dragged: false } : null;
+      pointerStart =
+        event.button === 0 && event.isPrimary && current.current.pickMode
+          ? {
+              id: event.pointerId,
+              x: event.clientX,
+              y: event.clientY,
+              dragged: false,
+            }
+          : null;
     };
     const pointerMove = (event: PointerEvent) => {
-      if (pointerStart && Math.hypot(event.clientX - pointerStart.x, event.clientY - pointerStart.y) > 5)
+      if (
+        pointerStart &&
+        Math.hypot(
+          event.clientX - pointerStart.x,
+          event.clientY - pointerStart.y,
+        ) > 5
+      )
         pointerStart.dragged = true;
       showHover(pickAt(event)?.label ?? "");
     };
     const pointerUp = (event: PointerEvent) => {
       const start = pointerStart;
       pointerStart = null;
-      if (!start || start.id !== event.pointerId || start.dragged ||
-          Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5) return;
+      if (
+        !start ||
+        start.id !== event.pointerId ||
+        start.dragged ||
+        Math.hypot(event.clientX - start.x, event.clientY - start.y) > 5
+      )
+        return;
       const picked = pickAt(event);
       const mode = current.current.pickMode;
-      if (picked && mode) { showHover(""); current.current.onMapPick(mode, picked.id); }
+      if (picked && mode) {
+        showHover("");
+        current.current.onMapPick(mode, picked.id);
+      }
     };
-    const cancelPointer = () => { pointerStart = null; showHover(""); };
+    const cancelPointer = () => {
+      pointerStart = null;
+      showHover("");
+    };
     renderer.domElement.addEventListener("pointerdown", pointerDown);
     renderer.domElement.addEventListener("pointermove", pointerMove);
     renderer.domElement.addEventListener("pointerup", pointerUp);
     renderer.domElement.addEventListener("pointercancel", cancelPointer);
     renderer.domElement.addEventListener("pointerleave", cancelPointer);
-    renderer.domElement.addEventListener("wheel", cancelPointer, { passive: true });
+    renderer.domElement.addEventListener("wheel", cancelPointer, {
+      passive: true,
+    });
     const projectedOrigin = new THREE.Vector3(),
       projectedNorth = new THREE.Vector3(),
       northDirection = new THREE.Vector3(0, 0, -100);
@@ -166,9 +249,11 @@ export function CityView(props: Props) {
     const cityBounds = () => {
       if (assetBounds) return assetBounds;
       const bounds = current.current.city?.bounds;
-      if (!bounds) return new THREE.Box3(
-        new THREE.Vector3(-650, 0, -650), new THREE.Vector3(650, 100, 650),
-      );
+      if (!bounds)
+        return new THREE.Box3(
+          new THREE.Vector3(-650, 0, -650),
+          new THREE.Vector3(650, 100, 650),
+        );
       return new THREE.Box3(
         new THREE.Vector3(bounds.min[0], bounds.min[2] ?? 0, -bounds.max[1]),
         new THREE.Vector3(bounds.max[0], bounds.max[2] ?? 100, -bounds.min[1]),
@@ -181,7 +266,9 @@ export function CityView(props: Props) {
       for (const x of [bounds.min.x, bounds.max.x])
         for (const y of [bounds.min.y, bounds.max.y])
           for (const z of [bounds.min.z, bounds.max.z]) {
-            const point = new THREE.Vector3(x, y, z).applyMatrix4(camera.matrixWorldInverse);
+            const point = new THREE.Vector3(x, y, z).applyMatrix4(
+              camera.matrixWorldInverse,
+            );
             points.push([point.x, point.y]);
           }
       const fit = fitOrthographic(points, viewportWidth, viewportHeight);
@@ -194,7 +281,11 @@ export function CityView(props: Props) {
     let programmaticNavigation = false;
     const updateNavigation = () => {
       programmaticNavigation = true;
-      try { controls.update(); } finally { programmaticNavigation = false; }
+      try {
+        controls.update();
+      } finally {
+        programmaticNavigation = false;
+      }
     };
     const overview = () => {
       perspectiveMode = false;
@@ -229,9 +320,13 @@ export function CityView(props: Props) {
       dirty = true;
     };
     explore();
-    controls.mouseButtons.LEFT = preferences.current.pan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+    controls.mouseButtons.LEFT = preferences.current.pan
+      ? THREE.MOUSE.PAN
+      : THREE.MOUSE.ROTATE;
     controls.mouseButtons.RIGHT = THREE.MOUSE.PAN;
-    controls.touches.ONE = preferences.current.pan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+    controls.touches.ONE = preferences.current.pan
+      ? THREE.TOUCH.PAN
+      : THREE.TOUCH.ROTATE;
     controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
     controls.listenToKeyEvents(renderer.domElement);
     const manualCamera = (breakFollow = false) => {
@@ -241,40 +336,70 @@ export function CityView(props: Props) {
     };
     const cameraGesture = (event: PointerEvent) => {
       // Orbit and zoom adjust the locked view; deliberate pan releases it.
-      manualCamera(event.button === 2 || (event.button === 0 &&
-        (preferences.current.pan || event.ctrlKey || event.metaKey || event.shiftKey)));
+      manualCamera(
+        event.button === 2 ||
+          (event.button === 0 &&
+            (preferences.current.pan ||
+              event.ctrlKey ||
+              event.metaKey ||
+              event.shiftKey)),
+      );
     };
     const cameraGestureStart = () => manualCamera();
     renderer.domElement.addEventListener("pointerdown", cameraGesture, true);
     controls.addEventListener("start", cameraGestureStart);
     cameraAction.current = (action) => {
       manualCamera(action === "overview" || action === "explore");
-      if (action === "overview") { overview(); return; }
-      if (action === "explore") { explore(); return; }
+      if (action === "overview") {
+        overview();
+        return;
+      }
+      if (action === "explore") {
+        explore();
+        return;
+      }
       if (action === "zoom-in" || action === "zoom-out") {
-        camera.zoom = THREE.MathUtils.clamp(camera.zoom * (action === "zoom-in" ? 1.35 : 1 / 1.35), controls.minZoom, controls.maxZoom);
-        camera.updateProjectionMatrix(); updateNavigation(); dirty = true; return;
+        camera.zoom = THREE.MathUtils.clamp(
+          camera.zoom * (action === "zoom-in" ? 1.35 : 1 / 1.35),
+          controls.minZoom,
+          controls.maxZoom,
+        );
+        camera.updateProjectionMatrix();
+        updateNavigation();
+        dirty = true;
+        return;
       }
       const direction = action.endsWith("+") ? 1 : -1;
-      if (action.startsWith("z")) roll += direction * Math.PI / 18;
+      if (action.startsWith("z")) roll += (direction * Math.PI) / 18;
       else {
         const offset = camera.position.clone().sub(controls.target);
         const spherical = new THREE.Spherical().setFromVector3(offset);
-        if (action.startsWith("x")) spherical.phi = THREE.MathUtils.clamp(
-          spherical.phi + direction * Math.PI / 18, controls.minPolarAngle, controls.maxPolarAngle);
-        else spherical.theta += direction * Math.PI / 18;
-        camera.position.copy(controls.target).add(offset.setFromSpherical(spherical));
+        if (action.startsWith("x"))
+          spherical.phi = THREE.MathUtils.clamp(
+            spherical.phi + (direction * Math.PI) / 18,
+            controls.minPolarAngle,
+            controls.maxPolarAngle,
+          );
+        else spherical.theta += (direction * Math.PI) / 18;
+        camera.position
+          .copy(controls.target)
+          .add(offset.setFromSpherical(spherical));
         updateNavigation();
       }
       dirty = true;
     };
     const cameraKeys = (event: KeyboardEvent) => {
       if (event.key === "Escape" && current.current.pickMode) {
-        event.preventDefault(); cancelPointer(); current.current.onCancelPick(); return;
+        event.preventDefault();
+        cancelPointer();
+        current.current.onCancelPick();
+        return;
       }
       if (["x", "y", "z"].includes(event.key.toLowerCase())) {
         event.preventDefault();
-        cameraAction.current(`${event.key.toLowerCase()}${event.shiftKey ? "-" : "+"}` as CameraAction);
+        cameraAction.current(
+          `${event.key.toLowerCase()}${event.shiftKey ? "-" : "+"}` as CameraAction,
+        );
         return;
       }
       if (
@@ -305,7 +430,10 @@ export function CityView(props: Props) {
         const delta = controls.target.clone().sub(lastNavigationTarget);
         if (delta.lengthSq() > 0) {
           const direction = camera.getWorldDirection(new THREE.Vector3());
-          const correction = delta.clone().applyAxisAngle(direction, -roll).sub(delta);
+          const correction = delta
+            .clone()
+            .applyAxisAngle(direction, -roll)
+            .sub(delta);
           controls.target.add(correction);
           camera.position.add(correction);
           camera.updateMatrixWorld(true);
@@ -314,11 +442,18 @@ export function CityView(props: Props) {
       lastNavigationTarget.copy(controls.target);
       dirty = true;
     });
-    scene.add(new THREE.HemisphereLight(0xc3daec, 0x4b5661, 2.1));
-    const sun = new THREE.DirectionalLight(0xffe4c2, 3.2);
+    scene.add(new THREE.HemisphereLight(0xe4f4ff, 0x77956a, 1.4));
+    const sun = new THREE.DirectionalLight(0xfff0cf, 2.2);
     sun.position.set(-450, 900, 200);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.bias = -0.0003;
+    sun.shadow.normalBias = 0.6;
+    sun.shadow.camera.near = 2000;
+    sun.shadow.camera.far = 6000;
     scene.add(sun);
-    const rim = new THREE.DirectionalLight(0x89bad5, 1.8);
+    scene.add(sun.target);
+    const rim = new THREE.DirectionalLight(0xadd8ff, 0.65);
     rim.position.set(500, 350, -550);
     scene.add(rim);
     const selected = new THREE.Group();
@@ -350,8 +485,17 @@ export function CityView(props: Props) {
     selected.add(pickupMarker, hospitalMarker);
     pickupMarker.visible = false;
     hospitalMarker.visible = false;
-    const inspectVehicles = new URLSearchParams(window.location.search).get("inspect") === "1";
-    const active = new VehicleLayer(false, inspectVehicles),
+    const inspectVehicles =
+      new URLSearchParams(window.location.search).get("inspect") === "1";
+    const inspectionIds = inspectVehicles
+      ? (new URLSearchParams(window.location.search).get("inspect_ids") ?? "")
+          .split(",").filter(id => /^[A-Za-z0-9_-]{1,80}$/.test(id)).slice(0, 16)
+      : [];
+    const inspectionSignals = inspectVehicles
+      ? new Set((new URLSearchParams(window.location.search).get("inspect_signals") ?? "")
+          .split(",").filter(id => /^[A-Za-z0-9_-]{1,80}$/.test(id)).slice(0, 16))
+      : null;
+    const active = new VehicleLayer(false, inspectVehicles, inspectionIds),
       ghosts = new VehicleLayer(true, inspectVehicles),
       signalGroup = new THREE.Group();
     scene.add(active.group, ghosts.group, signalGroup);
@@ -360,11 +504,26 @@ export function CityView(props: Props) {
     scene.add(geometryLayer.group);
     const signals = new Map<string, THREE.Mesh>();
     const loader = new GLTFLoader();
+    const loadAsset = async (name: string) => {
+      const url = `${base}assets/exports/${name}.glb`;
+      const response = await fetch(url, {
+        signal: AbortSignal.any([assetRequests.signal, AbortSignal.timeout(60000)]),
+      });
+      if (!response.ok) throw new Error(`${name} model request failed (${response.status}).`);
+      const bytes = await boundedBytes(response, 50 * 1024 * 1024);
+      if (disposed) throw new DOMException("City loading was canceled.", "AbortError");
+      return loader.parseAsync(bytes.buffer, new URL(`${base}assets/exports/`, location.href).href);
+    };
     const load = async () => {
       try {
-        const gltf = await loader.loadAsync(
-          `${base}assets/exports/city_enhanced.glb`,
-        );
+        const gltf = await loadAsset("city_enhanced");
+        completedAssets++;
+        current.current.onLoadState({
+          completed: completedAssets,
+          total: 5,
+          phase: "Preparing city and vehicles",
+          error: false,
+        });
         if (disposed || halted) {
           disposeObject(gltf.scene);
           return;
@@ -375,27 +534,72 @@ export function CityView(props: Props) {
         const loadedBounds = new THREE.Box3().setFromObject(gltf.scene);
         if (!loadedBounds.isEmpty()) assetBounds = loadedBounds;
         buildingCutaway.install(gltf.scene);
+        // Coplanar road/marking/park layers receive shadows but never cast them.
+        // Building batches cast onto the city; excluding their own receivers
+        // avoids shadow-map self-acne on miniature facade details.
+        gltf.scene.traverse((node) => {
+          if (node instanceof THREE.Mesh) {
+            node.castShadow = false;
+            node.receiveShadow = true;
+          }
+        });
+        buildingCutaway.batches.traverse((node) => {
+          if (node instanceof THREE.Mesh) {
+            node.castShadow = true;
+            node.receiveShadow = false;
+          }
+        });
+        if (assetBounds) {
+          const center = assetBounds.getCenter(new THREE.Vector3());
+          const radius =
+            Math.max(
+              assetBounds.max.x - assetBounds.min.x,
+              assetBounds.max.z - assetBounds.min.z,
+            ) * 0.85;
+          sun.position.copy(center).add(new THREE.Vector3(-1800, 3600, 800));
+          sun.target.position.copy(center);
+          Object.assign(sun.shadow.camera, {
+            left: -radius,
+            right: radius,
+            top: radius,
+            bottom: -radius,
+          });
+          sun.shadow.camera.updateProjectionMatrix();
+        }
+        renderer.shadowMap.needsUpdate = true;
         setOccluderCount(buildingCutaway.count);
-        if (!current.current.follow && !navigationTouched && perspectiveMode) explore();
+        if (!current.current.follow && !navigationTouched && perspectiveMode)
+          explore();
         else if (overviewMode && !current.current.follow) overview();
         dirty = true;
         setStatus("Loading original vehicle assets…");
         await Promise.all(
           ["ambulance", "car", "truck", "bike"].map(async (type) => {
-            const glb = await loader.loadAsync(
-              `${base}assets/exports/${type}.glb`,
-            );
+            const glb = await loadAsset(type);
             if (disposed || halted) {
               disposeObject(glb.scene);
               return;
             }
             models.set(type, glb.scene);
+            completedAssets++;
+            current.current.onLoadState({
+              completed: completedAssets,
+              total: 5,
+              phase: "Preparing vehicle models",
+              error: false,
+            });
             modelsRevision++;
             dirty = true;
           }),
         );
         if (!disposed && !halted) {
           assetsLoaded = true;
+          current.current.onLoadState({
+            completed: 5,
+            total: 5,
+            phase: "City ready",
+            error: false,
+          });
           setStatus("");
           dirty = true;
         }
@@ -419,8 +623,8 @@ export function CityView(props: Props) {
         else {
           // Preserve the user's target, zoom and vertical scale during resizing.
           const halfHeight = (camera.top - camera.bottom) / 2;
-          camera.left = -halfHeight * width / height;
-          camera.right = halfHeight * width / height;
+          camera.left = (-halfHeight * width) / height;
+          camera.right = (halfHeight * width) / height;
           camera.updateProjectionMatrix();
         }
       } catch (error) {
@@ -440,6 +644,7 @@ export function CityView(props: Props) {
     };
     renderer.domElement.addEventListener("webglcontextlost", contextLost);
     let lastReset = current.current.reset,
+      lastLocate = current.current.locate,
       lastQuality = "",
       lastProps: Props | null = null,
       lastModelsRevision = -1,
@@ -457,10 +662,15 @@ export function CityView(props: Props) {
       previousTick = tick;
       try {
         const p = current.current;
-        if (lastPan !== preferences.current.pan || lastCutaway !== preferences.current.cutaway) {
+        if (
+          lastPan !== preferences.current.pan ||
+          lastCutaway !== preferences.current.cutaway
+        ) {
           lastPan = preferences.current.pan;
           lastCutaway = preferences.current.cutaway;
-          controls.mouseButtons.LEFT = lastPan ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+          controls.mouseButtons.LEFT = lastPan
+            ? THREE.MOUSE.PAN
+            : THREE.MOUSE.ROTATE;
           controls.touches.ONE = lastPan ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
           dirty = true;
         }
@@ -481,10 +691,34 @@ export function CityView(props: Props) {
             overview();
             lastReset = p.reset;
           }
+          if (lastLocate !== p.locate) {
+            const target = new AmbulanceCameraTrack(p.followFrames).target(
+              p.clock.current,
+            );
+            if (target) {
+              const point = new THREE.Vector3(...target);
+              camera.position.add(point.clone().sub(controls.target));
+              controls.target.copy(point);
+              camera.zoom = 12;
+              perspectiveMode = true;
+              overviewMode = false;
+              setExploring(true);
+              camera.updateProjectionMatrix();
+              updateNavigation();
+            }
+            lastLocate = p.locate;
+          }
           if (lastQuality !== p.quality) {
             renderer.setPixelRatio(
               Math.min(devicePixelRatio, p.quality === "high" ? 1.5 : 1.25),
             );
+            const shadowSize = p.quality === "high" ? 4096 : 2048;
+            if (sun.shadow.mapSize.x !== shadowSize) {
+              sun.shadow.map?.dispose();
+              sun.shadow.map = null;
+              sun.shadow.mapSize.set(shadowSize, shadowSize);
+              renderer.shadowMap.needsUpdate = true;
+            }
             lastQuality = p.quality;
             resize();
           }
@@ -494,7 +728,14 @@ export function CityView(props: Props) {
             p.networkGeometry !== lastProps?.networkGeometry
           )
             geometryLayer.setGeometry(p.city, p.routeEdges, p.networkGeometry);
-          geometryLayer.update(frame?.signals ?? []);
+          const exactSignals = p.signalWorld
+            ? recordedSignalsAt(
+                p.signalWorld,
+                p.clock.current,
+                frame?.signals ?? [],
+              )
+            : (frame?.signals ?? []);
+          geometryLayer.update(exactSignals);
           active.update(frame?.vehicles ?? [], models);
           ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
           const point = p.city?.pickups.find(
@@ -510,9 +751,7 @@ export function CityView(props: Props) {
           hospitalMarker.visible = Boolean(hp);
           if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
           for (const s of signals.values()) s.visible = false;
-          for (const signal of p.networkGeometry.length
-            ? []
-            : (frame?.signals ?? [])) {
+          for (const signal of p.networkGeometry.length ? [] : exactSignals) {
             const n = p.city?.nodes.find((n) => n.id === signal.id);
             if (!n) continue;
             let dot = signals.get(signal.id);
@@ -535,7 +774,8 @@ export function CityView(props: Props) {
           lastTime = p.clock.current;
         }
         const replacedTrack = followTrack.frames !== p.followFrames;
-        if (replacedTrack) followTrack = new AmbulanceCameraTrack(p.followFrames);
+        if (replacedTrack)
+          followTrack = new AmbulanceCameraTrack(p.followFrames);
         const following = p.follow && !p.reducedMotion;
         if (following) {
           overviewMode = false;
@@ -543,10 +783,14 @@ export function CityView(props: Props) {
           if (point) {
             const destination = new THREE.Vector3(...point);
             const delta = destination.sub(controls.target);
-            const discontinuity = replacedTrack || cameraSeek(previousFollowTime, p.clock.current, elapsed);
+            const discontinuity =
+              replacedTrack ||
+              cameraSeek(previousFollowTime, p.clock.current, elapsed);
             if (!discontinuity) delta.multiplyScalar(followBlend(elapsed));
             if (delta.lengthSq() > 1e-8) {
-              camera.position.add(delta); controls.target.add(delta); dirty = true;
+              camera.position.add(delta);
+              controls.target.add(delta);
+              dirty = true;
             }
           }
         }
@@ -558,10 +802,17 @@ export function CityView(props: Props) {
           // Navigation stays unrolled; the presentation camera adds perspective and roll.
           // Neither camera changes canonical geometry or the shared simulation clock.
           if (perspectiveMode) {
-            const targetHalfHeight = (camera.top - camera.bottom) / (2 * camera.zoom);
-            const distance = targetHalfHeight / Math.tan(THREE.MathUtils.degToRad(perspectiveCamera.fov / 2));
-            perspectiveCamera.position.copy(camera.position).sub(controls.target).normalize()
-              .multiplyScalar(distance).add(controls.target);
+            const targetHalfHeight =
+              (camera.top - camera.bottom) / (2 * camera.zoom);
+            const distance =
+              targetHalfHeight /
+              Math.tan(THREE.MathUtils.degToRad(perspectiveCamera.fov / 2));
+            perspectiveCamera.position
+              .copy(camera.position)
+              .sub(controls.target)
+              .normalize()
+              .multiplyScalar(distance)
+              .add(controls.target);
             perspectiveCamera.quaternion.copy(camera.quaternion);
             perspectiveCamera.aspect = viewportWidth / viewportHeight;
             perspectiveCamera.updateProjectionMatrix();
@@ -574,13 +825,29 @@ export function CityView(props: Props) {
           renderCamera.updateMatrixWorld(true);
           const focus = controls.target.clone();
           const forward = renderCamera.getWorldDirection(new THREE.Vector3());
-          const groundDistance = Math.abs(forward.y) > 1e-6 ? (2 - renderCamera.position.y) / forward.y : -1;
-          const hasGroundFocus = Number.isFinite(groundDistance) && groundDistance > 0;
+          const groundDistance =
+            Math.abs(forward.y) > 1e-6
+              ? (2 - renderCamera.position.y) / forward.y
+              : -1;
+          const hasGroundFocus =
+            Number.isFinite(groundDistance) && groundDistance > 0;
           if (p.follow && !p.reducedMotion) focus.y = 2;
-          else if (hasGroundFocus) focus.copy(renderCamera.position).addScaledVector(forward, groundDistance);
-          const fadedBuildings = buildingCutaway.update(preferences.current.cutaway && perspectiveMode && camera.zoom > 1.3 && hasGroundFocus, focus, renderCamera);
+          else if (hasGroundFocus)
+            focus
+              .copy(renderCamera.position)
+              .addScaledVector(forward, groundDistance);
+          const fadedBuildings = buildingCutaway.update(
+            preferences.current.cutaway &&
+              perspectiveMode &&
+              camera.zoom > 1.3 &&
+              hasGroundFocus,
+            focus,
+            renderCamera,
+          );
           renderer.domElement.dataset.fadedBuildings = String(fadedBuildings);
-          renderer.domElement.dataset.occluderBuildings = String(buildingCutaway.count);
+          renderer.domElement.dataset.occluderBuildings = String(
+            buildingCutaway.count,
+          );
           selectionLayer.setAnchors(p.city, p.pickMode);
           selectionLayer.update(renderCamera, viewportHeight);
           pickingCamera = p.pickMode ? renderCamera.clone() : null;
@@ -588,13 +855,19 @@ export function CityView(props: Props) {
           pickingCity = p.city;
           if (!p.pickMode) showHover("");
           renderer.domElement.dataset.mapPickMode = p.pickMode ?? "none";
-          renderer.domElement.dataset.mapAnchors = JSON.stringify(p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : []);
+          renderer.domElement.dataset.mapAnchors = JSON.stringify(
+            p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : [],
+          );
           geometryLayer.updatePresentation(renderCamera, viewportHeight);
           renderer.render(scene, renderCamera);
           if (inspectVehicles) {
             renderer.domElement.dataset.vehicleInspection = JSON.stringify({
-              absoluteTime: p.clock.current, world: p.world,
-              ghostRequested: p.ghost, active: active.inspect(), ghost: ghosts.inspect(),
+              absoluteTime: p.clock.current,
+              world: p.world,
+              ghostRequested: p.ghost,
+              active: active.inspect(),
+              ghost: ghosts.inspect(),
+              signalLinks: inspectionSignals ? geometryLayer.inspectSignals(inspectionSignals, renderCamera) : [],
             });
           }
           if (assetsLoaded && !mapReady) {
@@ -604,18 +877,24 @@ export function CityView(props: Props) {
           renderer.domElement.dataset.cameraZoom = String(camera.zoom);
           // Inspectable actual asset bounds, for viewport-fit QA, never simulated evidence.
           if (assetBounds) {
-            let maxX = 0, maxY = 0;
+            let maxX = 0,
+              maxY = 0;
             for (const x of [assetBounds.min.x, assetBounds.max.x])
               for (const y of [assetBounds.min.y, assetBounds.max.y])
                 for (const z of [assetBounds.min.z, assetBounds.max.z]) {
-                  const corner = new THREE.Vector3(x, y, z).project(renderCamera);
+                  const corner = new THREE.Vector3(x, y, z).project(
+                    renderCamera,
+                  );
                   maxX = Math.max(maxX, Math.abs(corner.x));
                   maxY = Math.max(maxY, Math.abs(corner.y));
                 }
             renderer.domElement.dataset.cityFit = JSON.stringify({
               source: "world-transformed original glTF bounds",
-              overview: overviewMode, maxX, maxY,
-              viewportWidth, viewportHeight,
+              overview: overviewMode,
+              maxX,
+              maxY,
+              viewportWidth,
+              viewportHeight,
             });
           }
           renderer.domElement.dataset.cameraTarget = controls.target
@@ -631,20 +910,34 @@ export function CityView(props: Props) {
           if (compass.current)
             compass.current.style.transform = `rotate(${(Math.atan2(dx, -dy) * 180) / Math.PI}deg)`;
           renderer.domElement.dataset.renderInfo = JSON.stringify({
-            calls: renderer.info.render.calls, triangles: renderer.info.render.triangles,
-            geometries: renderer.info.memory.geometries, textures: renderer.info.memory.textures,
-            fadedBuildings, occluderBuildings: buildingCutaway.count,
+            calls: renderer.info.render.calls,
+            triangles: renderer.info.render.triangles,
+            geometries: renderer.info.memory.geometries,
+            textures: renderer.info.memory.textures,
+            fadedBuildings,
+            occluderBuildings: buildingCutaway.count,
+            logarithmicDepth: renderer.capabilities.logarithmicDepthBuffer,
           });
-          renderer.domElement.dataset.cameraPresentation = perspectiveMode ? "perspective" : "orthographic";
+          renderer.domElement.dataset.cameraPresentation = perspectiveMode
+            ? "perspective"
+            : "orthographic";
           renderer.domElement.dataset.cameraRoll = String(roll);
-          const orbit = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+          const orbit = new THREE.Spherical().setFromVector3(
+            camera.position.clone().sub(controls.target),
+          );
           renderer.domElement.dataset.cameraAzimuth = String(orbit.theta);
-          renderer.domElement.dataset.cameraElevation = String(Math.PI / 2 - orbit.phi);
+          renderer.domElement.dataset.cameraElevation = String(
+            Math.PI / 2 - orbit.phi,
+          );
           renderer.domElement.dataset.cameraState = JSON.stringify({
             mode: perspectiveMode ? "perspective" : "orthographic",
-            position: renderCamera.position.toArray(), quaternion: renderCamera.quaternion.toArray(),
-            target: controls.target.toArray(), zoom: camera.zoom, roll,
-            azimuth: orbit.theta, elevation: Math.PI / 2 - orbit.phi,
+            position: renderCamera.position.toArray(),
+            quaternion: renderCamera.quaternion.toArray(),
+            target: controls.target.toArray(),
+            zoom: camera.zoom,
+            roll,
+            azimuth: orbit.theta,
+            elevation: Math.PI / 2 - orbit.phi,
             viewport: [viewportWidth, viewportHeight],
           });
           renderCamera.quaternion.copy(unrolled);
@@ -661,11 +954,16 @@ export function CityView(props: Props) {
     loop();
     return () => {
       disposed = true;
+      assetRequests.abort();
       current.current.onMapReady(false);
       cancelAnimationFrame(raf);
       observer.disconnect();
       cameraAction.current = () => {};
-      renderer.domElement.removeEventListener("pointerdown", cameraGesture, true);
+      renderer.domElement.removeEventListener(
+        "pointerdown",
+        cameraGesture,
+        true,
+      );
       controls.removeEventListener("start", cameraGestureStart);
       controls.dispose();
       renderer.domElement.removeEventListener("pointerdown", pointerDown);
@@ -683,6 +981,7 @@ export function CityView(props: Props) {
       buildingCutaway.dispose();
       disposeObject(scene);
       for (const model of models.values()) disposeObject(model);
+      sun.shadow.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
@@ -690,20 +989,40 @@ export function CityView(props: Props) {
   return (
     <div className="city-view">
       <div className="three-host" ref={host} />
-      {!status && !failed && <CameraControls exploring={exploring} pan={pan} cutaway={cutaway} occluderCount={occluderCount} disabled={failed || Boolean(status)}
-        onAction={action => cameraAction.current(action)} onPan={setPan} onCutaway={setCutaway} />}
-      {props.pickMode && !status && !failed && <div className="map-pick-instructions">
-        <strong>Choose a {props.pickMode === "pickup" ? "pickup marker" : "hospital marker"}</strong>
-        <p>Click a highlighted marker. Dragging still moves the camera. Your route changes only after a click.</p>
-        <span className="map-pick-hover" aria-hidden="true">{hoverAnchor || "Hover a marker to see its name"}</span>
-        <button onClick={props.onCancelPick}>Cancel map selection</button>
-        <small>Escape cancels. You can also use the journey dropdowns.</small>
-      </div>}
+      {!status && !failed && (
+        <CameraControls
+          exploring={exploring}
+          pan={pan}
+          cutaway={cutaway}
+          occluderCount={occluderCount}
+          disabled={failed || Boolean(status)}
+          onAction={(action) => cameraAction.current(action)}
+          onPan={setPan}
+          onCutaway={setCutaway}
+        />
+      )}
+      {props.pickMode && !status && !failed && (
+        <div className="map-pick-instructions">
+          <strong>
+            Choose a{" "}
+            {props.pickMode === "pickup" ? "pickup marker" : "hospital marker"}
+          </strong>
+          <p>
+            Click a highlighted marker. Dragging still moves the camera. Your
+            route changes only after a click.
+          </p>
+          <span className="map-pick-hover" aria-hidden="true">
+            {hoverAnchor || "Hover a marker to see its name"}
+          </span>
+          <button onClick={props.onCancelPick}>Cancel map selection</button>
+          <small>Escape cancels. You can also use the journey dropdowns.</small>
+        </div>
+      )}
       {failed && (
         <img
           className="city-fallback"
-          src={`${base}assets/previews/city_overview.png`}
-          alt="Blender authoring preview of the original 25-junction city; not a running simulation"
+          src={`${base}assets/previews/city_expanded.png`}
+          alt="Blender authoring preview of the expanded city; not a running simulation"
         />
       )}
       {status && (
@@ -716,19 +1035,21 @@ export function CityView(props: Props) {
           )}
         </div>
       )}
-      {!status && !failed && <div
-        className="map-compass"
-        ref={compass}
-        aria-hidden="true"
-        title="Canonical north (+Y)"
-      >
-        <svg viewBox="0 0 40 56">
-          <path d="M20 10 29 36 20 30 11 36Z" fill="currentColor" />
-          <text x="20" y="7" textAnchor="middle">
-            N
-          </text>
-        </svg>
-      </div>}
+      {!status && !failed && (
+        <div
+          className="map-compass"
+          ref={compass}
+          aria-hidden="true"
+          title="Canonical north (+Y)"
+        >
+          <svg viewBox="0 0 40 56">
+            <path d="M20 10 29 36 20 30 11 36Z" fill="currentColor" />
+            <text x="20" y="7" textAnchor="middle">
+              N
+            </text>
+          </svg>
+        </div>
+      )}
     </div>
   );
 }

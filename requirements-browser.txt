@@ -1,0 +1,2 @@
+# Optional desktop QA only. Uses an already installed Chrome; no browser download.
+playwright==1.64.1
