@@ -153,6 +153,8 @@ class WorldControlHookTests(unittest.TestCase):
         connection.getVersion.return_value = (0, 'SYNTHETIC TEST, NOT SUMO')
         for method in ('getDepartedIDList', 'getArrivedIDList', 'getCollidingVehiclesIDList', 'getStartingTeleportIDList'):
             getattr(connection.simulation, method).return_value = []
+        connection.simulation.getDepartedIDList.side_effect = lambda: ['civilian-unit'] if connection.simulationStep.call_count == 1 else []
+        connection.simulation.getArrivedIDList.side_effect = lambda: ['civilian-unit'] if connection.simulationStep.call_count == 10 else []
         connection.vehicle.getIDList.return_value = []
         if cancel_after is not None:
             def step():
@@ -160,13 +162,24 @@ class WorldControlHookTests(unittest.TestCase):
                     control.cancel()
             connection.simulationStep.side_effect = step
         traci = SimpleNamespace(start=Mock(), getConnection=Mock(return_value=connection))
-        cache = SimpleNamespace(vehicles={}, refresh=lambda ids: None, poses=lambda: [])
+        class SyntheticCache:
+            vehicles = {}
+            def refresh(self, ids):
+                self.vehicles = {'civilian-unit': {}} if 1 <= connection.simulationStep.call_count < 10 else {}
+            def speed(self, vehicle):
+                return 0
+            def poses(self):
+                return [{'id': vehicle, 'type': 'car', 'x': 0, 'y': 0, 'z': 0,
+                         'angle_deg': 0, 'speed_mps': 0, 'length_m': 4} for vehicle in self.vehicles]
+        cache = SyntheticCache()
         process = Mock()
         process.poll.return_value = 0
         demand = {'network_kind': 'fixture', 'dispatch_s': 1, 'demand_end_s': 2, 'seed': 7,
                   'reference_definition': 'synthetic unit reference',
                   'vehicles': [{'id': 'ambulance', 'type': 'ambulance', 'route': ['edge'],
-                                'depart_s': 1, 'depart_pos_m': 0, 'reference_s': 10}]}
+                                'depart_s': 1, 'depart_pos_m': 0, 'reference_s': 10},
+                               {'id': 'civilian-unit', 'type': 'car', 'route': ['edge'],
+                                'depart_s': .5, 'depart_pos_m': 0, 'reference_s': 10}]}
         network = {'signals': {}, 'edges': {'edge': {'length_m': 100, 'speed_mps': 10, 'lanes': ['edge_0']}}}
         analytical = {'lead_s': 0}
         with patch.dict(sys.modules, {'traci': traci}), patch('sim.run.validate_saved_demand'), \
@@ -193,9 +206,16 @@ class WorldControlHookTests(unittest.TestCase):
         for field in ('frames', 'events', 'decision', 'status'):
             self.assertEqual(controlled[field], original[field])
         self.assertEqual(len(controlled['frames']), 21)
-        actual = [event for event in events if event['phase'] == 'simulating']
+        actual = [event for event in events if event.get('phase') == 'simulating']
         self.assertEqual([(e['completed_steps'], e['total_steps'], e['simulation_time_s']) for e in actual],
                          [(10, 20, 5), (20, 20, 10)])
+        queues = [event for event in events if event['type'] == 'queue']
+        self.assertEqual(len(queues), 21)
+        self.assertEqual([event['world_id'] for event in queues], ['baseline'] * 21)
+        self.assertEqual([(event['t'], event['queue_count']) for event in queues],
+                         [(frame['t'], frame['queue_count']) for frame in controlled['frames']])
+        self.assertEqual([event['t'] for event in queues], [index * .5 for index in range(21)])
+        self.assertEqual([event['queue_count'] for event in queues], [0] + [1] * 9 + [0] * 11)
 
     def test_mid_world_cancellation_has_no_completed_outcome(self):
         events = []
@@ -205,8 +225,10 @@ class WorldControlHookTests(unittest.TestCase):
             world = Path(directory)/'world'
             self.assertTrue((world/'cancelled.json').is_file())
             self.assertFalse((world/'outcome.json').exists())
-            actual = [event for event in events if event['phase'] == 'simulating']
+            actual = [event for event in events if event.get('phase') == 'simulating']
             self.assertEqual([event['completed_steps'] for event in actual], [10])
+            queues = [event for event in events if event['type'] == 'queue']
+            self.assertEqual([event['t'] for event in queues], [index * .5 for index in range(11)])
 
 
 if __name__ == '__main__':

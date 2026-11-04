@@ -324,6 +324,9 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                         if phase_queues(conn, signal, cache) != phase_queues(conn, signal):
                             raise RuntimeError('Subscribed phase queues differ from direct SUMO reads')
                 frames.append(frame)
+                if control is not None:
+                    control.emit({'type': 'queue', 'world_id': world_id,
+                                  't': frame['t'], 'queue_count': frame['queue_count']})
             conn.simulationStep()
             current = round((step + 1) * step_s, 9)
             departed_ids = conn.simulation.getDepartedIDList()
@@ -371,7 +374,11 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                 conn.trafficlight.setRedYellowGreenState(j, state)
                 last_signal_states[j] = state
                 signal_state_write_count += 1
-        frames.append(pose_frame(conn, network, end_s, cache))
+        endpoint_frame = pose_frame(conn, network, end_s, cache)
+        frames.append(endpoint_frame)
+        if control is not None:
+            control.emit({'type': 'queue', 'world_id': world_id,
+                          't': endpoint_frame['t'], 'queue_count': endpoint_frame['queue_count']})
         events.extend(event for scheduler in schedulers.values() for event in scheduler.events)
         physical = set(conn.vehicle.getIDList())
         expected_running = set(ledger.inserted) - set(ledger.completed)

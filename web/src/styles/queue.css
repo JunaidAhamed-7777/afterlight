@@ -1,0 +1,44 @@
+.progressive-queue-chart {
+  min-width: 0;
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.progressive-queue-chart figcaption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+}
+.progressive-queue-chart .queue-compare {
+  min-height: 28px;
+  padding: 3px 7px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.progressive-queue-chart .queue-compare[aria-pressed="true"] {
+  color: var(--ambulance);
+  border-color: var(--ambulance);
+}
+.progressive-queue-chart .queue-latest { display: flex; gap: 24px; flex-wrap: wrap; margin: 14px 0 0; }
+.progressive-queue-chart .queue-latest > div { display: grid; gap: 5px; }
+.progressive-queue-chart .queue-latest dt { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 11px; }
+.progressive-queue-chart .queue-latest dt span { width: 14px; height: 2px; background: var(--ambulance); }
+.progressive-queue-chart .queue-latest .comparison dt span { background: var(--ghost); }
+.progressive-queue-chart .queue-latest dd { margin: 0; font-size: 23px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.progressive-queue-chart .queue-latest dd small { font-size: 11px; font-weight: 400; color: var(--muted); }
+.progressive-queue-chart .queue-plot-host { min-width: 0; }
+.progressive-queue-chart svg { display: block; width: 100%; height: 218px; margin-top: 8px; overflow: visible; }
+.progressive-queue-chart text { font: 10px var(--mono); fill: var(--muted); }
+.progressive-queue-chart .queue-grid { stroke: var(--line); stroke-width: 1; }
+.progressive-queue-chart .queue-cursor { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 4; opacity: .6; }
+.progressive-queue-chart .queue-cursor-label { fill: var(--text); font-size: 11px; }
+.progressive-queue-chart .queue-series polyline { fill: none; stroke: var(--ambulance); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.progressive-queue-chart .queue-series circle { fill: var(--ambulance); }
+.progressive-queue-chart .queue-series.comparison polyline { stroke: var(--ghost); stroke-width: 1.25; stroke-dasharray: 3 4; }
+.progressive-queue-chart .queue-series.comparison circle { fill: var(--ghost); }
+.progressive-queue-chart .queue-empty { font: 12px var(--sans); }
+.progressive-queue-chart > .queue-caption { display: block; margin: 2px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.progressive-queue-chart > small { font-size: 11px; margin-top: 8px; }

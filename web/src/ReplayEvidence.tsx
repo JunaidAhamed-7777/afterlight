@@ -13,8 +13,12 @@ export function metric(value: unknown, suffix = ""): string {
 /** Outcomes belong to the whole recording, never to the current playback frame. */
 export const ReplayEvidence = memo(function ReplayEvidence({
   replay,
+  time = 0,
+  world = "afterlight",
 }: {
   replay: Replay;
+  time?: number;
+  world?: "afterlight" | "baseline";
 }) {
   const worlds = ["afterlight", "baseline"] as const;
   const complete = worlds.every(
@@ -146,7 +150,7 @@ export const ReplayEvidence = memo(function ReplayEvidence({
           </p>
         ))}
       </details>
-      <QueueChart replay={replay} />
+      <QueueChart replay={replay} time={time} world={world} />
       <details className="disclosure">
         <summary>Signal decisions</summary>
         <DecisionInspector replay={replay} />
