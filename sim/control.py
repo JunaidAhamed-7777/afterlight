@@ -5,6 +5,7 @@ callers that do not pass a control retain their original execution path.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 import subprocess
 import threading
 import time
@@ -21,6 +22,7 @@ class RunControl:
         self.cancel_event = cancel_event if cancel_event is not None else threading.Event()
         self.on_progress = on_progress
         self._lock = threading.Lock()
+        self._stop_lock = threading.Lock()
         self._processes: set[subprocess.Popen] = set()
         self._closed = threading.Event()
         self._watcher: threading.Thread | None = None
@@ -44,28 +46,35 @@ class RunControl:
     def emit(self, event: dict) -> None:
         self.check_cancelled()
         if self.on_progress is not None:
-            self.on_progress(dict(event))
+            # A route notification must never give its consumer a mutable
+            # reference into the demand that the engine is about to execute.
+            self.on_progress(deepcopy(event))
         self.check_cancelled()
 
     def progress(self, phase: str, message: str, **values) -> None:
         self.emit({"type": "progress", "phase": phase, "message": message, **values})
 
-    @staticmethod
-    def _stop(process: subprocess.Popen) -> None:
-        if process.poll() is not None:
-            return
-        try:
-            process.terminate()
-        except ProcessLookupError:
-            return
-        try:
-            process.wait(timeout=.75)
-        except subprocess.TimeoutExpired:
-            try:
-                process.kill()
-            except ProcessLookupError:
+    def _stop(self, process: subprocess.Popen) -> None:
+        # The watcher and request-finally path can race on the same handle.
+        with self._stop_lock:
+            if process.poll() is not None:
                 return
-            process.wait(timeout=.75)
+            try:
+                process.terminate()
+            except OSError:
+                if process.poll() is not None:
+                    return
+                raise
+            try:
+                process.wait(timeout=.75)
+            except subprocess.TimeoutExpired:
+                try:
+                    process.kill()
+                except OSError:
+                    if process.poll() is not None:
+                        return
+                    raise
+                process.wait(timeout=.75)
 
     def _stop_owned(self) -> None:
         with self._lock:
@@ -99,6 +108,10 @@ class RunControl:
         with self._lock:
             self._processes.discard(process)
 
+    def stop_process(self, process: subprocess.Popen) -> None:
+        self._stop(process)
+        self.release_process(process)
+
     def run_command(self, command: list[str], *, capture_output=False, text=False,
                     check=False, **kwargs) -> subprocess.CompletedProcess:
         if capture_output:
@@ -118,8 +131,7 @@ class RunControl:
                 result.check_returncode()
             return result
         finally:
-            self._stop(process)
-            self.release_process(process)
+            self.stop_process(process)
 
     def start_traci(self, command: list[str], *, label: str, stdout):
         """Launch an owned SUMO handle before connecting, so startup can cancel."""

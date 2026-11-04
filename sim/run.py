@@ -1,6 +1,7 @@
 """Run real, separate SUMO worlds with identical explicit external demand.
 
-Execute on the designated test machine, not during cloud implementation.
+Scientific runs retain their explicitly frozen protocols. Optional request
+controls provide progress and cancellation for new exploratory generation.
 Outputs retain raw SUMO files, complete lifecycle rows, scalar outcomes, and a
 shared-absolute-clock replay. No model or benchmark gain is implied by a run.
 """
@@ -430,20 +431,26 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
                    'runtime_s': time.perf_counter()-started, 'policy': policy})
         raise
     finally:
-        if conn is not None:
-            if control is not None:
+        if control is not None:
+            try:
+                if conn is not None:
+                    try:
+                        conn.close(wait=False)
+                    except Exception:
+                        if not control.cancel_event.is_set():
+                            raise
+            finally:
                 try:
-                    conn.close(wait=False)
-                except Exception:
-                    if not control.cancel_event.is_set():
-                        raise
-            else:
+                    if owned_process is not None:
+                        control.stop_process(owned_process)
+                finally:
+                    if sumo_stdout is not None:
+                        sumo_stdout.close()
+        else:
+            if conn is not None:
                 conn.close()
-        if owned_process is not None:
-            control._stop(owned_process)
-            control.release_process(owned_process)
-        if sumo_stdout is not None:
-            sumo_stdout.close()
+            if sumo_stdout is not None:
+                sumo_stdout.close()
 
 
 def run_pair(args, *, control: RunControl | None = None) -> dict:

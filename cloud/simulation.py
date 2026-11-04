@@ -19,7 +19,7 @@ from types import SimpleNamespace
 
 from export.replay import validate_replay
 from sim.control import RunControl
-from sim.network import load_graph
+from sim.network import ROOT, load_graph, shortest_route
 from sim.run import run_pair
 
 
@@ -76,6 +76,21 @@ def _validate_protocol(replay: dict, params: dict) -> None:
         raise ValueError("Cloud replay differs from its fixed 20-second priority policy")
     if replay.get("step_s") != .5 or replay.get("duration_s") != 900:
         raise ValueError("Cloud replay differs from the bounded exploratory capture protocol")
+    graph = load_graph("city")
+    pickup = next(point for point in graph["pickups"] if point["id"] == params["pickup"])
+    hospital = next(point for point in graph["hospitals"] if point["id"] == params["hospital"])
+    expected_route = shortest_route(graph, pickup["edge_id"], hospital["destination_node"])
+    if scenario.get("route_edges") != expected_route:
+        raise ValueError("Cloud replay route differs from canonical Dijkstra for the requested anchors")
+    expected_map = hashlib.sha256((ROOT / "assets/map/city_manifest.json").read_bytes()).hexdigest()
+    if replay["provenance"].get("canonical_map_sha256") != expected_map:
+        raise ValueError("Cloud replay differs from the current canonical map bytes")
+    for world in replay["worlds"].values():
+        if world["status"] == "infrastructure_error":
+            raise ValueError("An infrastructure failure is not a completed traffic recording")
+        expected_metrics = {"simulation_step_s": .5, "horizon_s": 360.0, "drain_end_s": 900.0}
+        if any(world["metrics"].get(key) != value for key, value in expected_metrics.items()):
+            raise ValueError("Cloud replay differs from the fixed simulation integration and horizon")
 
 
 @contextmanager
@@ -123,6 +138,8 @@ def run_cloud_simulation(request: dict, control: RunControl, temporary_root: Pat
                     control.check_cancelled()
                     original_hash.update(block)
                     compressed.write(block)
+                    if destination.tell() > MAX_COMPRESSED_BYTES:
+                        raise ValueError("Generated replay exceeds the bounded public transfer size")
         if original_hash.hexdigest() != decoded_sha256:
             raise ValueError("Replay changed while packaging its original bytes")
         compressed_bytes = gzip_path.stat().st_size
