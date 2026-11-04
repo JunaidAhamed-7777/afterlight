@@ -8,11 +8,11 @@
   "functions": {
     "api/simulate.py": {
       "maxDuration": 300,
-      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**}"
+      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**,**/sumo/tools/**,**/sumo/lib64/**,**/sumo/bin/netedit,**/sumo/bin/sumo-gui}"
     },
     "api/cancel.py": {
       "maxDuration": 30,
-      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**}"
+      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**,**/sumo/tools/**,**/sumo/lib64/**,**/sumo/bin/netedit,**/sumo/bin/sumo-gui}"
     }
   },
   "headers": [
