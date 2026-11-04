@@ -25,6 +25,7 @@ from export.replay import SCHEMA, save_replay
 from models.analytical import choose_lead
 from evaluation.protocol import digest
 from sim.identity import episode_identity, run_identity
+from sim.control import RunControl, SimulationCancelled
 
 
 class OutputPathError(ValueError):
@@ -197,8 +198,10 @@ def validate_timing_grid(step_s: float, timing: Timing | None = None) -> None:
 def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, demand_dir: Path,
               demand: dict, network: dict, output: Path, horizon_s: float, drain_s: float,
               step_s: float = .5, sample_s: float = 1.0, sensor_lag_s: float = 1.0,
-              verify_observations: bool = False) -> dict:
+              verify_observations: bool = False, control: RunControl | None = None) -> dict:
     import traci
+    if control is not None:
+        control.check_cancelled()
     output.mkdir(parents=True, exist_ok=True)
     started = time.perf_counter()
     parameters = (horizon_s, drain_s, step_s, sample_s, sensor_lag_s)
@@ -247,10 +250,15 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
     burden_vehicle_s = 0.0
     drain_burden_vehicle_s = 0.0
     sumo_stdout = None
+    owned_process = None
     try:
         sumo_stdout = open(output/'sumo-stdout.txt', 'w', encoding='utf-8')
-        traci.start(command, label=label, stdout=sumo_stdout)
-        conn = traci.getConnection(label)
+        if control is None:
+            traci.start(command, label=label, stdout=sumo_stdout)
+            conn = traci.getConnection(label)
+        else:
+            control.progress('starting_world', f'Starting {world_id} SUMO world', world_id=world_id)
+            conn, owned_process = control.start_traci(command, label=label, stdout=sumo_stdout)
         from sim.traci_cache import ObservationCache
         cache = ObservationCache(conn, network)
         sumo_version = conn.getVersion()[1]
@@ -262,6 +270,8 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         queue_samples.append({'t': 0.0, 'queue_count': 0})
         total_steps = round(end_s / step_s)
         for step in range(total_steps):
+            if control is not None:
+                control.check_cancelled()
             now = round(step * step_s, 9)
             if decision is None and now >= demand['dispatch_s']:
                 sensed = next((o for o in reversed(observations) if o['t'] <= now-sensor_lag_s+1e-9), None)
@@ -342,6 +352,12 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
             queue_samples.append({'t': current, 'queue_count': queued})
             if abs(current-horizon_s) < 1e-8:
                 horizon_accounting = ledger.counts()
+            if control is not None and ((step + 1) % 10 == 0 or step + 1 == total_steps):
+                control.progress('simulating', f'Running {world_id} traffic', world_id=world_id,
+                                 completed_steps=step + 1, total_steps=total_steps,
+                                 simulation_time_s=current, simulation_end_s=end_s)
+        if control is not None:
+            control.check_cancelled()
         # Close the exact common endpoint with its own legal boundary update.
         ambulance_active = 'ambulance' in cache.vehicles
         route_index = conn.vehicle.getRouteIndex('ambulance') if ambulance_active else -1
@@ -364,6 +380,9 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         # are discovery-step times; tripinfo is authoritative for actual times.
         conn.close()
         conn = None
+        if control is not None:
+            control.check_cancelled()
+            control.progress('reconciling_world', f'Checking {world_id} vehicle accounting', world_id=world_id)
         reasons.extend(reconcile_tripinfo(ledger, output/'tripinfo.xml'))
         for event in events:
             if event['kind'] == 'ambulance_inserted' and 'ambulance' in ledger.inserted:
@@ -399,19 +418,37 @@ def run_world(*, world_id: str, policy: str, lead_s: int, network_dir: Path, dem
         write_json(output/'lifecycle.json', ledger.rows())
         write_json(output/'outcome.json', {k:v for k,v in result.items() if k != 'frames'})
         return result
+    except SimulationCancelled:
+        write_json(output/'cancelled.json', {'status': 'cancelled', 'policy': policy,
+                   'runtime_s': time.perf_counter()-started})
+        raise
     except Exception as exc:
+        if control is not None and control.cancel_event.is_set():
+            raise SimulationCancelled('Simulation cancelled by the requesting client') from exc
         write_json(output/'failure.json', {'status': 'infrastructure_error', 'reason': str(exc),
                    'traceback': traceback.format_exc(), 'accounting': ledger.counts(),
                    'runtime_s': time.perf_counter()-started, 'policy': policy})
         raise
     finally:
         if conn is not None:
-            conn.close()
+            if control is not None:
+                try:
+                    conn.close(wait=False)
+                except Exception:
+                    if not control.cancel_event.is_set():
+                        raise
+            else:
+                conn.close()
+        if owned_process is not None:
+            control._stop(owned_process)
+            control.release_process(owned_process)
         if sumo_stdout is not None:
             sumo_stdout.close()
 
 
-def run_pair(args) -> dict:
+def run_pair(args, *, control: RunControl | None = None) -> dict:
+    if control is not None:
+        control.check_cancelled()
     output = args.output.resolve()
     try:
         output.mkdir(parents=True, exist_ok=False)
@@ -422,17 +459,32 @@ def run_pair(args) -> dict:
     source = source_snapshot()
     dependencies = dependency_versions()
     network_dir = output/'network'
-    network_manifest = build_network(args.network, network_dir)
+    if control is not None:
+        control.progress('building_network', 'Building the canonical city road network')
+    network_manifest = (build_network(args.network, network_dir) if control is None
+                        else build_network(args.network, network_dir, control=control))
+    if control is not None:
+        control.progress('pathfinding', 'Computing the legal shortest-distance ambulance route')
     graph = json.loads((network_dir/'graph.json').read_text(encoding='utf-8'))
     network = read_network(network_dir/'network.net.xml')
     demand = make_demand(graph, network, seed=args.seed, regime=args.regime,
                          dispatch_s=args.dispatch, demand_end_s=args.demand_end,
                          pickup_id=args.pickup, hospital_id=args.hospital)
+    if control is not None:
+        route = next(v['route'] for v in demand['vehicles'] if v['id'] == 'ambulance')
+        edges = {edge['id']: edge for edge in graph['edges']}
+        control.emit({'type': 'route', 'route_edges': route, 'pickup': demand['pickup_id'],
+                      'hospital': demand['hospital_id'], 'canonical_map_sha256': network_manifest['canonical_map_sha256'],
+                      'cost_m': sum(edges[edge]['length_m'] for edge in route),
+                      'cost_definition': 'Dijkstra sum of canonical full directed-edge lengths in metres; not ETA'})
+        control.progress('preparing_demand', 'Saving identical traffic demand for both worlds')
     demand_dir = output/'demand'
     hashes = save_demand(demand, demand_dir)
     common = dict(network_dir=network_dir, demand_dir=demand_dir, demand=demand, network=network,
                   horizon_s=args.horizon, drain_s=args.drain, step_s=args.step, sample_s=args.sample,
                   verify_observations=getattr(args, 'verify_observations', False))
+    if control is not None:
+        common['control'] = control
     worlds = {}
     for world_id, policy in [('baseline', 'ordinary'), ('afterlight', args.policy)]:
         worlds[world_id] = run_world(world_id=world_id, policy=policy, lead_s=args.lead,
@@ -441,6 +493,8 @@ def run_pair(args) -> dict:
         raise RuntimeError('Project source/dependencies changed during the pair; raw worlds retained, replay publication refused')
     if worlds['baseline']['sumo_version'] != worlds['afterlight']['sumo_version']:
         raise RuntimeError('Paired worlds used different SUMO versions; replay publication refused')
+    if control is not None:
+        control.progress('validating_replay', 'Validating both recorded worlds and their provenance')
     episode_id = episode_identity(network_kind=args.network,regime=args.regime,seed=args.seed,
         network_sha256=network_manifest['network_sha256'],demand_sha256=hashes['demand_sha256'],
         dispatch_s=args.dispatch,horizon_s=args.horizon,drain_s=args.drain,step_s=args.step)
@@ -472,6 +526,8 @@ def run_pair(args) -> dict:
               'duration_s': args.horizon+args.drain, 'step_s': args.sample,
               'worlds': worlds}
     replay_metadata = save_replay(output/'replay.json', replay)
+    if control is not None:
+        control.check_cancelled()
     write_json(output/'replay-manifest.json', replay_metadata)
     scalar_rows = []
     for world in worlds.values():

@@ -1,0 +1,1974 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1100" viewBox="0 0 1500 1100" role="img" aria-labelledby="graph-title graph-description">
+  <title id="graph-title">AFTERLIGHT: the city as a directed road graph</title>
+  <desc id="graph-description">Actual canonical layout: 201 nodes, 233 physical roads, 586 directed edges and 1,240 permitted edge transitions. The 24-edge recorded Cross-city route runs from curb pickup P001 to Eastbank General. Both hospitals and all graph nodes are shown. Opposing edges overlap in the city overview; an enlarged H00 corridor shows its four nodes, three segments and six directed edges. Pickup anchors attach to edges; they are not graph nodes. Dijkstra minimizes edge length while following permitted turns.</desc>
+  <metadata>{"generator": "scripts/render_road_graph.py", "recording_id": "city-moderate-7-728e525b8a1a9238-fixed-20-0d63fcec4c36-dt0p5", "route_edges": ["H00_1_R", "H00_0_R", "V00_0_F", "H10_0_F", "H10_1_F", "V11_0_F", "V12_0_F", "H31_0_F", "H31_1_F", "H31_2_F", "H32_0_F", "H33_0_F", "H33_1_F", "H33_2_F", "H34_0_F", "V53_0_F", "V54_0_F", "H55_0_F", "H55_1_F", "H55_2_F", "H56_0_F", "V75_0_F", "H67_0_F", "HOSP_EAST_DRIVEWAY_0_F"], "source": "assets/map/city_manifest.json", "source_sha256": "f063d28296f395541957fbb89c77cbfa3150a7f76520d5bcf2134d5bc99cb24b"}</metadata>
+  <style>text { font-family: Inter, "Segoe UI", system-ui, sans-serif; } .node-label { paint-order: stroke; stroke: #F8FAFC; stroke-width: 6px; stroke-linejoin: round; }</style>
+  <defs>
+    <marker id="edge-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#0A1F44" />
+    </marker>
+    <marker id="route-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#147D73" />
+    </marker>
+  </defs>
+  <rect width="1500" height="1100" rx="12" fill="#F8FAFC" />
+  <text x="60" y="66" fill="#0A1F44" font-size="42" font-weight="700">The city is a directed graph</text>
+  <text x="60" y="108" fill="#52627A" font-size="24">Actual road topology, with the recorded Cross-city route highlighted</text>
+  <text x="60" y="163" fill="#0A1F44" font-size="25" font-weight="600">201 nodes  ·  233 physical roads  ·  586 directed edges  ·  1,240 permitted transitions</text>
+  <line x1="60" y1="192" x2="1440" y2="192" stroke="#D9E2EC" stroke-width="1" />
+  <line x1="922" y1="225" x2="922" y2="975" stroke="#D9E2EC" stroke-width="1" />
+  <g id="canonical-network">
+    <g data-segment="J00|L00A">
+      <title>J00 ↔ L00A</title>
+      <path d="M 122.00,940.08 L 143.54,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L00A|L00B">
+      <title>L00A ↔ L00B</title>
+      <path d="M 143.54,940.08 L 183.30,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J01|L00B">
+      <title>J01 ↔ L00B</title>
+      <path d="M 183.30,940.08 L 204.83,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J01|J02">
+      <title>J01 ↔ J02</title>
+      <path d="M 204.83,940.08 L 287.67,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J02|J03">
+      <title>J02 ↔ J03</title>
+      <path d="M 287.67,940.08 L 378.39,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J03|J04">
+      <title>J03 ↔ J04</title>
+      <path d="M 378.39,940.08 L 469.11,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J04|L40A">
+      <title>J04 ↔ L40A</title>
+      <path d="M 469.11,940.08 L 494.24,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L40A|L40B">
+      <title>L40A ↔ L40B</title>
+      <path d="M 494.24,940.08 L 540.62,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J05|L40B">
+      <title>J05 ↔ L40B</title>
+      <path d="M 540.62,940.08 L 565.75,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J05|J06">
+      <title>J05 ↔ J06</title>
+      <path d="M 565.75,940.08 L 662.39,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J06|L60A">
+      <title>J06 ↔ L60A</title>
+      <path d="M 662.39,940.08 L 684.44,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L60A|L60B">
+      <title>L60A ↔ L60B</title>
+      <path d="M 684.44,940.08 L 725.14,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J07|L60B">
+      <title>J07 ↔ L60B</title>
+      <path d="M 725.14,940.08 L 747.19,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J07|J08">
+      <title>J07 ↔ J08</title>
+      <path d="M 747.19,940.08 L 832.00,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_WEST_ACCESS|J10">
+      <title>HOSP_WEST_ACCESS ↔ J10</title>
+      <path d="M 122.00,857.25 L 163.42,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_WEST_ACCESS|J11">
+      <title>HOSP_WEST_ACCESS ↔ J11</title>
+      <path d="M 163.42,857.25 L 204.83,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J11|L11A">
+      <title>J11 ↔ L11A</title>
+      <path d="M 204.83,857.25 L 226.37,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L11A|L11B">
+      <title>L11A ↔ L11B</title>
+      <path d="M 226.37,857.25 L 266.13,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J12|L11B">
+      <title>J12 ↔ L11B</title>
+      <path d="M 266.13,857.25 L 287.67,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J12|J13">
+      <title>J12 ↔ J13</title>
+      <path d="M 287.67,857.25 L 378.39,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J13|L31A">
+      <title>J13 ↔ L31A</title>
+      <path d="M 378.39,857.25 L 401.98,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L31A|L31B">
+      <title>L31A ↔ L31B</title>
+      <path d="M 401.98,857.25 L 445.52,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J14|L31B">
+      <title>J14 ↔ L31B</title>
+      <path d="M 445.52,857.25 L 469.11,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J14|J15">
+      <title>J14 ↔ J15</title>
+      <path d="M 469.11,857.25 L 565.75,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J15|J16">
+      <title>J15 ↔ J16</title>
+      <path d="M 565.75,857.25 L 662.39,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J16|J17">
+      <title>J16 ↔ J17</title>
+      <path d="M 662.39,857.25 L 747.19,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J17|L71A">
+      <title>J17 ↔ L71A</title>
+      <path d="M 747.19,857.25 L 769.24,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L71A|L71B">
+      <title>L71A ↔ L71B</title>
+      <path d="M 769.24,857.25 L 809.95,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J18|L71B">
+      <title>J18 ↔ L71B</title>
+      <path d="M 809.95,857.25 L 832.00,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J20|L02A">
+      <title>J20 ↔ L02A</title>
+      <path d="M 122.00,774.42 L 143.54,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L02A|L02B">
+      <title>L02A ↔ L02B</title>
+      <path d="M 143.54,774.42 L 183.30,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J21|L02B">
+      <title>J21 ↔ L02B</title>
+      <path d="M 183.30,774.42 L 204.83,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J21|J22">
+      <title>J21 ↔ J22</title>
+      <path d="M 204.83,774.42 L 287.67,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J22|L22A">
+      <title>J22 ↔ L22A</title>
+      <path d="M 287.67,774.42 L 311.25,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L22A|L22B">
+      <title>L22A ↔ L22B</title>
+      <path d="M 311.25,774.42 L 354.80,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J23|L22B">
+      <title>J23 ↔ L22B</title>
+      <path d="M 354.80,774.42 L 378.39,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J23|J24">
+      <title>J23 ↔ J24</title>
+      <path d="M 378.39,774.42 L 469.11,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J24|L42A">
+      <title>J24 ↔ L42A</title>
+      <path d="M 469.11,774.42 L 494.24,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L42A|L42B">
+      <title>L42A ↔ L42B</title>
+      <path d="M 494.24,774.42 L 540.62,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J25|L42B">
+      <title>J25 ↔ L42B</title>
+      <path d="M 540.62,774.42 L 565.75,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J25|J26">
+      <title>J25 ↔ J26</title>
+      <path d="M 565.75,774.42 L 662.39,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J26|L62A">
+      <title>J26 ↔ L62A</title>
+      <path d="M 662.39,774.42 L 684.44,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L62A|L62B">
+      <title>L62A ↔ L62B</title>
+      <path d="M 684.44,774.42 L 725.14,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J27|L62B">
+      <title>J27 ↔ L62B</title>
+      <path d="M 725.14,774.42 L 747.19,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J27|J28">
+      <title>J27 ↔ J28</title>
+      <path d="M 747.19,774.42 L 832.00,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J30|J31">
+      <title>J30 ↔ J31</title>
+      <path d="M 122.00,685.67 L 204.83,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J31|L13A">
+      <title>J31 ↔ L13A</title>
+      <path d="M 204.83,685.67 L 226.37,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L13A|L13B">
+      <title>L13A ↔ L13B</title>
+      <path d="M 226.37,685.67 L 266.13,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J32|L13B">
+      <title>J32 ↔ L13B</title>
+      <path d="M 266.13,685.67 L 287.67,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J32|J33">
+      <title>J32 ↔ J33</title>
+      <path d="M 287.67,685.67 L 378.39,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J33|L33A">
+      <title>J33 ↔ L33A</title>
+      <path d="M 378.39,685.67 L 401.98,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L33A|L33B">
+      <title>L33A ↔ L33B</title>
+      <path d="M 401.98,685.67 L 445.52,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J34|L33B">
+      <title>J34 ↔ L33B</title>
+      <path d="M 445.52,685.67 L 469.11,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J34|J35">
+      <title>J34 ↔ J35</title>
+      <path d="M 469.11,685.67 L 565.75,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J35|L53A">
+      <title>J35 ↔ L53A</title>
+      <path d="M 565.75,685.67 L 590.88,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L53A|L53B">
+      <title>L53A ↔ L53B</title>
+      <path d="M 590.88,685.67 L 637.26,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J36|L53B">
+      <title>J36 ↔ L53B</title>
+      <path d="M 637.26,685.67 L 662.39,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J36|J37">
+      <title>J36 ↔ J37</title>
+      <path d="M 662.39,685.67 L 747.19,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J37|L73A">
+      <title>J37 ↔ L73A</title>
+      <path d="M 747.19,685.67 L 769.24,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L73A|L73B">
+      <title>L73A ↔ L73B</title>
+      <path d="M 769.24,685.67 L 809.95,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J38|L73B">
+      <title>J38 ↔ L73B</title>
+      <path d="M 809.95,685.67 L 832.00,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J40|L04A">
+      <title>J40 ↔ L04A</title>
+      <path d="M 122.00,596.92 L 143.54,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L04A|L04B">
+      <title>L04A ↔ L04B</title>
+      <path d="M 143.54,596.92 L 183.30,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J41|L04B">
+      <title>J41 ↔ L04B</title>
+      <path d="M 183.30,596.92 L 204.83,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J41|J42">
+      <title>J41 ↔ J42</title>
+      <path d="M 204.83,596.92 L 287.67,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J42|L24A">
+      <title>J42 ↔ L24A</title>
+      <path d="M 287.67,596.92 L 311.25,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L24A|L24B">
+      <title>L24A ↔ L24B</title>
+      <path d="M 311.25,596.92 L 354.80,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J43|L24B">
+      <title>J43 ↔ L24B</title>
+      <path d="M 354.80,596.92 L 378.39,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J43|J44">
+      <title>J43 ↔ J44</title>
+      <path d="M 378.39,596.92 L 469.11,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J44|L44A">
+      <title>J44 ↔ L44A</title>
+      <path d="M 469.11,596.92 L 494.24,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L44A|L44B">
+      <title>L44A ↔ L44B</title>
+      <path d="M 494.24,596.92 L 540.62,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J45|L44B">
+      <title>J45 ↔ L44B</title>
+      <path d="M 540.62,596.92 L 565.75,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J45|J46">
+      <title>J45 ↔ J46</title>
+      <path d="M 565.75,596.92 L 662.39,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J46|L64A">
+      <title>J46 ↔ L64A</title>
+      <path d="M 662.39,596.92 L 684.44,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L64A|L64B">
+      <title>L64A ↔ L64B</title>
+      <path d="M 684.44,596.92 L 725.14,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J47|L64B">
+      <title>J47 ↔ L64B</title>
+      <path d="M 725.14,596.92 L 747.19,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J47|J48">
+      <title>J47 ↔ J48</title>
+      <path d="M 747.19,596.92 L 832.00,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J50|J51">
+      <title>J50 ↔ J51</title>
+      <path d="M 122.00,512.11 L 204.83,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J51|L15A">
+      <title>J51 ↔ L15A</title>
+      <path d="M 204.83,512.11 L 226.37,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L15A|L15B">
+      <title>L15A ↔ L15B</title>
+      <path d="M 226.37,512.11 L 266.13,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J52|L15B">
+      <title>J52 ↔ L15B</title>
+      <path d="M 266.13,512.11 L 287.67,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J52|J53">
+      <title>J52 ↔ J53</title>
+      <path d="M 287.67,512.11 L 378.39,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J53|J54">
+      <title>J53 ↔ J54</title>
+      <path d="M 378.39,512.11 L 469.11,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J54|J55">
+      <title>J54 ↔ J55</title>
+      <path d="M 469.11,512.11 L 565.75,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J55|L55A">
+      <title>J55 ↔ L55A</title>
+      <path d="M 565.75,512.11 L 590.88,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L55A|L55B">
+      <title>L55A ↔ L55B</title>
+      <path d="M 590.88,512.11 L 637.26,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J56|L55B">
+      <title>J56 ↔ L55B</title>
+      <path d="M 637.26,512.11 L 662.39,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J56|J57">
+      <title>J56 ↔ J57</title>
+      <path d="M 662.39,512.11 L 747.19,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J57|L75A">
+      <title>J57 ↔ L75A</title>
+      <path d="M 747.19,512.11 L 769.24,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L75A|L75B">
+      <title>L75A ↔ L75B</title>
+      <path d="M 769.24,512.11 L 809.95,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J58|L75B">
+      <title>J58 ↔ L75B</title>
+      <path d="M 809.95,512.11 L 832.00,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J60|L06A">
+      <title>J60 ↔ L06A</title>
+      <path d="M 122.00,427.31 L 143.54,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L06A|L06B">
+      <title>L06A ↔ L06B</title>
+      <path d="M 143.54,427.31 L 183.30,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J61|L06B">
+      <title>J61 ↔ L06B</title>
+      <path d="M 183.30,427.31 L 204.83,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J61|J62">
+      <title>J61 ↔ J62</title>
+      <path d="M 204.83,427.31 L 287.67,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J62|L26A">
+      <title>J62 ↔ L26A</title>
+      <path d="M 287.67,427.31 L 311.25,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L26A|L26B">
+      <title>L26A ↔ L26B</title>
+      <path d="M 311.25,427.31 L 354.80,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J63|L26B">
+      <title>J63 ↔ L26B</title>
+      <path d="M 354.80,427.31 L 378.39,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J63|J64">
+      <title>J63 ↔ J64</title>
+      <path d="M 378.39,427.31 L 469.11,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J64|L46A">
+      <title>J64 ↔ L46A</title>
+      <path d="M 469.11,427.31 L 494.24,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L46A|L46B">
+      <title>L46A ↔ L46B</title>
+      <path d="M 494.24,427.31 L 540.62,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J65|L46B">
+      <title>J65 ↔ L46B</title>
+      <path d="M 540.62,427.31 L 565.75,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J65|J66">
+      <title>J65 ↔ J66</title>
+      <path d="M 565.75,427.31 L 662.39,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J66|L66A">
+      <title>J66 ↔ L66A</title>
+      <path d="M 662.39,427.31 L 684.44,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L66A|L66B">
+      <title>L66A ↔ L66B</title>
+      <path d="M 684.44,427.31 L 725.14,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J67|L66B">
+      <title>J67 ↔ L66B</title>
+      <path d="M 725.14,427.31 L 747.19,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_EAST_ACCESS|J67">
+      <title>HOSP_EAST_ACCESS ↔ J67</title>
+      <path d="M 747.19,427.31 L 789.60,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_EAST_ACCESS|J68">
+      <title>HOSP_EAST_ACCESS ↔ J68</title>
+      <path d="M 789.60,427.31 L 832.00,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J70|J71">
+      <title>J70 ↔ J71</title>
+      <path d="M 122.00,334.61 L 204.83,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J71|L17A">
+      <title>J71 ↔ L17A</title>
+      <path d="M 204.83,334.61 L 226.37,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L17A|L17B">
+      <title>L17A ↔ L17B</title>
+      <path d="M 226.37,334.61 L 266.13,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J72|L17B">
+      <title>J72 ↔ L17B</title>
+      <path d="M 266.13,334.61 L 287.67,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J72|J73">
+      <title>J72 ↔ J73</title>
+      <path d="M 287.67,334.61 L 378.39,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J73|L37A">
+      <title>J73 ↔ L37A</title>
+      <path d="M 378.39,334.61 L 401.98,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L37A|L37B">
+      <title>L37A ↔ L37B</title>
+      <path d="M 401.98,334.61 L 445.52,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J74|L37B">
+      <title>J74 ↔ L37B</title>
+      <path d="M 445.52,334.61 L 469.11,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J74|J75">
+      <title>J74 ↔ J75</title>
+      <path d="M 469.11,334.61 L 565.75,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J75|L57A">
+      <title>J75 ↔ L57A</title>
+      <path d="M 565.75,334.61 L 590.88,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L57A|L57B">
+      <title>L57A ↔ L57B</title>
+      <path d="M 590.88,334.61 L 637.26,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J76|L57B">
+      <title>J76 ↔ L57B</title>
+      <path d="M 637.26,334.61 L 662.39,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J76|J77">
+      <title>J76 ↔ J77</title>
+      <path d="M 662.39,334.61 L 747.19,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J77|L77A">
+      <title>J77 ↔ L77A</title>
+      <path d="M 747.19,334.61 L 769.24,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L77A|L77B">
+      <title>L77A ↔ L77B</title>
+      <path d="M 769.24,334.61 L 809.95,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J78|L77B">
+      <title>J78 ↔ L77B</title>
+      <path d="M 809.95,334.61 L 832.00,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J80|J81">
+      <title>J80 ↔ J81</title>
+      <path d="M 122.00,241.92 L 204.83,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J81|J82">
+      <title>J81 ↔ J82</title>
+      <path d="M 204.83,241.92 L 287.67,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J82|J83">
+      <title>J82 ↔ J83</title>
+      <path d="M 287.67,241.92 L 378.39,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J83|J84">
+      <title>J83 ↔ J84</title>
+      <path d="M 378.39,241.92 L 469.11,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J84|J85">
+      <title>J84 ↔ J85</title>
+      <path d="M 469.11,241.92 L 565.75,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J85|J86">
+      <title>J85 ↔ J86</title>
+      <path d="M 565.75,241.92 L 662.39,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J86|J87">
+      <title>J86 ↔ J87</title>
+      <path d="M 662.39,241.92 L 747.19,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J87|J88">
+      <title>J87 ↔ J88</title>
+      <path d="M 747.19,241.92 L 832.00,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J00|J10">
+      <title>J00 ↔ J10</title>
+      <path d="M 122.00,940.08 L 122.00,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J10|J20">
+      <title>J10 ↔ J20</title>
+      <path d="M 122.00,857.25 L 122.00,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J20|J30">
+      <title>J20 ↔ J30</title>
+      <path d="M 122.00,774.42 L 122.00,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J30|J40">
+      <title>J30 ↔ J40</title>
+      <path d="M 122.00,685.67 L 122.00,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J40|J50">
+      <title>J40 ↔ J50</title>
+      <path d="M 122.00,596.92 L 122.00,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J50|J60">
+      <title>J50 ↔ J60</title>
+      <path d="M 122.00,512.11 L 122.00,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J60|J70">
+      <title>J60 ↔ J70</title>
+      <path d="M 122.00,427.31 L 122.00,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J70|J80">
+      <title>J70 ↔ J80</title>
+      <path d="M 122.00,334.61 L 122.00,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J01|J11">
+      <title>J01 ↔ J11</title>
+      <path d="M 204.83,940.08 L 204.83,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J11|J21">
+      <title>J11 ↔ J21</title>
+      <path d="M 204.83,857.25 L 204.83,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J21|J31">
+      <title>J21 ↔ J31</title>
+      <path d="M 204.83,774.42 L 204.83,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J31|J41">
+      <title>J31 ↔ J41</title>
+      <path d="M 204.83,685.67 L 204.83,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J41|J51">
+      <title>J41 ↔ J51</title>
+      <path d="M 204.83,596.92 L 204.83,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J51|J61">
+      <title>J51 ↔ J61</title>
+      <path d="M 204.83,512.11 L 204.83,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J61|J71">
+      <title>J61 ↔ J71</title>
+      <path d="M 204.83,427.31 L 204.83,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J71|J81">
+      <title>J71 ↔ J81</title>
+      <path d="M 204.83,334.61 L 204.83,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J02|J12">
+      <title>J02 ↔ J12</title>
+      <path d="M 287.67,940.08 L 287.67,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J12|J22">
+      <title>J12 ↔ J22</title>
+      <path d="M 287.67,857.25 L 287.67,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J22|J32">
+      <title>J22 ↔ J32</title>
+      <path d="M 287.67,774.42 L 287.67,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J32|J42">
+      <title>J32 ↔ J42</title>
+      <path d="M 287.67,685.67 L 287.67,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J42|J52">
+      <title>J42 ↔ J52</title>
+      <path d="M 287.67,596.92 L 287.67,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J52|J62">
+      <title>J52 ↔ J62</title>
+      <path d="M 287.67,512.11 L 287.67,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J62|J72">
+      <title>J62 ↔ J72</title>
+      <path d="M 287.67,427.31 L 287.67,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J72|J82">
+      <title>J72 ↔ J82</title>
+      <path d="M 287.67,334.61 L 287.67,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J03|J13">
+      <title>J03 ↔ J13</title>
+      <path d="M 378.39,940.08 L 378.39,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J13|J23">
+      <title>J13 ↔ J23</title>
+      <path d="M 378.39,857.25 L 378.39,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J23|J33">
+      <title>J23 ↔ J33</title>
+      <path d="M 378.39,774.42 L 378.39,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J33|J43">
+      <title>J33 ↔ J43</title>
+      <path d="M 378.39,685.67 L 378.39,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J43|J53">
+      <title>J43 ↔ J53</title>
+      <path d="M 378.39,596.92 L 378.39,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J53|J63">
+      <title>J53 ↔ J63</title>
+      <path d="M 378.39,512.11 L 378.39,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J63|J73">
+      <title>J63 ↔ J73</title>
+      <path d="M 378.39,427.31 L 378.39,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J73|J83">
+      <title>J73 ↔ J83</title>
+      <path d="M 378.39,334.61 L 378.39,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J04|J14">
+      <title>J04 ↔ J14</title>
+      <path d="M 469.11,940.08 L 469.11,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J14|J24">
+      <title>J14 ↔ J24</title>
+      <path d="M 469.11,857.25 L 469.11,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J24|J34">
+      <title>J24 ↔ J34</title>
+      <path d="M 469.11,774.42 L 469.11,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J34|J44">
+      <title>J34 ↔ J44</title>
+      <path d="M 469.11,685.67 L 469.11,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J44|J54">
+      <title>J44 ↔ J54</title>
+      <path d="M 469.11,596.92 L 469.11,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J54|J64">
+      <title>J54 ↔ J64</title>
+      <path d="M 469.11,512.11 L 469.11,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J64|J74">
+      <title>J64 ↔ J74</title>
+      <path d="M 469.11,427.31 L 469.11,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J74|J84">
+      <title>J74 ↔ J84</title>
+      <path d="M 469.11,334.61 L 469.11,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J05|J15">
+      <title>J05 ↔ J15</title>
+      <path d="M 565.75,940.08 L 565.75,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J15|J25">
+      <title>J15 ↔ J25</title>
+      <path d="M 565.75,857.25 L 565.75,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J25|J35">
+      <title>J25 ↔ J35</title>
+      <path d="M 565.75,774.42 L 565.75,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J35|J45">
+      <title>J35 ↔ J45</title>
+      <path d="M 565.75,685.67 L 565.75,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J45|J55">
+      <title>J45 ↔ J55</title>
+      <path d="M 565.75,596.92 L 565.75,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J55|J65">
+      <title>J55 ↔ J65</title>
+      <path d="M 565.75,512.11 L 565.75,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J65|J75">
+      <title>J65 ↔ J75</title>
+      <path d="M 565.75,427.31 L 565.75,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J75|J85">
+      <title>J75 ↔ J85</title>
+      <path d="M 565.75,334.61 L 565.75,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J06|J16">
+      <title>J06 ↔ J16</title>
+      <path d="M 662.39,940.08 L 662.39,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J16|J26">
+      <title>J16 ↔ J26</title>
+      <path d="M 662.39,857.25 L 662.39,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J26|J36">
+      <title>J26 ↔ J36</title>
+      <path d="M 662.39,774.42 L 662.39,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J36|J46">
+      <title>J36 ↔ J46</title>
+      <path d="M 662.39,685.67 L 662.39,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J46|J56">
+      <title>J46 ↔ J56</title>
+      <path d="M 662.39,596.92 L 662.39,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J56|J66">
+      <title>J56 ↔ J66</title>
+      <path d="M 662.39,512.11 L 662.39,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J66|J76">
+      <title>J66 ↔ J76</title>
+      <path d="M 662.39,427.31 L 662.39,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J76|J86">
+      <title>J76 ↔ J86</title>
+      <path d="M 662.39,334.61 L 662.39,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J07|J17">
+      <title>J07 ↔ J17</title>
+      <path d="M 747.19,940.08 L 747.19,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J17|J27">
+      <title>J17 ↔ J27</title>
+      <path d="M 747.19,857.25 L 747.19,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J27|J37">
+      <title>J27 ↔ J37</title>
+      <path d="M 747.19,774.42 L 747.19,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J37|J47">
+      <title>J37 ↔ J47</title>
+      <path d="M 747.19,685.67 L 747.19,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J47|J57">
+      <title>J47 ↔ J57</title>
+      <path d="M 747.19,596.92 L 747.19,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J57|J67">
+      <title>J57 ↔ J67</title>
+      <path d="M 747.19,512.11 L 747.19,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J67|J77">
+      <title>J67 ↔ J77</title>
+      <path d="M 747.19,427.31 L 747.19,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J77|J87">
+      <title>J77 ↔ J87</title>
+      <path d="M 747.19,334.61 L 747.19,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J08|J18">
+      <title>J08 ↔ J18</title>
+      <path d="M 832.00,940.08 L 832.00,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J18|J28">
+      <title>J18 ↔ J28</title>
+      <path d="M 832.00,857.25 L 832.00,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J28|J38">
+      <title>J28 ↔ J38</title>
+      <path d="M 832.00,774.42 L 832.00,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J38|J48">
+      <title>J38 ↔ J48</title>
+      <path d="M 832.00,685.67 L 832.00,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J48|J58">
+      <title>J48 ↔ J58</title>
+      <path d="M 832.00,596.92 L 832.00,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J58|J68">
+      <title>J58 ↔ J68</title>
+      <path d="M 832.00,512.11 L 832.00,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J68|J78">
+      <title>J68 ↔ J78</title>
+      <path d="M 832.00,427.31 L 832.00,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="J78|J88">
+      <title>J78 ↔ J88</title>
+      <path d="M 832.00,334.61 L 832.00,241.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L00A|L00C">
+      <title>L00A ↔ L00C</title>
+      <path d="M 143.54,940.08 L 143.54,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L00C|L00D">
+      <title>L00C ↔ L00D</title>
+      <path d="M 143.54,900.32 L 183.30,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L00B|L00D">
+      <title>L00B ↔ L00D</title>
+      <path d="M 183.30,900.32 L 183.30,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L40A|L40C">
+      <title>L40A ↔ L40C</title>
+      <path d="M 494.24,940.08 L 494.24,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L40C|L40D">
+      <title>L40C ↔ L40D</title>
+      <path d="M 494.24,900.32 L 540.62,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L40B|L40D">
+      <title>L40B ↔ L40D</title>
+      <path d="M 540.62,900.32 L 540.62,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L60A|L60C">
+      <title>L60A ↔ L60C</title>
+      <path d="M 684.44,940.08 L 684.44,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L60C|L60D">
+      <title>L60C ↔ L60D</title>
+      <path d="M 684.44,900.32 L 725.14,900.32" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L60B|L60D">
+      <title>L60B ↔ L60D</title>
+      <path d="M 725.14,900.32 L 725.14,940.08" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_WEST_ACCESS|HOSP_WEST_ARRIVAL">
+      <title>HOSP_WEST_ACCESS ↔ HOSP_WEST_ARRIVAL</title>
+      <path d="M 163.42,857.25 L 163.42,826.88" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L11A|L11C">
+      <title>L11A ↔ L11C</title>
+      <path d="M 226.37,857.25 L 226.37,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L11C|L11D">
+      <title>L11C ↔ L11D</title>
+      <path d="M 226.37,817.49 L 266.13,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L11B|L11D">
+      <title>L11B ↔ L11D</title>
+      <path d="M 266.13,817.49 L 266.13,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L31A|L31C">
+      <title>L31A ↔ L31C</title>
+      <path d="M 401.98,857.25 L 401.98,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L31C|L31D">
+      <title>L31C ↔ L31D</title>
+      <path d="M 401.98,817.49 L 445.52,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L31B|L31D">
+      <title>L31B ↔ L31D</title>
+      <path d="M 445.52,817.49 L 445.52,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L71A|L71C">
+      <title>L71A ↔ L71C</title>
+      <path d="M 769.24,857.25 L 769.24,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L71C|L71D">
+      <title>L71C ↔ L71D</title>
+      <path d="M 769.24,817.49 L 809.95,817.49" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L71B|L71D">
+      <title>L71B ↔ L71D</title>
+      <path d="M 809.95,817.49 L 809.95,857.25" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L02A|L02C">
+      <title>L02A ↔ L02C</title>
+      <path d="M 143.54,774.42 L 143.54,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L02C|L02D">
+      <title>L02C ↔ L02D</title>
+      <path d="M 143.54,731.82 L 183.30,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L02B|L02D">
+      <title>L02B ↔ L02D</title>
+      <path d="M 183.30,731.82 L 183.30,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L22A|L22C">
+      <title>L22A ↔ L22C</title>
+      <path d="M 311.25,774.42 L 311.25,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L22C|L22D">
+      <title>L22C ↔ L22D</title>
+      <path d="M 311.25,731.82 L 354.80,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L22B|L22D">
+      <title>L22B ↔ L22D</title>
+      <path d="M 354.80,731.82 L 354.80,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L42A|L42C">
+      <title>L42A ↔ L42C</title>
+      <path d="M 494.24,774.42 L 494.24,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L42C|L42D">
+      <title>L42C ↔ L42D</title>
+      <path d="M 494.24,731.82 L 540.62,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L42B|L42D">
+      <title>L42B ↔ L42D</title>
+      <path d="M 540.62,731.82 L 540.62,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L62A|L62C">
+      <title>L62A ↔ L62C</title>
+      <path d="M 684.44,774.42 L 684.44,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L62C|L62D">
+      <title>L62C ↔ L62D</title>
+      <path d="M 684.44,731.82 L 725.14,731.82" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L62B|L62D">
+      <title>L62B ↔ L62D</title>
+      <path d="M 725.14,731.82 L 725.14,774.42" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L13A|L13C">
+      <title>L13A ↔ L13C</title>
+      <path d="M 226.37,685.67 L 226.37,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L13C|L13D">
+      <title>L13C ↔ L13D</title>
+      <path d="M 226.37,643.07 L 266.13,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L13B|L13D">
+      <title>L13B ↔ L13D</title>
+      <path d="M 266.13,643.07 L 266.13,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L33A|L33C">
+      <title>L33A ↔ L33C</title>
+      <path d="M 401.98,685.67 L 401.98,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L33C|L33D">
+      <title>L33C ↔ L33D</title>
+      <path d="M 401.98,643.07 L 445.52,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L33B|L33D">
+      <title>L33B ↔ L33D</title>
+      <path d="M 445.52,643.07 L 445.52,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L53A|L53C">
+      <title>L53A ↔ L53C</title>
+      <path d="M 590.88,685.67 L 590.88,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L53C|L53D">
+      <title>L53C ↔ L53D</title>
+      <path d="M 590.88,643.07 L 637.26,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L53B|L53D">
+      <title>L53B ↔ L53D</title>
+      <path d="M 637.26,643.07 L 637.26,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L73A|L73C">
+      <title>L73A ↔ L73C</title>
+      <path d="M 769.24,685.67 L 769.24,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L73C|L73D">
+      <title>L73C ↔ L73D</title>
+      <path d="M 769.24,643.07 L 809.95,643.07" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L73B|L73D">
+      <title>L73B ↔ L73D</title>
+      <path d="M 809.95,643.07 L 809.95,685.67" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L04A|L04C">
+      <title>L04A ↔ L04C</title>
+      <path d="M 143.54,596.92 L 143.54,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L04C|L04D">
+      <title>L04C ↔ L04D</title>
+      <path d="M 143.54,556.21 L 183.30,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L04B|L04D">
+      <title>L04B ↔ L04D</title>
+      <path d="M 183.30,556.21 L 183.30,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L24A|L24C">
+      <title>L24A ↔ L24C</title>
+      <path d="M 311.25,596.92 L 311.25,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L24C|L24D">
+      <title>L24C ↔ L24D</title>
+      <path d="M 311.25,556.21 L 354.80,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L24B|L24D">
+      <title>L24B ↔ L24D</title>
+      <path d="M 354.80,556.21 L 354.80,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L44A|L44C">
+      <title>L44A ↔ L44C</title>
+      <path d="M 494.24,596.92 L 494.24,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L44C|L44D">
+      <title>L44C ↔ L44D</title>
+      <path d="M 494.24,556.21 L 540.62,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L44B|L44D">
+      <title>L44B ↔ L44D</title>
+      <path d="M 540.62,556.21 L 540.62,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L64A|L64C">
+      <title>L64A ↔ L64C</title>
+      <path d="M 684.44,596.92 L 684.44,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L64C|L64D">
+      <title>L64C ↔ L64D</title>
+      <path d="M 684.44,556.21 L 725.14,556.21" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L64B|L64D">
+      <title>L64B ↔ L64D</title>
+      <path d="M 725.14,556.21 L 725.14,596.92" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L15A|L15C">
+      <title>L15A ↔ L15C</title>
+      <path d="M 226.37,512.11 L 226.37,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L15C|L15D">
+      <title>L15C ↔ L15D</title>
+      <path d="M 226.37,471.40 L 266.13,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L15B|L15D">
+      <title>L15B ↔ L15D</title>
+      <path d="M 266.13,471.40 L 266.13,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L55A|L55C">
+      <title>L55A ↔ L55C</title>
+      <path d="M 590.88,512.11 L 590.88,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L55C|L55D">
+      <title>L55C ↔ L55D</title>
+      <path d="M 590.88,471.40 L 637.26,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L55B|L55D">
+      <title>L55B ↔ L55D</title>
+      <path d="M 637.26,471.40 L 637.26,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L75A|L75C">
+      <title>L75A ↔ L75C</title>
+      <path d="M 769.24,512.11 L 769.24,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L75C|L75D">
+      <title>L75C ↔ L75D</title>
+      <path d="M 769.24,471.40 L 809.95,471.40" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L75B|L75D">
+      <title>L75B ↔ L75D</title>
+      <path d="M 809.95,471.40 L 809.95,512.11" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L06A|L06C">
+      <title>L06A ↔ L06C</title>
+      <path d="M 143.54,427.31 L 143.54,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L06C|L06D">
+      <title>L06C ↔ L06D</title>
+      <path d="M 143.54,382.81 L 183.30,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L06B|L06D">
+      <title>L06B ↔ L06D</title>
+      <path d="M 183.30,382.81 L 183.30,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L26A|L26C">
+      <title>L26A ↔ L26C</title>
+      <path d="M 311.25,427.31 L 311.25,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L26C|L26D">
+      <title>L26C ↔ L26D</title>
+      <path d="M 311.25,382.81 L 354.80,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L26B|L26D">
+      <title>L26B ↔ L26D</title>
+      <path d="M 354.80,382.81 L 354.80,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L46A|L46C">
+      <title>L46A ↔ L46C</title>
+      <path d="M 494.24,427.31 L 494.24,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L46C|L46D">
+      <title>L46C ↔ L46D</title>
+      <path d="M 494.24,382.81 L 540.62,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L46B|L46D">
+      <title>L46B ↔ L46D</title>
+      <path d="M 540.62,382.81 L 540.62,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L66A|L66C">
+      <title>L66A ↔ L66C</title>
+      <path d="M 684.44,427.31 L 684.44,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L66C|L66D">
+      <title>L66C ↔ L66D</title>
+      <path d="M 684.44,382.81 L 725.14,382.81" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L66B|L66D">
+      <title>L66B ↔ L66D</title>
+      <path d="M 725.14,382.81 L 725.14,427.31" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="HOSP_EAST_ACCESS|HOSP_EAST_ARRIVAL">
+      <title>HOSP_EAST_ACCESS ↔ HOSP_EAST_ARRIVAL</title>
+      <path d="M 789.60,427.31 L 789.60,392.00" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L17A|L17C">
+      <title>L17A ↔ L17C</title>
+      <path d="M 226.37,334.61 L 226.37,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L17C|L17D">
+      <title>L17C ↔ L17D</title>
+      <path d="M 226.37,290.12 L 266.13,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L17B|L17D">
+      <title>L17B ↔ L17D</title>
+      <path d="M 266.13,290.12 L 266.13,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L37A|L37C">
+      <title>L37A ↔ L37C</title>
+      <path d="M 401.98,334.61 L 401.98,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L37C|L37D">
+      <title>L37C ↔ L37D</title>
+      <path d="M 401.98,290.12 L 445.52,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L37B|L37D">
+      <title>L37B ↔ L37D</title>
+      <path d="M 445.52,290.12 L 445.52,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L57A|L57C">
+      <title>L57A ↔ L57C</title>
+      <path d="M 590.88,334.61 L 590.88,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L57C|L57D">
+      <title>L57C ↔ L57D</title>
+      <path d="M 590.88,290.12 L 637.26,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L57B|L57D">
+      <title>L57B ↔ L57D</title>
+      <path d="M 637.26,290.12 L 637.26,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L77A|L77C">
+      <title>L77A ↔ L77C</title>
+      <path d="M 769.24,334.61 L 769.24,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L77C|L77D">
+      <title>L77C ↔ L77D</title>
+      <path d="M 769.24,290.12 L 809.95,290.12" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-segment="L77B|L77D">
+      <title>L77B ↔ L77D</title>
+      <path d="M 809.95,290.12 L 809.95,334.61" fill="none" stroke="#A2B1C5" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+  <g id="selected-route">
+    <g data-edge="H00_1_R">
+      <title>H00_1_R: L00B → L00A</title>
+      <path d="M 161.76,940.08 L 143.54,940.08" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 156.65,944.08 L 147.65,940.08 L 156.65,936.08" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H00_0_R">
+      <title>H00_0_R: L00A → J00</title>
+      <path d="M 143.54,940.08 L 122.00,940.08" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 136.77,944.08 L 127.77,940.08 L 136.77,936.08" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V00_0_F">
+      <title>V00_0_F: J00 → J10</title>
+      <path d="M 122.00,940.08 L 122.00,857.25" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 118.00,902.67 L 122.00,893.67 L 126.00,902.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H10_0_F">
+      <title>H10_0_F: J10 → HOSP_WEST_ACCESS</title>
+      <path d="M 122.00,857.25 L 163.42,857.25" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 138.71,853.25 L 147.71,857.25 L 138.71,861.25" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H10_1_F">
+      <title>H10_1_F: HOSP_WEST_ACCESS → J11</title>
+      <path d="M 163.42,857.25 L 204.83,857.25" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 180.12,853.25 L 189.12,857.25 L 180.12,861.25" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V11_0_F">
+      <title>V11_0_F: J11 → J21</title>
+      <path d="M 204.83,857.25 L 204.83,774.42" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 200.83,819.83 L 204.83,810.83 L 208.83,819.83" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V12_0_F">
+      <title>V12_0_F: J21 → J31</title>
+      <path d="M 204.83,774.42 L 204.83,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 200.83,734.04 L 204.83,725.04 L 208.83,734.04" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H31_0_F">
+      <title>H31_0_F: J31 → L13A</title>
+      <path d="M 204.83,685.67 L 226.37,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 211.60,681.67 L 220.60,685.67 L 211.60,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H31_1_F">
+      <title>H31_1_F: L13A → L13B</title>
+      <path d="M 226.37,685.67 L 266.13,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 242.25,681.67 L 251.25,685.67 L 242.25,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H31_2_F">
+      <title>H31_2_F: L13B → J32</title>
+      <path d="M 266.13,685.67 L 287.67,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 272.90,681.67 L 281.90,685.67 L 272.90,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H32_0_F">
+      <title>H32_0_F: J32 → J33</title>
+      <path d="M 287.67,685.67 L 378.39,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 329.03,681.67 L 338.03,685.67 L 329.03,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H33_0_F">
+      <title>H33_0_F: J33 → L33A</title>
+      <path d="M 378.39,685.67 L 401.98,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 386.18,681.67 L 395.18,685.67 L 386.18,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H33_1_F">
+      <title>H33_1_F: L33A → L33B</title>
+      <path d="M 401.98,685.67 L 445.52,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 419.75,681.67 L 428.75,685.67 L 419.75,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H33_2_F">
+      <title>H33_2_F: L33B → J34</title>
+      <path d="M 445.52,685.67 L 469.11,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 453.32,681.67 L 462.32,685.67 L 453.32,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H34_0_F">
+      <title>H34_0_F: J34 → J35</title>
+      <path d="M 469.11,685.67 L 565.75,685.67" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 513.43,681.67 L 522.43,685.67 L 513.43,689.67" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V53_0_F">
+      <title>V53_0_F: J35 → J45</title>
+      <path d="M 565.75,685.67 L 565.75,596.92" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 561.75,645.29 L 565.75,636.29 L 569.75,645.29" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V54_0_F">
+      <title>V54_0_F: J45 → J55</title>
+      <path d="M 565.75,596.92 L 565.75,512.11" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 561.75,558.51 L 565.75,549.51 L 569.75,558.51" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H55_0_F">
+      <title>H55_0_F: J55 → L55A</title>
+      <path d="M 565.75,512.11 L 590.88,512.11" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 574.31,508.11 L 583.31,512.11 L 574.31,516.11" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H55_1_F">
+      <title>H55_1_F: L55A → L55B</title>
+      <path d="M 590.88,512.11 L 637.26,512.11" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 610.07,508.11 L 619.07,512.11 L 610.07,516.11" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H55_2_F">
+      <title>H55_2_F: L55B → J56</title>
+      <path d="M 637.26,512.11 L 662.39,512.11" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 645.83,508.11 L 654.83,512.11 L 645.83,516.11" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H56_0_F">
+      <title>H56_0_F: J56 → J57</title>
+      <path d="M 662.39,512.11 L 747.19,512.11" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 700.79,508.11 L 709.79,512.11 L 700.79,516.11" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="V75_0_F">
+      <title>V75_0_F: J57 → J67</title>
+      <path d="M 747.19,512.11 L 747.19,427.31" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 743.19,473.71 L 747.19,464.71 L 751.19,473.71" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="H67_0_F">
+      <title>H67_0_F: J67 → HOSP_EAST_ACCESS</title>
+      <path d="M 747.19,427.31 L 789.60,427.31" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 764.40,423.31 L 773.40,427.31 L 764.40,431.31" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <g data-edge="HOSP_EAST_DRIVEWAY_0_F">
+      <title>HOSP_EAST_DRIVEWAY_0_F: HOSP_EAST_ACCESS → HOSP_EAST_ARRIVAL</title>
+      <path d="M 789.60,427.31 L 789.60,392.00" fill="none" stroke="#147D73" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M 785.60,413.65 L 789.60,404.65 L 793.60,413.65" fill="none" stroke="#147D73" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+  </g>
+  <g id="graph-nodes">
+    <circle cx="122.00" cy="940.08" r="4.5" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="J00">
+      <title>J00</title>
+    </circle>
+    <circle cx="204.83" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J01">
+      <title>J01 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J02">
+      <title>J02 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J03">
+      <title>J03 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J04">
+      <title>J04 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J05">
+      <title>J05 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J06">
+      <title>J06 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="940.08" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J07">
+      <title>J07 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="940.08" r="4.5" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="J08">
+      <title>J08</title>
+    </circle>
+    <circle cx="122.00" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J10">
+      <title>J10 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J11">
+      <title>J11 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J12">
+      <title>J12 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J13">
+      <title>J13 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J14">
+      <title>J14 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J15">
+      <title>J15 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J16">
+      <title>J16 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J17">
+      <title>J17 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="857.25" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J18">
+      <title>J18 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J20">
+      <title>J20 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J21">
+      <title>J21 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J22">
+      <title>J22 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J23">
+      <title>J23 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J24">
+      <title>J24 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J25">
+      <title>J25 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J26">
+      <title>J26 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J27">
+      <title>J27 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="774.42" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J28">
+      <title>J28 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J30">
+      <title>J30 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J31">
+      <title>J31 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J32">
+      <title>J32 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J33">
+      <title>J33 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J34">
+      <title>J34 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J35">
+      <title>J35 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J36">
+      <title>J36 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J37">
+      <title>J37 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="685.67" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J38">
+      <title>J38 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J40">
+      <title>J40 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J41">
+      <title>J41 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J42">
+      <title>J42 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J43">
+      <title>J43 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J44">
+      <title>J44 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J45">
+      <title>J45 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J46">
+      <title>J46 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J47">
+      <title>J47 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="596.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J48">
+      <title>J48 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J50">
+      <title>J50 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J51">
+      <title>J51 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J52">
+      <title>J52 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J53">
+      <title>J53 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J54">
+      <title>J54 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J55">
+      <title>J55 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J56">
+      <title>J56 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J57">
+      <title>J57 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="512.11" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J58">
+      <title>J58 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J60">
+      <title>J60 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J61">
+      <title>J61 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J62">
+      <title>J62 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J63">
+      <title>J63 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J64">
+      <title>J64 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J65">
+      <title>J65 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J66">
+      <title>J66 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J67">
+      <title>J67 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="427.31" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J68">
+      <title>J68 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J70">
+      <title>J70 · signalized</title>
+    </circle>
+    <circle cx="204.83" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J71">
+      <title>J71 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J72">
+      <title>J72 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J73">
+      <title>J73 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J74">
+      <title>J74 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J75">
+      <title>J75 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J76">
+      <title>J76 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J77">
+      <title>J77 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="334.61" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J78">
+      <title>J78 · signalized</title>
+    </circle>
+    <circle cx="122.00" cy="241.92" r="4.5" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="J80">
+      <title>J80</title>
+    </circle>
+    <circle cx="204.83" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J81">
+      <title>J81 · signalized</title>
+    </circle>
+    <circle cx="287.67" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J82">
+      <title>J82 · signalized</title>
+    </circle>
+    <circle cx="378.39" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J83">
+      <title>J83 · signalized</title>
+    </circle>
+    <circle cx="469.11" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J84">
+      <title>J84 · signalized</title>
+    </circle>
+    <circle cx="565.75" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J85">
+      <title>J85 · signalized</title>
+    </circle>
+    <circle cx="662.39" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J86">
+      <title>J86 · signalized</title>
+    </circle>
+    <circle cx="747.19" cy="241.92" r="4.5" fill="#0A1F44" stroke="#A36812" stroke-width="1.6" data-node="J87">
+      <title>J87 · signalized</title>
+    </circle>
+    <circle cx="832.00" cy="241.92" r="4.5" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="J88">
+      <title>J88</title>
+    </circle>
+    <circle cx="143.54" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L00A">
+      <title>L00A</title>
+    </circle>
+    <circle cx="183.30" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L00B">
+      <title>L00B</title>
+    </circle>
+    <circle cx="143.54" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L00C">
+      <title>L00C</title>
+    </circle>
+    <circle cx="183.30" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L00D">
+      <title>L00D</title>
+    </circle>
+    <circle cx="494.24" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L40A">
+      <title>L40A</title>
+    </circle>
+    <circle cx="540.62" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L40B">
+      <title>L40B</title>
+    </circle>
+    <circle cx="494.24" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L40C">
+      <title>L40C</title>
+    </circle>
+    <circle cx="540.62" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L40D">
+      <title>L40D</title>
+    </circle>
+    <circle cx="684.44" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L60A">
+      <title>L60A</title>
+    </circle>
+    <circle cx="725.14" cy="940.08" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L60B">
+      <title>L60B</title>
+    </circle>
+    <circle cx="684.44" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L60C">
+      <title>L60C</title>
+    </circle>
+    <circle cx="725.14" cy="900.32" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L60D">
+      <title>L60D</title>
+    </circle>
+    <circle cx="163.42" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="HOSP_WEST_ACCESS">
+      <title>HOSP_WEST_ACCESS</title>
+    </circle>
+    <circle cx="163.42" cy="826.88" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="HOSP_WEST_ARRIVAL">
+      <title>HOSP_WEST_ARRIVAL</title>
+    </circle>
+    <circle cx="226.37" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L11A">
+      <title>L11A</title>
+    </circle>
+    <circle cx="266.13" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L11B">
+      <title>L11B</title>
+    </circle>
+    <circle cx="226.37" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L11C">
+      <title>L11C</title>
+    </circle>
+    <circle cx="266.13" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L11D">
+      <title>L11D</title>
+    </circle>
+    <circle cx="401.98" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L31A">
+      <title>L31A</title>
+    </circle>
+    <circle cx="445.52" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L31B">
+      <title>L31B</title>
+    </circle>
+    <circle cx="401.98" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L31C">
+      <title>L31C</title>
+    </circle>
+    <circle cx="445.52" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L31D">
+      <title>L31D</title>
+    </circle>
+    <circle cx="769.24" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L71A">
+      <title>L71A</title>
+    </circle>
+    <circle cx="809.95" cy="857.25" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L71B">
+      <title>L71B</title>
+    </circle>
+    <circle cx="769.24" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L71C">
+      <title>L71C</title>
+    </circle>
+    <circle cx="809.95" cy="817.49" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L71D">
+      <title>L71D</title>
+    </circle>
+    <circle cx="143.54" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L02A">
+      <title>L02A</title>
+    </circle>
+    <circle cx="183.30" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L02B">
+      <title>L02B</title>
+    </circle>
+    <circle cx="143.54" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L02C">
+      <title>L02C</title>
+    </circle>
+    <circle cx="183.30" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L02D">
+      <title>L02D</title>
+    </circle>
+    <circle cx="311.25" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L22A">
+      <title>L22A</title>
+    </circle>
+    <circle cx="354.80" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L22B">
+      <title>L22B</title>
+    </circle>
+    <circle cx="311.25" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L22C">
+      <title>L22C</title>
+    </circle>
+    <circle cx="354.80" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L22D">
+      <title>L22D</title>
+    </circle>
+    <circle cx="494.24" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L42A">
+      <title>L42A</title>
+    </circle>
+    <circle cx="540.62" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L42B">
+      <title>L42B</title>
+    </circle>
+    <circle cx="494.24" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L42C">
+      <title>L42C</title>
+    </circle>
+    <circle cx="540.62" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L42D">
+      <title>L42D</title>
+    </circle>
+    <circle cx="684.44" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L62A">
+      <title>L62A</title>
+    </circle>
+    <circle cx="725.14" cy="774.42" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L62B">
+      <title>L62B</title>
+    </circle>
+    <circle cx="684.44" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L62C">
+      <title>L62C</title>
+    </circle>
+    <circle cx="725.14" cy="731.82" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L62D">
+      <title>L62D</title>
+    </circle>
+    <circle cx="226.37" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L13A">
+      <title>L13A</title>
+    </circle>
+    <circle cx="266.13" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L13B">
+      <title>L13B</title>
+    </circle>
+    <circle cx="226.37" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L13C">
+      <title>L13C</title>
+    </circle>
+    <circle cx="266.13" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L13D">
+      <title>L13D</title>
+    </circle>
+    <circle cx="401.98" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L33A">
+      <title>L33A</title>
+    </circle>
+    <circle cx="445.52" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L33B">
+      <title>L33B</title>
+    </circle>
+    <circle cx="401.98" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L33C">
+      <title>L33C</title>
+    </circle>
+    <circle cx="445.52" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L33D">
+      <title>L33D</title>
+    </circle>
+    <circle cx="590.88" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L53A">
+      <title>L53A</title>
+    </circle>
+    <circle cx="637.26" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L53B">
+      <title>L53B</title>
+    </circle>
+    <circle cx="590.88" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L53C">
+      <title>L53C</title>
+    </circle>
+    <circle cx="637.26" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L53D">
+      <title>L53D</title>
+    </circle>
+    <circle cx="769.24" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L73A">
+      <title>L73A</title>
+    </circle>
+    <circle cx="809.95" cy="685.67" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L73B">
+      <title>L73B</title>
+    </circle>
+    <circle cx="769.24" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L73C">
+      <title>L73C</title>
+    </circle>
+    <circle cx="809.95" cy="643.07" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L73D">
+      <title>L73D</title>
+    </circle>
+    <circle cx="143.54" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L04A">
+      <title>L04A</title>
+    </circle>
+    <circle cx="183.30" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L04B">
+      <title>L04B</title>
+    </circle>
+    <circle cx="143.54" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L04C">
+      <title>L04C</title>
+    </circle>
+    <circle cx="183.30" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L04D">
+      <title>L04D</title>
+    </circle>
+    <circle cx="311.25" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L24A">
+      <title>L24A</title>
+    </circle>
+    <circle cx="354.80" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L24B">
+      <title>L24B</title>
+    </circle>
+    <circle cx="311.25" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L24C">
+      <title>L24C</title>
+    </circle>
+    <circle cx="354.80" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L24D">
+      <title>L24D</title>
+    </circle>
+    <circle cx="494.24" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L44A">
+      <title>L44A</title>
+    </circle>
+    <circle cx="540.62" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L44B">
+      <title>L44B</title>
+    </circle>
+    <circle cx="494.24" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L44C">
+      <title>L44C</title>
+    </circle>
+    <circle cx="540.62" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L44D">
+      <title>L44D</title>
+    </circle>
+    <circle cx="684.44" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L64A">
+      <title>L64A</title>
+    </circle>
+    <circle cx="725.14" cy="596.92" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L64B">
+      <title>L64B</title>
+    </circle>
+    <circle cx="684.44" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L64C">
+      <title>L64C</title>
+    </circle>
+    <circle cx="725.14" cy="556.21" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L64D">
+      <title>L64D</title>
+    </circle>
+    <circle cx="226.37" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L15A">
+      <title>L15A</title>
+    </circle>
+    <circle cx="266.13" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L15B">
+      <title>L15B</title>
+    </circle>
+    <circle cx="226.37" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L15C">
+      <title>L15C</title>
+    </circle>
+    <circle cx="266.13" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L15D">
+      <title>L15D</title>
+    </circle>
+    <circle cx="590.88" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L55A">
+      <title>L55A</title>
+    </circle>
+    <circle cx="637.26" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L55B">
+      <title>L55B</title>
+    </circle>
+    <circle cx="590.88" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L55C">
+      <title>L55C</title>
+    </circle>
+    <circle cx="637.26" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L55D">
+      <title>L55D</title>
+    </circle>
+    <circle cx="769.24" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L75A">
+      <title>L75A</title>
+    </circle>
+    <circle cx="809.95" cy="512.11" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L75B">
+      <title>L75B</title>
+    </circle>
+    <circle cx="769.24" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L75C">
+      <title>L75C</title>
+    </circle>
+    <circle cx="809.95" cy="471.40" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L75D">
+      <title>L75D</title>
+    </circle>
+    <circle cx="143.54" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L06A">
+      <title>L06A</title>
+    </circle>
+    <circle cx="183.30" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L06B">
+      <title>L06B</title>
+    </circle>
+    <circle cx="143.54" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L06C">
+      <title>L06C</title>
+    </circle>
+    <circle cx="183.30" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L06D">
+      <title>L06D</title>
+    </circle>
+    <circle cx="311.25" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L26A">
+      <title>L26A</title>
+    </circle>
+    <circle cx="354.80" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L26B">
+      <title>L26B</title>
+    </circle>
+    <circle cx="311.25" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L26C">
+      <title>L26C</title>
+    </circle>
+    <circle cx="354.80" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L26D">
+      <title>L26D</title>
+    </circle>
+    <circle cx="494.24" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L46A">
+      <title>L46A</title>
+    </circle>
+    <circle cx="540.62" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L46B">
+      <title>L46B</title>
+    </circle>
+    <circle cx="494.24" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L46C">
+      <title>L46C</title>
+    </circle>
+    <circle cx="540.62" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L46D">
+      <title>L46D</title>
+    </circle>
+    <circle cx="684.44" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L66A">
+      <title>L66A</title>
+    </circle>
+    <circle cx="725.14" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L66B">
+      <title>L66B</title>
+    </circle>
+    <circle cx="684.44" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L66C">
+      <title>L66C</title>
+    </circle>
+    <circle cx="725.14" cy="382.81" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L66D">
+      <title>L66D</title>
+    </circle>
+    <circle cx="789.60" cy="427.31" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="HOSP_EAST_ACCESS">
+      <title>HOSP_EAST_ACCESS</title>
+    </circle>
+    <circle cx="789.60" cy="392.00" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="HOSP_EAST_ARRIVAL">
+      <title>HOSP_EAST_ARRIVAL</title>
+    </circle>
+    <circle cx="226.37" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L17A">
+      <title>L17A</title>
+    </circle>
+    <circle cx="266.13" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L17B">
+      <title>L17B</title>
+    </circle>
+    <circle cx="226.37" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L17C">
+      <title>L17C</title>
+    </circle>
+    <circle cx="266.13" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L17D">
+      <title>L17D</title>
+    </circle>
+    <circle cx="401.98" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L37A">
+      <title>L37A</title>
+    </circle>
+    <circle cx="445.52" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L37B">
+      <title>L37B</title>
+    </circle>
+    <circle cx="401.98" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L37C">
+      <title>L37C</title>
+    </circle>
+    <circle cx="445.52" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L37D">
+      <title>L37D</title>
+    </circle>
+    <circle cx="590.88" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L57A">
+      <title>L57A</title>
+    </circle>
+    <circle cx="637.26" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L57B">
+      <title>L57B</title>
+    </circle>
+    <circle cx="590.88" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L57C">
+      <title>L57C</title>
+    </circle>
+    <circle cx="637.26" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L57D">
+      <title>L57D</title>
+    </circle>
+    <circle cx="769.24" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L77A">
+      <title>L77A</title>
+    </circle>
+    <circle cx="809.95" cy="334.61" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L77B">
+      <title>L77B</title>
+    </circle>
+    <circle cx="769.24" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L77C">
+      <title>L77C</title>
+    </circle>
+    <circle cx="809.95" cy="290.12" r="2.8" fill="#0A1F44" stroke="#F8FAFC" stroke-width="0.7" data-node="L77D">
+      <title>L77D</title>
+    </circle>
+  </g>
+  <rect x="153.41666666666669" y="816.8777777777777" width="20" height="20" rx="3" fill="#147D73" stroke="#F8FAFC" stroke-width="2" />
+  <text x="163.41666666666669" y="831.8777777777777" fill="#FFFFFF" font-size="14" text-anchor="middle" font-weight="700">H</text>
+  <text x="163.41666666666669" y="803.8777777777777" fill="#147D73" font-size="22" text-anchor="middle" font-weight="600" class="node-label">Westhaven Medical</text>
+  <rect x="779.5972222222222" y="382.0027777777778" width="20" height="20" rx="3" fill="#147D73" stroke="#F8FAFC" stroke-width="2" />
+  <text x="789.5972222222222" y="397.0027777777778" fill="#FFFFFF" font-size="14" text-anchor="middle" font-weight="700">H</text>
+  <text x="789.5972222222222" y="369.0027777777778" fill="#147D73" font-size="22" text-anchor="middle" font-weight="600" class="node-label">Eastbank General</text>
+  <circle cx="161.76" cy="937.5194444444444" r="8" fill="#F8FAFC" stroke="#147D73" stroke-width="3" />
+  <line x1="161.76" y1="947.5194444444444" x2="186.76" y2="962.5194444444444" stroke="#147D73" stroke-width="1.5" />
+  <text x="193.76" y="967.5194444444444" fill="#147D73" font-size="22" class="node-label">P001 · curb pickup</text>
+  <text x="60" y="996" fill="#52627A" font-size="21">Paired edges overlap in this overview; directions appear in the close-up.</text>
+  <text x="965" y="254" fill="#0A1F44" font-size="28" font-weight="700">From road surface to graph</text>
+  <text x="965" y="291" fill="#52627A" font-size="22">One two-way corridor: H00 · 210 m</text>
+  <line x1="980.0" y1="338" x2="1420.0000000000002" y2="338" stroke="#A2B1C5" stroke-width="12" stroke-linecap="round" />
+  <text x="980.0" y="321" fill="#0A1F44" font-size="20">J00</text>
+  <text x="1420.0000000000002" y="321" fill="#0A1F44" font-size="20" text-anchor="end">J01</text>
+  <text x="965" y="393" fill="#0A1F44" font-size="22">Split at access nodes; add both directions</text>
+  <line x1="990.0" y1="430" x2="1084.4" y2="430" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <line x1="1084.4" y1="450" x2="990.0" y2="450" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <text x="1037.2" y="518" fill="#52627A" font-size="20" text-anchor="middle">54.6 m</text>
+  <line x1="1104.4" y1="430" x2="1295.6000000000001" y2="430" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <line x1="1295.6000000000001" y1="450" x2="1104.4" y2="450" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <text x="1200.0" y="518" fill="#52627A" font-size="20" text-anchor="middle">100.8 m</text>
+  <line x1="1315.6000000000001" y1="430" x2="1410.0000000000002" y2="430" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <line x1="1410.0000000000002" y1="450" x2="1315.6000000000001" y2="450" stroke="#0A1F44" stroke-width="2" marker-end="url(#edge-arrow)" />
+  <text x="1362.8000000000002" y="518" fill="#52627A" font-size="20" text-anchor="middle">54.6 m</text>
+  <circle cx="980.0" cy="440" r="6" fill="#0A1F44" />
+  <text x="980.0" y="486" fill="#0A1F44" font-size="20" text-anchor="middle">J00</text>
+  <circle cx="1094.4" cy="440" r="6" fill="#0A1F44" />
+  <text x="1094.4" y="486" fill="#0A1F44" font-size="20" text-anchor="middle">L00A</text>
+  <circle cx="1305.6000000000001" cy="440" r="6" fill="#0A1F44" />
+  <text x="1305.6000000000001" y="486" fill="#0A1F44" font-size="20" text-anchor="middle">L00B</text>
+  <circle cx="1420.0000000000002" cy="440" r="6" fill="#0A1F44" />
+  <text x="1420.0000000000002" y="486" fill="#0A1F44" font-size="20" text-anchor="middle">J01</text>
+  <text x="965" y="565" fill="#0A1F44" font-size="23" font-weight="600">4 nodes · 3 segments · 6 directed edges</text>
+  <text x="965" y="601" fill="#52627A" font-size="21">Arrows represent edges, not individual lanes.</text>
+  <line x1="965" y1="634" x2="1440" y2="634" stroke="#D9E2EC" stroke-width="1" />
+  <text x="965" y="686" fill="#0A1F44" font-size="28" font-weight="700">How routing uses the graph</text>
+  <text x="965" y="729" fill="#0A1F44" font-size="21">Nodes: junctions, access points, destinations</text>
+  <text x="965" y="765" fill="#0A1F44" font-size="21">Edges: direction, length and permissions</text>
+  <text x="965" y="801" fill="#0A1F44" font-size="21">Connections: permitted turns between edges</text>
+  <text x="965" y="855" fill="#0A1F44" font-size="23" font-weight="600">Dijkstra minimizes total edge length</text>
+  <text x="965" y="890" fill="#52627A" font-size="22">while following those legal connections.</text>
+  <text x="965" y="950" fill="#147D73" font-size="23" font-weight="600">Highlighted: Cross-city response</text>
+  <text x="965" y="984" fill="#147D73" font-size="21">P001 → Eastbank General · 24 edges</text>
+  <line x1="60" y1="1022" x2="1440" y2="1022" stroke="#D9E2EC" stroke-width="1" />
+  <circle cx="72" cy="1060" r="5" fill="#0A1F44" stroke="#A36812" stroke-width="2" />
+  <text x="90" y="1067" fill="#52627A" font-size="21">Signalized junction</text>
+  <circle cx="380" cy="1060" r="3.5" fill="#0A1F44" stroke="#0A1F44" stroke-width="2" />
+  <text x="398" y="1067" fill="#52627A" font-size="21">Other graph node</text>
+  <line x1="671" y1="1060" x2="712" y2="1060" stroke="#147D73" stroke-width="5" />
+  <text x="725" y="1067" fill="#52627A" font-size="21">Recorded route</text>
+  <text x="1440" y="1067" fill="#52627A" font-size="19" text-anchor="end">Source: canonical city manifest + saved replay</text>
+</svg>

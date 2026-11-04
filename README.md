@@ -98,6 +98,18 @@ Browser rendering cadence on one desktop. [Exact environment and samples](docs/v
 
 ## 04 · How it works
 
+### The city as a road graph
+
+![AFTERLIGHT's actual road graph: 201 nodes and 586 directed edges, with the recorded Cross-city route highlighted and a close-up showing how a two-way road splits into directed edges.](docs/images/road-graph.svg)
+
+**Nodes** mark intersections, access points and hospital destinations. **Directed edges** describe travel between them; **connections** define which turns are permitted. The 233 physical roads split at access points into **586 directed edges across 201 nodes**, with **1,240 permitted edge-to-edge transitions**. Pickup anchors attach to edges rather than adding graph nodes.
+
+The highlighted **Cross-city response** follows the recorded **24-edge route from P001 to Eastbank General**. Dijkstra minimizes total edge length over permitted directed edge transitions. The 3D scene renders each physical road once; opposite travel directions belong to the graph.
+
+[Canonical map and graph contract](assets/map/README.md) · [Routing implementation](sim/network.py) · [Regenerate this diagram](scripts/render_road_graph.py) with `python scripts/render_road_graph.py`.
+
+### From graph to replay
+
 ```mermaid
 flowchart LR
     A[Canonical city network] --> B[Dijkstra route + shared demand]

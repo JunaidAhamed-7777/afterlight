@@ -18,6 +18,7 @@ import {
 import { fitOrthographic } from "./cameraFit.ts";
 import { VehicleLayer } from "./VehicleLayer.ts";
 import { interpolatedFrame } from "./replay.ts";
+import { journeyAnchor, planJourneyFocus, type JourneyFocus } from "./journeyFocus.ts";
 
 interface Props {
   city: City | null;
@@ -43,6 +44,7 @@ interface Props {
   ghostOpacity: number;
   pickup: string;
   hospital: string;
+  journeyFocus: JourneyFocus | null;
   quality: "balanced" | "high";
   follow: boolean;
   playing: boolean;
@@ -466,28 +468,32 @@ export function CityView(props: Props) {
     scene.add(selected);
     const marker = (color: number) => {
       const g = new THREE.Group();
+      const dot = new THREE.Mesh(
+        new THREE.CircleGeometry(6, 32),
+        new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide, depthTest: false, depthWrite: false }),
+      );
+      dot.rotation.x = -Math.PI / 2;
+      dot.renderOrder = 5;
+      g.add(dot);
       const ring = new THREE.Mesh(
         new THREE.RingGeometry(9, 12, 40),
         new THREE.MeshBasicMaterial({
           color,
           side: THREE.DoubleSide,
           depthTest: false,
+          depthWrite: false,
         }),
       );
       ring.rotation.x = -Math.PI / 2;
-      ring.position.y = 1.5;
+      ring.position.y = 0.01;
       ring.renderOrder = 4;
       g.add(ring);
-      const pin = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.2, 1.2, 30, 8),
-        new THREE.MeshBasicMaterial({ color }),
-      );
-      pin.position.y = 16;
-      g.add(pin);
       return g;
     };
     const pickupMarker = marker(0xffb85c),
-      hospitalMarker = marker(0x78d9cb);
+      hospitalMarker = marker(0xffd46a);
+    pickupMarker.name = "Selected pickup ground marker";
+    hospitalMarker.name = "Selected hospital ground marker";
     selected.add(pickupMarker, hospitalMarker);
     pickupMarker.visible = false;
     hospitalMarker.visible = false;
@@ -676,6 +682,7 @@ export function CityView(props: Props) {
       lastPan = pan,
       lastCutaway = cutaway;
     let followTrack = new AmbulanceCameraTrack(current.current.followFrames);
+    let lastJourneyFocusRevision = -1;
     let previousFollowTime: number | null = null;
     let previousTick = performance.now();
     let wasFollowing = false;
@@ -709,6 +716,7 @@ export function CityView(props: Props) {
           changed && p.ghost && p.world === "afterlight"
             ? interpolatedFrame(p.baselineFrames, p.clock.current)
             : null;
+        let focusedJourney = false;
         if (changed) {
           dirty = true;
           if (lastReset !== p.reset) {
@@ -731,6 +739,19 @@ export function CityView(props: Props) {
               updateNavigation();
             }
             lastLocate = p.locate;
+          }
+          const journeyFocus = planJourneyFocus(p.city, p.journeyFocus, lastJourneyFocusRevision, {
+            position: camera.position.toArray(), target: controls.target.toArray(), zoom: camera.zoom,
+          });
+          if (journeyFocus) {
+            manualCamera(true);
+            camera.position.fromArray(journeyFocus.position);
+            controls.target.fromArray(journeyFocus.target);
+            camera.zoom = journeyFocus.zoom;
+            camera.updateProjectionMatrix();
+            updateNavigation();
+            lastJourneyFocusRevision = journeyFocus.revision;
+            focusedJourney = true;
           }
           if (lastQuality !== p.quality) {
             renderer.setPixelRatio(
@@ -762,18 +783,13 @@ export function CityView(props: Props) {
           geometryLayer.update(exactSignals);
           active.update(frame?.vehicles ?? [], models);
           ghosts.update(ghostFrame?.vehicles ?? [], models, p.ghostOpacity);
-          const point = p.city?.pickups.find(
-            (x) => x.id === p.pickup,
-          )?.position;
+          const point = journeyAnchor(p.city, "pickup", p.pickup);
           pickupMarker.visible = Boolean(point);
           if (point)
-            pickupMarker.position.set(point[0], point[2] ?? 0, -point[1]);
-          const h = p.city?.hospitals.find((x) => x.id === p.hospital);
-          const hp =
-            h &&
-            p.city?.nodes.find((n) => n.id === h.destination_node)?.position;
+            pickupMarker.position.set(point[0], point[1] + 0.28, point[2]);
+          const hp = journeyAnchor(p.city, "hospital", p.hospital);
           hospitalMarker.visible = Boolean(hp);
-          if (hp) hospitalMarker.position.set(hp[0], hp[2] ?? 0, -hp[1]);
+          if (hp) hospitalMarker.position.set(hp[0], hp[1] + 0.28, hp[2]);
           for (const s of signals.values()) s.visible = false;
           for (const signal of p.networkGeometry.length ? [] : exactSignals) {
             const n = p.city?.nodes.find((n) => n.id === signal.id);
@@ -802,7 +818,7 @@ export function CityView(props: Props) {
         const replacedTrack = followTrack.frames !== p.followFrames;
         if (replacedTrack)
           followTrack = new AmbulanceCameraTrack(p.followFrames);
-        const following = p.follow && !p.reducedMotion;
+        const following = p.follow && !p.reducedMotion && !focusedJourney;
         if (following) {
           overviewMode = false;
           const point = followTrack.target(p.clock.current);
@@ -883,6 +899,16 @@ export function CityView(props: Props) {
           renderer.domElement.dataset.mapPickMode = p.pickMode ?? "none";
           renderer.domElement.dataset.mapAnchors = JSON.stringify(
             p.pickMode ? selectionLayer.projectedAnchors(renderCamera) : [],
+          );
+          renderer.domElement.dataset.journeyFocusRevision = String(lastJourneyFocusRevision);
+          renderer.domElement.dataset.journeyMarkers = JSON.stringify(
+            ([{ kind: "pickup", id: p.pickup, marker: pickupMarker },
+              { kind: "hospital", id: p.hospital, marker: hospitalMarker }])
+              .filter(({ marker }) => marker.visible)
+              .map(({ kind, id, marker }) => {
+                const position = marker.getWorldPosition(new THREE.Vector3());
+                return { kind, id, position: position.toArray(), ndc: position.clone().project(renderCamera).toArray() };
+              }),
           );
           geometryLayer.updatePresentation(renderCamera, viewportHeight);
           renderer.render(scene, renderCamera);

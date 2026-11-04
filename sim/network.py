@@ -208,7 +208,7 @@ def lane_connections(graph: dict) -> list[dict]:
     return result
 
 
-def build_network(kind: str, output: Path) -> dict:
+def build_network(kind: str, output: Path, *, control=None) -> dict:
     from policies.scheduler import timing_for_network
     timing = timing_for_network(kind)
     if kind == 'city':
@@ -240,18 +240,23 @@ def build_network(kind: str, output: Path) -> dict:
                '--output-file', str(output/'network.net.xml'), '--offset.disable-normalization', 'true',
                '--no-turnarounds', 'true', '--tls.default-type', 'static', '--tls.green.time', '25',
                '--tls.yellow.time', format(timing.yellow_s,'g'), '--tls.allred.time', format(timing.all_red_s,'g')]
-    completed = subprocess.run(command, capture_output=True, text=True, check=False)
+    if control is not None:
+        control.check_cancelled()
+    completed = (subprocess.run(command, capture_output=True, text=True, check=False)
+                 if control is None else control.run_command(command, capture_output=True, text=True, check=False))
     (output/'netconvert.stdout.txt').write_text(completed.stdout, encoding='utf-8')
     (output/'netconvert.stderr.txt').write_text(completed.stderr, encoding='utf-8')
     if completed.returncode:
         raise RuntimeError(f'netconvert failed ({completed.returncode}): {completed.stderr}')
     validate_imported_network(graph,read_network(output/'network.net.xml'))
+    version_output = (subprocess.check_output([binary('netconvert'), '--version'], text=True)
+                      if control is None else control.run_command([binary('netconvert'), '--version'], capture_output=True, text=True, check=True).stdout)
     metadata = {'schema': 'afterlight.network.v1', 'kind': kind, 'network_sha256': hashlib.sha256(ET.canonicalize(from_file=output/'network.net.xml', strip_text=True, with_comments=False).encode()).hexdigest(),
                 'network_file_sha256': sha256(output/'network.net.xml'),
                 'network_hash_definition': 'canonical XML excluding generator timestamp/path comments and insignificant whitespace',
                 'graph_sha256': hashlib.sha256(json.dumps(graph, sort_keys=True).encode()).hexdigest(),
                 'canonical_map_sha256': canonical_map_sha256,
-                'command': command, 'netconvert_version': subprocess.check_output([binary('netconvert'), '--version'], text=True).splitlines()[0],
+                'command': command, 'netconvert_version': version_output.splitlines()[0],
                 'coordinate_normalization': False,
                 'lane_connection_policy': 'right-hand-inner-left-outer-right-straight-order-v1',
                 'validation_status': 'generated_not_acceptance_tested'}

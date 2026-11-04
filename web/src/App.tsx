@@ -1,5 +1,5 @@
 import { boundedJson } from "./response.ts";
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 const CityView = lazy(() =>
   import("./CityView.tsx").then((module) => ({ default: module.CityView })),
 );
@@ -16,6 +16,8 @@ import { BrandMark } from "./BrandMark.tsx";
 import { recordingUrl, validateCatalog } from "./catalog.ts";
 import { frameAt } from "./replay.ts";
 import type { MapPickMode } from "./MapSelectionLayer.ts";
+import type { JourneyFocus } from "./journeyFocus.ts";
+import { randomJourney } from "./journeySelection.ts";
 import type { CatalogEntry, City, Replay } from "./types.ts";
 const base = import.meta.env.BASE_URL;
 const apiBase = (import.meta.env.VITE_API_BASE as string | undefined)?.replace(
@@ -52,7 +54,7 @@ function useReducedMotion() {
 function Icon({
   name,
 }: {
-  name: "play" | "pause" | "reset" | "arrow" | "expand";
+  name: "play" | "pause" | "reset" | "arrow" | "expand" | "shuffle";
 }) {
   return (
     <svg
@@ -75,6 +77,10 @@ function Icon({
       ) : name === "reset" ? (
         <>
           <path d="M4 10a8 8 0 1 1 1 8M4 4v6h6" />
+        </>
+      ) : name === "shuffle" ? (
+        <>
+          <path d="M3 7h3c4 0 8 10 12 10h3m-4-4 4 4-4 4M3 17h3c1.5 0 3-1.5 4.5-3.5M13 9.5C14.5 8 16 7 18 7h3m-4-4 4 4-4 4" />
         </>
       ) : name === "expand" ? (
         <>
@@ -112,8 +118,8 @@ export default function App() {
     [catalogRetry, setCatalogRetry] = useState(0);
   const [pickup, setPickup] = useState("P001"),
     [hospital, setHospital] = useState("HOSP_WEST"),
-    [search, setSearch] = useState(""),
     [selection, setSelection] = useState("");
+  const [journeyFocus, setJourneyFocus] = useState<JourneyFocus | null>(null);
   const [replay, setReplay] = useState<Replay | null>(null),
     [loading, setLoading] = useState(false),
     [loadError, setLoadError] = useState(""),
@@ -307,19 +313,21 @@ export default function App() {
       replay.scenario.network_kind === "city" &&
       geometryMatches(replay.provenance.canonical_map_sha256, cityHash),
   );
-  const pickups = useMemo(
-    () =>
-      city?.pickups.filter((x) =>
-        `${x.id} ${x.road_id}`.toLowerCase().includes(search.toLowerCase()),
-      ) ?? [],
-    [city, search],
-  );
+  const pickups = city?.pickups ?? [];
   const journeyLocked = Boolean(selection || replay);
-  const changeRoute = (p: string, h: string) => {
-    if (journeyLocked) return;
+  const changeRoute = (p: string, h: string, focus: Exclude<MapPickMode, null>) => {
+    if (journeyLocked || selectionLocked || !city ||
+      !city.pickups.some(point => point.id === p) ||
+      !city.hospitals.some(point => point.id === h)) return;
     setMapPickMode(null);
     setPickup(p);
     setHospital(h);
+    setFollow(false);
+    setJourneyFocus(previous => ({
+      kind: focus,
+      id: focus === "pickup" ? p : h,
+      revision: (previous?.revision ?? 0) + 1,
+    }));
     setSelection("");
     setReplay(null);
     setPlaying(false);
@@ -328,6 +336,7 @@ export default function App() {
   const selectRecording = (id: string) => {
     if (id && id === selection) return;
     setMapPickMode(null);
+    setJourneyFocus(null);
     setSelection(id);
     setReplay(null);
     setPlaying(false);
@@ -392,14 +401,8 @@ export default function App() {
         </a>
         <span className="product-label">Traffic signal lab</span>
         <div className="topbar-right">
-          <span className="mode-label">
-            <span className={`status-dot ${replay ? "recorded" : ""}`} />
-            {generating
-              ? "Generating locally"
-              : replay
-                ? "Recorded simulation"
-                : "City explorer"}
-          </span>
+          
+            
           <a
             className="source-link"
             href="https://github.com/JunaidAhamed-7777/afterlight"
@@ -440,15 +443,7 @@ export default function App() {
               tabIndex={0}
             >
               <div className="control-panel" hidden={panel !== "run"}>
-                <div className="section-heading">
-                  <span className="eyebrow">Ambulance priority</span>
-                  <h1>
-                    Same city.
-                    <br />
-                    Different signals.
-                  </h1>
-                  <p>Watch the journey. Compare the traffic left behind.</p>
-                </div>
+                
                 {cityError && (
                   <div className="inline-error" role="alert">
                     <p>{cityError}</p>
@@ -462,7 +457,7 @@ export default function App() {
                   aria-labelledby="recordings-title"
                 >
                   <div className="label-row">
-                    <h2 id="recordings-title">Recordings</h2>
+                    <h1 id="recordings-title">Recordings</h1>
                     <span className="count-label">{catalog.length}</span>
                   </div>
                   {catalog.length > 0 ? (
@@ -542,9 +537,9 @@ export default function App() {
                     });
                   }}>
                     <span>
-                      <strong>
+                      <h2>
                         {journeyLocked ? "Explore another journey" : "Choose a journey"}
-                      </strong>
+                      </h2>
                       <small>Pickup & destination hospital</small>
                     </span>
                     <Icon name="arrow" />
@@ -567,7 +562,7 @@ export default function App() {
                           className="new-journey"
                           onClick={() => {
                             selectRecording("");
-                            requestAnimationFrame(() => document.getElementById("pickup-search")?.focus());
+                            requestAnimationFrame(() => document.getElementById("pickup")?.focus());
                           }}
                         >
                           Leave recording & explore <Icon name="arrow" />
@@ -576,38 +571,22 @@ export default function App() {
                     )}
                     <fieldset
                       className={`journey-fields${journeyLocked ? " is-locked" : ""}`}
-                      disabled={!city || journeyLocked}
+                      disabled={!city || journeyLocked || selectionLocked}
                       aria-describedby={journeyLocked ? "journey-lock-note" : undefined}
                     >
                       <legend className="sr-only">Journey pickup and destination</legend>
-                      <label htmlFor="pickup-search">Find a pickup</label>
-                      <div className="search-field">
-                        <input
-                          id="pickup-search"
-                          type="search"
-                          placeholder="Pickup ID or street"
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                          autoComplete="off"
-                        />
-                        {search && (
-                          <button
-                            className="search-clear"
-                            aria-label="Clear pickup search"
-                            onClick={() => {
-                              setSearch("");
-                              document.getElementById("pickup-search")?.focus();
-                            }}
-                          >
-                            ×
-                          </button>
-                        )}
-                      </div>
+                      <button className="randomize-journey" onClick={() => {
+                        if (!city) return;
+                        const next = randomJourney(city, { pickup, hospital });
+                        if (!next) return;
+                        changeRoute(next.pickup, next.hospital, "pickup");
+                        setMapSelectionNotice(`Journey randomized: pickup ${next.pickup}, ${city.hospitals.find(point => point.id === next.hospital)?.name ?? next.hospital}.`);
+                      }}><Icon name="shuffle" /> Randomize</button>
                       <label htmlFor="pickup">Pickup point</label>
                       <select
                         id="pickup"
                         value={pickup}
-                        onChange={(e) => changeRoute(e.target.value, hospital)}
+                        onChange={(e) => changeRoute(e.target.value, hospital, "pickup")}
                         disabled={!city || Boolean(replay)}
                       >
                         {!pickups.some((x) => x.id === pickup) && (
@@ -619,19 +598,11 @@ export default function App() {
                           </option>
                         ))}
                       </select>
-                      <span className="field-note">
-                        {city
-                          ? `${pickups.length} of ${city.pickups.length} pickup locations`
-                          : "Loading map…"}
-                        {city && !pickups.length
-                          ? " · No matches. Try a pickup ID such as P001."
-                          : ""}
-                      </span>
                       <label htmlFor="hospital">Destination hospital</label>
                       <select
                         id="hospital"
                         value={hospital}
-                        onChange={(e) => changeRoute(pickup, e.target.value)}
+                        onChange={(e) => changeRoute(pickup, e.target.value, "hospital")}
                         disabled={!city || Boolean(replay)}
                       >
                         {city?.hospitals.map((h) => (
@@ -914,7 +885,7 @@ export default function App() {
                 </details>
               </div>
               <footer>
-                <span>Built with SUMO · Original Blender city</span>
+                
                 <a
                   href="https://github.com/JunaidAhamed-7777/afterlight"
                   target="_blank"
@@ -1050,13 +1021,13 @@ export default function App() {
                           mode === "pickup" &&
                           city.pickups.some((point) => point.id === id)
                         ) {
-                          changeRoute(id, hospital);
+                          changeRoute(id, hospital, "pickup");
                           setMapSelectionNotice(`Pickup ${id} selected.`);
                         } else if (
                           mode === "hospital" &&
                           city.hospitals.some((point) => point.id === id)
                         ) {
-                          changeRoute(pickup, id);
+                          changeRoute(pickup, id, "hospital");
                           setMapSelectionNotice(
                             `${city.hospitals.find((point) => point.id === id)?.name ?? id} selected.`,
                           );
@@ -1071,6 +1042,7 @@ export default function App() {
                       ghostOpacity={ghostOpacity}
                       pickup={pickup}
                       hospital={hospital}
+                      journeyFocus={journeyLocked ? null : journeyFocus}
                       quality={quality}
                       follow={follow}
                       playing={playing}
