@@ -4,6 +4,17 @@
   "installCommand": "npm --prefix web ci",
   "buildCommand": "npm --prefix web run build",
   "outputDirectory": "web/dist",
+  "fluid": true,
+  "functions": {
+    "api/simulate.py": {
+      "maxDuration": 300,
+      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**}"
+    },
+    "api/cancel.py": {
+      "maxDuration": 30,
+      "excludeFiles": "{web/**,docs/**,tests/**,preview/**,local-runtime/**,assets/exports/**,assets/previews/**,assets/src/**,assets/qa/**,assets/*.blend*,scripts/**,**/__pycache__/**}"
+    }
+  },
   "headers": [
     {
       "source": "/THIRD_PARTY_NOTICES.txt",

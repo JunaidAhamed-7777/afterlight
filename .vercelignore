@@ -17,14 +17,11 @@ assets/previews/ambulance_*.png
 !assets/previews/ambulance_model.png
 assets/previews/asset_overview.png
 /docs/
-/evaluation/
-/models/
-/policies/
-/sim/
 /tests/
 /scripts/
-/api/
-/export/
+/api/*
+!/api/simulate.py
+!/api/cancel.py
 web/node_modules/
 web/dist/
 web/public/assets/

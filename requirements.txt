@@ -1,0 +1,7 @@
+# Hosted Linux engine; local Windows setup uses requirements-sim.txt.
+# Pin the official portable wheel and its published hash, avoiding unused
+# newer-platform geospatial dependencies in the serverless bundle.
+eclipse-sumo @ https://files.pythonhosted.org/packages/43/c6/16c5ac778c77dde18c7c1a55425128fcd16a5ca33b16184f6f9d98be8835/eclipse_sumo-1.28.0-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl#sha256=8d96fb90562085524d24cccbb884853e70ee2f0ceb6464d0c055be9f9506240c
+sumo-data==1.28.0
+traci==1.28.0
+sumolib==1.28.0

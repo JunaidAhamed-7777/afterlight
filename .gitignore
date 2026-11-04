@@ -25,3 +25,5 @@ local-runtime/
 *.pem
 *.key
 .DS_Store
+
+.env*
