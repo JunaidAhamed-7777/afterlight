@@ -100,6 +100,11 @@ preservation and Omen acceptance gates.
 
 ## Desktop usability hierarchy
 
+Preserve the owner's compact frontend revision from `d1130f2`: Recordings is
+the main heading, the journey disclosure uses an h2, and the former marketing
+intro, topbar mode badge and "Built with" footer copy stay removed. New features
+must fit this hierarchy rather than reintroducing promotional scaffolding.
+
 The first screen offers a clear available action, not absent traffic controls:
 explore the city, open a real recording, or use an enabled local runner. Replay
 comparison controls/legend appear only with actual evidence. Journey/status text
@@ -107,7 +112,7 @@ owns a row outside the canvas; camera controls, compass and errors never compete
 for the same corner. Keep seed/policy/lead under a native advanced disclosure,
 while the submitted immutable request remains distinguishable from the next run.
 Opt-in map markers are actual canonical anchors, with click-versus-drag protection
-and complete search/dropdown alternatives. No change to palette, typography or
+and native dropdown alternatives. No change to palette, typography or
 runtime tokens is needed for this hierarchy.
 
 
@@ -149,11 +154,19 @@ The comparison legend uses transparent renders of the actual ambulance and ghost
 | Forms | LocalGeneration and generation.ts | API job/idempotency contract | Immutable submitted job vs next request | API and generation tests |
 | Feedback | Inline status/error regions owned by the active operation | docs/VIEWER_AND_DEMO.md | Informational/status/error | Failure/recovery browser tests |
 
-Local pickup filtering is immediate and transient. The clear button resets the query and returns focus to search. Long-lived request state remains owned by LocalGeneration; changing sidebar sections preserves it. Native controls preserve keyboard interaction and actual source outcomes remain inspectable without WebGL.
+Journey selection uses native pickup and hospital dropdowns, map picking and Randomize. Search is intentionally absent. Each committed endpoint selection snaps the camera to its canonical location and retains warm ground markers. Randomize chooses a different canonical pair when alternatives exist. Long-lived local request state remains owned by LocalGeneration; changing sidebar sections preserves it.
 
 ## Journey editing and algorithm evidence
 
-The journey disclosure is a visible control surface with a labeled header and directional indicator. Selecting a recording locks and blurs the complete pickup/search/hospital/map-selection field group, including during loading or a recording error. The unblurred **Leave recording & explore** action stays above that group and returns focus to pickup search after unlocking. Disabled native fieldset semantics preserve keyboard behavior; blur alone never enforces the lock.
+The journey disclosure is a visible control surface with a labeled header and directional indicator. Selecting a recording locks and blurs the complete pickup/hospital/map-selection/Randomize field group, including during loading or a recording error. The unblurred **Leave recording & explore** action stays above that group and returns focus to the pickup dropdown after unlocking. Disabled native fieldset semantics preserve keyboard behavior; blur alone never enforces the lock.
+
+For a custom journey, Play requests a new bounded pair of SUMO worlds from the same-origin simulator. Actual completed simulation steps drive progress; preparation stays indeterminate. Cancel remains visible during execution, packaging and recording preparation, aborting the request and its owned simulator processes. Completion opens and plays only the validated, checksum-bound recording for the requested anchors. A canceled or incomplete stream never opens results. Published examples and the frozen study remain separate from these new exploratory runs.
+
+Civilian queues draw from left to right through the current playback time and
+rewind when seeking backward. Default to one amber line for the selected world;
+Compare worlds is explicit opt-in. Use integer axes, a fixed time domain and
+non-scaling SVG strokes. Actual in-flight queue samples may appear before a
+custom calculation finishes, clearly labeled partial and without final outcomes.
 
 Results separates **This run**, **Study** and **Algorithm**. Algorithm explains the selected recording's route calculation and display using its saved evidence and recognized source hashes. Show the solid and ordinary/ghost responses as separate physical worlds sharing the saved route where that is what the source records. Distinguish the distance-based route objective, lane-geometry reference length, signal-priority timing and measured journey duration. Fold exact edges and source details beneath a concise process explanation. Unknown source versions and missing route details remain explicit.
 

@@ -56,9 +56,12 @@ export async function readSimulationResponse(
     } else {
       if (!accepted) throw new Error("The simulation stream was not bound to this request.");
       if (event.type === "error") throw new Error(typeof event.message === "string" ? event.message : "The simulation could not finish. Try another journey.");
-      if (event.type === "cancelled") throw new DOMException("Simulation canceled.", "AbortError");
+      if (event.type === "cancelled") {
+        if (event.request_id !== requestId) throw new Error("The canceled simulation request identity changed.");
+        throw new DOMException("Simulation canceled.", "AbortError");
+      }
       if (event.type === "replay_chunk") {
-        if (event.index !== blocks.length || typeof event.data !== "string" ||
+        if (event.index !== blocks.length || typeof event.data !== "string" || !event.data ||
           !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(event.data))
           throw new Error("The simulation recording chunks are invalid or out of order.");
         const binary = atob(event.data);
@@ -72,7 +75,7 @@ export async function readSimulationResponse(
           !size(event.decoded_bytes, MAX_REPLAY) || typeof event.scenario_id !== "string" || !event.scenario_id)
           throw new Error("The completed simulation has invalid recording metadata.");
         completion = event;
-      } else if (event.type !== "progress" && event.type !== "route")
+      } else if (event.type !== "progress" && event.type !== "route" && event.type !== "queue")
         throw new Error("The simulation stream contains an unsupported message.");
     }
     if (event.type !== "replay_chunk" && event.type !== "complete") onEvent(event);
@@ -95,19 +98,22 @@ export async function readSimulationResponse(
     }
     pending += decoder.decode();
     if (pending.trim()) consume(pending);
-    if (!completion) throw new Error("The simulation connection ended before a complete recording arrived. Try again.");
+    // Message consumption happens in a callback; retain its validated result
+    // explicitly rather than asking control-flow analysis to follow closures.
+    const completed = completion as SimulationEvent | null;
+    if (!completed) throw new Error("The simulation connection ended before a complete recording arrived. Try again.");
     const bytes = new Uint8Array(gzipBytes);
     let offset = 0;
     for (const block of blocks) { bytes.set(block, offset); offset += block.byteLength; }
     const digest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), n => n.toString(16).padStart(2, "0")).join("");
-    if (digest !== completion.compressed_sha256) throw new Error("The generated recording checksum does not match. No results were opened.");
+    if (digest !== completed.compressed_sha256) throw new Error("The generated recording checksum does not match. No results were opened.");
     signal.throwIfAborted();
     return {
       url: URL.createObjectURL(new Blob([bytes], { type: "application/gzip" })),
       requestId,
-      replaySha256: completion.replay_sha256 as string,
-      decodedBytes: completion.decoded_bytes as number,
-      scenarioId: completion.scenario_id as string,
+      replaySha256: completed.replay_sha256 as string,
+      decodedBytes: completed.decoded_bytes as number,
+      scenarioId: completed.scenario_id as string,
     };
   } finally {
     signal.removeEventListener("abort", abort);

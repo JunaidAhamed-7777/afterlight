@@ -55,8 +55,18 @@ def assert_persistent_workspace(page):
         for key in ('stage', 'canvas', 'transport'):
             assert before[key] == after[key], (key, before, after)
         # Focus navigation must move only the left scroller, not the right view.
-        page.locator('#pickup-search').focus()
-        expect(page.locator('#pickup-search')).to_be_in_viewport()
+        expect(page.locator('#pickup-search')).to_have_count(0)
+        disclosure = page.locator('.route-control')
+        if disclosure.get_attribute('open') is None:
+            disclosure.locator('summary').click()
+        # Preserve the selected recording: focus its Leave button while its
+        # canonical dropdown is locked, rather than unlocking or starting a run.
+        target = page.locator('#pickup')
+        if target.is_disabled():
+            target = page.get_by_role('button', name='Leave recording & explore', exact=True)
+        target.focus()
+        expect(target).to_be_focused()
+        expect(target).to_be_in_viewport()
         assert geometry()['stage'] == before['stage']
         results.append({'viewport': [width, height], 'right_pane_stationary': True,
                         'transport_present': before['transport'] is not None,

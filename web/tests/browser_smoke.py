@@ -16,6 +16,7 @@ from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright, expect
 from browser_camera_checks import assert_overview_fits, assert_favicon_served, assert_camera_exploration
 from browser_map_selection_checks import assert_map_selection, assert_replay_map_lock
+from desktop_product_acceptance import ready, returning_visit, switch_section
 
 
 def main() -> None:
@@ -48,11 +49,20 @@ def main() -> None:
             ],
         )
         context = browser.new_context(viewport={"width": 1440, "height": 1000}, device_scale_factor=1)
+        returning_visit(context)
         page = context.new_page()
         page.on("pageerror", lambda error: errors.append(str(error)))
         try:
             page.goto(args.base_url, wait_until="networkidle")
-            expect(page.get_by_role("heading", name=re.compile(r"One city.*Two futures", re.S))).to_be_visible()
+            expect(page.get_by_role("link", name="AFTERLIGHT home", exact=True)).to_be_visible()
+            ready(page)
+            switch_section(page, "Run")
+            disclosure = page.locator('.route-control')
+            if disclosure.get_attribute('open') is None: disclosure.locator('summary').click()
+            leave = page.get_by_role('button', name='Leave recording & explore', exact=True)
+            if leave.count(): leave.click()
+            expect(page.locator('#pickup-search')).to_have_count(0)
+            expect(page.get_by_role('button', name='Play selected journey', exact=True)).to_be_enabled()
             page.wait_for_selector(".three-host canvas", timeout=30000)
             page.wait_for_function("!document.querySelector('.canvas-status')", timeout=30000)
             expect(page.locator(".city-fallback")).to_have_count(0)
@@ -74,14 +84,13 @@ def main() -> None:
 
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Desktop horizontal overflow"
             passed("desktop_no_horizontal_overflow")
-            page.get_by_label("Find a pickup", exact=True).fill("P050")
+            expect(page.locator('#pickup-search')).to_have_count(0)
             expect(page.get_by_label("Pickup point", exact=True).locator("option[value=P050]")).to_have_count(1)
             page.get_by_label("Pickup point", exact=True).select_option("P050")
             page.get_by_label("Destination hospital", exact=True).select_option("HOSP_EAST")
             expect(page.locator(".map-location")).to_contain_text("P050")
             expect(page.locator(".map-location")).to_contain_text("Eastbank General")
-            passed("canonical_pickup_search_and_hospital_selection")
-            page.get_by_label("Find a pickup", exact=True).fill("")
+            passed("canonical_pickup_dropdown_and_hospital_selection")
             page.get_by_role("button", name="Reset camera to city overview").click()
             page.screenshot(path=str(args.output / "desktop.png"), full_page=True)
 
@@ -89,6 +98,8 @@ def main() -> None:
             catalog_pattern = "**" + args.catalog_path
             page.route(catalog_pattern, lambda route: route.fulfill(status=503, content_type="application/json", body='{"error":"smoke injected outage"}'))
             page.reload(wait_until="networkidle")
+            workspace = page.get_by_role('button', name='Open workspace', exact=True)
+            if workspace.count(): workspace.click()
             expect(page.get_by_role("button", name="Retry catalog")).to_be_visible()
             page.unroute(catalog_pattern)
             page.get_by_role("button", name="Retry catalog").click()
@@ -98,13 +109,12 @@ def main() -> None:
             # A real recording, if catalogued, is inspected; no synthetic trace is injected.
             all_recordings = page.locator(".recording-list button")
             if all_recordings.count():
-                page.get_by_text("All available recordings", exact=False).click()
                 all_recordings.first.click()
-                expect(page.locator(".mode-label")).to_contain_text("Recorded simulation", timeout=30000)
+                expect(page.locator('#timeline')).to_be_enabled(timeout=90000)
                 assert_replay_map_lock(page)
                 passed("recording_blocks_map_route_changes")
-                expect(page.get_by_label("Absolute simulation time", exact=True)).to_be_enabled()
-                timeline = page.get_by_label("Absolute simulation time", exact=True)
+                expect(page.get_by_label("Simulation time", exact=True)).to_be_enabled()
+                timeline = page.get_by_label("Simulation time", exact=True)
                 timeline.focus()
                 timeline.press("End")
                 maximum = float(timeline.get_attribute("max"))
@@ -113,26 +123,28 @@ def main() -> None:
                 timeline.press("ArrowRight")
                 expect(page.locator(".timeline-label output")).to_contain_text("0.1")
                 city_recording = page.locator(".fixture-view").count() == 0
-                baseline_button = page.get_by_role("button", name="Baseline", exact=True)
+                baseline_button = page.get_by_role("button", name="Ordinary", exact=True)
                 baseline_button.click()
                 expect(baseline_button).to_have_attribute("aria-pressed", "true")
                 if city_recording:
-                    expect(page.locator(".legend")).to_contain_text("Solid: ordinary baseline world")
+                    expect(page.locator(".legend")).to_contain_text("Ordinary ambulance")
                 else:
                     expect(page.locator(".fixture-view")).to_be_visible()
                     expect(page.locator(".legend")).to_have_count(0)
                 page.get_by_role("button", name="Afterlight", exact=True).click()
                 if city_recording:
-                    expect(page.locator(".legend")).to_contain_text("Ghost: baseline, separate traffic world")
+                    expect(page.locator(".legend")).to_contain_text("Baseline ghost")
                 page.screenshot(path=str(args.output / "recording.png"), full_page=True)
                 passed("real_catalogued_recording_shared_seek_and_world_labels")
                 # Return to asset inspection for the renderer context-loss check.
-                page.get_by_label("Recorded experiment", exact=True).select_option("")
+                page.get_by_role('button', name='Leave recording & explore', exact=True).click()
             else:
-                expect(page.get_by_role("button", name="Play recording", exact=True)).to_have_count(0)
-                expect(page.get_by_role("heading", name="Explore the city", exact=True)).to_be_visible()
+                expect(page.get_by_role("button", name="Play selected journey", exact=True)).to_be_enabled()
+                expect(page.locator('#timeline')).to_be_disabled()
                 expect(page.locator(".legend")).to_have_count(0)
-                expect(page.get_by_role("heading", name="No outcome claims yet")).to_be_visible()
+                switch_section(page, 'Results')
+                expect(page.get_by_role("heading", name="Results follow a run.", exact=True)).to_be_visible()
+                switch_section(page, 'Run')
                 passed("empty_library_has_no_fake_playback_or_outcomes")
 
             page.wait_for_selector(".three-host canvas", timeout=30000)
@@ -172,8 +184,9 @@ def main() -> None:
             if args.include_mobile:
                 page.set_viewport_size({"width": 390, "height": 844})
             page.emulate_media(reduced_motion="reduce")
+            switch_section(page, 'Settings')
             expect(page.get_by_label("Reduced motion", exact=True)).to_be_checked()
-            expect(page.get_by_label("Follow AFTERLIGHT ambulance", exact=True)).to_have_count(0)
+            expect(page.locator('.follow-ambulance')).to_be_disabled()
             page.evaluate("scrollTo(0,0)")
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), "Horizontal overflow"
             if args.include_mobile:

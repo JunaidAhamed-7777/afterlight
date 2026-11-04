@@ -24,7 +24,7 @@ from urllib.parse import urljoin, urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 from real_replay_smoke import check_layer, inspect, sample_times, sampled_vehicles
-from browser_map_selection_checks import marker_on_canvas
+from browser_map_selection_checks import assert_randomized_journey, marker_on_canvas
 
 ROOT = Path(__file__).resolve().parents[2]
 CANVAS = ".three-host canvas"
@@ -282,14 +282,12 @@ def check_map_controls(page):
     leave = page.get_by_role("button", name="Leave recording & explore", exact=True)
     if leave.count(): leave.click()
     ready(page)
-    search = page.get_by_role("searchbox", name="Find a pickup", exact=True)
-    search.fill("no-such-pickup")
-    expect(page.locator(".route-control")).to_contain_text("No matches")
-    page.get_by_role("button", name="Clear pickup search", exact=True).click()
-    expect(search).to_have_value(""); expect(search).to_be_focused()
-    page.get_by_role("button", name="Full city", exact=True).click(); settled(page)
+    randomized = assert_randomized_journey(page)
     result = {}
     for kind, label, selector in [("pickup", "Pick on map", "#pickup"), ("hospital", "Hospital on map", "#hospital")]:
+        # Explicit selection now focuses its anchor, so restore the complete
+        # city before choosing a different (possibly diagonal) hospital.
+        page.get_by_role("button", name="Full city", exact=True).click(); settled(page)
         before = page.locator(selector).input_value()
         trigger = page.get_by_role("button", name=label, exact=True)
         expect(trigger).to_be_enabled(); trigger.click()
@@ -302,7 +300,8 @@ def check_map_controls(page):
         expect(page.locator(selector)).to_have_value(marker["id"])
         expect(trigger).to_have_attribute("aria-pressed", "false")
         result[kind] = marker["id"]
-    return {"selected_canonical_ids": result, "no_results_clear_focus": True, "escape_does_not_change_route": True}
+    return {"selected_canonical_ids": result, "randomized_journey": randomized,
+            "no_pickup_search": True, "escape_does_not_change_route": True}
 
 
 def check_text_contrast(page):

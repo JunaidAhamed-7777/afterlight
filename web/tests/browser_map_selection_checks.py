@@ -26,15 +26,35 @@ def marker_on_canvas(page, excluded_id=None):
 
 
 def start_mode(page, mode):
-    button = page.get_by_role('button', name=f'Choose {mode} on map', exact=True)
+    button = page.get_by_role('button', name='Pick on map' if mode == 'pickup' else 'Hospital on map', exact=True)
     expect(button).to_be_enabled(timeout=30000)
     button.click()
     page.wait_for_function("mode => document.querySelector('.three-host canvas')?.dataset.mapPickMode === mode", arg=mode)
 
 
+def assert_randomized_journey(page):
+    """Exercise canonical selection only; never press Play or start a run."""
+    expect(page.locator('#pickup-search')).to_have_count(0)
+    pickup, hospital = page.locator('#pickup'), page.locator('#hospital')
+    pickup_ids = pickup.locator('option').evaluate_all('es=>es.map(e=>e.value)')
+    hospital_ids = hospital.locator('option').evaluate_all('es=>es.map(e=>e.value)')
+    assert len(pickup_ids) == 100 and len(hospital_ids) == 2
+    before = {'pickup': pickup.input_value(), 'hospital': hospital.input_value()}
+    randomize = page.get_by_role('button', name='Randomize', exact=True)
+    expect(randomize).to_be_enabled()
+    randomize.click()
+    page.wait_for_function("before=>document.querySelector('#pickup').value!==before.pickup||document.querySelector('#hospital').value!==before.hospital", arg=before)
+    after = {'pickup': pickup.input_value(), 'hospital': hospital.input_value()}
+    assert after['pickup'] in pickup_ids and after['hospital'] in hospital_ids, after
+    expect(page.get_by_role('button', name='Play selected journey', exact=True)).to_be_enabled()
+    expect(page.locator('#timeline')).to_be_disabled()
+    return {'before': before, 'after': after, 'all_canonical_options': [len(pickup_ids), len(hospital_ids)],
+            'no_pickup_search': True, 'play_enabled_without_starting_simulation': True}
+
+
 def assert_map_selection(page):
     canvas = page.locator('.three-host canvas')
-    page.get_by_label('Find a pickup', exact=True).fill('')
+    randomized = assert_randomized_journey(page)
     page.get_by_role('button', name='Explore 2.5×', exact=True).click()
     canvas.focus(); canvas.press('z')
     page.wait_for_function("Number(document.querySelector('.three-host canvas').dataset.cameraRoll) !== 0")
@@ -45,7 +65,7 @@ def assert_map_selection(page):
     expect(page.locator('.map-pick-hover')).to_contain_text(marker['id'])
     page.mouse.click(marker['clientX'], marker['clientY'])
     expect(page.get_by_label('Pickup point', exact=True)).to_have_value(marker['id'])
-    expect(page.get_by_role('button', name='Choose pickup on map', exact=True)).to_be_focused()
+    expect(page.get_by_role('button', name='Pick on map', exact=True)).to_be_focused()
     page.wait_for_function("document.querySelector('.three-host canvas').dataset.mapPickMode === 'none'")
     selected = marker['id']
 
@@ -55,10 +75,10 @@ def assert_map_selection(page):
     page.mouse.move(marker['clientX'], marker['clientY']); page.mouse.down()
     page.mouse.move(marker['clientX'] + 65, marker['clientY'] + 12, steps=8); page.mouse.up()
     expect(page.get_by_label('Pickup point', exact=True)).to_have_value(selected)
-    expect(page.get_by_role('button', name='Choose pickup on map', exact=True)).to_have_attribute('aria-pressed', 'true')
+    expect(page.get_by_role('button', name='Pick on map', exact=True)).to_have_attribute('aria-pressed', 'true')
     page.keyboard.press('Escape')
-    expect(page.get_by_role('button', name='Choose pickup on map', exact=True)).to_have_attribute('aria-pressed', 'false')
-    expect(page.get_by_role('button', name='Choose pickup on map', exact=True)).to_be_focused()
+    expect(page.get_by_role('button', name='Pick on map', exact=True)).to_have_attribute('aria-pressed', 'false')
+    expect(page.get_by_role('button', name='Pick on map', exact=True)).to_be_focused()
 
     # Grounded Full city makes both actual hospital driveway anchors available.
     page.get_by_role('button', name='Full city', exact=True).click()
@@ -72,12 +92,17 @@ def assert_map_selection(page):
     start_mode(page, 'hospital')
     page.get_by_role('button', name='Cancel map selection', exact=True).click()
     expect(page.get_by_label('Destination hospital', exact=True)).to_have_value(selected_hospital)
-    expect(page.get_by_role('button', name='Choose hospital on map', exact=True)).to_be_focused()
-    return {'pickup': selected, 'hospital': selected_hospital, 'rolled_perspective': True, 'drag_and_cancel_unchanged': True}
+    expect(page.get_by_role('button', name='Hospital on map', exact=True)).to_be_focused()
+    return {'pickup': selected, 'hospital': selected_hospital, 'rolled_perspective': True,
+            'drag_and_cancel_unchanged': True, 'randomized_journey': randomized}
 
 
 def assert_replay_map_lock(page):
-    expect(page.get_by_role('button', name='Choose pickup on map', exact=True)).to_be_disabled()
-    expect(page.get_by_role('button', name='Choose hospital on map', exact=True)).to_be_disabled()
-    expect(page.get_by_role('button', name='Choose a new journey', exact=True)).to_be_visible()
+    details = page.locator('.route-control')
+    if details.get_attribute('open') is None:
+        details.locator('summary').click()
+    expect(page.get_by_role('button', name='Pick on map', exact=True)).to_be_disabled()
+    expect(page.get_by_role('button', name='Hospital on map', exact=True)).to_be_disabled()
+    expect(page.get_by_role('button', name='Randomize', exact=True)).to_be_disabled()
+    expect(page.get_by_role('button', name='Leave recording & explore', exact=True)).to_be_visible()
     expect(page.locator('.map-pick-instructions')).to_have_count(0)

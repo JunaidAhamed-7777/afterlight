@@ -18,6 +18,8 @@ import { frameAt } from "./replay.ts";
 import type { MapPickMode } from "./MapSelectionLayer.ts";
 import type { JourneyFocus } from "./journeyFocus.ts";
 import { randomJourney } from "./journeySelection.ts";
+import { useCloudSimulation } from "./useCloudSimulation.ts";
+import { LiveQueueChart } from "./QueueChart.tsx";
 import type { CatalogEntry, City, Replay } from "./types.ts";
 const base = import.meta.env.BASE_URL;
 const apiBase = (import.meta.env.VITE_API_BASE as string | undefined)?.replace(
@@ -120,6 +122,7 @@ export default function App() {
     [hospital, setHospital] = useState("HOSP_WEST"),
     [selection, setSelection] = useState("");
   const [journeyFocus, setJourneyFocus] = useState<JourneyFocus | null>(null);
+  const journeyFocusRevision = useRef(0);
   const [replay, setReplay] = useState<Replay | null>(null),
     [loading, setLoading] = useState(false),
     [loadError, setLoadError] = useState(""),
@@ -138,6 +141,8 @@ export default function App() {
   const [generating, setGenerating] = useState(false);
   const [selectionLocked, setSelectionLocked] = useState(Boolean(apiBase));
   const [mapReady, setMapReady] = useState(false);
+  const cloud = useCloudSimulation(`${base}api/simulate`, (r, url) => openGenerated(r, url, true));
+  const runningSimulation = generating || cloud.busy;
   const [mapPickMode, setMapPickMode] = useState<MapPickMode>(null);
   const [mapSelectionNotice, setMapSelectionNotice] = useState("");
   const mapPickTrigger = useRef<HTMLButtonElement | null>(null);
@@ -147,7 +152,7 @@ export default function App() {
     mapPickTrigger.current?.focus();
   };
   const mapPickingBlocked = Boolean(
-    !city || !mapReady || replay || loading || selectionLocked,
+    !city || !mapReady || replay || loading || selectionLocked || cloud.busy,
   );
   useEffect(() => {
     if (mapPickingBlocked) {
@@ -170,6 +175,7 @@ export default function App() {
   }, [mapPickMode]);
   const [catalogLoaded, setCatalogLoaded] = useState(false);
   const generatedReplays = useRef(new Map<string, Replay>());
+  const pendingAutoplay = useRef<string | null>(null);
   const playbackClock = useRef(0);
   const seekTime = (t: number) => {
     playbackClock.current = t;
@@ -254,12 +260,11 @@ export default function App() {
     if (!item) return;
     const c = new AbortController();
     setLoading(true);
-    const url = recordingUrl(item.url, catalogBase);
     (generatedReplays.current.has(selection)
       ? Promise.resolve().then(() =>
           bindRecording(generatedReplays.current.get(selection)!, item),
         )
-      : loadRecording(item, url, c.signal)
+      : loadRecording(item, recordingUrl(item.url, catalogBase), c.signal)
     )
       .then((r) => {
         if (!c.signal.aborted) {
@@ -268,6 +273,10 @@ export default function App() {
           setHospital(r.scenario.hospital_id);
           seekTime(r.scenario.dispatch_s);
           setLoading(false);
+          if (pendingAutoplay.current === selection) {
+            pendingAutoplay.current = null;
+            setPlaying(true);
+          }
         }
       })
       .catch((e) => {
@@ -316,18 +325,19 @@ export default function App() {
   const pickups = city?.pickups ?? [];
   const journeyLocked = Boolean(selection || replay);
   const changeRoute = (p: string, h: string, focus: Exclude<MapPickMode, null>) => {
-    if (journeyLocked || selectionLocked || !city ||
+    if (journeyLocked || selectionLocked || cloud.busy || !city ||
       !city.pickups.some(point => point.id === p) ||
       !city.hospitals.some(point => point.id === h)) return;
     setMapPickMode(null);
     setPickup(p);
+    cloud.clear();
     setHospital(h);
     setFollow(false);
-    setJourneyFocus(previous => ({
+    setJourneyFocus({
       kind: focus,
       id: focus === "pickup" ? p : h,
-      revision: (previous?.revision ?? 0) + 1,
-    }));
+      revision: ++journeyFocusRevision.current,
+    });
     setSelection("");
     setReplay(null);
     setPlaying(false);
@@ -337,6 +347,8 @@ export default function App() {
     if (id && id === selection) return;
     setMapPickMode(null);
     setJourneyFocus(null);
+    pendingAutoplay.current = null;
+    cloud.clear();
     setSelection(id);
     setReplay(null);
     setPlaying(false);
@@ -344,6 +356,23 @@ export default function App() {
     setLoadError("");
     setLoading(Boolean(id));
   };
+  function openGenerated(r: Replay, url: string, autoplay = false) {
+    generatedReplays.current.clear();
+    generatedReplays.current.set(r.scenario.id, r);
+    const entry: CatalogEntry = {
+      id: r.scenario.id,
+      title: url.startsWith("blob:") ? "Calculated journey" : `Local ${r.worlds.afterlight.policy} run`,
+      url, seed: r.scenario.seed,
+      pickup_id: r.scenario.pickup_id, hospital_id: r.scenario.hospital_id,
+      policy: r.worlds.afterlight.policy, lead_s: r.worlds.afterlight.lead_s,
+      duration_s: r.duration_s,
+    };
+    setCatalog(rows => [...rows.filter(row => row.id !== entry.id && !row.url.startsWith("blob:")), entry]);
+    selectRecording(entry.id);
+    if (autoplay) pendingAutoplay.current = entry.id;
+    setPickup(entry.pickup_id);
+    setHospital(entry.hospital_id);
+  }
   const activeHospital = city?.hospitals.find((x) => x.id === hospital);
   const timelineMax = replay?.duration_s ?? 1;
   const activeFrame =
@@ -365,7 +394,15 @@ export default function App() {
     switchPanel("results");
   };
   const togglePlayback = () => {
-    if (!replay || loading) return;
+    if (loading || runningSimulation) return;
+    if (!replay) {
+      if (!city || selectionLocked) return;
+      setFollow(false);
+      setMapPickMode(null);
+      setResultScope("recording");
+      void cloud.start(pickup, hospital);
+      return;
+    }
     if (time >= timelineMax) seekTime(0);
     else if (playing) setTime(playbackClock.current);
     setPlaying(!playing);
@@ -467,7 +504,7 @@ export default function App() {
                           key={r.id}
                           className={`recording-card ${selection === r.id ? "selected" : ""}`}
                           aria-pressed={selection === r.id}
-                          disabled={loading && selection !== r.id}
+                          disabled={runningSimulation || (loading && selection !== r.id)}
                           onClick={() => selectRecording(r.id)}
                         >
                           <span
@@ -547,10 +584,7 @@ export default function App() {
                   <div className="journey-control-body">
                     {!journeyLocked && (
                       <p>
-                        Pick a curb location and destination.{" "}
-                        {apiBase
-                          ? "The local runner can generate this journey."
-                          : "Traffic playback is available for the recordings above."}
+                        Choose a pickup and hospital, then press Play to calculate both traffic worlds.
                       </p>
                     )}
                     {journeyLocked && (
@@ -571,7 +605,7 @@ export default function App() {
                     )}
                     <fieldset
                       className={`journey-fields${journeyLocked ? " is-locked" : ""}`}
-                      disabled={!city || journeyLocked || selectionLocked}
+                      disabled={!city || journeyLocked || selectionLocked || cloud.busy}
                       aria-describedby={journeyLocked ? "journey-lock-note" : undefined}
                     >
                       <legend className="sr-only">Journey pickup and destination</legend>
@@ -678,7 +712,7 @@ export default function App() {
                     apiBase={apiBase}
                     pickup={pickup}
                     hospital={hospital}
-                    mapReady={Boolean(city)}
+                    mapReady={Boolean(city) && !cloud.busy}
                     onBusy={setGenerating}
                     onSelectionLocked={setSelectionLocked}
                     onStarted={() => {
@@ -688,28 +722,7 @@ export default function App() {
                       setPlaying(false);
                       seekTime(0);
                     }}
-                    onOpen={(r, url) => {
-                      generatedReplays.current.clear();
-                      generatedReplays.current.set(r.scenario.id, r);
-                      const entry: CatalogEntry = {
-                        id: r.scenario.id,
-                        title: `Local ${r.worlds.afterlight.policy} run`,
-                        url,
-                        seed: r.scenario.seed,
-                        pickup_id: r.scenario.pickup_id,
-                        hospital_id: r.scenario.hospital_id,
-                        policy: r.worlds.afterlight.policy,
-                        lead_s: r.worlds.afterlight.lead_s,
-                        duration_s: r.duration_s,
-                      };
-                      setCatalog((rows) => [
-                        ...rows.filter((row) => row.id !== entry.id),
-                        entry,
-                      ]);
-                      selectRecording(entry.id);
-                      setPickup(entry.pickup_id);
-                      setHospital(entry.hospital_id);
-                    }}
+                    onOpen={(r, url) => openGenerated(r, url)}
                   />
                 </div>
               )}
@@ -724,7 +737,12 @@ export default function App() {
                 ) : resultScope === "study" ? (
                   panel === "results" && <StudyResults />
                 ) : replay ? (
-                  <ReplayEvidence replay={replay} />
+                  <ReplayEvidence replay={replay} time={panel === "results" ? time : 0} world={world} />
+                ) : cloud.busy || cloud.queues.baseline.length || cloud.queues.afterlight.length ? (
+                  <section className="evidence">
+                    <LiveQueueChart series={cloud.queues} running={cloud.busy} status={cloud.phase || "Simulation interrupted"} duration={900} />
+                    <p className="field-note">Actual queue samples. Final outcomes appear after both traffic worlds finish.</p>
+                  </section>
                 ) : (
                   <div className="control-panel">
                     <div className="section-heading">
@@ -1035,7 +1053,7 @@ export default function App() {
                         mapPickTrigger.current?.focus();
                       }}
                       clock={playbackClock}
-                      routeEdges={replay?.scenario.route_edges ?? []}
+                      routeEdges={replay?.scenario.route_edges ?? (cloud.routeMapHash === cityHash ? cloud.routeEdges : [])}
                       networkGeometry={replay?.network_geometry?.signals ?? []}
                       signalWorld={cityReplay ? replay!.worlds[world] : null}
                       ghost={ghost}
@@ -1097,6 +1115,25 @@ export default function App() {
                   </div>
                 </div>
               )}
+              {cloud.busy && (
+                <div className="stage-notice simulation-notice">
+                  <strong role="status">{cloud.phase}</strong>
+                  <progress aria-label="Simulation progress" max={1} value={cloud.progress ?? undefined} />
+                  <p>{cloud.progress === null ? "Preparing the selected journey" : `${Math.round(cloud.progress * 100)}% of traffic steps calculated`}</p>
+                  <div className="button-row">
+                    <button disabled={cloud.canceling} onClick={() => void cloud.cancel()}>{cloud.canceling ? "Canceling…" : "Cancel simulation"}</button>
+                    <button onClick={showRecordingResults}>View live queues</button>
+                  </div>
+                  {cloud.cancelError && <p role="alert">{cloud.cancelError}</p>}
+                </div>
+              )}
+              {cloud.error && (
+                <div className="stage-notice error" role="alert">
+                  <strong>Simulation unavailable</strong>
+                  <p>{cloud.error}</p>
+                  <button onClick={togglePlayback}>Retry simulation</button>
+                </div>
+              )}
             </div>
             {cityReplay && (
               <div className="legend">
@@ -1125,9 +1162,9 @@ export default function App() {
             <div className={`transport ${!replay ? "transport-empty" : ""}`}>
               <button
                 className="play-button"
-                disabled={!replay || loading}
+                disabled={loading || runningSimulation || (!replay && (!city || selectionLocked))}
                 onClick={togglePlayback}
-                aria-label={playing ? "Pause recording" : "Play recording"}
+                aria-label={playing ? "Pause recording" : replay ? "Play recording" : "Play selected journey"}
               >
                 <Icon name={playing ? "pause" : "play"} />
                 <span>{playing ? "Pause" : "Play"}</span>
@@ -1147,9 +1184,7 @@ export default function App() {
               <div className="timeline">
                 <div className="timeline-label">
                   <label htmlFor="timeline">
-                    {replay
-                      ? "Simulation time"
-                      : "Open a recording to play traffic"}
+                    {replay ? "Simulation time" : cloud.busy ? "Calculating selected journey" : cloud.phase === "Simulation canceled" ? cloud.phase : "Press Play to calculate this journey"}
                   </label>
                   <output htmlFor="timeline">
                     {time.toFixed(1)}{" "}

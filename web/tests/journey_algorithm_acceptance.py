@@ -161,6 +161,8 @@ def locked_journey(page, label: str) -> dict:
     expect(fields).to_have_class(re.compile(r"\bis-locked\b"))
     expect(fields).to_have_attribute("aria-describedby", "journey-lock-note")
     expect(page.locator("#journey-lock-note")).to_contain_text("fixed journey")
+    expect(page.locator("#pickup-search")).to_have_count(0)
+    expect(page.get_by_role("button", name="Randomize", exact=True)).to_be_disabled()
     controls = fields.locator("input,select,button,textarea")
     assert controls.count() >= 5, "Not all expected journey controls were found"
     statuses = controls.evaluate_all("es=>es.map(e=>({tag:e.tagName,id:e.id,label:e.getAttribute('aria-label')||e.textContent,disabled:e.matches(':disabled')}))")
@@ -175,7 +177,7 @@ def locked_journey(page, label: str) -> dict:
     assert placement["ctaTop"] >= placement["leftScrollerVisibleTop"] - 1 and placement["ctaBottom"] <= placement["leftScrollerVisibleBottom"] + 1, ("User-open must reveal the entire Leave button", placement)
     assert placement["visibleBlurredFieldsPx"] >= 32, ("User-open must reveal the blurred journey fields", placement)
     summary = details.locator(":scope > summary")
-    prominence = summary.evaluate("e=>{const s=getComputedStyle(e),t=getComputedStyle(e.querySelector('strong'));return {native:e.tagName==='SUMMARY',label:e.textContent.trim(),padding:parseFloat(s.paddingTop),font:parseFloat(t.fontSize),width:e.getBoundingClientRect().width,disclosureWidth:e.parentElement.getBoundingClientRect().width}}")
+    prominence = summary.evaluate("e=>{const s=getComputedStyle(e),t=getComputedStyle(e.querySelector('h2'));return {native:e.tagName==='SUMMARY',label:e.textContent.trim(),padding:parseFloat(s.paddingTop),font:parseFloat(t.fontSize),width:e.getBoundingClientRect().width,disclosureWidth:e.parentElement.getBoundingClientRect().width}}")
     assert prominence["native"] and prominence["padding"] >= 12 and prominence["font"] >= 14 and prominence["width"] >= 200 and prominence["width"] >= prominence["disclosureWidth"] * .95, prominence
     # Disabled fieldsets must be skipped by native sequential keyboard focus.
     cta.focus()
@@ -194,16 +196,20 @@ def leave_keyboard(page) -> dict:
     cta = page.get_by_role("button", name="Leave recording & explore", exact=True)
     cta.focus()
     page.keyboard.press("Enter")
-    search = page.locator("#pickup-search")
-    expect(search).to_be_enabled()
-    expect(search).to_be_focused()
+    expect(page.locator("#pickup-search")).to_have_count(0)
+    pickup = page.locator("#pickup")
+    expect(pickup).to_be_enabled()
+    expect(pickup).to_be_focused()
     fields = page.locator("fieldset.journey-fields")
     expect(fields).not_to_have_class(re.compile(r"\bis-locked\b"))
     assert fields.evaluate("e=>getComputedStyle(e).filter") == "none"
     assert fields.locator("input,select,button,textarea").evaluate_all("es=>es.every(e=>!e.matches(':disabled'))")
     expect(page.locator("#timeline")).to_be_disabled()
-    return {"keyboard_activation": "Enter", "focus_restored_to_pickup_search": True,
-            "controls_enabled_and_unblurred": True, "recording_timeline_disabled": True}
+    expect(page.get_by_role("button", name="Randomize", exact=True)).to_be_enabled()
+    expect(page.get_by_role("button", name="Play selected journey", exact=True)).to_be_enabled()
+    return {"keyboard_activation": "Enter", "focus_restored_to_pickup_dropdown": True,
+            "controls_enabled_and_unblurred": True, "recording_timeline_disabled": True,
+            "custom_play_enabled_but_not_started": True, "no_pickup_search": True}
 
 
 def algorithm(page, metadata: dict) -> dict:
@@ -345,7 +351,7 @@ def main():
             expect(select).to_have_value(other)
             choices[selector] = {"before": before, "selected": other}
         report["checks"]["native-journey-selects"] = choices
-        report["checks"]["actual-map-search-clear-and-picks"] = check_map_controls(page)
+        report["checks"]["actual-map-dropdown-randomize-and-picks"] = check_map_controls(page)
         print(json.dumps({"milestone": "keyboard-unlock-real-pickup-hospital-and-map-controls-passed"}), flush=True)
 
         switch_section(page, "Results")
@@ -399,8 +405,8 @@ def main():
         # Hold the genuine other-hospital fetch. Worker termination must be
         # observable before QA releases this held interception for cleanup.
         leave_keyboard(page)
-        page.locator("#pickup-search").fill("P0")
-        expect(page.get_by_role("button", name="Clear pickup search", exact=True)).to_be_enabled()
+        expect(page.locator("#pickup-search")).to_have_count(0)
+        expect(page.get_by_role("button", name="Randomize", exact=True)).to_be_enabled()
         workers_before = page.evaluate("window.__journeyWorkers.length")
         pattern = "**/replays/" + second["url"]
         def hold_actual_get(route):
